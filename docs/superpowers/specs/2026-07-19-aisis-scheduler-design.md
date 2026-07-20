@@ -245,8 +245,12 @@ user pin sections they successfully got.
 - **One end-to-end smoke test:** load → pick courses → generate → mark full → re-rank.
 - Pure-function modules run in plain Vitest/CI; only the smoke test needs a browser.
 
-## 11. Scaling Path (later, not now)
+## 11. Scaling Path & Future Features (later, not now)
 
+- **Saved schedules:** name and save generated schedules to localStorage ("Plan A",
+  "Plan B backup") and reopen them later — useful for pre-saving fallback plans before
+  enlistment day. (Note: "keep generating" and "lock sections" are already v1 — the
+  ranked results list is exhaustive, and locks are in §7.2/§7.4.)
 - Swap `catalog.ts` JSON reads for an API + DB (instant catalog updates, no redeploys).
 - Optional accounts/sync; crowdsourced live "section full" signals; multiple curricula;
   IPS parsing as an add-on.
