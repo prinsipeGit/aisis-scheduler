@@ -1,0 +1,14 @@
+{
+  "semester": "2026-1",
+  "exportedAt": "2026-07-20T00:00:00.000Z",
+  "warnings": [],
+  "sections": [
+    { "courseCode": "PHILO 11", "sectionCode": "A", "title": "PHILOSOPHY OF THE HUMAN PERSON I", "units": 3, "instructor": "GARCIA, JUAN", "meetings": [{ "days": ["M", "TH"], "start": 480, "end": 570 }], "room": "CTC 102", "remarks": "", "raw": "" },
+    { "courseCode": "PHILO 11", "sectionCode": "B", "title": "PHILOSOPHY OF THE HUMAN PERSON I", "units": 3, "instructor": "SANTOS, ANA", "meetings": [{ "days": ["T", "F"], "start": 660, "end": 750 }], "room": "CTC 105", "remarks": "", "raw": "" },
+    { "courseCode": "CSCI 30", "sectionCode": "A", "title": "DATA STRUCTURES AND ALGORITHMS", "units": 3, "instructor": "SY, MARIA", "meetings": [{ "days": ["M", "TH"], "start": 570, "end": 660 }], "room": "CTC 118", "remarks": "", "raw": "" },
+    { "courseCode": "CSCI 30", "sectionCode": "B2", "title": "DATA STRUCTURES AND ALGORITHMS", "units": 3, "instructor": "SY, MARIA", "meetings": [{ "days": ["T", "F"], "start": 780, "end": 870 }], "room": "CTC 118", "remarks": "", "raw": "" },
+    { "courseCode": "MATH 31.1", "sectionCode": "C", "title": "CALCULUS LAB", "units": 1, "instructor": "TBA", "meetings": [{ "days": ["W"], "start": 840, "end": 1020 }], "room": "SEC A201", "remarks": "", "raw": "" },
+    { "courseCode": "PHYS 72.1", "sectionCode": "D", "title": "PHYSICS LAB", "units": 1, "instructor": "REYES, PEDRO", "meetings": [{ "days": ["M"], "start": 600, "end": 660 }, { "days": ["SAT"], "start": 540, "end": 720 }], "room": "SEC B105", "remarks": "LEC+LAB", "raw": "" },
+    { "courseCode": "NSTP 11", "sectionCode": "A", "title": "CWTS STREAM", "units": 3, "instructor": "TBA", "meetings": [], "room": "TBA", "remarks": "", "raw": "" }
+  ]
+}
