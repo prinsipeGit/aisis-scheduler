@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import { getCatalog, isStale } from "./lib/catalog";
+import { getCatalog, getCommunityRatings, isStale } from "./lib/catalog";
+import { mergeRatings } from "./lib/profs";
 import { loadState, saveState } from "./lib/storage";
 import type { UserState } from "./lib/types";
 import { CoursePicker } from "./components/CoursePicker";
 import { PreferencesPanel } from "./components/PreferencesPanel";
+import { Results } from "./components/Results";
 
 type Tab = "courses" | "preferences" | "results" | "import";
 const TABS: { id: Tab; label: string }[] = [
@@ -19,6 +21,10 @@ export default function App() {
   const [state, setState] = useState<UserState>(loaded.state);
   const [tab, setTab] = useState<Tab>("courses");
   useEffect(() => { saveState(state); }, [state]);
+  const ratings = useMemo(
+    () => mergeRatings(getCommunityRatings(), state.personalRatings),
+    [state.personalRatings]
+  );
 
   return (
     <main>
@@ -44,7 +50,7 @@ export default function App() {
         />
       )}
       {tab === "preferences" && <PreferencesPanel catalog={catalog} state={state} onChange={setState} />}
-      {tab === "results" && <p>Results — added in Task 11.</p>}
+      {tab === "results" && <Results catalog={catalog} state={state} ratings={ratings} onChange={setState} />}
       {tab === "import" && <p>Import — added in Task 12.</p>}
     </main>
   );
