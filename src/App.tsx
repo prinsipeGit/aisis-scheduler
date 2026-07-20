@@ -3,6 +3,7 @@ import { getCatalog, isStale } from "./lib/catalog";
 import { loadState, saveState } from "./lib/storage";
 import type { UserState } from "./lib/types";
 import { CoursePicker } from "./components/CoursePicker";
+import { PreferencesPanel } from "./components/PreferencesPanel";
 
 type Tab = "courses" | "preferences" | "results" | "import";
 const TABS: { id: Tab; label: string }[] = [
@@ -42,7 +43,7 @@ export default function App() {
           onChange={(chosenCourses) => setState((s) => ({ ...s, chosenCourses }))}
         />
       )}
-      {tab === "preferences" && <p>Preferences — added in Task 10.</p>}
+      {tab === "preferences" && <PreferencesPanel catalog={catalog} state={state} onChange={setState} />}
       {tab === "results" && <p>Results — added in Task 11.</p>}
       {tab === "import" && <p>Import — added in Task 12.</p>}
     </main>
