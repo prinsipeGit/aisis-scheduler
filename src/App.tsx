@@ -6,6 +6,7 @@ import type { UserState } from "./lib/types";
 import { CoursePicker } from "./components/CoursePicker";
 import { PreferencesPanel } from "./components/PreferencesPanel";
 import { Results } from "./components/Results";
+import { ImportPage } from "./components/ImportPage";
 
 type Tab = "courses" | "preferences" | "results" | "import";
 const TABS: { id: Tab; label: string }[] = [
@@ -51,7 +52,7 @@ export default function App() {
       )}
       {tab === "preferences" && <PreferencesPanel catalog={catalog} state={state} onChange={setState} />}
       {tab === "results" && <Results catalog={catalog} state={state} ratings={ratings} onChange={setState} />}
-      {tab === "import" && <p>Import — added in Task 12.</p>}
+      {tab === "import" && <ImportPage catalog={catalog} />}
     </main>
   );
 }
