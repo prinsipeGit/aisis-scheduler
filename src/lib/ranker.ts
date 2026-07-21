@@ -55,6 +55,8 @@ function rawMetric(
       const scores = schedule.map((s) => ratingFor(s.instructor, ratings)?.rating ?? 3);
       return scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 3;
     }
+    default:
+      return 0;
   }
 }
 

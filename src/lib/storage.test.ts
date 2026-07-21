@@ -43,4 +43,25 @@ describe("storage", () => {
     localStorage.setItem(KEY, JSON.stringify({ version: STORAGE_VERSION, semester: "2026-1", chosenCourses: "oops" }));
     expect(loadState("2026-1").wasReset).toBe(true);
   });
+
+  it("resets on invalid criteria element", () => {
+    const state = defaultState("2026-1");
+    (state.preferences.criteria as unknown as string[]) = ["compactDays", "notARealCriterion"];
+    localStorage.setItem(KEY, JSON.stringify(state));
+    expect(loadState("2026-1").wasReset).toBe(true);
+  });
+
+  it("resets on invalid protectedBlocks element", () => {
+    const state = defaultState("2026-1");
+    (state.preferences.protectedBlocks as unknown[]) = [{}];
+    localStorage.setItem(KEY, JSON.stringify(state));
+    expect(loadState("2026-1").wasReset).toBe(true);
+  });
+
+  it("resets on invalid personalRatings element", () => {
+    const state = defaultState("2026-1");
+    (state.personalRatings as unknown[]) = [{}];
+    localStorage.setItem(KEY, JSON.stringify(state));
+    expect(loadState("2026-1").wasReset).toBe(true);
+  });
 });

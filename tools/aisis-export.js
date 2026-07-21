@@ -38,15 +38,23 @@
   const depts = [...select.options].map((o) => o.value).filter(Boolean);
   const lines = [];
   for (const dept of depts) {
-    const body = new URLSearchParams({ [CONFIG.deptSelectName]: dept });
-    const page = parseHTML(
-      await (await fetch(CONFIG.schedulePath, { method: "POST", body })).text()
-    );
-    for (const row of page.querySelectorAll("table tr")) {
-      const cells = [...row.querySelectorAll("td")].map((c) => c.textContent.trim());
-      if (cells.length >= 7) lines.push(cells.join("\t"));
+    try {
+      const body = new URLSearchParams({ [CONFIG.deptSelectName]: dept });
+      const res = await fetch(CONFIG.schedulePath, { method: "POST", body });
+      if (!res.ok) {
+        console.warn(`AISIS export: ${dept} skipped — HTTP ${res.status}`);
+        continue;
+      }
+      const page = parseHTML(await res.text());
+      for (const row of page.querySelectorAll("table tr")) {
+        const cells = [...row.querySelectorAll("td")].map((c) => c.textContent.trim());
+        if (cells.length >= 7) lines.push(cells.join("\t"));
+      }
+      console.log(`AISIS export: ${dept} done (${lines.length} rows total)`);
+    } catch (err) {
+      console.warn(`AISIS export: ${dept} skipped — ${err.message ?? err}`);
+      continue;
     }
-    console.log(`AISIS export: ${dept} done (${lines.length} rows total)`);
     await sleep(CONFIG.delayMs);
   }
 

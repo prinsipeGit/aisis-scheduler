@@ -21,10 +21,35 @@ export function defaultState(semester: string): UserState {
   };
 }
 
+const VALID_RANK_CRITERIA = new Set([
+  "compactDays",
+  "fewestDays",
+  "lateStart",
+  "earlyEnd",
+  "preferredProfs",
+]);
+
+function isValidCriterion(x: unknown): boolean {
+  return typeof x === "string" && VALID_RANK_CRITERIA.has(x);
+}
+
+function isValidProtectedBlock(x: unknown): boolean {
+  if (typeof x !== "object" || x === null) return false;
+  const b = x as Record<string, unknown>;
+  return Array.isArray(b.days) && typeof b.start === "number" && typeof b.end === "number";
+}
+
+function isValidPersonalRating(x: unknown): boolean {
+  if (typeof x !== "object" || x === null) return false;
+  const r = x as Record<string, unknown>;
+  return typeof r.name === "string" && typeof r.rating === "number";
+}
+
 function isValidState(v: unknown): v is UserState {
   if (typeof v !== "object" || v === null) return false;
   const s = v as Record<string, unknown>;
   const isStringArray = (x: unknown) => Array.isArray(x) && x.every((e) => typeof e === "string");
+  const prefs = s.preferences as Record<string, unknown> | null | undefined;
   return (
     typeof s.version === "number" &&
     typeof s.semester === "string" &&
@@ -32,10 +57,11 @@ function isValidState(v: unknown): v is UserState {
     isStringArray(s.lockedSections) &&
     isStringArray(s.fullSections) &&
     Array.isArray(s.personalRatings) &&
-    typeof s.preferences === "object" && s.preferences !== null &&
-    Array.isArray((s.preferences as Record<string, unknown>).criteria) &&
-    Array.isArray((s.preferences as Record<string, unknown>).protectedBlocks) &&
-    isStringArray((s.preferences as Record<string, unknown>).excludedSections)
+    s.personalRatings.every(isValidPersonalRating) &&
+    typeof prefs === "object" && prefs !== null &&
+    Array.isArray(prefs.criteria) && prefs.criteria.every(isValidCriterion) &&
+    Array.isArray(prefs.protectedBlocks) && prefs.protectedBlocks.every(isValidProtectedBlock) &&
+    isStringArray(prefs.excludedSections)
   );
 }
 
