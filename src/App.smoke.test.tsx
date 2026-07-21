@@ -11,7 +11,7 @@ describe("smoke: program → semester → courses → results → lock → re-ra
 
     // 1. Program
     fireEvent.change(screen.getByLabelText(/^Program/), {
-      target: { value: "BS-AMDSc-2024" },
+      target: { value: "BS-AMDSc-M-DSc-2024" },
     });
 
     // 2. Semester — First Year/First Semester contains MATH 10 and MATH 71.1
@@ -65,7 +65,7 @@ describe("smoke: program → semester → courses → results → lock → re-ra
     // 8. State persisted to localStorage under the v2 schema.
     const stored = JSON.parse(localStorage.getItem("aisis-scheduler-state")!);
     expect(stored.version).toBe(2);
-    expect(stored.programId).toBe("BS-AMDSc-2024");
+    expect(stored.programId).toBe("BS-AMDSc-M-DSc-2024");
     expect(stored.blockKey).toBe("First Year|First Semester");
     expect(stored.calendarTerm).toBe("2026-1");
     expect(stored.preferences.criteria).toContain("lateStart");

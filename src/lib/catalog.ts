@@ -1,5 +1,5 @@
 import type { Catalog, ProfRating } from "./types";
-import ratingsJson from "../data/prof-ratings.json";
+import ratingsJson from "../../data/prof-ratings.json";
 
 // This module is the ONLY place catalog JSON is read. Swapping the bundled
 // files for Supabase later means changing only this file (spec §3, §7).
@@ -37,13 +37,13 @@ export class CatalogUnavailableError extends Error {
 }
 
 // Vite resolves this glob at build time; only the requested term's JSON is fetched.
-const CATALOG_MODULES = import.meta.glob<{ default: Catalog }>("../data/catalog-*.json");
+const CATALOG_MODULES = import.meta.glob<{ default: Catalog }>("../../data/catalogs/catalog-*.json");
 
 export const TERMS: TermOption[] = ["2026-2", "2026-1", "2026-0", "2025-2", "2025-1", "2025-0"].map(
   (term) => ({
     term,
     label: termLabel(term),
-    available: Boolean(CATALOG_MODULES[`../data/catalog-${term}.json`]),
+    available: Boolean(CATALOG_MODULES[`../../data/catalogs/catalog-${term}.json`]),
   })
 );
 
@@ -52,7 +52,7 @@ export function getTerms(): TermOption[] {
 }
 
 export async function loadCatalog(term: string): Promise<Catalog> {
-  const loader = CATALOG_MODULES[`../data/catalog-${term}.json`];
+  const loader = CATALOG_MODULES[`../../data/catalogs/catalog-${term}.json`];
   if (!loader) throw new CatalogUnavailableError(term);
   const mod = await loader();
   return mod.default;

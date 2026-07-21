@@ -1,5 +1,5 @@
 import type { CurriculumBlock, Program, ProgramSummary } from "./types";
-import amdsc2024 from "../data/curriculum-BS-AMDSc-2024.json";
+import amdsc2024 from "../../data/curricula/BS-AMDSc-M-DSc-2024.json";
 
 // This module is the ONLY place curriculum JSON is read. Swapping the bundled
 // files for Supabase later means changing only this file (spec §3, §7).

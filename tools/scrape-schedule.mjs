@@ -4,7 +4,7 @@
  *
  *   node tools/scrape-schedule.mjs 2026-2
  *
- * Writes src/data/catalog-<term>.json.
+ * Writes data/catalogs/catalog-<term>.json.
  *
  * This endpoint requires NO login. This script never sends, prompts for, or
  * stores credentials — do not add auth to it.
@@ -109,7 +109,7 @@ if (suspicious && !force) {
 
 const out = path.join(
   path.dirname(fileURLToPath(import.meta.url)),
-  "..", "src", "data", `catalog-${term}.json`
+  "..", "data", "catalogs", `catalog-${term}.json`
 );
 const temporaryOut = `${out}.tmp`;
 try {
