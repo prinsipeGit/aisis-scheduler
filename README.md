@@ -7,8 +7,9 @@ Pick your program, the curriculum block you're taking (e.g. "2nd Year · First
 Semester") and the calendar term to enlist in. The app pre-fills the required
 courses from the official curriculum, you adjust them (fill electives, add a
 minor, overload or underload), and it generates every conflict-free schedule
-ranked by your preferences. On enlistment day, mark sections full and it
-re-ranks instantly. No accounts; everything personal stays in your browser.
+ranked by your preferences. On enlistment day, exclude sections and lock
+sections in and it re-ranks instantly. No accounts; everything personal stays
+in your browser.
 
 **Design spec:** `docs/superpowers/specs/2026-07-21-ips-driven-scheduler-design.md`
 

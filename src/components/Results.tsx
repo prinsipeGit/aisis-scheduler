@@ -96,7 +96,7 @@ export function Results({ catalog, state, ratings, onChange }: Props) {
             {diagnostics.nWayConflict && (
               <p>
                 These courses can't all fit together at once, even though each pair can. Try
-                marking a section full, relaxing a time limit, or swapping a course.
+                excluding a section, relaxing a time limit, or swapping a course.
               </p>
             )}
           </>

@@ -83,10 +83,13 @@ const { sections, warnings: parseWarnings } = parseRows(allRows);
 const byKey = new Map();
 for (const s of sections) byKey.set(`${s.courseCode} ${s.sectionCode}`, s);
 
+// `raw` is a parse-time debugging aid (joined row cells) — not persisted to catalogs.
+const sectionsForCatalog = [...byKey.values()].map((s) => ({ ...s, raw: "" }));
+
 const catalog = {
   term,
   exportedAt: new Date().toISOString(),
-  sections: [...byKey.values()],
+  sections: sectionsForCatalog,
   warnings: [...warnings, ...parseWarnings],
 };
 
