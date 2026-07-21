@@ -52,7 +52,15 @@ function rawMetric(
       return ends.length ? -(ends.reduce((a, b) => a + b, 0) / ends.length) : 0;
     }
     case "preferredProfs": {
-      const scores = schedule.map((s) => ratingFor(s.instructor, ratings)?.rating ?? 3);
+      // Average across sections; within a section, average across its instructors.
+      // Unrated scores neutral (3 on the 0-5 scale).
+      const scores = schedule.map((s) => {
+        if (s.instructors.length === 0) return 3;
+        const perProf = s.instructors.map(
+          (name) => ratingFor(name, ratings, s.courseCode)?.rating ?? 3
+        );
+        return perProf.reduce((a, b) => a + b, 0) / perProf.length;
+      });
       return scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 3;
     }
     default:
