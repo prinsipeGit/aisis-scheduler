@@ -8,3 +8,7 @@ export const ratingsToRows = (ratings) => ratings.map((r) => ({
   name: r.name, rating: r.rating, course_code: r.courseCode ?? null,
   note: r.note ?? null, as_of: r.asOf ?? null,
 }));
+export const orphanKeys = (existing, pushed) => {
+  const pushedSet = new Set(pushed);
+  return existing.filter((key) => !pushedSet.has(key));
+};
