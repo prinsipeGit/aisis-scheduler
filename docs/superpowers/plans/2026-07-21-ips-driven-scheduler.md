@@ -20,6 +20,7 @@
 - localStorage key `"aisis-scheduler-state"`, `STORAGE_VERSION = 2`. v1 state resets to v2 defaults with a notice.
 - Calendar term codes are `YYYY-N` where `N` is `1` = First Semester, `2` = Second Semester, `0` = Intersession. The six AISIS-exposed terms are `2026-2`, `2026-1`, `2026-0`, `2025-2`, `2025-1`, `2025-0`.
 - **Verified 2026-07-21:** `2026-2` has NO published schedule yet (AISIS returns "Sorry. There are no results for your search criteria."). Row counts for MATHEMATICS: 2026-1 = 201, 2026-0 = 75, 2025-2 = 215, 2025-1 = 214, 2025-0 = 69. The app's default term is therefore **`2026-1`**, not the newest code.
+- **Real-data scale:** with the real catalog, a single course can have 40-50 sections (ENGL 11 has 48, THEO 11 has 49). Six such courses is a combinatorial explosion, so the generator's `MAX_SCHEDULES` cap and the ranker both matter. Task 12a lowers the cap and the UI only ever shows the top-ranked page. Never assume "a handful of sections per course" — the v1 placeholder data was misleading on this point.
 - **Full/closed classes are OUT OF SCOPE for v2.** `UserState.fullSections` and the generator's filtering stay (already built and tested in v1) but NO UI writes them. Focus is generating the best schedules from preferences.
 - The scraper targets the **public** endpoint `https://aisis.ateneo.edu/j_aisis/classSkeds.do`. It MUST NOT send, prompt for, or store credentials.
 - **Verified POST body** (field names confirmed live 2026-07-21 by reading the form): `command=displayResults`, `subjCode=ALL`, `applicablePeriod=<term>`, `deptCode=<code>`. The term field is `applicablePeriod` — NOT `sy`.
@@ -212,6 +213,8 @@ export const EDGE_ROWS: string[][] = [
   ["MATH 51.1", "X", "DISCRETE MATHEMATICS I", "3", "T-F 1300-1430(ONLINE)", "ONLINE", "SANTOS, ANA", "ENG", "U", "-"],
   // unparseable time → imported as TBA-like with a warning
   ["THEO 11", "A", "FAITH, SPIRITUALITY, AND THE CHURCH", "3", "M-TH 25:00-2600(FULLY ONSITE)", "CTC 201", "CRUZ, JOSE", "ENG", "U", "-"],
+  // REAL case from the 2026-1 scrape: tutorial rows have a non-day token and 0000-0000.
+  ["BIO 290", "ZZZ", "GRADUATE TUTORIAL", "3", "TUTORIAL 0000-0000(FULLY ONSITE)", "TBA", "TBA", "ENG", "G", "~"],
   // too few columns → skipped with a warning
   ["JUNK ROW"],
 ];
@@ -319,10 +322,15 @@ describe("parseRows", () => {
   });
   it("never throws on edge rows; imports bad-time rows as TBA-like", () => {
     const { sections, warnings } = parseRows(EDGE_ROWS);
-    expect(sections).toHaveLength(4); // JUNK ROW skipped
+    expect(sections).toHaveLength(5); // JUNK ROW skipped
     const theo = sections.find((s) => s.courseCode === "THEO 11")!;
     expect(theo.meetings).toEqual([]);
-    expect(warnings).toHaveLength(2); // bad time + junk row
+    expect(warnings).toHaveLength(3); // bad time + tutorial time + junk row
+  });
+
+  it("treats '~' as an empty remark, like '-'", () => {
+    const { sections } = parseRows(EDGE_ROWS);
+    expect(sections.find((s) => s.courseCode === "BIO 290")!.remarks).toBe("");
   });
   it("skips the header row", () => {
     const withHeader = [
@@ -421,7 +429,9 @@ export function parseRow(cells: string[]): { section: Section | null; warning?: 
   }
   const units = Number(cells[COL.units].replace(/[()]/g, ""));
   const { meetings, modality, ok } = parseTimeCell(cells[COL.time]);
-  const remarks = cells[COL.remarks].trim() === "-" ? "" : cells[COL.remarks].trim();
+  // AISIS uses both "-" and "~" as empty-remark placeholders (both seen in real data).
+  const rawRemarks = cells[COL.remarks].trim();
+  const remarks = rawRemarks === "-" || rawRemarks === "~" ? "" : rawRemarks;
   const section: Section = {
     courseCode: cells[COL.subjectCode].trim(),
     sectionCode: cells[COL.section].trim(),
@@ -627,13 +637,21 @@ if (!TERMS.includes(term)) {
   process.exit(1);
 }
 
+// AISIS will NOT serve results without an established session. GET the page first to
+// pick up its cookies, then send them on every POST. Verified 2026-07-21: without this,
+// every department returns ZERO rows while the browser (which has a cookie) returns 201.
+const boot = await fetch(ENDPOINT);
+const rawCookie = boot.headers.get("set-cookie") || "";
+const COOKIE = rawCookie.split(",").map((c) => c.split(";")[0].trim()).filter(Boolean).join("; ");
+if (!COOKIE) console.warn("! No session cookie received — results are likely to be empty.");
+
 const allRows = [];
 const warnings = [];
 for (const dept of DEPARTMENTS) {
   try {
     const res = await fetch(ENDPOINT, {
       method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      headers: { "Content-Type": "application/x-www-form-urlencoded", Cookie: COOKIE },
       // Field names verified live 2026-07-21 by reading the classScheduleForm.
       body: new URLSearchParams({
         command: "displayResults",
@@ -1003,40 +1021,30 @@ git commit -m "feat: curriculum data layer with real BS AMDSc 2024 seed"
 **Files:**
 - Rewrite: `src/lib/catalog.ts`
 - Rewrite: `src/lib/catalog.test.ts`
-- Rewrite: `src/data/catalog-2026-1.json` (replace the v1 placeholder with the real captured sample)
+- Already present (do NOT modify): `src/data/catalog-2026-1.json` — 3,743 real scraped sections
 
 **Interfaces:**
 - Consumes: `Catalog`, `ProfRating` from `src/lib/types.ts`.
 - Produces: `TERMS: TermOption[]`, `getTerms(): TermOption[]`, `loadCatalog(term: string): Promise<Catalog>` (rejects with `CatalogUnavailableError` when that term has not been scraped), `class CatalogUnavailableError extends Error { term: string }`, `getCommunityRatings(): ProfRating[]`, `isStale(catalog, now?): boolean`. **Only place catalog JSON is imported.**
 
-**Note on data:** `catalog-2026-1.json` ships as a small **real** sample (10 genuine captured MATH rows) so the app and tests work offline and deterministically. Real full catalogs come from `npm run scrape:schedule -- <term>` (Task 3), a manual maintainer step. Terms without a file surface a clear error rather than fake data. **No fabricated sections are permitted in any data file.**
+**Note on data:** `src/data/catalog-2026-1.json` (3,743 real sections) is already committed and is the fixture the app and tests run against. Other terms come from `npm run scrape:schedule -- <term>` (Task 3). Terms without a file surface a clear error rather than fake data. **No fabricated sections are permitted in any data file, ever.**
 
-- [ ] **Step 1: Write the seed catalog** — `src/data/catalog-2026-1.json`
+- [ ] **Step 1: The real catalog is ALREADY COMMITTED — do not write one**
 
-**These are the 10 REAL rows captured live from AISIS on 2026-07-21** (MATHEMATICS
-department, term **2026-1** — page 1 of 21). Nothing here is invented. The real full
-catalog comes from running the scraper (Task 3); this sample exists so the app and the
-test suite work offline and deterministically.
+`src/data/catalog-2026-1.json` is already in the repo: **3,743 real sections across 1,288
+courses**, scraped from the public AISIS endpoint on 2026-07-21 with the exact method Task 3
+automates. Do not hand-write, edit, trim, or "top up" this file. It is ground truth.
 
-```json
-{
-  "term": "2026-1",
-  "exportedAt": "2026-07-21T00:00:00.000Z",
-  "warnings": ["SAMPLE DATA — MATHEMATICS department, first page only. Run: npm run scrape:schedule -- 2026-1"],
-  "sections": [
-    { "courseCode": "MATH 1.1", "sectionCode": "C", "title": "PREPARATION FOR COLLEGE MATHEMATICS I", "units": 3, "instructors": ["ABERIN, MARIA ALVA Q."], "modality": "FULLY ONSITE", "meetings": [{ "days": ["M", "TH"], "start": 660, "end": 750 }], "room": "SEC-A215", "remarks": "", "raw": "" },
-    { "courseCode": "MATH 1.1", "sectionCode": "E", "title": "PREPARATION FOR COLLEGE MATHEMATICS I", "units": 3, "instructors": ["ABERIN, MARIA ALVA Q."], "modality": "FULLY ONSITE", "meetings": [{ "days": ["M", "TH"], "start": 840, "end": 930 }], "room": "SEC-A215", "remarks": "", "raw": "" },
-    { "courseCode": "MATH 10", "sectionCode": "A1", "title": "MATHEMATICS IN THE MODERN WORLD", "units": 3, "instructors": ["GARCIA, MARK LESTER B."], "modality": "FULLY ONSITE", "meetings": [{ "days": ["M", "TH"], "start": 480, "end": 570 }], "room": "SEC-A215", "remarks": "", "raw": "" },
-    { "courseCode": "MATH 10", "sectionCode": "A2", "title": "MATHEMATICS IN THE MODERN WORLD", "units": 3, "instructors": ["BUOT, JUDE C."], "modality": "FULLY ONSITE", "meetings": [{ "days": ["M", "TH"], "start": 480, "end": 570 }], "room": "SEC-A214", "remarks": "", "raw": "" },
-    { "courseCode": "MATH 10", "sectionCode": "A3", "title": "MATHEMATICS IN THE MODERN WORLD", "units": 3, "instructors": ["TOMENES, Mark"], "modality": "FULLY ONSITE", "meetings": [{ "days": ["M", "TH"], "start": 480, "end": 570 }], "room": "SEC-A117", "remarks": "1 SLOT(S) FOR CROSS REG-IXS MAJORS.", "raw": "" },
-    { "courseCode": "MATH 10", "sectionCode": "A4", "title": "MATHEMATICS IN THE MODERN WORLD", "units": 3, "instructors": ["DE LOS SANTOS, Kurt Anthony"], "modality": "FULLY ONSITE", "meetings": [{ "days": ["M", "TH"], "start": 480, "end": 570 }], "room": "CTC 106", "remarks": "", "raw": "" },
-    { "courseCode": "MATH 10", "sectionCode": "A5", "title": "MATHEMATICS IN THE MODERN WORLD", "units": 3, "instructors": ["MIJARES, Jim Ralphealo"], "modality": "FULLY ONSITE", "meetings": [{ "days": ["M", "TH"], "start": 480, "end": 570 }], "room": "CTC 302", "remarks": "", "raw": "" },
-    { "courseCode": "MATH 10", "sectionCode": "B1", "title": "MATHEMATICS IN THE MODERN WORLD", "units": 3, "instructors": ["FERNANDEZ, Patrick John"], "modality": "FULLY ONSITE", "meetings": [{ "days": ["M", "TH"], "start": 570, "end": 660 }], "room": "SEC-A215", "remarks": "", "raw": "" },
-    { "courseCode": "MATH 10", "sectionCode": "B2", "title": "MATHEMATICS IN THE MODERN WORLD", "units": 3, "instructors": ["DE LOS SANTOS, Kurt Anthony", "MIJARES, Jim Ralphealo"], "modality": "FULLY ONSITE", "meetings": [{ "days": ["M", "TH"], "start": 570, "end": 660 }], "room": "CTC 506", "remarks": "", "raw": "" },
-    { "courseCode": "MATH 10", "sectionCode": "C1", "title": "MATHEMATICS IN THE MODERN WORLD", "units": 3, "instructors": ["FLORES, Richell Isaiah", "TOMENES, Mark"], "modality": "FULLY ONSITE", "meetings": [{ "days": ["M", "TH"], "start": 660, "end": 750 }], "room": "SEC-A302A", "remarks": "", "raw": "" }
-  ]
-}
+**No fabricated course data may ever be added to `src/data/`.** If more data is needed, run the
+scraper — never invent rows. (An earlier draft of this plan contained invented sections; they
+were removed and this rule exists because of it.)
+
+Verify what is there before continuing:
+
+```bash
+node -e "const c=require('./src/data/catalog-2026-1.json'); console.log(c.term, c.sections.length, new Set(c.sections.map(s=>s.courseCode)).size)"
 ```
+Expected: `2026-1 3743 1288`
 
 - [ ] **Step 2: Write the failing tests** — replace `src/lib/catalog.test.ts` entirely
 
@@ -1052,11 +1060,14 @@ describe("catalog data layer", () => {
     expect(terms[2].label).toBe("2026-2027 Intersession");
   });
 
-  it("loads a scraped term's catalog", async () => {
+  it("loads the real scraped 2026-1 catalog", async () => {
     const catalog = await loadCatalog("2026-1");
     expect(catalog.term).toBe("2026-1");
-    expect(catalog.sections.length).toBeGreaterThan(0);
+    expect(catalog.sections.length).toBe(3743);
     expect(catalog.sections[0].instructors).toBeInstanceOf(Array);
+    // Real courses from the live scrape.
+    expect(catalog.sections.some((s) => s.courseCode === "MATH 10")).toBe(true);
+    expect(catalog.sections.some((s) => s.courseCode === "THEO 11")).toBe(true);
   });
 
   it("rejects with CatalogUnavailableError for a term with no data file", async () => {
@@ -1162,7 +1173,7 @@ Expected: PASS (6 tests).
 - [ ] **Step 7: Commit**
 
 ```bash
-git add src/lib/catalog.ts src/lib/catalog.test.ts src/data/catalog-2026-1.json
+git add src/lib/catalog.ts src/lib/catalog.test.ts
 git commit -m "feat: per-term lazy-loaded catalog data layer"
 ```
 
@@ -2587,6 +2598,17 @@ Also update `src/lib/generator.test.ts`: rename `chosenCourses` to `requiredCour
 Run: `npx vitest run src/lib/generator.test.ts`
 Expected: PASS — the engine's behaviour is unchanged; only the field name moved.
 
+- [ ] **Step 3a-bis: Lower the generator's schedule cap for real-data scale**
+
+In `src/lib/generator.ts` change the cap and its comment:
+
+```ts
+const MAX_SCHEDULES = 500; // real courses have 40+ sections; the UI only shows the top page
+```
+
+Run: `npx vitest run src/lib/generator.test.ts`
+Expected: PASS (no existing test depends on the old 5000 value).
+
 - [ ] **Step 3b: Update `src/components/Results.tsx`**
 
 **Read the current file before editing** — the following are surgical edits against existing code, and the anchors must match exactly.
@@ -2810,10 +2832,11 @@ git commit -m "feat: wire v2 flow (program, semester, requirements, results)"
 
 - [ ] **Step 1: Rewrite the smoke test** — `src/App.smoke.test.tsx`
 
-Uses the real sample catalog (`2026-1`, MATHEMATICS only), so the block chosen is
-**First Year · First Semester** — it contains `MATH 10`, which really is offered with 8
-sections. Its other courses are genuinely not in the sample, which is exactly the
-"not offered this term" path we want covered.
+Runs against the **real committed 2026-1 catalog** (3,743 sections). The chosen block is
+**First Year · First Semester**; in the real data `INTACT 11` and `PATHFit 1` have zero
+sections, which exercises the "not offered this term" path for free. Because real courses have
+40+ sections each, the test deselects most courses first so the search space stays small and the
+assertions stay meaningful — and it never asserts an exact schedule count.
 
 ```tsx
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
@@ -2840,21 +2863,27 @@ describe("smoke: program → semester → courses → results", () => {
     fireEvent.click(screen.getByRole("button", { name: "Courses" }));
     await waitFor(() => expect(screen.getByText(/units selected/)).toBeTruthy());
     expect(screen.getByText(/MATHEMATICS IN THE MODERN WORLD/)).toBeTruthy();
-    // Courses in the block with no sections are flagged, not silently dropped.
+    // INTACT 11 and PATHFit 1 genuinely have no sections in the real 2026-1 data.
     expect(screen.getAllByText(/Not offered in 2026-1/i).length).toBeGreaterThan(0);
 
-    // 4. Results — schedules generated from the offered subset (MATH 10 x 8 sections).
+    // 4. Keep the search space small: drop everything except MATH 71.1 (3 sections)
+    //    and MATH 10. Real courses have 40+ sections each, so leaving them all on
+    //    would generate tens of thousands of combinations.
+    for (const code of ["ENGL 11", "FILI 12", "SocSc 11", "THEO 11"]) {
+      fireEvent.click(screen.getByLabelText(new RegExp(code.replace(".", "\\."))));
+    }
+
+    // 5. Results — schedules generated from the remaining offered courses.
     fireEvent.click(screen.getByRole("button", { name: "Results" }));
     await waitFor(() => expect(screen.getByText(/valid schedule\(s\), best first/)).toBeTruthy());
-    expect(screen.getByText(/8 valid schedule\(s\), best first/)).toBeTruthy();
 
-    // 5. Preferences re-rank: switching the criterion reorders without error.
+    // 6. Preferences re-rank: switching the criterion reorders without error.
     fireEvent.click(screen.getByRole("button", { name: "Preferences" }));
     fireEvent.click(screen.getByLabelText(/Later starts/));
     fireEvent.click(screen.getByRole("button", { name: "Results" }));
-    await waitFor(() => expect(screen.getByText(/8 valid schedule\(s\), best first/)).toBeTruthy());
+    await waitFor(() => expect(screen.getByText(/valid schedule\(s\), best first/)).toBeTruthy());
 
-    // 6. State persisted.
+    // 7. State persisted.
     const stored = JSON.parse(localStorage.getItem("aisis-scheduler-state")!);
     expect(stored.version).toBe(2);
     expect(stored.programId).toBe("BS-AMDSc-2024");
