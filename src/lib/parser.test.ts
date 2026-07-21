@@ -85,6 +85,12 @@ describe("parseRow", () => {
   it("parses multiple instructors", () => {
     expect(parseRow(REAL_ROWS[3]).section!.instructors).toHaveLength(2);
   });
+  it("warns that an unparseable time is excluded from schedules, not treated as TBA", () => {
+    const { section, warning } = parseRow(EDGE_ROWS[3]); // THEO 11, "25:00-2600"
+    expect(section!.timeStatus).toBe("parse-error");
+    expect(warning).toMatch(/excluded from generated schedules/i);
+    expect(warning).not.toMatch(/treated as TBA/i);
+  });
   it("skips a row with too few columns, with a warning", () => {
     const { section, warning } = parseRow(EDGE_ROWS[4]);
     expect(section).toBeNull();
@@ -98,7 +104,7 @@ describe("parseRows", () => {
     expect(sections).toHaveLength(5);
     expect(warnings).toEqual([]);
   });
-  it("never throws on edge rows; imports bad-time rows as TBA-like", () => {
+  it("never throws on edge rows; imports bad-time rows without meetings", () => {
     const { sections, warnings } = parseRows(EDGE_ROWS);
     expect(sections).toHaveLength(5); // JUNK ROW skipped
     const theo = sections.find((s) => s.courseCode === "THEO 11")!;

@@ -103,7 +103,7 @@ export function parseRow(cells: string[]): { section: Section | null; warning?: 
   if (!ok) {
     return {
       section,
-      warning: `Unparseable time "${cells[COL.time]}" — imported without schedule (treated as TBA): ${raw}`,
+      warning: `Unparseable time "${cells[COL.time]}" — imported for display only, excluded from generated schedules: ${raw}`,
     };
   }
   return { section };

@@ -146,7 +146,8 @@ export function PreferencesPanel({ catalog, state, onChange }: Props) {
             const start = Number(e.target.value);
             setBlock(i, { ...block, start, end: Math.max(block.end, start + 60) });
           }}>
-            {HOURS.map((h) => (
+            {/* The grid's last hour is excluded: a block starting there has no end to pick. */}
+            {HOURS.slice(0, -1).map((h) => (
               <option key={h} value={h}>{formatTime(h)}</option>
             ))}
           </select>

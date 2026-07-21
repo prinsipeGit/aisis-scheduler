@@ -110,6 +110,21 @@ describe("Results", () => {
     expect(screen.getAllByText(/6 units/).length).toBeGreaterThan(0);
   });
 
+  it("explains when no selected course is offered instead of showing an empty candidate", () => {
+    // Both courses resolve to zero sections, so the engine would otherwise be
+    // handed an empty course list and emit a single empty "schedule".
+    render(
+      <Results
+        catalog={catalog}
+        state={{ ...baseState, requiredCourses: ["ZERO 1", "ZERO 2"] }}
+        ratings={noRatings}
+        onChange={() => {}}
+      />
+    );
+    expect(screen.getByText(/none of your selected courses are offered/i)).toBeTruthy();
+    expect(screen.queryByText(/candidate/)).toBeNull();
+  });
+
   it("still yields schedules when a required course has zero sections in the catalog", () => {
     // "ZERO 1" is required but not offered this term (0 sections in `catalog`).
     // It must not reach the generator and block the courses that ARE offered.

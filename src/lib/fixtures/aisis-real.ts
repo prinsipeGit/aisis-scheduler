@@ -16,7 +16,7 @@ export const EDGE_ROWS: string[][] = [
   ["PHYS 23.02", "D", "UNIVERSITY PHYSICS I, LABORATORY", "2", "M 1000-1100/SAT 0900-1200(FULLY ONSITE)", "SEC B105", "REYES, PEDRO", "ENG", "U", "-"],
   // online modality
   ["MATH 51.1", "X", "DISCRETE MATHEMATICS I", "3", "T-F 1300-1430(ONLINE)", "ONLINE", "SANTOS, ANA", "ENG", "U", "-"],
-  // unparseable time → imported as TBA-like with a warning
+  // unparseable time → imported as parse-error with a warning (excluded from schedules)
   ["THEO 11", "A", "FAITH, SPIRITUALITY, AND THE CHURCH", "3", "M-TH 25:00-2600(FULLY ONSITE)", "CTC 201", "CRUZ, JOSE", "ENG", "U", "-"],
   // too few columns → skipped with a warning
   ["JUNK ROW"],

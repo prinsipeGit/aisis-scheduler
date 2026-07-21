@@ -67,6 +67,15 @@ export function Results({ catalog, state, ratings, onChange }: Props) {
     });
 
   if (state.requiredCourses.length === 0) return <p>Pick courses first.</p>;
+  // Without this, the engine would receive zero courses and emit one empty schedule.
+  if (resolvedCourses.length === 0) {
+    return (
+      <p role="alert">
+        None of your selected courses are offered in {state.calendarTerm}. Adjust your
+        courses or pick a different term.
+      </p>
+    );
+  }
 
   if (ranked.length === 0) {
     return (

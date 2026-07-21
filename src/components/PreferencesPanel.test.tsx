@@ -97,6 +97,23 @@ describe("PreferencesPanel", () => {
     });
   });
 
+  it("never offers a protected-block start with no selectable end after it", () => {
+    const withBlock: UserState = {
+      ...baseState,
+      preferences: {
+        ...baseState.preferences,
+        protectedBlocks: [{ days: ["M"], start: 720, end: 780 }],
+      },
+    };
+    render(<PreferencesPanel catalog={catalog} state={withBlock} onChange={() => {}} />);
+    const startSelect = screen.getByLabelText("Protected block 1 start") as HTMLSelectElement;
+    const startOptions = [...startSelect.options].map((o) => o.textContent);
+    // 9:00 PM is the grid's last hour; a block starting there would have an
+    // empty end dropdown, so the latest offerable start is 8:00 PM.
+    expect(startOptions[startOptions.length - 1]).toBe("8:00 PM");
+    expect(startOptions).not.toContain("9:00 PM");
+  });
+
   it("lists excluded sections with a Restore button that clears just that one", () => {
     const onChange = vi.fn();
     const excludedState: UserState = {
