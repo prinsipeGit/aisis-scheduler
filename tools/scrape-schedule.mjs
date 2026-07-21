@@ -1,0 +1,89 @@
+#!/usr/bin/env node
+/**
+ * Scrape one term's class schedule from the PUBLIC AISIS endpoint.
+ *
+ *   node tools/scrape-schedule.mjs 2026-2
+ *
+ * Writes src/data/catalog-<term>.json.
+ *
+ * This endpoint requires NO login. This script never sends, prompts for, or
+ * stores credentials — do not add auth to it.
+ *
+ * A term with no published schedule (e.g. 2026-2 as of 2026-07-21) returns a
+ * page containing "There are no results for your search criteria" and zero
+ * data rows. That is normal, not an error — the run simply yields 0 sections.
+ */
+import { writeFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+import path from "node:path";
+import { DEPARTMENTS, TERMS } from "./departments.mjs";
+import { extractRows } from "./extract-rows.mjs";
+import { parseRows } from "../src/lib/parser.ts";
+
+const ENDPOINT = "https://aisis.ateneo.edu/j_aisis/classSkeds.do";
+const DELAY_MS = 1500; // politeness between department requests
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+const term = process.argv[2];
+if (!TERMS.includes(term)) {
+  console.error(`Usage: node tools/scrape-schedule.mjs <term>\nKnown terms: ${TERMS.join(", ")}`);
+  process.exit(1);
+}
+
+// AISIS will NOT serve results without an established session. GET the page first to
+// pick up its cookies, then send them on every POST. Verified 2026-07-21: without this,
+// every department returns ZERO rows while the browser (which has a cookie) returns 201.
+const boot = await fetch(ENDPOINT);
+const rawCookie = boot.headers.get("set-cookie") || "";
+const COOKIE = rawCookie.split(",").map((c) => c.split(";")[0].trim()).filter(Boolean).join("; ");
+if (!COOKIE) console.warn("! No session cookie received — results are likely to be empty.");
+
+const allRows = [];
+const warnings = [];
+for (const dept of DEPARTMENTS) {
+  try {
+    const res = await fetch(ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded", Cookie: COOKIE },
+      // Field names verified live 2026-07-21 by reading the classScheduleForm.
+      body: new URLSearchParams({
+        command: "displayResults",
+        subjCode: "ALL",
+        applicablePeriod: term,
+        deptCode: dept,
+      }),
+    });
+    if (!res.ok) {
+      warnings.push(`${dept}: HTTP ${res.status} — skipped`);
+      console.warn(`  ! ${dept}: HTTP ${res.status}`);
+      continue;
+    }
+    const rows = extractRows(await res.text());
+    allRows.push(...rows);
+    console.log(`  ${dept}: ${rows.length} rows`);
+  } catch (err) {
+    warnings.push(`${dept}: ${err.message} — skipped`);
+    console.warn(`  ! ${dept}: ${err.message}`);
+  }
+  await sleep(DELAY_MS);
+}
+
+const { sections, warnings: parseWarnings } = parseRows(allRows);
+
+// De-duplicate by section key: a course can appear under more than one department filter.
+const byKey = new Map();
+for (const s of sections) byKey.set(`${s.courseCode} ${s.sectionCode}`, s);
+
+const catalog = {
+  term,
+  exportedAt: new Date().toISOString(),
+  sections: [...byKey.values()],
+  warnings: [...warnings, ...parseWarnings],
+};
+
+const out = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "..", "src", "data", `catalog-${term}.json`
+);
+await writeFile(out, JSON.stringify(catalog, null, 2));
+console.log(`\nWrote ${out}: ${catalog.sections.length} sections, ${catalog.warnings.length} warnings.`);

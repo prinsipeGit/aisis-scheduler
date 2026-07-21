@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run --passWithNoTests",
+    "scrape:schedule": "tsx tools/scrape-schedule.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -20,6 +21,7 @@
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "jsdom": "^24.1.0",
+    "tsx": "^4.19.0",
     "typescript": "^5.5.3",
     "vite": "^5.3.4",
     "vitest": "^2.0.3"
