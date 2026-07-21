@@ -34,6 +34,13 @@ export function ProgramPicker({ programs, selectedId, onSelect }: Props) {
           </select>
         </label>
       </p>
+      <ul>
+        {visible.map((p) => (
+          <li key={p.id}>
+            <strong>{p.code}</strong> — {p.name} ({p.versionYear})
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }

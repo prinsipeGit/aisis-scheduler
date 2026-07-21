@@ -26,7 +26,8 @@ describe("ProgramPicker", () => {
   it("filters the list by search text", () => {
     render(<ProgramPicker programs={programs} selectedId="" onSelect={() => {}} />);
     fireEvent.change(screen.getByPlaceholderText(/search programs/i), { target: { value: "computer" } });
-    expect(screen.queryByText(/APPLIED MATHEMATICS/)).toBeNull();
-    expect(screen.getByText(/COMPUTER SCIENCE/)).toBeTruthy();
+    expect(screen.queryAllByText(/APPLIED MATHEMATICS/)).toHaveLength(0);
+    // matches twice: once in the <select>'s <option>, once in the preview <ul>'s <li>
+    expect(screen.getAllByText(/COMPUTER SCIENCE/)).toHaveLength(2);
   });
 });

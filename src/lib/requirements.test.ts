@@ -72,6 +72,22 @@ describe("buildRequirementRows", () => {
     const rows = buildRequirementRows(block, state({ requiredCourses: ["MATH 31.3"] }), catalog);
     expect(rows.find((r) => r.slotId === "b#1")!.selected).toBe(false);
   });
+
+  it("passes electiveDept through for an IE slot", () => {
+    const ieBlock: CurriculumBlock = {
+      ...block,
+      entries: [
+        ...block.entries,
+        {
+          catNo: "IE 1", title: "INTERDISCIPLINARY ELECTIVE 1", units: 3, prerequisites: [],
+          category: "IE", isElective: true, electiveDept: "**IE**", slotId: "b#4",
+        },
+      ],
+    };
+    const rows = buildRequirementRows(ieBlock, state(), catalog);
+    const ie = rows.find((r) => r.slotId === "b#4")!;
+    expect(ie.electiveDept).toBe("**IE**");
+  });
 });
 
 describe("resolveCourseCodes", () => {
