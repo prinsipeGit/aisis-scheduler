@@ -3,6 +3,7 @@ import type { Catalog, CurriculumBlock, UserState } from "../lib/types";
 import {
   buildRequirementRows, extraCourseRows, totalUnits, type RequirementRow,
 } from "../lib/requirements";
+import { sameCourseCode } from "../lib/course-code";
 
 interface Props {
   block: CurriculumBlock | undefined;
@@ -21,8 +22,8 @@ function codeStillNeeded(
   updatedFills: Record<string, string>,
   block: CurriculumBlock
 ): boolean {
-  if (Object.values(updatedFills).includes(code)) return true;
-  return block.entries.some((entry) => !entry.isElective && entry.catNo === code);
+  if (Object.values(updatedFills).some((fill) => sameCourseCode(fill, code))) return true;
+  return block.entries.some((entry) => !entry.isElective && sameCourseCode(entry.catNo, code));
 }
 
 function withoutUnreferencedCode(
@@ -32,7 +33,7 @@ function withoutUnreferencedCode(
   block: CurriculumBlock
 ): string[] {
   if (!code || codeStillNeeded(code, updatedFills, block)) return courses;
-  return courses.filter((c) => c !== code);
+  return courses.filter((c) => !sameCourseCode(c, code));
 }
 
 export function CourseRequirements({ block, catalog, state, onChange }: Props) {
@@ -64,10 +65,6 @@ export function CourseRequirements({ block, catalog, state, onChange }: Props) {
 
   const withCourses = (codes: string[]) => onChange({ ...state, requiredCourses: codes });
 
-  // Fix 2: clearing/replacing slot `row.slotId`'s fill (`code` = new value, "" to
-  // clear) must only drop `previous` from requiredCourses when nothing else still
-  // references it — another elective slot filled with the same code, or a
-  // non-elective entry printing that same catNo.
   const fillElective = (row: RequirementRow, code: string) => {
     const fills = { ...state.electiveFills };
     const previous = fills[row.slotId];
@@ -77,13 +74,10 @@ export function CourseRequirements({ block, catalog, state, onChange }: Props) {
       delete fills[row.slotId];
     }
     let courses = withoutUnreferencedCode(state.requiredCourses, previous, fills, block);
-    if (code && !courses.includes(code)) courses = [...courses, code];
+    if (code && !courses.some((course) => sameCourseCode(course, code))) courses = [...courses, code];
     onChange({ ...state, electiveFills: fills, requiredCourses: courses });
   };
 
-  // Fix 1: for elective rows the checkbox IS "clear the fill" — route it through
-  // fillElective so it can never desync electiveFills from requiredCourses. Only
-  // non-elective rows keep the plain requiredCourses toggle.
   const toggle = (row: RequirementRow) => {
     if (!row.courseCode) return;
     if (row.isElective) {
@@ -92,29 +86,31 @@ export function CourseRequirements({ block, catalog, state, onChange }: Props) {
     }
     withCourses(
       row.selected
-        ? state.requiredCourses.filter((c) => c !== row.courseCode)
+        ? state.requiredCourses.filter((c) => !sameCourseCode(c, row.courseCode!))
         : [...state.requiredCourses, row.courseCode]
     );
   };
 
   const addCourse = (code: string) => {
-    if (!code || state.requiredCourses.includes(code)) return;
+    if (!code || state.requiredCourses.some((course) => sameCourseCode(course, code))) return;
     withCourses([...state.requiredCourses, code]);
     setAddQuery("");
   };
 
   return (
     <section>
-      <h2>
-        {block.year} · {block.term} — courses for {state.calendarTerm}
-      </h2>
-      <p>
-        <strong>{units} units selected</strong> (curriculum block totals {block.totalUnits})
-      </p>
+      <div className="section-heading split-heading">
+        <div>
+          <p className="eyebrow">Step 3</p>
+          <h2>{block.year} · {block.term}</h2>
+          <p>Review the IPS courses, fill electives, or add another class.</p>
+        </div>
+        <div className="metric"><strong>{units} units selected</strong><small>{block.totalUnits} in IPS</small></div>
+      </div>
 
-      <ul>
+      <ul className="course-list">
         {rows.map((row) => (
-          <li key={row.slotId}>
+          <li key={row.slotId} className={!row.selected ? "muted-row" : ""}>
             <label>
               <input
                 type="checkbox"
@@ -153,7 +149,7 @@ export function CourseRequirements({ block, catalog, state, onChange }: Props) {
         ))}
       </ul>
 
-      <div>
+      <div className="add-course-panel">
         <label>
           Add another course{" "}
           <input

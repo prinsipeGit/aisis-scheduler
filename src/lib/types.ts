@@ -14,6 +14,7 @@ export interface Section {
   instructors: string[]; // as printed by AISIS, e.g. ["ABERIN, MARIA ALVA Q."]
   modality: string;      // "FULLY ONSITE" | "ONLINE" | "" when absent
   meetings: Meeting[];   // empty ⇒ TBA (excluded from conflict math)
+  timeStatus?: "scheduled" | "tba" | "parse-error";
   room: string;
   remarks: string;
   raw: string;           // original row cells joined by " | ", for debugging
@@ -102,6 +103,11 @@ export interface Diagnostics {
   perCourse: { courseCode: string; total: number; afterFilters: number }[];
   conflictPairs: { a: string; b: string }[];
   nWayConflict: boolean;
+}
+
+export interface SearchSummary {
+  limit: number;
+  truncated: boolean;
 }
 
 export function sectionKey(s: Section): string {

@@ -7,6 +7,8 @@ describe("catalog data layer", () => {
     expect(terms.map((t) => t.term)).toEqual(["2026-2", "2026-1", "2026-0", "2025-2", "2025-1", "2025-0"]);
     expect(terms[0].label).toBe("2026-2027 Second Semester");
     expect(terms[2].label).toBe("2026-2027 Intersession");
+    expect(terms.find((t) => t.term === "2026-1")?.available).toBe(true);
+    expect(terms.find((t) => t.term === "2026-2")?.available).toBe(false);
   });
 
   it("loads the real scraped 2026-1 catalog", async () => {

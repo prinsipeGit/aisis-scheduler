@@ -9,6 +9,7 @@ const STALE_AFTER_DAYS = 30;
 export interface TermOption {
   term: string;   // "2026-2"
   label: string;  // "2026-2027 Second Semester"
+  available?: boolean;
 }
 
 const TERM_SUFFIX: Record<string, string> = {
@@ -24,14 +25,6 @@ function termLabel(term: string): string {
   return `${startYear}-${startYear + 1} ${suffix}`;
 }
 
-export const TERMS: TermOption[] = ["2026-2", "2026-1", "2026-0", "2025-2", "2025-1", "2025-0"].map(
-  (term) => ({ term, label: termLabel(term) })
-);
-
-export function getTerms(): TermOption[] {
-  return TERMS;
-}
-
 export class CatalogUnavailableError extends Error {
   term: string;
   constructor(term: string) {
@@ -45,6 +38,18 @@ export class CatalogUnavailableError extends Error {
 
 // Vite resolves this glob at build time; only the requested term's JSON is fetched.
 const CATALOG_MODULES = import.meta.glob<{ default: Catalog }>("../data/catalog-*.json");
+
+export const TERMS: TermOption[] = ["2026-2", "2026-1", "2026-0", "2025-2", "2025-1", "2025-0"].map(
+  (term) => ({
+    term,
+    label: termLabel(term),
+    available: Boolean(CATALOG_MODULES[`../data/catalog-${term}.json`]),
+  })
+);
+
+export function getTerms(): TermOption[] {
+  return TERMS;
+}
 
 export async function loadCatalog(term: string): Promise<Catalog> {
   const loader = CATALOG_MODULES[`../data/catalog-${term}.json`];

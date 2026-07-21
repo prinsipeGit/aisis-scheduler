@@ -15,15 +15,22 @@ export function ProgramPicker({ programs, selectedId, onSelect }: Props) {
 
   return (
     <section>
-      <h2>Choose your program</h2>
-      <input
-        placeholder="Search programs…"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-      <p>
+      <div className="section-heading">
+        <p className="eyebrow">Step 1</p>
+        <h2>Choose your program</h2>
+        <p>Your curriculum determines the courses suggested for each semester.</p>
+      </div>
+      <div className="form-grid">
         <label>
-          Program{" "}
+          <span>Search</span>
+          <input
+            placeholder="Search programs…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </label>
+        <label>
+          <span>Program and curriculum year</span>
           <select value={selectedId} onChange={(e) => onSelect(e.target.value)}>
             <option value="">— select —</option>
             {visible.map((p) => (
@@ -33,8 +40,8 @@ export function ProgramPicker({ programs, selectedId, onSelect }: Props) {
             ))}
           </select>
         </label>
-      </p>
-      <ul>
+      </div>
+      <ul className="summary-list">
         {visible.map((p) => (
           <li key={p.id}>
             <strong>{p.code}</strong> — {p.name} ({p.versionYear})

@@ -1,4 +1,5 @@
 import type { Catalog, CurriculumBlock, UserState } from "./types";
+import { canonicalCourseCode, sameCourseCode } from "./course-code";
 
 export interface RequirementRow {
   slotId: string;
@@ -15,7 +16,7 @@ export interface RequirementRow {
 
 function countSections(catalog: Catalog, courseCode: string | null): number {
   if (!courseCode) return 0;
-  return catalog.sections.filter((s) => s.courseCode === courseCode).length;
+  return catalog.sections.filter((s) => sameCourseCode(s.courseCode, courseCode)).length;
 }
 
 export function seedRequiredCourses(block: CurriculumBlock): string[] {
@@ -83,7 +84,9 @@ export function resolveCourseCodes(rows: RequirementRow[]): string[] {
   const codes: string[] = [];
   for (const row of rows) {
     if (!row.selected || row.courseCode === null || row.offeredSections === 0) continue;
-    if (!codes.includes(row.courseCode)) codes.push(row.courseCode);
+    if (!codes.some((code) => canonicalCourseCode(code) === canonicalCourseCode(row.courseCode!))) {
+      codes.push(row.courseCode);
+    }
   }
   return codes;
 }

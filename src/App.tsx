@@ -32,6 +32,7 @@ export default function App() {
   const [tab, setTab] = useState<Tab>("program");
   const [catalog, setCatalog] = useState<Catalog | null>(null);
   const [catalogError, setCatalogError] = useState<string>("");
+  const catalogUnavailable = catalog === null && catalogError !== "";
 
   useEffect(() => {
     saveState(state);
@@ -83,23 +84,34 @@ export default function App() {
 
   return (
     <main>
-      <h1>AISIS Scheduler</h1>
-      <nav>
-        {TABS.map((t) => (
-          <button key={t.id} className={tab === t.id ? "active" : ""} onClick={() => setTab(t.id)}>
+      <header className="app-header">
+        <div>
+          <p className="eyebrow">Ateneo class planning</p>
+          <h1>AISIS Scheduler</h1>
+          <p className="app-subtitle">Build a conflict-free semester around your IPS and preferences.</p>
+        </div>
+        <span className="privacy-badge">Saved on this device</span>
+      </header>
+      <nav className="tab-list" aria-label="Scheduler steps">
+        {TABS.map((t, index) => (
+          <button key={t.id} className={tab === t.id ? "active" : ""} aria-pressed={tab === t.id} onClick={() => setTab(t.id)}>
+            <span className="tab-number" aria-hidden="true">{index + 1}</span>
             {t.label}
           </button>
         ))}
       </nav>
 
-      {loaded.wasReset && (
-        <p className="banner">Saved settings were from an older version, so they were reset.</p>
-      )}
-      {catalogError && <p className="banner">{catalogError}</p>}
-      {catalog && isStale(catalog) && (
-        <p className="banner">This catalog data is over 30 days old — re-run the scraper.</p>
-      )}
+      <div className="notice-stack">
+        {loaded.wasReset && (
+          <p className="banner">Saved settings were from an older version, so they were reset.</p>
+        )}
+        {catalogError && <p className="banner">{catalogError}</p>}
+        {catalog && isStale(catalog) && (
+          <p className="banner">This catalog data is over 30 days old — re-run the scraper.</p>
+        )}
+      </div>
 
+      <div className="workspace-panel">
       {tab === "program" && (
         <ProgramPicker
           programs={programs}
@@ -129,17 +141,21 @@ export default function App() {
         />
       )}
       {tab === "courses" && (
-        <CourseRequirements block={block} catalog={catalog} state={state} onChange={setState} />
+        catalogUnavailable ? <p role="alert">{catalogError}</p> :
+          <CourseRequirements block={block} catalog={catalog} state={state} onChange={setState} />
       )}
       {tab === "results" &&
-        (catalog ? (
+        (catalogUnavailable ? <p role="alert">{catalogError}</p> : catalog ? (
           <Results catalog={catalog} state={state} ratings={ratings} onChange={setState} />
         ) : (
           <p>Loading the catalog for {state.calendarTerm}…</p>
         ))}
       {tab === "preferences" && (
-        <PreferencesPanel catalog={catalog} state={state} onChange={setState} />
+        catalogUnavailable ? <p role="alert">{catalogError}</p> :
+          <PreferencesPanel catalog={catalog} state={state} onChange={setState} />
       )}
+      </div>
+      <footer className="app-footer">Unofficial planning tool · Always verify your final schedule in AISIS.</footer>
     </main>
   );
 }

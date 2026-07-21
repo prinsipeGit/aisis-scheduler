@@ -21,6 +21,7 @@ describe("parseTimeCell", () => {
     expect(parseTimeCell("M-TH 1100-1230(FULLY ONSITE)")).toEqual({
       meetings: [{ days: ["M", "TH"], start: 660, end: 750 }],
       modality: "FULLY ONSITE",
+      status: "scheduled",
       ok: true,
     });
   });
@@ -34,11 +35,13 @@ describe("parseTimeCell", () => {
     ]);
   });
   it("treats TBA and empty as no meetings, still ok", () => {
-    expect(parseTimeCell("TBA")).toEqual({ meetings: [], modality: "", ok: true });
-    expect(parseTimeCell("")).toEqual({ meetings: [], modality: "", ok: true });
+    expect(parseTimeCell("TBA")).toEqual({ meetings: [], modality: "", status: "tba", ok: true });
+    expect(parseTimeCell("")).toEqual({ meetings: [], modality: "", status: "tba", ok: true });
   });
   it("flags an unparseable time", () => {
-    expect(parseTimeCell("M-TH 25:00-2600(FULLY ONSITE)").ok).toBe(false);
+    expect(parseTimeCell("M-TH 25:00-2600(FULLY ONSITE)")).toMatchObject({
+      meetings: [], status: "parse-error", ok: false,
+    });
   });
 });
 

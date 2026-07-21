@@ -42,8 +42,8 @@ describe("smoke: program → semester → courses → results → lock → re-ra
 
     // 5. Results — schedules generated from the remaining offered courses.
     fireEvent.click(screen.getByRole("button", { name: "Results" }));
-    await waitFor(() => expect(screen.getByText(/valid schedule\(s\), best first/)).toBeTruthy());
-    const before = screen.getByText(/valid schedule\(s\), best first/).textContent!;
+    await waitFor(() => expect(screen.getByText(/candidate schedule\(s\), ranked best first/)).toBeTruthy());
+    const before = screen.getByText(/candidate schedule\(s\), ranked best first/).textContent!;
 
     // 6. Lock a MATH 71.1 section (only 3 sections total) — pinning it
     //    collapses the combinatorics well below the unlocked count, proving
@@ -53,14 +53,14 @@ describe("smoke: program → semester → courses → results → lock → re-ra
       .find((li) => li.textContent?.includes("MATH 71.1"))!;
     fireEvent.click(within(mathItem).getByRole("button", { name: "Lock" }));
 
-    const after = screen.getByText(/valid schedule\(s\), best first/).textContent!;
+    const after = screen.getByText(/candidate schedule\(s\), ranked best first/).textContent!;
     expect(after).not.toBe(before);
 
     // 7. Preferences re-rank: switching the criterion reorders without error.
     fireEvent.click(screen.getByRole("button", { name: "Preferences" }));
     fireEvent.click(screen.getByLabelText(/Later starts/));
     fireEvent.click(screen.getByRole("button", { name: "Results" }));
-    await waitFor(() => expect(screen.getByText(/valid schedule\(s\), best first/)).toBeTruthy());
+    await waitFor(() => expect(screen.getByText(/candidate schedule\(s\), ranked best first/)).toBeTruthy());
 
     // 8. State persisted to localStorage under the v2 schema.
     const stored = JSON.parse(localStorage.getItem("aisis-scheduler-state")!);

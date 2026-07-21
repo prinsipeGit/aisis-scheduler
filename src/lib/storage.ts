@@ -10,6 +10,9 @@ const VALID_RANK_CRITERIA = new Set([
   "earlyEnd",
   "preferredProfs",
 ]);
+const VALID_DAYS = new Set(["M", "T", "W", "TH", "F", "SAT", "SUN"]);
+const isFiniteMinute = (x: unknown): x is number =>
+  typeof x === "number" && Number.isFinite(x) && x >= 0 && x <= 24 * 60;
 
 const defaultPreferences = (): Preferences => ({
   criteria: ["compactDays"],
@@ -41,14 +44,18 @@ function isValidPreferences(v: unknown): boolean {
   if (!Array.isArray(p.criteria) || !p.criteria.every((c) => typeof c === "string" && VALID_RANK_CRITERIA.has(c))) {
     return false;
   }
+  if (new Set(p.criteria).size !== p.criteria.length) return false;
   if (!Array.isArray(p.protectedBlocks)) return false;
   if (!p.protectedBlocks.every((b) => {
     if (typeof b !== "object" || b === null) return false;
     const m = b as Record<string, unknown>;
-    return Array.isArray(m.days) && typeof m.start === "number" && typeof m.end === "number";
+    return Array.isArray(m.days) && m.days.length > 0 &&
+      m.days.every((day) => typeof day === "string" && VALID_DAYS.has(day)) &&
+      isFiniteMinute(m.start) && isFiniteMinute(m.end) && m.start < m.end;
   })) return false;
-  if (p.earliestStart !== undefined && typeof p.earliestStart !== "number") return false;
-  if (p.latestEnd !== undefined && typeof p.latestEnd !== "number") return false;
+  if (p.earliestStart !== undefined && !isFiniteMinute(p.earliestStart)) return false;
+  if (p.latestEnd !== undefined && !isFiniteMinute(p.latestEnd)) return false;
+  if (isFiniteMinute(p.earliestStart) && isFiniteMinute(p.latestEnd) && p.earliestStart > p.latestEnd) return false;
   return isStringArray(p.excludedSections);
 }
 
@@ -60,6 +67,7 @@ function isValidState(v: unknown): v is UserState {
   if (typeof s.blockKey !== "string") return false;
   if (typeof s.calendarTerm !== "string") return false;
   if (!isStringArray(s.requiredCourses)) return false;
+  if (new Set(s.requiredCourses).size !== s.requiredCourses.length) return false;
   if (!isStringArray(s.lockedSections)) return false;
   if (!isStringArray(s.fullSections)) return false;
   if (typeof s.electiveFills !== "object" || s.electiveFills === null || Array.isArray(s.electiveFills)) {
@@ -72,7 +80,9 @@ function isValidState(v: unknown): v is UserState {
   if (!s.personalRatings.every((x) => {
     if (typeof x !== "object" || x === null) return false;
     const rt = x as Record<string, unknown>;
-    return typeof rt.name === "string" && typeof rt.rating === "number";
+    return typeof rt.name === "string" && rt.name.trim() !== "" &&
+      typeof rt.rating === "number" && Number.isFinite(rt.rating) && rt.rating >= 0 && rt.rating <= 5 &&
+      (rt.courseCode === undefined || typeof rt.courseCode === "string");
   })) return false;
   return isValidPreferences(s.preferences);
 }
@@ -94,5 +104,9 @@ export function loadState(calendarTerm: string): { state: UserState; wasReset: b
 }
 
 export function saveState(state: UserState): void {
-  localStorage.setItem(KEY, JSON.stringify(state));
+  try {
+    localStorage.setItem(KEY, JSON.stringify(state));
+  } catch {
+    // Scheduling still works when storage is blocked or full; persistence is best-effort.
+  }
 }

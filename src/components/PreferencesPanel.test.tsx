@@ -38,7 +38,7 @@ describe("PreferencesPanel", () => {
   it("unchecking a criterion removes it", () => {
     const onChange = vi.fn();
     render(<PreferencesPanel catalog={catalog} state={baseState} onChange={onChange} />);
-    fireEvent.click(screen.getByLabelText(/Compact days/));
+    fireEvent.click(screen.getByRole("checkbox", { name: /Compact days/ }));
     expect(onChange).toHaveBeenCalledWith({
       ...baseState,
       preferences: { ...baseState.preferences, criteria: [] },

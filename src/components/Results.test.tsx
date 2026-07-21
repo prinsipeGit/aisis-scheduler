@@ -30,7 +30,7 @@ afterEach(cleanup);
 describe("Results", () => {
   it("renders ranked schedules", () => {
     render(<Results catalog={catalog} state={baseState} ratings={noRatings} onChange={() => {}} />);
-    expect(screen.getByText(/2 valid schedule/)).toBeTruthy();
+    expect(screen.getByText(/2 candidate schedule/)).toBeTruthy();
   });
 
   it("Lock adds the section to lockedSections", () => {
@@ -121,6 +121,6 @@ describe("Results", () => {
         onChange={() => {}}
       />
     );
-    expect(screen.getByText(/valid schedule\(s\), best first/)).toBeTruthy();
+    expect(screen.getByText(/candidate schedule\(s\), ranked best first/)).toBeTruthy();
   });
 });

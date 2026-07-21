@@ -89,4 +89,18 @@ describe("storage v2", () => {
     expect(wasReset).toBe(true);
     expect(loaded).toEqual(defaultState("2026-2"));
   });
+
+  it.each([-1, 6, Number.NaN])("resets an out-of-range professor rating: %s", (rating) => {
+    const state = defaultState("2026-2");
+    state.personalRatings = [{ name: "PROF, TEST", rating }];
+    saveState(state);
+    expect(loadState("2026-2").wasReset).toBe(true);
+  });
+
+  it("resets an invalid protected block", () => {
+    const state = defaultState("2026-2");
+    state.preferences.protectedBlocks = [{ days: ["M"], start: 800, end: 700 }];
+    saveState(state);
+    expect(loadState("2026-2").wasReset).toBe(true);
+  });
 });

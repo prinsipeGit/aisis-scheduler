@@ -1,9 +1,15 @@
 # AISIS Scheduler v2 — IPS-Driven Redesign
 
 **Date:** 2026-07-21
-**Status:** Approved design, pre-implementation
+**Status:** Implemented; later cleanup details are documented in the repository README
 **Author:** Prince (with Claude)
 **Supersedes flow of:** `2026-07-19-aisis-scheduler-design.md` (v1). Reuses v1's schedule engine.
+
+> Implementation note: this file records the approved design at the time it was
+> written. The current application intentionally caps browser-side generation at
+> 500 candidates, disables terms without bundled catalogs, distinguishes future
+> time-parse failures from legitimate TBA sections, and treats the data modules as
+> migration boundaries rather than promising a two-file Supabase conversion.
 
 ## 1. Overview
 

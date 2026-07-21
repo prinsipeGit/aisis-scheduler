@@ -38,23 +38,30 @@ export function parseDays(token: string): Day[] | null {
   return days.length > 0 ? days : null;
 }
 
-export function parseTimeCell(cell: string): { meetings: Meeting[]; modality: string; ok: boolean } {
+export function parseTimeCell(cell: string): {
+  meetings: Meeting[];
+  modality: string;
+  status: "scheduled" | "tba" | "parse-error";
+  ok: boolean;
+} {
   // AISIS renders "M-TH 0800-0930" then "(FULLY ONSITE)" on a second line.
   const modalityMatch = cell.match(/\(([^)]*)\)\s*$/);
   const modality = modalityMatch ? modalityMatch[1].trim() : "";
   const text = cell.replace(/\([^)]*\)\s*$/, "").trim();
-  if (!text || text.toUpperCase() === "TBA") return { meetings: [], modality: "", ok: true };
+  if (!text || text.toUpperCase() === "TBA") {
+    return { meetings: [], modality, status: "tba", ok: true };
+  }
 
   const meetings: Meeting[] = [];
   for (const chunk of text.split("/")) {
     const m = chunk.trim().match(/^(.+?)\s+(\S+)$/);
-    if (!m) return { meetings: [], modality, ok: false };
+    if (!m) return { meetings: [], modality, status: "parse-error", ok: false };
     const days = parseDays(m[1]);
     const range = parseTimeRange(m[2]);
-    if (!days || !range) return { meetings: [], modality, ok: false };
+    if (!days || !range) return { meetings: [], modality, status: "parse-error", ok: false };
     meetings.push({ days, start: range.start, end: range.end });
   }
-  return { meetings, modality, ok: true };
+  return { meetings, modality, status: "scheduled", ok: true };
 }
 
 // Instructors are "LAST, FIRST" and multiple profs are joined by ", " — so the
@@ -76,7 +83,7 @@ export function parseRow(cells: string[]): { section: Section | null; warning?: 
     return { section: null, warning: `Skipped row (unrecognized format): ${raw}` };
   }
   const units = Number(cells[COL.units].replace(/[()]/g, ""));
-  const { meetings, modality, ok } = parseTimeCell(cells[COL.time]);
+  const { meetings, modality, status: timeStatus, ok } = parseTimeCell(cells[COL.time]);
   // AISIS uses both "-" and "~" as empty-remark placeholders (both seen in real data).
   const rawRemarks = cells[COL.remarks].trim();
   const remarks = rawRemarks === "-" || rawRemarks === "~" ? "" : rawRemarks;
@@ -88,6 +95,7 @@ export function parseRow(cells: string[]): { section: Section | null; warning?: 
     instructors: splitInstructors(cells[COL.instructor]),
     modality,
     meetings,
+    timeStatus,
     room: cells[COL.room].trim(),
     remarks,
     raw,

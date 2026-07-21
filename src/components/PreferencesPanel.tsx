@@ -1,5 +1,6 @@
 import type { Catalog, Day, Meeting, ProfRating, RankCriterion, UserState } from "../lib/types";
 import { formatTime } from "../lib/time";
+import { sameCourseCode } from "../lib/course-code";
 
 const CRITERIA: { id: RankCriterion; label: string }[] = [
   { id: "compactDays", label: "Compact days (fewest gaps)" },
@@ -8,7 +9,7 @@ const CRITERIA: { id: RankCriterion; label: string }[] = [
   { id: "earlyEnd", label: "Earlier ends" },
   { id: "preferredProfs", label: "Preferred professors" },
 ];
-const DAYS: Day[] = ["M", "T", "W", "TH", "F", "SAT"];
+const DAYS: Day[] = ["M", "T", "W", "TH", "F", "SAT", "SUN"];
 const HOURS = Array.from({ length: 15 }, (_, i) => 420 + i * 60); // 7:00 AM – 9:00 PM
 
 interface Props {
@@ -31,19 +32,33 @@ export function PreferencesPanel({ catalog, state, onChange }: Props) {
         : [...prefs.criteria, id],
     });
 
+  const moveCriterion = (id: RankCriterion, direction: -1 | 1) => {
+    const from = prefs.criteria.indexOf(id);
+    const to = from + direction;
+    if (from < 0 || to < 0 || to >= prefs.criteria.length) return;
+    const criteria = [...prefs.criteria];
+    [criteria[from], criteria[to]] = [criteria[to], criteria[from]];
+    setPrefs({ criteria });
+  };
+
   const setBlock = (i: number, block: Meeting) =>
     setPrefs({ protectedBlocks: prefs.protectedBlocks.map((b, j) => (j === i ? block : b)) });
 
   const restoreExcluded = (key: string) =>
     setPrefs({ excludedSections: prefs.excludedSections.filter((k) => k !== key) });
+  const restoreFull = (key: string) =>
+    onChange({ ...state, fullSections: state.fullSections.filter((k) => k !== key) });
 
   // One row per (course, professor) pair among the user's chosen courses.
   const teachingPairs: { courseCode: string; name: string }[] = [];
+  const seenTeachingPairs = new Set<string>();
   for (const s of catalog.sections) {
-    if (!state.requiredCourses.includes(s.courseCode)) continue;
+    if (!state.requiredCourses.some((code) => sameCourseCode(code, s.courseCode))) continue;
     for (const name of s.instructors) {
       if (!name) continue;
-      if (!teachingPairs.some((p) => p.courseCode === s.courseCode && p.name === name)) {
+      const pairKey = `${s.courseCode}\u0000${name}`;
+      if (!seenTeachingPairs.has(pairKey)) {
+        seenTeachingPairs.add(pairKey);
         teachingPairs.push({ courseCode: s.courseCode, name });
       }
     }
@@ -82,6 +97,12 @@ export function PreferencesPanel({ catalog, state, onChange }: Props) {
 
   return (
     <section>
+      <div className="section-heading">
+        <p className="eyebrow">Step 5</p>
+        <h2>Fine-tune your preferences</h2>
+        <p>Prioritize what matters, protect personal time, and manage section choices.</p>
+      </div>
+      <div className="settings-section">
       <h2>Ranking criteria (priority = order checked)</h2>
       <ul>
         {CRITERIA.map(({ id, label }) => {
@@ -93,11 +114,19 @@ export function PreferencesPanel({ catalog, state, onChange }: Props) {
                 {label}
                 {pos >= 0 ? ` — priority ${pos + 1}` : ""}
               </label>
+              {pos >= 0 && (
+                <>
+                  {" "}<button type="button" disabled={pos === 0} onClick={() => moveCriterion(id, -1)} aria-label={`Move ${label} up`}>↑</button>
+                  {" "}<button type="button" disabled={pos === prefs.criteria.length - 1} onClick={() => moveCriterion(id, 1)} aria-label={`Move ${label} down`}>↓</button>
+                </>
+              )}
             </li>
           );
         })}
       </ul>
+      </div>
 
+      <div className="settings-section">
       <h2>Time limits</h2>
       <label>No classes before {timeSelect(prefs.earliestStart, (v) => setPrefs({ earliestStart: v }))}</label>{" "}
       <label>No classes after {timeSelect(prefs.latestEnd, (v) => setPrefs({ latestEnd: v }))}</label>
@@ -113,14 +142,17 @@ export function PreferencesPanel({ catalog, state, onChange }: Props) {
               <option key={d} value={d}>{d}</option>
             ))}
           </select>
-          <select value={block.start} onChange={(e) => setBlock(i, { ...block, start: Number(e.target.value) })}>
+          <select aria-label={`Protected block ${i + 1} start`} value={block.start} onChange={(e) => {
+            const start = Number(e.target.value);
+            setBlock(i, { ...block, start, end: Math.max(block.end, start + 60) });
+          }}>
             {HOURS.map((h) => (
               <option key={h} value={h}>{formatTime(h)}</option>
             ))}
           </select>
           {" – "}
-          <select value={block.end} onChange={(e) => setBlock(i, { ...block, end: Number(e.target.value) })}>
-            {HOURS.map((h) => (
+          <select aria-label={`Protected block ${i + 1} end`} value={block.end} onChange={(e) => setBlock(i, { ...block, end: Number(e.target.value) })}>
+            {HOURS.filter((h) => h > block.start).map((h) => (
               <option key={h} value={h}>{formatTime(h)}</option>
             ))}
           </select>{" "}
@@ -132,7 +164,9 @@ export function PreferencesPanel({ catalog, state, onChange }: Props) {
       <button onClick={() => setPrefs({ protectedBlocks: [...prefs.protectedBlocks, { days: ["M"], start: 720, end: 780 }] })}>
         Add protected block
       </button>
+      </div>
 
+      <div className="settings-section">
       <h2>Excluded sections</h2>
       {prefs.excludedSections.length === 0 ? (
         <p>None excluded.</p>
@@ -147,6 +181,17 @@ export function PreferencesPanel({ catalog, state, onChange }: Props) {
         </ul>
       )}
 
+      <h2>Sections marked full</h2>
+      {state.fullSections.length === 0 ? <p>None marked full.</p> : (
+        <ul>
+          {state.fullSections.map((key) => (
+            <li key={key}>{key} <button type="button" onClick={() => restoreFull(key)}>Restore</button></li>
+          ))}
+        </ul>
+      )}
+      </div>
+
+      <div className="settings-section">
       <h2>My professor ratings</h2>
       {teachingPairs.length === 0 && <p>Pick courses first to rate their professors.</p>}
       <ul>
@@ -169,6 +214,7 @@ export function PreferencesPanel({ catalog, state, onChange }: Props) {
           </li>
         ))}
       </ul>
+      </div>
     </section>
   );
 }

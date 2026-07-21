@@ -13,7 +13,7 @@
  * page containing "There are no results for your search criteria" and zero
  * data rows. That is normal, not an error — the run simply yields 0 sections.
  */
-import { writeFile } from "node:fs/promises";
+import { rename, unlink, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { DEPARTMENTS, TERMS } from "./departments.mjs";
@@ -25,6 +25,7 @@ const DELAY_MS = 1500; // politeness between department requests
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const term = process.argv[2];
+const force = process.argv.includes("--force");
 if (!TERMS.includes(term)) {
   console.error(`Usage: node tools/scrape-schedule.mjs <term>\nKnown terms: ${TERMS.join(", ")}`);
   process.exit(1);
@@ -44,6 +45,7 @@ if (!COOKIE) console.warn("! No session cookie received — results are likely t
 
 const allRows = [];
 const warnings = [];
+let successfulDepartments = 0;
 for (const dept of DEPARTMENTS) {
   try {
     const res = await fetch(ENDPOINT, {
@@ -68,6 +70,7 @@ for (const dept of DEPARTMENTS) {
       warnings.push(`${dept}: 0 rows extracted from a 200 OK response — may be a genuinely empty department or a failed fetch (e.g. expired session/error page)`);
       console.warn(`  ! ${dept}: 0 rows extracted from a 200 OK response — may be a genuinely empty department or a failed fetch`);
     } else {
+      successfulDepartments += 1;
       console.log(`  ${dept}: ${rows.length} rows`);
     }
   } catch (err) {
@@ -93,9 +96,27 @@ const catalog = {
   warnings: [...warnings, ...parseWarnings],
 };
 
+const minimumSuccessfulDepartments = Math.max(3, Math.ceil(DEPARTMENTS.length * 0.2));
+const suspicious = catalog.sections.length === 0 || successfulDepartments < minimumSuccessfulDepartments;
+if (suspicious && !force) {
+  console.error(
+    `Refusing to overwrite a catalog with ${catalog.sections.length} sections from ` +
+    `${successfulDepartments}/${DEPARTMENTS.length} successful departments. ` +
+    "Investigate the AISIS response, or rerun with --force after confirming the result."
+  );
+  process.exit(1);
+}
+
 const out = path.join(
   path.dirname(fileURLToPath(import.meta.url)),
   "..", "src", "data", `catalog-${term}.json`
 );
-await writeFile(out, JSON.stringify(catalog, null, 2));
+const temporaryOut = `${out}.tmp`;
+try {
+  await writeFile(temporaryOut, JSON.stringify(catalog, null, 2));
+  await rename(temporaryOut, out);
+} catch (error) {
+  await unlink(temporaryOut).catch(() => {});
+  throw error;
+}
 console.log(`\nWrote ${out}: ${catalog.sections.length} sections, ${catalog.warnings.length} warnings.`);

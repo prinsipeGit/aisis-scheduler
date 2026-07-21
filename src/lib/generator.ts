@@ -1,12 +1,14 @@
-import type { Diagnostics, Schedule, Section, UserState } from "./types";
+import type { Diagnostics, Schedule, SearchSummary, Section, UserState } from "./types";
 import { sectionKey } from "./types";
 import { overlaps } from "./time";
+import { sameCourseCode } from "./course-code";
 
-const MAX_SCHEDULES = 500; // real courses have 40+ sections; the UI only shows the top page
+const MAX_SCHEDULES = 500; // browser responsiveness guard; truncation is reported to the UI
 
 export interface GenerateResult {
   schedules: Schedule[];
   diagnostics: Diagnostics | null;
+  search: SearchSummary;
 }
 
 function sectionsConflict(a: Section, b: Section): boolean {
@@ -19,6 +21,9 @@ function sectionsConflict(a: Section, b: Section): boolean {
 }
 
 function passesFilters(s: Section, state: UserState): boolean {
+  // A malformed time is not the same thing as a legitimate TBA section. Until a
+  // human fixes the source row, including it would create falsely conflict-free schedules.
+  if (s.timeStatus === "parse-error") return false;
   const key = sectionKey(s);
   if (state.fullSections.includes(key)) return false;
   if (state.preferences.excludedSections.includes(key)) return false;
@@ -38,8 +43,10 @@ export function generate(all: Section[], state: UserState): GenerateResult {
   const candidates = new Map<string, Section[]>();
 
   for (const course of state.requiredCourses) {
-    const total = all.filter((s) => s.courseCode === course);
-    const locked = total.filter((s) => state.lockedSections.includes(sectionKey(s)));
+    const total = all.filter((s) => sameCourseCode(s.courseCode, course));
+    const locked = total.filter(
+      (s) => s.timeStatus !== "parse-error" && state.lockedSections.includes(sectionKey(s))
+    );
     // A locked section pins the course and bypasses all filters.
     const filtered = locked.length > 0 ? locked : total.filter((s) => passesFilters(s, state));
     candidates.set(course, filtered);
@@ -53,7 +60,8 @@ export function generate(all: Section[], state: UserState): GenerateResult {
   const current: Section[] = [];
 
   const walk = (i: number): void => {
-    if (schedules.length >= MAX_SCHEDULES) return;
+    // Find one extra result so an exact 500-result search is not mislabeled as truncated.
+    if (schedules.length > MAX_SCHEDULES) return;
     if (i === order.length) {
       schedules.push([...current]);
       return;
@@ -66,8 +74,15 @@ export function generate(all: Section[], state: UserState): GenerateResult {
     }
   };
   walk(0);
+  const truncated = schedules.length > MAX_SCHEDULES;
 
-  if (schedules.length > 0) return { schedules, diagnostics: null };
+  if (schedules.length > 0) {
+    return {
+      schedules: schedules.slice(0, MAX_SCHEDULES),
+      diagnostics: null,
+      search: { limit: MAX_SCHEDULES, truncated },
+    };
+  }
 
   const conflictPairs: Diagnostics["conflictPairs"] = [];
   for (let i = 0; i < state.requiredCourses.length; i++) {
@@ -82,5 +97,9 @@ export function generate(all: Section[], state: UserState): GenerateResult {
     }
   }
   const nWayConflict = perCourse.every((c) => c.afterFilters > 0) && conflictPairs.length === 0;
-  return { schedules, diagnostics: { perCourse, conflictPairs, nWayConflict } };
+  return {
+    schedules,
+    diagnostics: { perCourse, conflictPairs, nWayConflict },
+    search: { limit: MAX_SCHEDULES, truncated: false },
+  };
 }

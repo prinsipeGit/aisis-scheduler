@@ -86,6 +86,33 @@ describe("generate", () => {
     expect(schedules[0]).toHaveLength(2); // both sections present, TBA included
   });
 
+  it("excludes sections whose meeting time failed to parse", () => {
+    const broken = { ...sec("COURSE C", "1", []), timeStatus: "parse-error" as const };
+    const { schedules, diagnostics } = generate(
+      [A1, broken],
+      state({ requiredCourses: ["COURSE A", "COURSE C"] })
+    );
+    expect(schedules).toHaveLength(0);
+    expect(diagnostics?.perCourse).toContainEqual({ courseCode: "COURSE C", total: 1, afterFilters: 0 });
+  });
+
+  it("does not let a lock override an unsafe parse-error time", () => {
+    const broken = { ...sec("COURSE C", "1", []), timeStatus: "parse-error" as const };
+    const result = generate(
+      [broken],
+      state({ requiredCourses: ["COURSE C"], lockedSections: ["COURSE C 1"] })
+    );
+    expect(result.schedules).toHaveLength(0);
+    expect(result.diagnostics?.perCourse[0].afterFilters).toBe(0);
+  });
+
+  it("reports when the schedule safety limit truncates the search", () => {
+    const manyA = Array.from({ length: 501 }, (_, i) => sec("COURSE A", String(i), []));
+    const result = generate(manyA, state({ requiredCourses: ["COURSE A"] }));
+    expect(result.schedules).toHaveLength(500);
+    expect(result.search).toEqual({ limit: 500, truncated: true });
+  });
+
   it("zero results yields per-course and pair diagnostics", () => {
     // Both courses only offer the same timeslot → impossible.
     const X1 = sec("COURSE X", "1", [m(["M"], 480, 570)]);

@@ -17,10 +17,14 @@ export function SemesterPicker({
 
   return (
     <section>
-      <h2>Which semester?</h2>
-      <p>
+      <div className="section-heading">
+        <p className="eyebrow">Step 2</p>
+        <h2>Choose your semester</h2>
+        <p>Separate what your curriculum requires from the AISIS term you are planning.</p>
+      </div>
+      <div className="form-grid">
         <label>
-          Curriculum block (what you need){" "}
+          <span>Curriculum block</span>
           <select value={blockKey} onChange={(e) => onChangeBlock(e.target.value)}>
             <option value="">— select —</option>
             {program.blocks.map((b) => (
@@ -30,19 +34,17 @@ export function SemesterPicker({
             ))}
           </select>
         </label>
-      </p>
-      <p>
         <label>
-          Calendar term (where to look){" "}
+          <span>Calendar term</span>
           <select value={calendarTerm} onChange={(e) => onChangeTerm(e.target.value)}>
             {terms.map((t) => (
-              <option key={t.term} value={t.term}>
-                {t.label}
+              <option key={t.term} value={t.term} disabled={t.available === false}>
+                {t.label}{t.available === false ? " — catalog unavailable" : ""}
               </option>
             ))}
           </select>
         </label>
-      </p>
+      </div>
     </section>
   );
 }

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { generate } from "../lib/generator";
 import { rank } from "../lib/ranker";
 import { getCurriculum, getBlock } from "../lib/curriculum";
@@ -6,6 +6,7 @@ import { buildRequirementRows, extraCourseRows, resolveCourseCodes } from "../li
 import type { Catalog, ProfRating, UserState } from "../lib/types";
 import { sectionKey } from "../lib/types";
 import { ScheduleGrid } from "./ScheduleGrid";
+import { sameCourseCode } from "../lib/course-code";
 
 const PAGE = 10;
 
@@ -17,12 +18,7 @@ interface Props {
 }
 
 export function Results({ catalog, state, ratings, onChange }: Props) {
-  // resolveCourseCodes (Task 8) is what's supposed to feed generate(): it drops
-  // any selected course with zero sections this term ("not offered") so it
-  // can't silently block every other required course. The narrowed list is
-  // built here, for this call only, and never written back to `state` — doing
-  // so would delete the user's not-offered selections from storage. The
-  // "not offered" surfacing itself lives in the Courses tab.
+  // Keep unavailable selections in saved state, but do not send them to the engine.
   const resolvedCourses = useMemo(() => {
     const program = state.programId ? getCurriculum(state.programId) : undefined;
     const block = program && state.blockKey ? getBlock(program, state.blockKey) : undefined;
@@ -30,7 +26,7 @@ export function Results({ catalog, state, ratings, onChange }: Props) {
       // No block chosen yet: fall back to "has at least one section" so a
       // 0-section course still never reaches the engine.
       return state.requiredCourses.filter((code) =>
-        catalog.sections.some((s) => s.courseCode === code)
+        catalog.sections.some((s) => sameCourseCode(s.courseCode, code))
       );
     }
     const rows = [
@@ -40,7 +36,7 @@ export function Results({ catalog, state, ratings, onChange }: Props) {
     return resolveCourseCodes(rows);
   }, [catalog, state]);
 
-  const { schedules, diagnostics } = useMemo(
+  const { schedules, diagnostics, search } = useMemo(
     () => generate(catalog.sections, { ...state, requiredCourses: resolvedCourses }),
     [catalog, state, resolvedCourses]
   );
@@ -49,6 +45,8 @@ export function Results({ catalog, state, ratings, onChange }: Props) {
     [schedules, state.preferences, ratings]
   );
   const [shown, setShown] = useState(PAGE);
+  useEffect(() => setShown(PAGE), [catalog, state.requiredCourses, state.lockedSections,
+    state.fullSections, state.preferences]);
 
   const toggle = (field: "lockedSections" | "fullSections", key: string) => {
     const list = state[field];
@@ -62,7 +60,9 @@ export function Results({ catalog, state, ratings, onChange }: Props) {
       ...state,
       preferences: {
         ...state.preferences,
-        excludedSections: [...state.preferences.excludedSections, key],
+        excludedSections: state.preferences.excludedSections.includes(key)
+          ? state.preferences.excludedSections
+          : [...state.preferences.excludedSections, key],
       },
     });
 
@@ -71,7 +71,8 @@ export function Results({ catalog, state, ratings, onChange }: Props) {
   if (ranked.length === 0) {
     return (
       <section>
-        <h2>No valid schedule found</h2>
+        <div className="empty-state"><span className="empty-icon">×</span><h2>No valid schedule found</h2>
+        <p>Try relaxing a preference or changing one of your selected courses.</p></div>
         {diagnostics && (
           <>
             <h3>Sections available per course (after your filters)</h3>
@@ -107,7 +108,17 @@ export function Results({ catalog, state, ratings, onChange }: Props) {
 
   return (
     <section>
-      <h2>{ranked.length} valid schedule(s), best first</h2>
+      <div className="section-heading split-heading">
+        <div><p className="eyebrow">Step 4</p><h2>Your schedule options</h2><p>Ranked using your selected priorities.</p></div>
+        <div className="metric"><strong>{ranked.length}</strong><span>candidates</span></div>
+      </div>
+      <p className="sr-only">{ranked.length} candidate schedule(s), ranked best first</p>
+      {search.truncated && (
+        <p className="banner" role="status">
+          Search reached its {search.limit}-schedule safety limit. Rankings apply to these
+          candidates; add filters or lock a section to narrow the search.
+        </p>
+      )}
       {ranked.slice(0, shown).map((r, i) => (
         <article key={r.schedule.map(sectionKey).join("|")} className="schedule-card">
           <h3>
@@ -122,10 +133,13 @@ export function Results({ catalog, state, ratings, onChange }: Props) {
                 <li key={key}>
                   {key} — {s.instructors.length > 0 ? s.instructors.join(", ") : "TBA"}
                   {s.modality ? ` · ${s.modality}` : ""}{" "}
-                  {/* No "Mark full" in v2 — closed-class handling is out of scope. */}
+                  {s.timeStatus === "tba" || (s.timeStatus === undefined && s.meetings.length === 0)
+                    ? " · time TBA"
+                    : ""}{" "}
                   <button onClick={() => toggle("lockedSections", key)}>
                     {state.lockedSections.includes(key) ? "Unlock" : "Lock"}
                   </button>{" "}
+                  <button onClick={() => toggle("fullSections", key)}>Mark full</button>{" "}
                   <button onClick={() => exclude(key)}>Exclude</button>
                 </li>
               );
