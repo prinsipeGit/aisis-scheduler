@@ -29,13 +29,13 @@ afterEach(cleanup);
 
 describe("Results", () => {
   it("renders ranked schedules", () => {
-    render(<Results catalog={catalog} state={baseState} ratings={noRatings} onChange={() => {}} />);
+    render(<Results catalog={catalog} block={undefined} state={baseState} ratings={noRatings} onChange={() => {}} />);
     expect(screen.getByText(/2 candidate schedule/)).toBeTruthy();
   });
 
   it("Lock adds the section to lockedSections", () => {
     const onChange = vi.fn();
-    render(<Results catalog={catalog} state={baseState} ratings={noRatings} onChange={onChange} />);
+    render(<Results catalog={catalog} block={undefined} state={baseState} ratings={noRatings} onChange={onChange} />);
     fireEvent.click(screen.getAllByRole("button", { name: "Lock" })[0]);
     const next = onChange.mock.calls[0][0] as UserState;
     expect(next.lockedSections).toHaveLength(1);
@@ -49,13 +49,13 @@ describe("Results", () => {
         sec("CSCI 30", "A", [m(["M"], 480, 570)]),
       ],
     };
-    render(<Results catalog={impossible} state={baseState} ratings={noRatings} onChange={() => {}} />);
+    render(<Results catalog={impossible} block={undefined} state={baseState} ratings={noRatings} onChange={() => {}} />);
     expect(screen.getByText(/No valid schedule found/)).toBeTruthy();
     expect(screen.getByText(/PHILO 11 and CSCI 30 always conflict/)).toBeTruthy();
   });
 
   it("prompts to pick courses when none are chosen", () => {
-    render(<Results catalog={catalog} state={{ ...baseState, requiredCourses: [] }} ratings={noRatings} onChange={() => {}} />);
+    render(<Results catalog={catalog} block={undefined} state={{ ...baseState, requiredCourses: [] }} ratings={noRatings} onChange={() => {}} />);
     expect(screen.getByText(/Pick courses first/)).toBeTruthy();
   });
 
@@ -76,6 +76,7 @@ describe("Results", () => {
     render(
       <Results
         catalog={nWay}
+        block={undefined}
         state={{ ...baseState, requiredCourses: ["PHILO 11", "CSCI 30", "MATH 21"] }}
         ratings={noRatings}
         onChange={() => {}}
@@ -92,7 +93,7 @@ describe("Results", () => {
       sec("PHILO 11", "A", [m(["M"], 480, 570)], ["DE LOS SANTOS, Kurt Anthony", "MIJARES, Jim Ralphealo"]),
       sec("CSCI 30", "A", [m(["T"], 480, 570)]),
     ]};
-    render(<Results catalog={pair} state={baseState} ratings={noRatings} onChange={() => {}} />);
+    render(<Results catalog={pair} block={undefined} state={baseState} ratings={noRatings} onChange={() => {}} />);
     expect(screen.getByText(/DE LOS SANTOS, Kurt Anthony, MIJARES, Jim Ralphealo/)).toBeTruthy();
   });
 
@@ -101,12 +102,12 @@ describe("Results", () => {
       sec("PHILO 11", "A", [m(["M"], 480, 570)], ["SANTOS, ANA"], "ONLINE"),
       sec("CSCI 30", "A", [m(["T"], 480, 570)]),
     ]};
-    render(<Results catalog={online} state={baseState} ratings={noRatings} onChange={() => {}} />);
+    render(<Results catalog={online} block={undefined} state={baseState} ratings={noRatings} onChange={() => {}} />);
     expect(screen.getAllByText(/ONLINE/).length).toBeGreaterThan(0);
   });
 
   it("shows the total units of a schedule", () => {
-    render(<Results catalog={catalog} state={baseState} ratings={noRatings} onChange={() => {}} />);
+    render(<Results catalog={catalog} block={undefined} state={baseState} ratings={noRatings} onChange={() => {}} />);
     expect(screen.getAllByText(/6 units/).length).toBeGreaterThan(0);
   });
 
@@ -116,6 +117,7 @@ describe("Results", () => {
     render(
       <Results
         catalog={catalog}
+        block={undefined}
         state={{ ...baseState, requiredCourses: ["ZERO 1", "ZERO 2"] }}
         ratings={noRatings}
         onChange={() => {}}
@@ -131,6 +133,7 @@ describe("Results", () => {
     render(
       <Results
         catalog={catalog}
+        block={undefined}
         state={{ ...baseState, requiredCourses: ["PHILO 11", "CSCI 30", "ZERO 1"] }}
         ratings={noRatings}
         onChange={() => {}}

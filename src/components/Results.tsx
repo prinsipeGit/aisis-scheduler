@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { generate } from "../lib/generator";
 import { rank } from "../lib/ranker";
-import { getCurriculum, getBlock } from "../lib/curriculum";
 import { buildRequirementRows, extraCourseRows, resolveCourseCodes } from "../lib/requirements";
-import type { Catalog, ProfRating, UserState } from "../lib/types";
+import type { Catalog, CurriculumBlock, ProfRating, UserState } from "../lib/types";
 import { sectionKey } from "../lib/types";
 import { ScheduleGrid } from "./ScheduleGrid";
 import { sameCourseCode } from "../lib/course-code";
@@ -12,16 +11,15 @@ const PAGE = 10;
 
 interface Props {
   catalog: Catalog;
+  block: CurriculumBlock | undefined;
   state: UserState;
   ratings: Map<string, ProfRating>;
   onChange: (s: UserState) => void;
 }
 
-export function Results({ catalog, state, ratings, onChange }: Props) {
+export function Results({ catalog, block, state, ratings, onChange }: Props) {
   // Keep unavailable selections in saved state, but do not send them to the engine.
   const resolvedCourses = useMemo(() => {
-    const program = state.programId ? getCurriculum(state.programId) : undefined;
-    const block = program && state.blockKey ? getBlock(program, state.blockKey) : undefined;
     if (!block) {
       // No block chosen yet: fall back to "has at least one section" so a
       // 0-section course still never reaches the engine.
@@ -34,7 +32,7 @@ export function Results({ catalog, state, ratings, onChange }: Props) {
       ...extraCourseRows(state, block, catalog),
     ];
     return resolveCourseCodes(rows);
-  }, [catalog, state]);
+  }, [catalog, state, block]);
 
   const { schedules, diagnostics, search } = useMemo(
     () => generate(catalog.sections, { ...state, requiredCourses: resolvedCourses }),

@@ -1,10 +1,9 @@
 import type { Catalog, ProfRating } from "./types";
 import { defaultDb, type Db } from "./supabase";
 import { rowToCatalog, rowToRating, type CatalogRow, type RatingRow } from "./rows";
-import ratingsJson from "../../data/prof-ratings.json";
 
-// This module is the ONLY place catalog JSON is read. Swapping the bundled
-// files for Supabase later means changing only this file (spec §3, §7).
+// This module is the ONLY place catalog data is read; it reads from Supabase
+// via the injectable Db boundary (spec §3, §7).
 
 const STALE_AFTER_DAYS = 30;
 
@@ -38,32 +37,6 @@ export class CatalogUnavailableError extends Error {
   }
 }
 
-// Vite resolves this glob at build time; only the requested term's JSON is fetched.
-const CATALOG_MODULES = import.meta.glob<{ default: Catalog }>("../../data/catalogs/catalog-*.json");
-
-export const TERMS: TermOption[] = ["2026-2", "2026-1", "2026-0", "2025-2", "2025-1", "2025-0"].map(
-  (term) => ({
-    term,
-    label: termLabel(term),
-    available: Boolean(CATALOG_MODULES[`../../data/catalogs/catalog-${term}.json`]),
-  })
-);
-
-export function getTerms(): TermOption[] {
-  return TERMS;
-}
-
-export async function loadCatalog(term: string): Promise<Catalog> {
-  const loader = CATALOG_MODULES[`../../data/catalogs/catalog-${term}.json`];
-  if (!loader) throw new CatalogUnavailableError(term);
-  const mod = await loader();
-  return mod.default;
-}
-
-export function getCommunityRatings(): ProfRating[] {
-  return ratingsJson as ProfRating[];
-}
-
 export function isStale(catalog: Catalog, now: Date = new Date()): boolean {
   const exported = new Date(catalog.exportedAt).getTime();
   if (Number.isNaN(exported)) return true;
@@ -72,7 +45,7 @@ export function isStale(catalog: Catalog, now: Date = new Date()): boolean {
 
 const KNOWN_TERMS = ["2026-2", "2026-1", "2026-0", "2025-2", "2025-1", "2025-0"];
 
-export async function getTermsAsync(db: Db = defaultDb): Promise<TermOption[]> {
+export async function getTerms(db: Db = defaultDb): Promise<TermOption[]> {
   const rows = await db.selectAll<Pick<CatalogRow, "term">>("catalogs", "term");
   const inDb = new Set(rows.map((r) => r.term));
   const known = KNOWN_TERMS.map((term) => ({ term, label: termLabel(term), available: inDb.has(term) }));
@@ -81,7 +54,7 @@ export async function getTermsAsync(db: Db = defaultDb): Promise<TermOption[]> {
   return [...known, ...extras];
 }
 
-export async function loadCatalogAsync(term: string, db: Db = defaultDb): Promise<Catalog> {
+export async function loadCatalog(term: string, db: Db = defaultDb): Promise<Catalog> {
   const row = await db.selectOne<CatalogRow>("catalogs", "term, exported_at, sections, warnings", "term", term);
   if (row === null) throw new CatalogUnavailableError(term);
   return rowToCatalog(row);

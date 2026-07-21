@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import {
-  getTerms, loadCatalog, getCommunityRatings, isStale, CatalogUnavailableError,
+  getTerms, loadCatalog, loadCommunityRatings, isStale, CatalogUnavailableError,
+  type TermOption,
 } from "./lib/catalog";
-import { getPrograms, getCurriculum, getBlock } from "./lib/curriculum";
+import { getPrograms, loadProgram, getBlock } from "./lib/curriculum";
 import { mergeRatings } from "./lib/profs";
 import { loadState, saveState } from "./lib/storage";
 import { seedRequiredCourses } from "./lib/requirements";
-import type { Catalog, UserState } from "./lib/types";
+import type { Catalog, Program, ProfRating, ProgramSummary, UserState } from "./lib/types";
 import { ProgramPicker } from "./components/ProgramPicker";
 import { SemesterPicker } from "./components/SemesterPicker";
 import { CourseRequirements } from "./components/CourseRequirements";
@@ -57,19 +58,40 @@ export default function App() {
     };
   }, [state.calendarTerm]);
 
-  const programs = useMemo(() => getPrograms(), []);
-  const program = useMemo(
-    () => (state.programId ? getCurriculum(state.programId) : undefined),
-    [state.programId]
-  );
+  const [terms, setTerms] = useState<TermOption[]>([]);
+  const [programs, setPrograms] = useState<ProgramSummary[]>([]);
+  const [program, setProgram] = useState<Program | null>(null);
+  const [programError, setProgramError] = useState<string>("");
+  const [communityRatings, setCommunityRatings] = useState<ProfRating[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    getTerms().then((t) => { if (!cancelled) setTerms(t); }).catch(() => {});
+    getPrograms().then((p) => { if (!cancelled) setPrograms(p); }).catch(() => {});
+    loadCommunityRatings().then((r) => { if (!cancelled) setCommunityRatings(r); }).catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    setProgram(null);
+    setProgramError("");
+    if (!state.programId) return;
+    loadProgram(state.programId)
+      .then((p) => { if (!cancelled) setProgram(p); })
+      .catch((err: unknown) => { if (!cancelled) setProgramError(String(err instanceof Error ? err.message : err)); });
+    return () => { cancelled = true; };
+  }, [state.programId]);
+
   const block = useMemo(
     () => (program && state.blockKey ? getBlock(program, state.blockKey) : undefined),
     [program, state.blockKey]
   );
   const ratings = useMemo(
-    () => mergeRatings(getCommunityRatings(), state.personalRatings),
-    [state.personalRatings]
+    () => mergeRatings(communityRatings, state.personalRatings),
+    [communityRatings, state.personalRatings]
   );
+  const programLoading = Boolean(state.programId) && !program && !programError;
 
   // Choosing a block seeds its required courses (electives stay unfilled).
   const chooseBlock = (blockKey: string) => {
@@ -106,6 +128,7 @@ export default function App() {
           <p className="banner">Saved settings were from an older version, so they were reset.</p>
         )}
         {catalogError && <p className="banner">{catalogError}</p>}
+        {programError && <p className="banner">{programError}</p>}
         {catalog && isStale(catalog) && (
           <p className="banner">This catalog data is over 30 days old — re-run the scraper.</p>
         )}
@@ -122,31 +145,35 @@ export default function App() {
         />
       )}
       {tab === "semester" && (
-        <SemesterPicker
-          program={program}
-          blockKey={state.blockKey}
-          calendarTerm={state.calendarTerm}
-          terms={getTerms()}
-          onChangeBlock={chooseBlock}
-          // Section keys are term-scoped, so drop them when the term changes.
-          onChangeTerm={(calendarTerm) =>
-            setState((s) => ({
-              ...s,
-              calendarTerm,
-              lockedSections: [],
-              fullSections: [],
-              preferences: { ...s.preferences, excludedSections: [] },
-            }))
-          }
-        />
+        programLoading ? <p>Loading your program…</p> : (
+          <SemesterPicker
+            program={program ?? undefined}
+            blockKey={state.blockKey}
+            calendarTerm={state.calendarTerm}
+            terms={terms}
+            onChangeBlock={chooseBlock}
+            // Section keys are term-scoped, so drop them when the term changes.
+            onChangeTerm={(calendarTerm) =>
+              setState((s) => ({
+                ...s,
+                calendarTerm,
+                lockedSections: [],
+                fullSections: [],
+                preferences: { ...s.preferences, excludedSections: [] },
+              }))
+            }
+          />
+        )
       )}
       {tab === "courses" && (
+        programLoading ? <p>Loading your program…</p> :
         catalogUnavailable ? <p role="alert">{catalogError}</p> :
           <CourseRequirements block={block} catalog={catalog} state={state} onChange={setState} />
       )}
       {tab === "results" &&
-        (catalogUnavailable ? <p role="alert">{catalogError}</p> : catalog ? (
-          <Results catalog={catalog} state={state} ratings={ratings} onChange={setState} />
+        (programLoading ? <p>Loading your program…</p> :
+        catalogUnavailable ? <p role="alert">{catalogError}</p> : catalog ? (
+          <Results catalog={catalog} state={state} ratings={ratings} onChange={setState} block={block} />
         ) : (
           <p>Loading the catalog for {state.calendarTerm}…</p>
         ))}
