@@ -36,11 +36,6 @@ function passesFilters(s: Section, state: UserState): boolean {
 export function generate(all: Section[], state: UserState): GenerateResult {
   const perCourse: Diagnostics["perCourse"] = [];
   const candidates = new Map<string, Section[]>();
-  // Courses with zero sections this term ("not offered") are reported in
-  // diagnostics but dropped from the combinatorial walk below, per spec §6
-  // error handling: excluded from generation, not a silent zero-result for
-  // every other required course.
-  const schedulable: string[] = [];
 
   for (const course of state.requiredCourses) {
     const total = all.filter((s) => s.courseCode === course);
@@ -49,10 +44,9 @@ export function generate(all: Section[], state: UserState): GenerateResult {
     const filtered = locked.length > 0 ? locked : total.filter((s) => passesFilters(s, state));
     candidates.set(course, filtered);
     perCourse.push({ courseCode: course, total: total.length, afterFilters: filtered.length });
-    if (total.length > 0) schedulable.push(course);
   }
 
-  const order = [...schedulable].sort(
+  const order = [...state.requiredCourses].sort(
     (a, b) => candidates.get(a)!.length - candidates.get(b)!.length
   );
   const schedules: Schedule[] = [];

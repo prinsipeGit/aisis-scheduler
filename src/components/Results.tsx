@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import { generate } from "../lib/generator";
 import { rank } from "../lib/ranker";
+import { getCurriculum, getBlock } from "../lib/curriculum";
+import { buildRequirementRows, extraCourseRows, resolveCourseCodes } from "../lib/requirements";
 import type { Catalog, ProfRating, UserState } from "../lib/types";
 import { sectionKey } from "../lib/types";
 import { ScheduleGrid } from "./ScheduleGrid";
@@ -15,9 +17,32 @@ interface Props {
 }
 
 export function Results({ catalog, state, ratings, onChange }: Props) {
+  // resolveCourseCodes (Task 8) is what's supposed to feed generate(): it drops
+  // any selected course with zero sections this term ("not offered") so it
+  // can't silently block every other required course. The narrowed list is
+  // built here, for this call only, and never written back to `state` — doing
+  // so would delete the user's not-offered selections from storage. The
+  // "not offered" surfacing itself lives in the Courses tab.
+  const resolvedCourses = useMemo(() => {
+    const program = state.programId ? getCurriculum(state.programId) : undefined;
+    const block = program && state.blockKey ? getBlock(program, state.blockKey) : undefined;
+    if (!block) {
+      // No block chosen yet: fall back to "has at least one section" so a
+      // 0-section course still never reaches the engine.
+      return state.requiredCourses.filter((code) =>
+        catalog.sections.some((s) => s.courseCode === code)
+      );
+    }
+    const rows = [
+      ...buildRequirementRows(block, state, catalog),
+      ...extraCourseRows(state, block, catalog),
+    ];
+    return resolveCourseCodes(rows);
+  }, [catalog, state]);
+
   const { schedules, diagnostics } = useMemo(
-    () => generate(catalog.sections, state),
-    [catalog, state]
+    () => generate(catalog.sections, { ...state, requiredCourses: resolvedCourses }),
+    [catalog, state, resolvedCourses]
   );
   const ranked = useMemo(
     () => rank(schedules, state.preferences, ratings),

@@ -109,4 +109,18 @@ describe("Results", () => {
     render(<Results catalog={catalog} state={baseState} ratings={noRatings} onChange={() => {}} />);
     expect(screen.getAllByText(/6 units/).length).toBeGreaterThan(0);
   });
+
+  it("still yields schedules when a required course has zero sections in the catalog", () => {
+    // "ZERO 1" is required but not offered this term (0 sections in `catalog`).
+    // It must not reach the generator and block the courses that ARE offered.
+    render(
+      <Results
+        catalog={catalog}
+        state={{ ...baseState, requiredCourses: ["PHILO 11", "CSCI 30", "ZERO 1"] }}
+        ratings={noRatings}
+        onChange={() => {}}
+      />
+    );
+    expect(screen.getByText(/valid schedule\(s\), best first/)).toBeTruthy();
+  });
 });
