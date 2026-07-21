@@ -23,45 +23,29 @@
 
 ---
 
-### Task 1: Capture a real curriculum page as a test fixture
+### Task 1: Capture a real curriculum page as a test fixture — ✅ DONE (orchestrator, pre-execution)
 
-**USER-ASSISTED task.** The page is behind the AISIS student login, so the orchestrator cannot fetch it.
+Committed in `3747d5c` as `tools/fixtures/j-vofc-sample.html` (+ `tools/fixtures/README.md`).
+Skip this task; its findings below are inputs to Tasks 2-5.
 
-**Files:**
-- Create: `tools/fixtures/j-vofc-sample.html` (raw saved page, trimmed)
-- Create: `tools/fixtures/README.md`
+**Verified form contract** (read off the real page — do NOT guess or copy from `scrape-schedule.mjs`):
 
-**Interfaces:**
-- Produces: the fixture file every parser task in this plan reads. Until it exists, Tasks 2–4 cannot write honest tests.
+| thing | value |
+|---|---|
+| form | `<form name="degreesForm" method="post" action="/j_aisis/J_VOFC.do">` |
+| program select | `name="degCode"`, with `onchange="submit();"` |
+| hidden inputs | **none** — the POST body is just `degCode=<option value>` |
+| option value | e.g. `BS AMDSc-M DSc_2024_1` |
+| option label | `(BS AMDSc-M DSc) BACHELOR OF SCIENCE IN APPLIED MATHEMATICS(Ver Sem 1, Ver Year 2024)` |
+| options present | 472 (multiple version-years per program) |
 
-- [ ] **Step 1 (USER):** Log into AISIS, open **Official Curriculum** (`J_VOFC.do`), select any program (BS AMDSc 2024 is ideal — its parsed output can be diffed against the already-committed file), and save the results page: browser **File → Save Page As → "Web Page, HTML Only"**. Put it at `tools/fixtures/j-vofc-sample.html` in the repo.
+There is no `command` field on this endpoint. Task 5's runtime hidden-input scan therefore
+yields an empty object on today's page, which is correct — it exists so that a field added
+upstream is picked up rather than silently dropped.
 
-- [ ] **Step 2 (orchestrator):** Read the saved file and confirm it contains (a) the program `<select>` with its option labels, (b) year/term headings, (c) the 5-column curriculum table. If the save produced a login page instead, stop and tell the user to re-save while logged in.
-
-  **Also record the form's real submission contract**, which Task 5 depends on and which cannot be guessed: the `<form>`'s `action` and `method`, the program `<select>`'s `name`, and **every hidden input's name and value** (especially any `command`-style field — `scrape-schedule.mjs` uses `command=displayResults` for a *different* endpoint, and that value must not be assumed to carry over). Write these findings into the task report so Task 5 can encode them.
-
-- [ ] **Step 3 (orchestrator):** Trim the fixture to keep the parser-relevant markup: the full `<form>`/`<select>` block and the complete set of year/term tables for that one program. Strip `<script>`, `<style>`, and navigation chrome. Keep it under ~200 KB. Preserve the exact tag/attribute style AISIS emits — do not reformat or "clean up" attribute quoting, casing, or whitespace inside the parts you keep.
-
-- [ ] **Step 4:** Write `tools/fixtures/README.md`:
-
-```markdown
-# Fixtures
-
-`j-vofc-sample.html` — a real AISIS Official Curriculum (`J_VOFC.do`) results page,
-saved from a logged-in browser session and trimmed to the markup the parsers read
-(program `<select>`, year/term headings, 5-column tables). Contains no personal data:
-the Official Curriculum page is identical for every student in a program.
-
-Re-capture it if AISIS changes the page layout and the parser tests start failing
-for reasons other than a parser bug.
-```
-
-- [ ] **Step 5: Commit**
-
-```bash
-git add tools/fixtures/
-git commit -m "test: add real AISIS Official Curriculum page fixture"
-```
+**Verified page markup** is documented in Task 3, which carries a parser already prototyped
+against this fixture and confirmed to reproduce `data/curricula/BS-AMDSc-M-DSc-2024.json`
+exactly (14 blocks, 79 entries, every field including `isElective`/`electiveDept`).
 
 ---
 
@@ -212,7 +196,7 @@ git commit -m "feat: parse the AISIS curriculum program dropdown"
 
 ---
 
-### Task 3: Curriculum table parser
+### Task 3: Curriculum block parser
 
 **Files:**
 - Modify: `tools/curriculum-parse.mjs`, `tools/curriculum-parse.test.ts`
@@ -230,17 +214,28 @@ export function parseCurriculumPage(html)     // → { blocks, warnings }
 `blocks` are `CurriculumBlock[]`: `{ year, term, key, totalUnits, entries[] }`, entries
 `{ catNo, title, units, prerequisites, category, isElective, electiveDept?, slotId }`.
 
+**The real page's markup — verified against `tools/fixtures/j-vofc-sample.html`, do not re-derive:**
+
+- Year heading: `<td class="text06" colspan="3" align="center">First Year</td>`
+- Term + total units, combined in ONE cell: `<td colspan="5" align="center" class="text04">First Semester - 20.0 Units</td>`
+- Column headers (`Cat No`, `Course Title`, …) also use `class="text04"` — they must be skipped, which the `TERM - N Units` shape does naturally.
+- Entry cells: five consecutive `class="text02"` cells per course. The `class` attribute is **not always first** (`<td align="center" class="text02" >3</td>`), so never anchor on `<td class=`.
+- **The page contains unclosed `<td>` elements** (e.g. `<td …><img …></tr>`). Pairing `<td>…</td>` makes those swallow the headings that follow, silently yielding zero blocks. Tokenize on the opening tag and stop at the next structural tag instead.
+- `<tr>`/`<table>` nesting is unreliable; a linear cell scan is the robust strategy.
+
 - [ ] **Step 1: Write the failing tests** — append to `tools/curriculum-parse.test.ts`:
 
 ```ts
 import { isElectiveEntry, electiveDeptFor, parseCurriculumPage } from "./curriculum-parse.mjs";
+import { readFileSync as read } from "node:fs";
 
 describe("elective detection", () => {
   it("flags placeholder elective slots by catNo or title", () => {
-    expect(isElectiveEntry("MATHEMATICS ELECTIVE", "")).toBe(true);
+    expect(isElectiveEntry("MATHEMATICS ELECTIVE", "MATHEMATICS ELECTIVE")).toBe(true);
     expect(isElectiveEntry("FREE ELECTIVE", "")).toBe(true);
     expect(isElectiveEntry("IE 1", "INTERDISCIPLINARY ELECTIVE 1 - ENGLISH")).toBe(true);
-    expect(isElectiveEntry("X 10", "MATH GRAD ELECTIVE")).toBe(true);
+    expect(isElectiveEntry("MATH GRAD ELECTIVE", "MATHEMATICS GRAD ELECTIVE")).toBe(true);
+    expect(isElectiveEntry("IE 3", "INTERDISCIPLINARY ELECTIVE 3")).toBe(true);
   });
   it("does not flag ordinary courses", () => {
     expect(isElectiveEntry("MATH 31.1", "MATHEMATICAL ANALYSIS IA")).toBe(false);
@@ -253,23 +248,26 @@ describe("elective detection", () => {
 });
 
 describe("parseCurriculumPage", () => {
+  // Mirrors the real page's shape, including an unclosed <td> before the year
+  // heading — the exact malformation that breaks naive <td>…</td> pairing.
   const HTML = `
-    <h3>First Year</h3>
-    <h4>First Semester</h4>
-    <table>
-      <tr><th>Cat No</th><th>Course Title</th><th>Units</th><th>Prerequisites</th><th>Category</th>
-          <th>Total Units: 6.0</th></tr>
-      <tr><td>MATH 10</td><td>MATHEMATICS IN THE MODERN WORLD</td><td>3</td><td></td><td>C</td></tr>
-      <tr><td>INTACT 11</td><td>INTRO TO ATENEO CULTURE</td><td>0</td><td></td><td>C</td></tr>
-      <tr><td>PATHFit 2</td><td>PHYSICAL ACTIVITIES 2</td><td>3</td><td>PATHFit 1, MATH 10</td><td>PFT2</td></tr>
-    </table>
-    <h3>Second Year</h3>
-    <h4>Second Semester</h4>
-    <table>
-      <tr><th>Cat No</th><th>Course Title</th><th>Units</th><th>Prerequisites</th><th>Category</th>
-          <th>Total Units: 3.0</th></tr>
-      <tr><td>IE 1</td><td>INTERDISCIPLINARY ELECTIVE 1 - ENGLISH</td><td>3</td><td>ENGL 11</td><td>IE1E</td></tr>
-    </table>`;
+    <tr><td width="100%" colspan="3" background="s.jpg"><img src="s.jpg"></tr>
+    <tr><td class="text06" colspan="3" align="center">First Year</td></tr>
+    <table><tr><td colspan="5" align="center" class="text04">First Semester - 6.0 Units</td></tr>
+      <tr><td class="text04">Cat No</td><td class="text04">Course Title</td><td class="text04">Units</td>
+          <td class="text04">Prerequisites</td><td class="text04">Category</td></tr>
+      <tr><td class="text02" >MATH 10</td><td class="text02" >MATHEMATICS IN THE MODERN WORLD</td>
+          <td align="center" class="text02" >3</td><td class="text02" ></td><td class="text02" >C</td></tr>
+      <tr><td class="text02" >INTACT 11</td><td class="text02" >INTRO TO ATENEO CULTURE</td>
+          <td align="center" class="text02" >0</td><td class="text02" ></td><td class="text02" >C</td></tr>
+      <tr><td class="text02" >PATHFit 2</td><td class="text02" >PHYSICAL ACTIVITIES 2</td>
+          <td align="center" class="text02" >3</td><td class="text02" >PATHFit 1, MATH 10</td>
+          <td class="text02" >PFT2</td></tr></table>
+    <tr><td class="text06" colspan="3" align="center">Third Year</td></tr>
+    <table><tr><td colspan="5" align="center" class="text04">Fourth Year - 3.0 Units</td></tr>
+      <tr><td class="text02" >IE 1</td><td class="text02" >INTERDISCIPLINARY ELECTIVE 1 - ENGLISH</td>
+          <td align="center" class="text02" >3</td><td class="text02" >ENGL 11</td>
+          <td class="text02" >IE1E</td></tr></table>`;
 
   it("groups entries into year|term blocks with keys and slotIds", () => {
     const { blocks } = parseCurriculumPage(HTML);
@@ -281,8 +279,11 @@ describe("parseCurriculumPage", () => {
       "First Year|First Semester#0", "First Year|First Semester#1", "First Year|First Semester#2",
     ]);
   });
-  it("reads the printed total units from the table header", () => {
+  it("reads total units from the combined term heading", () => {
     expect(parseCurriculumPage(HTML).blocks[0].totalUnits).toBe(6);
+  });
+  it("keeps the quirk block whose term is printed as a year", () => {
+    expect(parseCurriculumPage(HTML).blocks[1].key).toBe("Third Year|Fourth Year");
   });
   it("keeps zero-unit courses and splits comma-separated prerequisites", () => {
     const entries = parseCurriculumPage(HTML).blocks[0].entries;
@@ -290,24 +291,31 @@ describe("parseCurriculumPage", () => {
     expect(entries.find((e) => e.catNo === "PATHFit 2").prerequisites).toEqual(["PATHFit 1", "MATH 10"]);
     expect(entries.find((e) => e.catNo === "MATH 10").prerequisites).toEqual([]);
   });
+  it("skips the Cat No/Course Title column-header row", () => {
+    expect(parseCurriculumPage(HTML).blocks[0].entries.some((e) => e.catNo === "Cat No")).toBe(false);
+  });
   it("marks the IE slot elective with its department", () => {
     const ie = parseCurriculumPage(HTML).blocks[1].entries[0];
     expect(ie.isElective).toBe(true);
     expect(ie.electiveDept).toBe("**IE**");
     expect(ie.category).toBe("IE1E");
   });
-  it("warns instead of throwing when a block has no parseable rows", () => {
-    const { blocks, warnings } = parseCurriculumPage(`<h3>First Year</h3><h4>First Semester</h4><table></table>`);
-    expect(blocks).toEqual([]);
-    expect(warnings.join(" ")).toMatch(/no entries/i);
+  it("returns no blocks and no throw for a page with no curriculum tables", () => {
+    expect(parseCurriculumPage("<html><body><p>nothing</p></body></html>").blocks).toEqual([]);
   });
-  it("parses the captured AISIS page into non-empty blocks", () => {
+
+  // The captured page IS the BS AMDSc 2024 curriculum, so its parse must reproduce
+  // the hand-transcribed file exactly. This is the strongest check in the suite.
+  it("reproduces the committed BS AMDSc 2024 curriculum exactly", () => {
+    const committed = JSON.parse(
+      read(new URL("../data/curricula/BS-AMDSc-M-DSc-2024.json", import.meta.url), "utf8")
+    );
     const { blocks } = parseCurriculumPage(SAMPLE);
-    expect(blocks.length).toBeGreaterThan(0);
-    for (const block of blocks) {
-      expect(block.key).toBe(`${block.year}|${block.term}`);
-      expect(block.entries.length).toBeGreaterThan(0);
-      expect(new Set(block.entries.map((e) => e.slotId)).size).toBe(block.entries.length);
+    expect(blocks).toHaveLength(committed.blocks.length);
+    for (const [i, expected] of committed.blocks.entries()) {
+      expect(blocks[i].key).toBe(expected.key);
+      expect(blocks[i].totalUnits).toBe(expected.totalUnits);
+      expect(blocks[i].entries).toEqual(expected.entries);
     }
   });
 });
@@ -318,7 +326,7 @@ describe("parseCurriculumPage", () => {
 Run: `npx vitest run tools/curriculum-parse.test.ts`
 Expected: FAIL — the new exports do not exist.
 
-- [ ] **Step 3: Implement** — append to `tools/curriculum-parse.mjs`:
+- [ ] **Step 3: Implement** — append to `tools/curriculum-parse.mjs`. This code was prototyped against the real fixture and reproduces the committed curriculum exactly; transcribe it as written:
 
 ```js
 const ELECTIVE = /ELECTIVE/i;
@@ -332,48 +340,43 @@ export function electiveDeptFor(catNo) {
   return IE_SLOT.test(catNo.trim()) ? "**IE**" : undefined;
 }
 
-// The page prints Year heading → Term heading → one 5-column table per block.
-// Each printed block is handled independently: AISIS sometimes mislabels year
-// headings (a "Fourth Year" block printed under "Third Year"), and we transcribe
-// exactly what is printed rather than trying to correct it.
-const YEAR = /\b((?:First|Second|Third|Fourth|Fifth)\s+Year)\b/i;
-const TERM = /\b(First\s+Semester|Second\s+Semester|Intersession|(?:First|Second|Third|Fourth|Fifth)\s+Year)\b/i;
+// Match the OPENING <td ...> only, then take its content up to whatever structural
+// tag comes next. The page leaves some <td> elements unclosed, and pairing
+// <td>…</td> makes those swallow the year/term headings that follow them.
+const CELL = /<td\b([^>]*)>([\s\S]*?)(?=<\/?t[dhr]\b|<\/?table\b|$)/gi;
+const classOf = (attrs) => /class\s*=\s*"([^"]*)"/i.exec(attrs)?.[1] ?? "";
+const TERM_UNITS = /^(.+?)\s*-\s*([\d.]+)\s*Units?$/i;
 
+// One linear pass over three cell kinds in document order: year heading (text06),
+// term+units heading (text04 matching "TERM - N Units"), and entry cells (text02,
+// five per course). <tr>/<table> nesting is unreliable, so it is ignored entirely.
+// Each printed block is transcribed as-is: AISIS sometimes prints a term as a year
+// (a "Fourth Year" block under "Third Year") and that quirk is preserved.
 export function parseCurriculumPage(html) {
   const blocks = [];
   const warnings = [];
-  // Split on tables: everything before a table since the previous one carries its headings.
-  const chunks = [...html.matchAll(/<table\b[^>]*>([\s\S]*?)<\/table>/gi)];
-  let cursor = 0;
   let year = "";
   let term = "";
-  for (const table of chunks) {
-    const preamble = html.slice(cursor, table.index);
-    cursor = table.index + table[0].length;
-    const headingText = textOf(preamble);
-    const yearMatch = YEAR.exec(headingText);
-    if (yearMatch) year = yearMatch[1].replace(/\s+/g, " ");
-    // The term heading is whatever term-ish label appears AFTER the year heading.
-    const afterYear = yearMatch ? headingText.slice(yearMatch.index + yearMatch[0].length) : headingText;
-    const termMatch = TERM.exec(afterYear);
-    if (termMatch) term = termMatch[1].replace(/\s+/g, " ");
-    if (!year || !term) continue;
+  let totalUnits = 0;
+  let pending = [];
 
+  const flush = () => {
+    const cells = pending;
+    pending = [];
+    if (cells.length === 0) return;
+    if (!year || !term) {
+      warnings.push(`${cells.length} entry cell(s) seen before any year/term heading — skipped`);
+      return;
+    }
+    if (cells.length % 5 !== 0) {
+      warnings.push(`${year}|${term}: ${cells.length} entry cell(s) is not a multiple of 5 — trailing cells ignored`);
+    }
     const key = `${year}|${term}`;
-    const rows = [...table[1].matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/gi)];
-    let totalUnits = 0;
     const entries = [];
-    for (const row of rows) {
-      const headerCells = [...row[1].matchAll(/<th\b[^>]*>([\s\S]*?)<\/th>/gi)].map((c) => textOf(c[1]));
-      const totalMatch = /Total\s+Units\s*:?\s*([\d.]+)/i.exec(headerCells.join(" "));
-      if (totalMatch) totalUnits = Number(totalMatch[1]);
-      if (headerCells.length > 0) continue;
-
-      const cells = [...row[1].matchAll(/<td\b[^>]*>([\s\S]*?)<\/td>/gi)].map((c) => textOf(c[1]));
-      if (cells.length < 5) continue;
-      const [catNo, title, unitsText, prereqText, category] = cells;
-      if (!catNo || /^cat\s*no$/i.test(catNo)) continue;
+    for (let i = 0; i + 4 < cells.length; i += 5) {
+      const [catNo, title, unitsText, prereqText, category] = cells.slice(i, i + 5);
       const units = Number(unitsText.replace(/[()]/g, ""));
+      const electiveDept = electiveDeptFor(catNo);
       entries.push({
         catNo,
         title,
@@ -381,16 +384,40 @@ export function parseCurriculumPage(html) {
         prerequisites: prereqText.split(",").map((p) => p.trim()).filter(Boolean),
         category,
         isElective: isElectiveEntry(catNo, title),
-        ...(electiveDeptFor(catNo) ? { electiveDept: electiveDeptFor(catNo) } : {}),
+        ...(electiveDept ? { electiveDept } : {}),
         slotId: `${key}#${entries.length}`,
       });
     }
     if (entries.length === 0) {
-      warnings.push(`${key}: table has no entries — check the page layout`);
-      continue;
+      warnings.push(`${key}: no entries parsed`);
+      return;
     }
     blocks.push({ year, term, key, totalUnits, entries });
+  };
+
+  for (const cell of html.matchAll(CELL)) {
+    const cls = classOf(cell[1]);
+    if (cls !== "text06" && cls !== "text04" && cls !== "text02") continue;
+    const text = textOf(cell[2]);
+    if (cls === "text06") {
+      flush();
+      year = text;
+      continue;
+    }
+    if (cls === "text04") {
+      // Column headers ("Cat No", "Units", …) share this class and simply do not
+      // match the "TERM - N Units" shape, so they need no special-casing.
+      const match = TERM_UNITS.exec(text);
+      if (match) {
+        flush();
+        term = match[1].trim();
+        totalUnits = Number(match[2]);
+      }
+      continue;
+    }
+    pending.push(text);
   }
+  flush();
   return { blocks, warnings };
 }
 ```
@@ -398,18 +425,14 @@ export function parseCurriculumPage(html) {
 - [ ] **Step 4: Run to verify GREEN**
 
 Run: `npx vitest run tools/curriculum-parse.test.ts`
-Expected: PASS. If the real-page test fails, adjust the heading/table regexes to the fixture's actual markup — never edit the fixture.
+Expected: PASS, including "reproduces the committed BS AMDSc 2024 curriculum exactly". If that test fails, the parser is wrong — never edit the fixture or the committed curriculum to make it pass.
 
-- [ ] **Step 5: Cross-check against the known-good committed program.** Write a throwaway script under the scratchpad (not committed) that runs `parseCurriculumPage` on the fixture and diffs the block keys and entry `catNo`s against `data/curricula/BS-AMDSc-M-DSc-2024.json`. If the fixture is the BS AMDSc 2024 page, they must match; report any difference in the task report rather than silently accepting it.
-
-- [ ] **Step 6: Commit**
+- [ ] **Step 5: Commit**
 
 ```bash
 git add tools/curriculum-parse.mjs tools/curriculum-parse.test.ts
 git commit -m "feat: parse AISIS curriculum year/term blocks and entries"
 ```
-
----
 
 ### Task 4: Login-page detection and program-file assembly
 
