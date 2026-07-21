@@ -28,7 +28,7 @@ export interface Catalog {
 
 export interface ProfRating {
   name: string;          // instructor as printed by AISIS
-  rating: 0 | 1 | 2 | 3 | 4 | 5;
+  rating: number;        // 0-5 stars; community entries may be fractional averages (e.g. 4.3)
   courseCode?: string;   // scope to a class; omit = overall rating for the prof
   note?: string;
   asOf?: string;

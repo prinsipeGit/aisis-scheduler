@@ -35,7 +35,7 @@ export function buildRequirementRows(
     // selection action, so "selected" just means "resolved to a concrete course."
     const selected = entry.isElective
       ? courseCode !== null
-      : state.requiredCourses.includes(courseCode);
+      : state.requiredCourses.includes(entry.catNo);
     return {
       slotId: entry.slotId,
       catNo: entry.catNo,
