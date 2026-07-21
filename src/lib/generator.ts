@@ -81,5 +81,6 @@ export function generate(all: Section[], state: UserState): GenerateResult {
       if (!compatible) conflictPairs.push({ a: aCourse, b: bCourse });
     }
   }
-  return { schedules, diagnostics: { perCourse, conflictPairs } };
+  const nWayConflict = perCourse.every((c) => c.afterFilters > 0) && conflictPairs.length === 0;
+  return { schedules, diagnostics: { perCourse, conflictPairs, nWayConflict } };
 }

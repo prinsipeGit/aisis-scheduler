@@ -67,4 +67,19 @@ describe("PreferencesPanel", () => {
       },
     });
   });
+
+  it("lists excluded sections with a Restore button that clears just that one", () => {
+    const onChange = vi.fn();
+    const excludedState: UserState = {
+      ...baseState,
+      preferences: { ...baseState.preferences, excludedSections: ["PHILO 11 A"] },
+    };
+    render(<PreferencesPanel catalog={catalog} state={excludedState} onChange={onChange} />);
+    expect(screen.getByText(/PHILO 11 A/)).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Restore" }));
+    expect(onChange).toHaveBeenCalledWith({
+      ...excludedState,
+      preferences: { ...excludedState.preferences, excludedSections: [] },
+    });
+  });
 });

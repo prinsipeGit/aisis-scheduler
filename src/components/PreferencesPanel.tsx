@@ -32,6 +32,9 @@ export function PreferencesPanel({ catalog, state, onChange }: Props) {
   const setBlock = (i: number, block: Meeting) =>
     setPrefs({ protectedBlocks: prefs.protectedBlocks.map((b, j) => (j === i ? block : b)) });
 
+  const restoreExcluded = (key: string) =>
+    setPrefs({ excludedSections: prefs.excludedSections.filter((k) => k !== key) });
+
   const instructors = [
     ...new Set(
       catalog.sections
@@ -116,6 +119,20 @@ export function PreferencesPanel({ catalog, state, onChange }: Props) {
       <button onClick={() => setPrefs({ protectedBlocks: [...prefs.protectedBlocks, { days: ["M"], start: 720, end: 780 }] })}>
         Add protected block
       </button>
+
+      <h2>Excluded sections</h2>
+      {prefs.excludedSections.length === 0 ? (
+        <p>None excluded.</p>
+      ) : (
+        <ul>
+          {prefs.excludedSections.map((key) => (
+            <li key={key}>
+              {key}{" "}
+              <button onClick={() => restoreExcluded(key)}>Restore</button>
+            </li>
+          ))}
+        </ul>
+      )}
 
       <h2>My professor ratings</h2>
       {instructors.length === 0 && <p>Pick courses first to rate their professors.</p>}

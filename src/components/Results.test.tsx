@@ -65,4 +65,32 @@ describe("Results", () => {
     render(<Results catalog={catalog} state={{ ...baseState, chosenCourses: [] }} ratings={noRatings} onChange={() => {}} />);
     expect(screen.getByText(/Pick courses first/)).toBeTruthy();
   });
+
+  it("explains an N-way conflict when every pair fits but no triple does", () => {
+    const P = m(["M"], 480, 540);
+    const Q = m(["M"], 540, 600);
+    const nWay: Catalog = {
+      ...catalog,
+      sections: [
+        sec("PHILO 11", "A", [P]),
+        sec("PHILO 11", "B", [Q]),
+        sec("CSCI 30", "A", [P]),
+        sec("CSCI 30", "B", [Q]),
+        sec("MATH 21", "A", [P]),
+        sec("MATH 21", "B", [Q]),
+      ],
+    };
+    render(
+      <Results
+        catalog={nWay}
+        state={{ ...baseState, chosenCourses: ["PHILO 11", "CSCI 30", "MATH 21"] }}
+        ratings={noRatings}
+        onChange={() => {}}
+      />
+    );
+    expect(screen.getByText(/No valid schedule found/)).toBeTruthy();
+    expect(
+      screen.getByText(/These courses can't all fit together at once, even though each pair can/)
+    ).toBeTruthy();
+  });
 });

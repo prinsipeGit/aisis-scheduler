@@ -97,10 +97,34 @@ describe("generate", () => {
       { courseCode: "COURSE Y", total: 1, afterFilters: 1 },
     ]);
     expect(diagnostics!.conflictPairs).toEqual([{ a: "COURSE X", b: "COURSE Y" }]);
+    expect(diagnostics!.nWayConflict).toBe(false);
   });
 
   it("zero results from over-filtering shows afterFilters: 0", () => {
     const { diagnostics } = generate(ALL, state({ ...CHOSEN, fullSections: ["COURSE B 1", "COURSE B 2"] }));
     expect(diagnostics!.perCourse).toContainEqual({ courseCode: "COURSE B", total: 2, afterFilters: 0 });
+  });
+
+  it("flags an N-way conflict when every pair fits but no triple does", () => {
+    // Only two non-overlapping slots exist (P: 8-9, Q: 9-10 on Monday), and each of
+    // 3 courses offers a section in each slot. Any 2 courses can split P/Q without
+    // conflict, but with 3 courses and only 2 slots, pigeonhole forces a clash.
+    const P = m(["M"], 480, 540);
+    const Q = m(["M"], 540, 600);
+    const A1 = sec("COURSE A", "1", [P]);
+    const A2 = sec("COURSE A", "2", [Q]);
+    const B1 = sec("COURSE B", "1", [P]);
+    const B2 = sec("COURSE B", "2", [Q]);
+    const C1 = sec("COURSE C", "1", [P]);
+    const C2 = sec("COURSE C", "2", [Q]);
+    const { schedules, diagnostics } = generate(
+      [A1, A2, B1, B2, C1, C2],
+      state({ chosenCourses: ["COURSE A", "COURSE B", "COURSE C"] })
+    );
+    expect(schedules).toHaveLength(0);
+    expect(diagnostics).not.toBeNull();
+    expect(diagnostics!.conflictPairs).toEqual([]);
+    expect(diagnostics!.perCourse.every((c) => c.afterFilters > 0)).toBe(true);
+    expect(diagnostics!.nWayConflict).toBe(true);
   });
 });

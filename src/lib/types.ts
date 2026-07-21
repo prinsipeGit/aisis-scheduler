@@ -62,6 +62,7 @@ export type Schedule = Section[];
 export interface Diagnostics {
   perCourse: { courseCode: string; total: number; afterFilters: number }[];
   conflictPairs: { a: string; b: string }[];
+  nWayConflict: boolean;
 }
 
 export function sectionKey(s: Section): string {
