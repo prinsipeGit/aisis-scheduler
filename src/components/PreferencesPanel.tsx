@@ -12,12 +12,14 @@ const DAYS: Day[] = ["M", "T", "W", "TH", "F", "SAT"];
 const HOURS = Array.from({ length: 15 }, (_, i) => 420 + i * 60); // 7:00 AM – 9:00 PM
 
 interface Props {
-  catalog: Catalog;
+  catalog: Catalog | null;
   state: UserState;
   onChange: (s: UserState) => void;
 }
 
 export function PreferencesPanel({ catalog, state, onChange }: Props) {
+  if (!catalog) return <p>Loading the catalog for {state.calendarTerm}…</p>;
+
   const prefs = state.preferences;
   const setPrefs = (p: Partial<UserState["preferences"]>) =>
     onChange({ ...state, preferences: { ...prefs, ...p } });
@@ -35,23 +37,34 @@ export function PreferencesPanel({ catalog, state, onChange }: Props) {
   const restoreExcluded = (key: string) =>
     setPrefs({ excludedSections: prefs.excludedSections.filter((k) => k !== key) });
 
-  const instructors = [
-    ...new Set(
-      catalog.sections
-        .filter((s) => state.chosenCourses.includes(s.courseCode) && s.instructor && s.instructor !== "TBA")
-        .map((s) => s.instructor)
-    ),
-  ].sort();
+  // One row per (course, professor) pair among the user's chosen courses.
+  const teachingPairs: { courseCode: string; name: string }[] = [];
+  for (const s of catalog.sections) {
+    if (!state.requiredCourses.includes(s.courseCode)) continue;
+    for (const name of s.instructors) {
+      if (!name) continue;
+      if (!teachingPairs.some((p) => p.courseCode === s.courseCode && p.name === name)) {
+        teachingPairs.push({ courseCode: s.courseCode, name });
+      }
+    }
+  }
+  teachingPairs.sort((a, b) => a.courseCode.localeCompare(b.courseCode) || a.name.localeCompare(b.name));
 
-  const setRating = (name: string, value: string) => {
-    const others = state.personalRatings.filter((r) => r.name !== name);
-    const rating = Number(value);
+  const ratingOf = (courseCode: string, name: string) =>
+    state.personalRatings.find((r) => r.name === name && r.courseCode === courseCode)?.rating;
+
+  const setRating = (courseCode: string, name: string, value: string) => {
+    const others = state.personalRatings.filter(
+      (r) => !(r.name === name && r.courseCode === courseCode)
+    );
+    if (value === "") {
+      onChange({ ...state, personalRatings: others });
+      return;
+    }
+    const rating = Number(value) as ProfRating["rating"];
     onChange({
       ...state,
-      personalRatings:
-        rating >= 1 && rating <= 5
-          ? [...others, { name, rating: rating as ProfRating["rating"] }]
-          : others,
+      personalRatings: [...others, { name, rating, courseCode }],
     });
   };
 
@@ -135,19 +148,21 @@ export function PreferencesPanel({ catalog, state, onChange }: Props) {
       )}
 
       <h2>My professor ratings</h2>
-      {instructors.length === 0 && <p>Pick courses first to rate their professors.</p>}
+      {teachingPairs.length === 0 && <p>Pick courses first to rate their professors.</p>}
       <ul>
-        {instructors.map((name) => (
-          <li key={name}>
+        {teachingPairs.map(({ courseCode, name }) => (
+          <li key={`${courseCode}|${name}`}>
             <label>
-              {name}{" "}
+              {name} — {courseCode}{" "}
               <select
-                value={state.personalRatings.find((r) => r.name === name)?.rating ?? ""}
-                onChange={(e) => setRating(name, e.target.value)}
+                value={ratingOf(courseCode, name) ?? ""}
+                onChange={(e) => setRating(courseCode, name, e.target.value)}
               >
                 <option value="">unrated</option>
-                {[1, 2, 3, 4, 5].map((n) => (
-                  <option key={n} value={n}>{n}</option>
+                {[0, 1, 2, 3, 4, 5].map((n) => (
+                  <option key={n} value={n}>
+                    {n} ★
+                  </option>
                 ))}
               </select>
             </label>

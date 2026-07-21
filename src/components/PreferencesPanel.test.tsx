@@ -3,16 +3,22 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { PreferencesPanel } from "./PreferencesPanel";
 import type { Catalog, Section, UserState } from "../lib/types";
 
-const sec = (courseCode: string, sectionCode: string, instructor: string): Section => ({
-  courseCode, sectionCode, instructor, title: courseCode, units: 3, meetings: [], room: "", remarks: "", raw: "",
+const sec = (courseCode: string, sectionCode: string, instructors: string[]): Section => ({
+  courseCode, sectionCode, instructors, modality: "FULLY ONSITE",
+  title: courseCode, units: 3, meetings: [], room: "", remarks: "", raw: "",
 });
 const catalog: Catalog = {
-  semester: "2026-1", exportedAt: "2026-07-20T00:00:00.000Z", warnings: [],
-  sections: [sec("PHILO 11", "A", "GARCIA, JUAN"), sec("CSCI 30", "A", "SY, MARIA")],
+  term: "2026-2", exportedAt: "2026-07-21T00:00:00.000Z", warnings: [],
+  sections: [
+    sec("PHILO 11", "A", ["GARCIA, JUAN"]),
+    sec("PHILO 11", "B", ["DE LOS SANTOS, Kurt Anthony", "MIJARES, Jim Ralphealo"]),
+    sec("CSCI 30", "A", ["SY, MARIA"]),
+  ],
 };
 const baseState: UserState = {
-  version: 1, semester: "2026-1", chosenCourses: ["PHILO 11"], lockedSections: [],
-  fullSections: [], personalRatings: [],
+  version: 2, programId: "P", blockKey: "B", calendarTerm: "2026-2",
+  requiredCourses: ["PHILO 11"], electiveFills: {},
+  lockedSections: [], fullSections: [], personalRatings: [],
   preferences: { criteria: ["compactDays"], protectedBlocks: [], excludedSections: [] },
 };
 
@@ -39,20 +45,43 @@ describe("PreferencesPanel", () => {
     });
   });
 
-  it("lists only instructors of chosen courses for rating", () => {
+  it("lists every instructor of the chosen courses, including co-teachers", () => {
     render(<PreferencesPanel catalog={catalog} state={baseState} onChange={() => {}} />);
     expect(screen.getByText(/GARCIA, JUAN/)).toBeTruthy();
-    expect(screen.queryByText(/SY, MARIA/)).toBeNull();
+    expect(screen.getByText(/MIJARES, Jim Ralphealo/)).toBeTruthy();
+    expect(screen.queryByText(/SY, MARIA/)).toBeNull(); // CSCI 30 is not in requiredCourses
   });
 
-  it("rating a professor adds a personal rating", () => {
+  it("rating a professor stores it scoped to the course, 0-5", () => {
     const onChange = vi.fn();
     render(<PreferencesPanel catalog={catalog} state={baseState} onChange={onChange} />);
-    fireEvent.change(screen.getByLabelText(/GARCIA, JUAN/), { target: { value: "5" } });
-    expect(onChange).toHaveBeenCalledWith({
+    fireEvent.change(screen.getByLabelText(/GARCIA, JUAN.*PHILO 11/), { target: { value: "5" } });
+    expect((onChange.mock.calls[0][0] as UserState).personalRatings).toEqual([
+      { name: "GARCIA, JUAN", rating: 5, courseCode: "PHILO 11" },
+    ]);
+  });
+
+  it("accepts a 0-star rating", () => {
+    const onChange = vi.fn();
+    render(<PreferencesPanel catalog={catalog} state={baseState} onChange={onChange} />);
+    fireEvent.change(screen.getByLabelText(/GARCIA, JUAN.*PHILO 11/), { target: { value: "0" } });
+    expect((onChange.mock.calls[0][0] as UserState).personalRatings[0].rating).toBe(0);
+  });
+
+  it("choosing 'unrated' removes the entry", () => {
+    const onChange = vi.fn();
+    const rated: UserState = {
       ...baseState,
-      personalRatings: [{ name: "GARCIA, JUAN", rating: 5 }],
-    });
+      personalRatings: [{ name: "GARCIA, JUAN", rating: 4, courseCode: "PHILO 11" }],
+    };
+    render(<PreferencesPanel catalog={catalog} state={rated} onChange={onChange} />);
+    fireEvent.change(screen.getByLabelText(/GARCIA, JUAN.*PHILO 11/), { target: { value: "" } });
+    expect((onChange.mock.calls[0][0] as UserState).personalRatings).toEqual([]);
+  });
+
+  it("says so when the catalog has not loaded", () => {
+    render(<PreferencesPanel catalog={null} state={baseState} onChange={() => {}} />);
+    expect(screen.getByText(/loading the catalog/i)).toBeTruthy();
   });
 
   it("adds a protected block", () => {
