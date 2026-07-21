@@ -74,12 +74,81 @@ describe("CourseRequirements", () => {
   it("adding an extra course appends it to requiredCourses", () => {
     const onChange = vi.fn();
     render(<CourseRequirements block={block} catalog={catalog} state={baseState} onChange={onChange} />);
-    fireEvent.change(screen.getByLabelText(/add another course/i), { target: { value: "CSCI 112" } });
+    fireEvent.change(screen.getByLabelText(/add another course/i), { target: { value: "CSCI" } });
+    fireEvent.click(screen.getByRole("button", { name: /CSCI 112/i }));
     expect((onChange.mock.calls[0][0] as UserState).requiredCourses).toContain("CSCI 112");
   });
 
   it("shows a loading note when the catalog is not loaded yet", () => {
     render(<CourseRequirements block={block} catalog={null} state={baseState} onChange={() => {}} />);
     expect(screen.getByText(/loading the catalog/i)).toBeTruthy();
+  });
+
+  it("clearing a filled elective removes the code from electiveFills and requiredCourses", () => {
+    const filledState: UserState = {
+      ...baseState,
+      electiveFills: { "b#3": "MATH 55.1" },
+      requiredCourses: [...baseState.requiredCourses, "MATH 55.1"],
+    };
+    const onChange = vi.fn();
+    render(<CourseRequirements block={block} catalog={catalog} state={filledState} onChange={onChange} />);
+    fireEvent.change(screen.getByLabelText(/fill MATHEMATICS ELECTIVE/i), { target: { value: "" } });
+    const next = onChange.mock.calls[0][0] as UserState;
+    expect(next.electiveFills["b#3"]).toBeUndefined();
+    expect(next.requiredCourses).not.toContain("MATH 55.1");
+  });
+
+  it("clicking a filled elective's checkbox clears the fill and requiredCourses", () => {
+    const filledState: UserState = {
+      ...baseState,
+      electiveFills: { "b#3": "MATH 55.1" },
+      requiredCourses: [...baseState.requiredCourses, "MATH 55.1"],
+    };
+    const onChange = vi.fn();
+    render(<CourseRequirements block={block} catalog={catalog} state={filledState} onChange={onChange} />);
+    fireEvent.click(screen.getByLabelText(/MATH 55\.1/));
+    const next = onChange.mock.calls[0][0] as UserState;
+    expect(next.electiveFills["b#3"]).toBeUndefined();
+    expect(next.requiredCourses).not.toContain("MATH 55.1");
+  });
+
+  it("clearing one elective preserves requiredCourses when another elective slot shares the code", () => {
+    const twoElectiveBlock: CurriculumBlock = {
+      ...block,
+      entries: [
+        ...block.entries,
+        { catNo: "FREE ELECTIVE", title: "FREE ELECTIVE", units: 3, prerequisites: [], category: "RM2", isElective: true, slotId: "b#4" },
+      ],
+    };
+    const sharedState: UserState = {
+      ...baseState,
+      electiveFills: { "b#3": "MATH 55.1", "b#4": "MATH 55.1" },
+      requiredCourses: [...baseState.requiredCourses, "MATH 55.1"],
+    };
+    const onChange = vi.fn();
+    render(<CourseRequirements block={twoElectiveBlock} catalog={catalog} state={sharedState} onChange={onChange} />);
+    fireEvent.change(screen.getByLabelText(/fill MATHEMATICS ELECTIVE/i), { target: { value: "" } });
+    const next = onChange.mock.calls[0][0] as UserState;
+    expect(next.electiveFills["b#3"]).toBeUndefined();
+    expect(next.electiveFills["b#4"]).toBe("MATH 55.1");
+    expect(next.requiredCourses).toContain("MATH 55.1");
+  });
+
+  it("Add-course search filters by query, appends the picked course, and caps the result list", () => {
+    const manyCatalog: Catalog = {
+      term: "2026-2", exportedAt: "2026-07-21T00:00:00.000Z", warnings: [],
+      sections: Array.from({ length: 25 }, (_, i) => sec(`TEST ${i + 1}`, "A")),
+    };
+    const onChange = vi.fn();
+    render(<CourseRequirements block={block} catalog={manyCatalog} state={baseState} onChange={onChange} />);
+
+    fireEvent.change(screen.getByLabelText(/add another course/i), { target: { value: "TEST" } });
+    const results = screen.getAllByRole("button", { name: /TEST \d+/ });
+    expect(results.length).toBe(20);
+    expect(screen.getByText(/refine your search/i)).toBeTruthy();
+
+    fireEvent.click(results[0]);
+    const next = onChange.mock.calls[0][0] as UserState;
+    expect(next.requiredCourses.some((c) => /^TEST \d+$/.test(c))).toBe(true);
   });
 });
