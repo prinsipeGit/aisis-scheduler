@@ -13,6 +13,7 @@ sections in and it re-ranks instantly. No accounts; everything personal stays
 in your browser.
 
 **Design spec:** `docs/superpowers/specs/2026-07-21-ips-driven-scheduler-design.md`
+**Supabase/multi-program spec:** `docs/superpowers/specs/2026-07-21-multi-program-curricula-design.md`
 
 ## Development
 
@@ -33,14 +34,15 @@ npm run scrape:schedule -- 2026-1
 ```
 
 This loops every department for that term and safely writes
-`src/data/catalog-<term>.json`. Commit the file and push; the site redeploys
-with fresh offerings. Valid terms: `2026-2`, `2026-1`, `2026-0`, `2025-2`,
-`2025-1`, `2025-0`. A term with no data file shows an in-app message telling
-you to run this command.
+`data/catalogs/catalog-<term>.json`. Commit the file, then run
+`npm run push:data` to publish it to Supabase — no site redeploy needed, the
+app picks up the new term on next load. Valid terms: `2026-2`, `2026-1`,
+`2026-0`, `2025-2`, `2025-1`, `2025-0`. A term with no data in Supabase shows
+an in-app message telling you to run this command (and `push:data`).
 
 Note: a term only has data once AISIS publishes it. As of 2026-07-21, `2026-2`
 returns no results at all — that's AISIS, not a bug. The app defaults to
-`2026-1`, which is the currently committed catalog (`src/data/catalog-2026-1.json`,
+`2026-1`, which is the currently seeded catalog (`data/catalogs/catalog-2026-1.json`,
 3,743 sections). Re-run the scraper for the enlistment term once it goes live.
 
 The scraper never sends, prompts for, or stores student credentials. It obtains
@@ -48,8 +50,9 @@ a temporary anonymous session cookie from the public page. It refuses to replace
 a catalog when the result is empty or suspiciously partial; use `--force` only
 after manually confirming that such a result is legitimate.
 
-Only terms with a bundled catalog are enabled in the app. The repository
-currently ships `2026-1`; the other AISIS term labels remain visible but disabled.
+Only terms with a catalog row in Supabase are enabled in the app. The database
+currently has `2026-1` seeded; the other AISIS term labels remain visible but
+disabled until scraped and pushed.
 
 ## Scheduling limits and uncertain times
 
@@ -67,9 +70,10 @@ excluded from generated schedules instead of being treated as conflict-free.
 
 Curricula come from AISIS → **Official Curriculum** (`J_VOFC.do`), which is
 behind the student login but identical for every student. `BS AMDSc` (2024) is
-seeded in `src/data/curriculum-BS-AMDSc-2024.json`. To add another program,
-transcribe its blocks into the same shape and register it in
-`src/lib/curriculum.ts`.
+seeded in `data/curricula/BS-AMDSc-M-DSc-2024.json`. To add another program,
+transcribe its blocks into the same shape, add it to `data/curricula/index.json`,
+and run `npm run push:data`. A bulk scraper covering every AISIS program is
+planned — see the multi-program spec.
 
 ## Professor ratings
 
@@ -83,9 +87,41 @@ platform — see spec §6.1.
 Static site — any host works. For Vercel: import the repo, framework preset
 **Vite**, build `npm run build`, output `dist/`. Every push to main redeploys.
 
-## Scaling to Supabase
+## Data hosting
 
-`src/lib/curriculum.ts` and `src/lib/catalog.ts` are the boundaries that read
-bundled data. They are the starting points for a future Supabase migration, but
-remote data would also require asynchronous loading, caching, error handling,
-and tests in their UI consumers — see spec §7.
+Shared data (curricula, per-term catalogs, community professor ratings) lives
+in this repo under `data/` — git is the source of truth, reviewed and
+versioned like code. The app never bundles it; at runtime it reads only from
+**Supabase**, which serves as the read layer:
+
+| table | source file(s) |
+|---|---|
+| `programs` | `data/curricula/*.json` |
+| `catalogs` | `data/catalogs/catalog-*.json` |
+| `community_ratings` | `data/prof-ratings.json` |
+
+`anon` access to all three tables is read-only (RLS: `SELECT` only, no
+`INSERT`/`UPDATE`/`DELETE`); writes require the service role.
+
+To publish a `data/` change, run:
+
+```bash
+SUPABASE_SERVICE_ROLE_KEY=<key> npm run push:data
+```
+
+This upserts every curriculum and catalog file and replaces
+`community_ratings` wholesale. Get the service role key from the Supabase
+dashboard → Project Settings → API. No site redeploy is needed — the app
+picks up new rows on next load.
+
+The app connects using the public defaults committed in `supabase/project.json`
+(project URL + anon key — safe to commit, RLS keeps them read-only). Set
+`VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` to point the app at a different
+project instead.
+
+**Token rule:** no tool in this repo ever handles student username/password
+credentials. Some tools accept a temporary, user-supplied token via
+environment variable only — never a CLI argument, never written to disk or
+logged, held in memory for the duration of the run: `SUPABASE_SERVICE_ROLE_KEY`
+for `push:data` above, and (for the future curricula scraper) `AISIS_COOKIE`,
+a session cookie copied from DevTools after a normal student login.
