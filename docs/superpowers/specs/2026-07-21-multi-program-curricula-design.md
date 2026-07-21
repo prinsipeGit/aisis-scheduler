@@ -1,22 +1,27 @@
-# Multi-Program Curricula — Design
+# Multi-Program Curricula + Supabase Serving Layer — Design
 
-Date: 2026-07-21
+Date: 2026-07-21 (revised same day to fold in the Supabase migration)
 Status: approved (pending spec review)
-Builds on: `2026-07-21-ips-driven-scheduler-design.md` (esp. §2.2 for the J_VOFC.do page layout)
+Builds on: `2026-07-21-ips-driven-scheduler-design.md` (esp. §2.2 for the J_VOFC.do page layout).
+Supersedes that spec's §7 "defer Supabase" stance.
 
 ## 1. Goal
 
-Cover every program in the AISIS **Official Curriculum** dropdown (~250 programs), not just the
-hand-transcribed `BS AMDSc-M DSc` 2024. Import the **latest version-year per program** via a
-repeatable, cookie-based bulk scraper the user runs locally. The app lazy-loads one curriculum
-at a time, mirroring the existing catalog pattern.
+Two coupled changes, implemented as one initiative:
+
+1. Cover every program in the AISIS **Official Curriculum** dropdown (~250 programs, latest
+   version-year each), imported via a repeatable, cookie-based bulk scraper the user runs locally.
+2. Serve all **shared** data (curricula, per-term catalogs, community prof ratings) from
+   **Supabase** instead of bundling JSON into the site build. Personal data (selections,
+   preferences, personal ratings) stays in localStorage — the "Saved on this device" promise is
+   unchanged. No accounts.
 
 Non-goals:
-- Importing every historical version-year of each program (latest only, per user decision).
-- Supabase or any remote data source (spec §7 of the v2 design still defers this).
+- Importing historical version-years (latest per program only, per user decision).
 - Automating the AISIS login in any form.
+- Any user-authenticated or write path from the app; the app is read-only toward Supabase.
 
-## 2. Data acquisition — `tools/scrape-curricula.mjs`
+## 2. Curricula acquisition — `tools/scrape-curricula.mjs`
 
 New script, run as `npm run scrape:curricula`.
 
@@ -28,8 +33,8 @@ New script, run as `npm run scrape:curricula`.
 - The README documents the copy-from-DevTools procedure and states the cookie is held in memory
   for the duration of the run only.
 - README's tooling-credential rule is amended: *credentials* (username/password) are never
-  handled by any tool in this repo; a *temporary session token supplied by the user via env var*
-  is accepted by this one tool, held only in memory.
+  handled by any tool in this repo; *temporary tokens supplied by the user via env var*
+  (`AISIS_COOKIE` here, `SUPABASE_SERVICE_ROLE_KEY` in §5) are accepted, held only in memory.
 - If the cookie is missing or the response looks like the login page, abort immediately with a
   clear message — do not retry.
 
@@ -60,77 +65,135 @@ Structure per the v2 spec §2.2: **Year** heading → **Term** heading → 5-col
   suspicious (e.g. contains no digit and is not a detected elective) are listed in a run-end
   warnings summary for manual eyeballing.
 - Output shape: exactly the existing `Program` type (`blocks[]` with `key: "Year|Term"`,
-  `entries[]` with `slotId: "Year|Term#index"`), so `curriculum.ts` consumers are unchanged.
+  `entries[]` with `slotId: "Year|Term#index"`), so consumers are unchanged.
 
 ### 2.5 Output and safety rails
 
 - Program id: slugified `CODE-YEAR` — non-alphanumeric runs in the code become `-`
   (e.g. `BS AMDSc-M DSc` + 2024 → `BS-AMDSc-M-DSc-2024`).
-- Writes one file per program: `src/data/curricula/<id>.json`, plus regenerates
-  `src/data/curricula/index.json` containing `ProgramSummary[]` (id, code, name, versionYear).
+- Writes one file per program: `data/curricula/<id>.json`, plus regenerates
+  `data/curricula/index.json` containing `ProgramSummary[]` (id, code, name, versionYear).
 - Atomic writes (`.tmp` + rename), like the schedule scraper.
 - Refuses to write anything when the run is suspicious — zero programs parsed, or fewer than
   `max(10, 20%)` of discovered programs parsed successfully — unless `--force`.
 - Existing files for programs absent from this run are left in place (a partial rerun never
   deletes data); the index is regenerated from the files present on disk, not from the run.
 
-## 3. App changes
+## 3. Repository data layout — git stays the source of truth
 
-### 3.1 `src/lib/curriculum.ts`
+All scraped/shared data lives under a top-level `data/` directory, **outside `src/`**, so none
+of it is ever bundled by Vite:
 
-Remains the ONLY module that reads curriculum JSON.
-- `getPrograms(): ProgramSummary[]` — static import of `curricula/index.json`.
-- `loadProgram(id): Promise<Program>` — `import.meta.glob("../data/curricula/*.json")`, keyed by
-  id; throws `ProgramUnavailableError` (message: run `npm run scrape:curricula`) when missing.
-- `getBlock(program, blockKey)` unchanged. `getCurriculum()` (sync) is removed.
+```
+data/
+  curricula/<program-id>.json   (one per program)
+  curricula/index.json          (ProgramSummary[])
+  catalogs/catalog-<term>.json  (moved from src/data/)
+  prof-ratings.json             (moved from src/data/)
+```
 
-### 3.2 Consumers
+Scrapers keep writing reviewable, versioned JSON here exactly as they do today (diff review,
+history, safety rails). Supabase is the **serving layer**, populated from these files (§5).
+The seeded `curriculum-BS-AMDSc-2024.json` is hand-migrated to
+`data/curricula/BS-AMDSc-M-DSc-2024.json` (content unchanged except `id`) with a one-entry
+`index.json`, so the pipeline works before any scrape.
 
-- `App.tsx` gains a program-loading effect symmetrical to the catalog effect (cancelled-flag,
-  error banner, `program === null` while loading). It already memoizes `program`/`block`; those
-  now come from the effect and are passed down as today.
+## 4. Supabase project and schema
+
+- New free-tier project **`aisis-scheduler`** in org `prinsipe` (id `kibvzntiobjhtqzhpvcx`),
+  region `ap-southeast-1` (closest to Manila). Confirmed cost: **$0/month**. Created via the
+  Supabase connector at implementation start, after a final user go-ahead.
+- Tables (all in `public`, RLS enabled, `anon` gets SELECT only; no INSERT/UPDATE/DELETE
+  policies for `anon`, so writes require the service role):
+
+| table | columns |
+|---|---|
+| `programs` | `id text PK`, `code text`, `name text`, `version_year int`, `blocks jsonb`, `updated_at timestamptz default now()` |
+| `catalogs` | `term text PK`, `exported_at timestamptz`, `sections jsonb`, `warnings jsonb`, `updated_at timestamptz default now()` |
+| `community_ratings` | `id bigint identity PK`, `name text`, `rating numeric`, `course_code text null`, `note text null`, `as_of date null`, unique `(name, course_code)` |
+
+Whole-blob `jsonb` for `blocks`/`sections` because the app always consumes a full program/term
+at once: one fetch, gzipped in transit, row shape identical to the TypeScript types.
+Schema applied via connector migrations (`apply_migration`), kept in `supabase/migrations/`.
+
+## 5. Publishing — `tools/push-data.mjs` (`npm run push:data`)
+
+- Upserts everything under `data/` into Supabase: each curriculum file → `programs`, each
+  catalog file → `catalogs`, `prof-ratings.json` → `community_ratings` (upsert-by-PK for
+  programs/catalogs; ratings are replaced via delete-then-insert on `(name, course_code)` —
+  a brief inconsistency window is acceptable for a ratings seed).
+- Auth: `SUPABASE_SERVICE_ROLE_KEY` env var only — same handling rules as `AISIS_COOKIE`
+  (never a CLI arg, never stored, never logged). URL from `SUPABASE_URL` env var or a committed
+  default.
+- Prints a per-table summary (rows written / skipped) and fails loudly on any error.
+- Semester workflow becomes: scrape → review diff → commit → `push:data`. No site redeploy.
+
+## 6. App changes
+
+### 6.1 Data modules (`src/lib/catalog.ts`, `src/lib/curriculum.ts`)
+
+Still the ONLY modules that touch shared data; their consumers keep the same call shapes,
+now async end-to-end:
+
+- `getTerms(): Promise<TermOption[]>` — `select term, exported_at from catalogs`, ordered
+  newest first; "available" derives from presence in the table (replaces build-time globbing).
+  The static `TERMS` list of AISIS term labels remains for labeling/ordering.
+- `loadCatalog(term): Promise<Catalog>` — one row fetch; `CatalogUnavailableError` when absent
+  (message now points at `scrape:schedule` + `push:data`).
+- `getPrograms(): Promise<ProgramSummary[]>` — `select id, code, name, version_year from programs`.
+- `loadProgram(id): Promise<Program>` — one row fetch; `ProgramUnavailableError` when absent.
+  Sync `getCurriculum()` is removed.
+- `loadCommunityRatings(): Promise<ProfRating[]>` — replaces sync `getCommunityRatings()`.
+- Client: `@supabase/supabase-js` with the anon (publishable) key. `VITE_SUPABASE_URL` /
+  `VITE_SUPABASE_ANON_KEY` env vars with committed defaults — anon keys are public by design.
+
+### 6.2 Consumers
+
+- `App.tsx`: program list, selected program, and community ratings each load in an effect
+  symmetrical to the existing catalog effect (cancelled flag, error banner, loading text).
+  Ratings merge into the memo once loaded; until then personal ratings alone apply.
 - `Results.tsx` stops importing `curriculum.ts`; it receives `block` as a prop from `App`
   (it already receives `catalog`, `state`, `ratings`). Its zero-block fallback path is kept.
+- No bundled-JSON fallback and no offline mode: this is an enlistment tool used online. Network
+  failures surface as the existing banner + per-tab error states.
 - No storage-shape change; `UserState.version` stays 2. A saved `programId` using the old
   `BS-AMDSc-2024` id will no longer resolve → the app behaves as "no program chosen" and the
   user re-picks once. All other saved state survives.
 
-### 3.3 Seed migration (works before any scrape)
+## 7. Validation — `tools/validate-data.mjs`
 
-The hand-transcribed `curriculum-BS-AMDSc-2024.json` is moved (content unchanged except
-`id`) to `src/data/curricula/BS-AMDSc-M-DSc-2024.json`, and an initial `index.json` with that
-single entry is committed. The old file path is deleted.
+Runs against the repo `data/` directory (pre-push gate, not against the DB):
+- index entries ↔ files on disk agree, ids unique, block keys unique per program, slotIds
+  unique per program, `totalUnits` equals the sum of entry units (report-only), units finite ≥ 0.
+- The existing required-courses-vs-catalog offering report runs for every program × the newest
+  catalog, informational (non-fatal), as today.
 
-## 4. Validation — `tools/validate-data.mjs`
+## 8. Testing (TDD throughout)
 
-Loops every curriculum in `index.json` instead of the one hardcoded file:
-- index entries ↔ files on disk agree, ids unique, block keys unique per program,
-  slotIds unique per program, `totalUnits` equals the sum of entry units (report-only, AISIS
-  sometimes disagrees with itself), units are finite ≥ 0.
-- The existing required-courses-vs-catalog offering report runs for every program but stays
-  informational (non-fatal), as today.
-
-## 5. Testing (TDD throughout)
-
-- **Curriculum page parser**: fixture-driven tests from a real saved `J_VOFC.do` HTML page.
-  A real page (user-provided save, or captured on the first cookie run) is reduced to a
-  committed fixture, like `fixtures/aisis-real.ts`. Synthetic edge fixtures for: elective
-  placeholders (`FREE ELECTIVE`, `MATHEMATICS ELECTIVE`, `IE 1`), 0-unit rows, blank/multi
-  prerequisites, the mislabeled-year quirk, login-page-instead-of-data detection.
+- **Curriculum page parser**: fixture-driven tests from a real saved `J_VOFC.do` HTML page
+  (user-provided save, or captured on the first cookie run), reduced to a committed fixture like
+  `fixtures/aisis-real.ts`. Synthetic edge fixtures: elective placeholders (`FREE ELECTIVE`,
+  `MATHEMATICS ELECTIVE`, `IE 1`), 0-unit rows, blank/multi prerequisites, the mislabeled-year
+  quirk, login-page-instead-of-data detection.
 - **Dropdown label parser**: `(CODE) NAME(Ver Sem 1, Ver Year YYYY)` variants, latest-year
   grouping.
-- **curriculum.ts**: index loading, `loadProgram` success + `ProgramUnavailableError`.
-- **App/Results**: async program loading states (loading, error banner, loaded), Results with
-  `block` as a prop, old-programId graceful fallback.
-- Scraper network loop itself is not unit-tested (same stance as `scrape-schedule.mjs`);
-  everything parseable is extracted into pure, tested functions.
+- **Data modules**: unit tests inject a stubbed supabase client (the modules take it as an
+  injectable for tests, defaulting to the real one); cover success, missing-row errors, and
+  `getTerms` ordering. No live network in tests.
+- **App/components**: async loading states (loading, error banner, loaded) for program list,
+  program, catalog, ratings; Results with `block` as a prop; old-programId graceful fallback.
+  Component tests mock the two data modules, as the smoke test does today.
+- **push-data**: pure transform functions (file → row shape) unit-tested; the network loop is
+  not, same stance as the scrapers.
 
-## 6. Constraints and follow-ups
+## 9. Sequencing and user-run steps
 
-- The scraper can only be executed by the user (their session). Final verification step of the
-  implementation plan: user runs `AISIS_COOKIE=... npm run scrape:curricula`, then
-  `npm run validate:data`, and we review warnings together before committing the data.
-- Until that run, the app ships with the single migrated BS AMDSc 2024 curriculum and is fully
-  functional.
-- Fixture capture for §5 needs one real curriculum page early in implementation; the parser
-  tasks are ordered after that capture.
+Implementation order: (1) Supabase project + schema + `push:data` + seed with existing data,
+(2) app read-path swap to Supabase, (3) multi-program curricula scraper on top, (4) user runs
+the bulk scrape and we review + push.
+
+Steps only the user can perform:
+- Final go-ahead to create the `aisis-scheduler` project (confirmed $0/month).
+- Provide one real `J_VOFC.do` page early in phase 3 for parser fixtures.
+- Run `AISIS_COOKIE=... npm run scrape:curricula`, review warnings with me, commit.
+- Run `SUPABASE_SERVICE_ROLE_KEY=... npm run push:data` after each data commit.
