@@ -88,6 +88,9 @@ dotted codes), consuming clean per-cell scraper output.
 **New tools (Node, not shipped):**
 - `tools/scrape-schedule.mjs` — public `classSkeds.do`, loops departments for a term, writes
   `src/data/catalog-<term>.json`. No login. This is exactly what a Vercel cron would later emit.
+  Run for **every term AISIS exposes** (currently 6: `2026-2`, `2026-1`, `2026-0`, `2025-2`,
+  `2025-1`, `2025-0`), so every option in the calendar-term dropdown has real data. Catalogs are
+  **lazy-loaded one term at a time** (dynamic import) to keep startup fast.
 - Curriculum seed: `src/data/curriculum-BS-AMDSc-2024.json`, transcribed from the live page and
   verified against it during build. A login snippet for other programs is future work.
 
@@ -129,6 +132,25 @@ interface Section {            // v1 fields plus:
 interface Catalog { term: string; exportedAt: string; sections: Section[]; warnings: string[]; }
 ```
 
+### Professor ratings (0–5 stars, prof + optional course)
+```ts
+interface ProfRating {
+  name: string;          // instructor as printed by AISIS ("ABERIN, MARIA ALVA Q.")
+  rating: 0|1|2|3|4|5;
+  courseCode?: string;   // scope to a class ("MATH 31.1"); omit = rating for the prof overall
+  note?: string;
+  asOf?: string;
+}
+```
+Ratings are entered **by the user in-app** — there is no scraping of any social platform (see
+§6.1). Lookup precedence for a section's instructor: exact (name + courseCode) → (name only) →
+unrated (neutral). Multi-instructor sections score over `instructors[]` (see §3).
+
+**Now (v2, static):** ratings live in localStorage and feed the existing `preferredProfs`
+ranking criterion. **With Supabase (§7):** the same shape syncs to a shared table so ratings
+become genuinely crowdsourced — the first feature to build on the DB. A seed set may be entered
+by hand; see §6.1 for what is explicitly out of bounds.
+
 ### User state (localStorage, versioned v2)
 ```ts
 interface UserState {
@@ -164,10 +186,20 @@ order. All state persists in localStorage.
    the chosen term.
 4. **Results** — unchanged v1 engine: ranked conflict-free schedules, weekly grid, Lock / Mark
    full / Exclude, N-way diagnostics, restore-excluded. Adds unit total and TBA/online flags.
-5. **Preferences** — unchanged (criteria with compact-days default, time limits, protected
-   blocks, prof ratings).
+5. **Preferences** — criteria (compact-days default), time limits, protected blocks, and the
+   **prof rating editor**: 0–5 stars for each instructor teaching a course in the current list,
+   ratable per class (prof + courseCode) or for the prof overall. Ratings feed `preferredProfs`.
 
 ## 6. Matching, Error Handling, Testing
+
+### 6.1 Prof ratings: sourcing boundary (decided)
+Ratings are **first-party only** — entered by users in the app. Scraping the "Ateneo Profs to
+Pick" Facebook group (or any closed platform) is **explicitly out of scope and will not be
+built**: it is a private, login-walled group, harvesting it breaches Facebook's ToS, and it would
+mean republishing hundreds of students' posts about **named, identifiable professors** — a real
+privacy and defamation exposure for whoever ships the app. Legitimate seeding paths: a human
+reading the group and entering their own numeric judgments, or asking the group's admins for a
+partnership/consented export. Neither involves automated harvesting or reproducing others' posts.
 
 **Matching:** the existing engine, unchanged — resolved `requiredCourses` (electives → concrete
 codes) is a list of course codes; generator gathers each code's sections from the term catalog,
@@ -192,6 +224,8 @@ already shared by both datasets.
   quirk blocks).
 - Matching flow: integration test program → block → term → required list → generate → results on
   real seed data.
+- Prof ratings: lookup precedence (name+courseCode → name → neutral) and multi-instructor
+  scoring over `instructors[]`; note the scale widened from v1's 1–5 to **0–5**.
 - Generator/ranker keep their v1 suites; storage gets a v1→v2 migration test.
 - One end-to-end smoke test through the real UI on seeded data.
 
@@ -200,10 +234,17 @@ already shared by both datasets.
   programs/curricula and per-term catalogs; the schedule scraper runs as a scheduled job
   (serverless/cron) writing to Supabase, giving auto-refreshed offerings and multi-program
   curricula without a redeploy.
+- **Shared prof ratings** — the §4 `ProfRating` shape syncs to a Supabase table so ratings become
+  crowdsourced across users. Planned as the first feature built on the DB.
 - Login-session curriculum snippet to capture additional programs.
 - Optional accounts/sync once Supabase is in.
 
-## 8. Open Items
-1. Confirm BS AMDSc version(s) to seed (2024 confirmed; 2020 optional).
-2. Whether to bundle one term now (`2026-2`) or several — start with the upcoming enlistment term.
-3. Prof-ratings seeding remains manual (carried from v1).
+## 8. Resolved Decisions
+1. **Seed curriculum:** `BS AMDSc-M DSc`, Ver Year **2024** only.
+2. **Catalog terms:** scrape **all 6 terms** AISIS exposes; lazy-load per term (§3). The user
+   freely chooses curriculum year/semester and calendar term in the UI (§5).
+3. **Prof ratings:** first-party 0–5 star ratings, prof + optional course (§4), local in v2 and
+   Supabase-synced later (§7). No social-platform scraping (§6.1).
+
+## 9. Open Items
+1. Prof-ratings seed set (if any) to be entered by hand before first real use.
