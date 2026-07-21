@@ -57,6 +57,16 @@ describe("rank", () => {
     expect(first([ranked[0]])).toBe("A 2"); // 5 beats the pair's average of 3
   });
 
+  it("treats sections with no instructors (TBA) as neutral 3 in preferredProfs", () => {
+    const noProfs: Schedule = [sec("A", "1", [m(["M"], 480, 570)], [])];
+    const goodProf: Schedule = [sec("A", "2", [m(["M"], 480, 570)], ["GARCIA, JUAN"])];
+    const badProf: Schedule = [sec("A", "3", [m(["M"], 480, 570)], ["CRUZ, JOSE"])];
+    const ratings = mergeRatings(
+      [{ name: "GARCIA, JUAN", rating: 5 }, { name: "CRUZ, JOSE", rating: 1 }], []);
+    const ranked = rank([badProf, noProfs, goodProf], prefs({ criteria: ["preferredProfs"] }), ratings);
+    expect(ranked.map((r) => first([r]))).toEqual(["A 2", "A 1", "A 3"]); // good (5) > empty (3) > bad (1)
+  });
+
   it("first criterion outweighs the second", () => {
     // s1 wins compactDays, s2 wins fewestDays.
     const s1: Schedule = [sec("A", "1", [m(["M"], 480, 570)]), sec("B", "1", [m(["M"], 570, 660), m(["T"], 480, 570)])];
