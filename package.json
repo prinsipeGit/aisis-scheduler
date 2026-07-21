@@ -9,9 +9,11 @@
     "preview": "vite preview",
     "test": "vitest run --passWithNoTests",
     "scrape:schedule": "tsx tools/scrape-schedule.mjs",
-    "validate:data": "node tools/validate-data.mjs"
+    "validate:data": "node tools/validate-data.mjs",
+    "push:data": "node tools/push-data.mjs"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.110.8",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
