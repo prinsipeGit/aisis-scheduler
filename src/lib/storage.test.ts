@@ -3,65 +3,72 @@ import { defaultState, loadState, saveState, STORAGE_VERSION } from "./storage";
 
 const KEY = "aisis-scheduler-state";
 
-describe("storage", () => {
+describe("storage v2", () => {
   beforeEach(() => localStorage.clear());
 
   it("returns defaults when nothing is stored (not a reset)", () => {
-    const { state, wasReset } = loadState("2026-1");
+    const { state, wasReset } = loadState("2026-2");
     expect(wasReset).toBe(false);
-    expect(state).toEqual(defaultState("2026-1"));
+    expect(state).toEqual(defaultState("2026-2"));
+    expect(state.version).toBe(2);
     expect(state.preferences.criteria).toEqual(["compactDays"]);
+    expect(state.electiveFills).toEqual({});
   });
 
   it("round-trips saved state", () => {
-    const state = defaultState("2026-1");
-    state.chosenCourses = ["PHILO 11"];
+    const state = defaultState("2026-2");
+    state.programId = "BS-AMDSc-2024";
+    state.blockKey = "Second Year|First Semester";
+    state.requiredCourses = ["MATH 31.3"];
+    state.electiveFills = { "Third Year|First Semester#4": "MATH 55.1" };
     saveState(state);
-    expect(loadState("2026-1")).toEqual({ state, wasReset: false });
+    expect(loadState("2026-2")).toEqual({ state, wasReset: false });
+  });
+
+  it("keeps state when the caller's default term differs from the stored one", () => {
+    const state = { ...defaultState("2026-2"), requiredCourses: ["MATH 10"] };
+    saveState(state);
+    const loaded = loadState("2025-1");
+    expect(loaded.wasReset).toBe(false);
+    expect(loaded.state.calendarTerm).toBe("2026-2");
+    expect(loaded.state.requiredCourses).toEqual(["MATH 10"]);
   });
 
   it("resets on corrupted JSON", () => {
     localStorage.setItem(KEY, "{not json");
-    const { state, wasReset } = loadState("2026-1");
+    const { state, wasReset } = loadState("2026-2");
     expect(wasReset).toBe(true);
-    expect(state).toEqual(defaultState("2026-1"));
+    expect(state).toEqual(defaultState("2026-2"));
   });
 
-  it("resets on wrong version", () => {
-    saveState({ ...defaultState("2026-1"), version: STORAGE_VERSION + 1 });
-    expect(loadState("2026-1").wasReset).toBe(true);
+  it("resets v1 state (version 1) to v2 defaults", () => {
+    localStorage.setItem(KEY, JSON.stringify({
+      version: 1, semester: "2026-1", chosenCourses: ["PHILO 11"], lockedSections: [],
+      fullSections: [], personalRatings: [],
+      preferences: { criteria: ["compactDays"], protectedBlocks: [], excludedSections: [] },
+    }));
+    const { state, wasReset } = loadState("2026-2");
+    expect(wasReset).toBe(true);
+    expect(state).toEqual(defaultState("2026-2"));
   });
 
-  it("resets on semester change", () => {
-    saveState({ ...defaultState("2025-2"), chosenCourses: ["OLD 1"] });
-    const { state, wasReset } = loadState("2026-1");
-    expect(wasReset).toBe(true);
-    expect(state.chosenCourses).toEqual([]);
+  it("resets on a future version", () => {
+    saveState({ ...defaultState("2026-2"), version: STORAGE_VERSION + 1 });
+    expect(loadState("2026-2").wasReset).toBe(true);
   });
 
   it("resets on structurally invalid state", () => {
-    localStorage.setItem(KEY, JSON.stringify({ version: STORAGE_VERSION, semester: "2026-1", chosenCourses: "oops" }));
-    expect(loadState("2026-1").wasReset).toBe(true);
+    localStorage.setItem(KEY, JSON.stringify({ version: 2, calendarTerm: "2026-2", requiredCourses: "oops" }));
+    expect(loadState("2026-2").wasReset).toBe(true);
   });
 
-  it("resets on invalid criteria element", () => {
-    const state = defaultState("2026-1");
-    (state.preferences.criteria as unknown as string[]) = ["compactDays", "notARealCriterion"];
-    localStorage.setItem(KEY, JSON.stringify(state));
-    expect(loadState("2026-1").wasReset).toBe(true);
+  it("resets when electiveFills is not an object of strings", () => {
+    saveState({ ...defaultState("2026-2"), electiveFills: { a: 1 } as unknown as Record<string, string> });
+    expect(loadState("2026-2").wasReset).toBe(true);
   });
 
-  it("resets on invalid protectedBlocks element", () => {
-    const state = defaultState("2026-1");
-    (state.preferences.protectedBlocks as unknown[]) = [{}];
-    localStorage.setItem(KEY, JSON.stringify(state));
-    expect(loadState("2026-1").wasReset).toBe(true);
-  });
-
-  it("resets on invalid personalRatings element", () => {
-    const state = defaultState("2026-1");
-    (state.personalRatings as unknown[]) = [{}];
-    localStorage.setItem(KEY, JSON.stringify(state));
-    expect(loadState("2026-1").wasReset).toBe(true);
+  it("resets when a personal rating is malformed", () => {
+    saveState({ ...defaultState("2026-2"), personalRatings: [{} as never] });
+    expect(loadState("2026-2").wasReset).toBe(true);
   });
 });
