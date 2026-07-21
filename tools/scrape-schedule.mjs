@@ -34,8 +34,12 @@ if (!TERMS.includes(term)) {
 // pick up its cookies, then send them on every POST. Verified 2026-07-21: without this,
 // every department returns ZERO rows while the browser (which has a cookie) returns 201.
 const boot = await fetch(ENDPOINT);
-const rawCookie = boot.headers.get("set-cookie") || "";
-const COOKIE = rawCookie.split(",").map((c) => c.split(";")[0].trim()).filter(Boolean).join("; ");
+// Use getSetCookie() rather than the "set-cookie" header: when a response sends multiple
+// Set-Cookie headers, fetch's single-header getter joins them with commas, and a cookie
+// carrying an Expires=Wed, 21 Oct 2026 ... attribute has its own comma — a plain split(",")
+// corrupts the value. getSetCookie() returns each Set-Cookie entry intact.
+const rawCookies = boot.headers.getSetCookie?.() || [];
+const COOKIE = rawCookies.map((c) => c.split(";")[0].trim()).filter(Boolean).join("; ");
 if (!COOKIE) console.warn("! No session cookie received — results are likely to be empty.");
 
 const allRows = [];
@@ -60,7 +64,12 @@ for (const dept of DEPARTMENTS) {
     }
     const rows = extractRows(await res.text());
     allRows.push(...rows);
-    console.log(`  ${dept}: ${rows.length} rows`);
+    if (rows.length === 0) {
+      warnings.push(`${dept}: 0 rows extracted from a 200 OK response — may be a genuinely empty department or a failed fetch (e.g. expired session/error page)`);
+      console.warn(`  ! ${dept}: 0 rows extracted from a 200 OK response — may be a genuinely empty department or a failed fetch`);
+    } else {
+      console.log(`  ${dept}: ${rows.length} rows`);
+    }
   } catch (err) {
     warnings.push(`${dept}: ${err.message} — skipped`);
     console.warn(`  ! ${dept}: ${err.message}`);
