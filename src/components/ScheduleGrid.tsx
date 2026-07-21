@@ -32,6 +32,12 @@ export function ScheduleGrid({ schedule }: { schedule: Schedule }) {
                     {formatTime(meeting.start)}–{formatTime(meeting.end)}
                     <br />
                     {s.room}
+                    {s.modality && s.modality !== "FULLY ONSITE" ? (
+                      <>
+                        <br />
+                        {s.modality}
+                      </>
+                    ) : null}
                   </div>
                 ))
             )}

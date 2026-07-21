@@ -6,14 +6,15 @@ import { sectionKey } from "./types";
 function sec(courseCode: string, sectionCode: string, meetings: Meeting[]): Section {
   return {
     courseCode, sectionCode, meetings,
-    title: courseCode, units: 3, instructor: "TBA", room: "X", remarks: "", raw: "",
+    title: courseCode, units: 3, instructors: [], modality: "", room: "X", remarks: "", raw: "",
   };
 }
 const m = (days: Meeting["days"], start: number, end: number): Meeting => ({ days, start, end });
 
 function state(overrides: Partial<UserState>): UserState {
   return {
-    version: 1, semester: "2026-1", chosenCourses: [], lockedSections: [],
+    version: 2, programId: "", blockKey: "", calendarTerm: "2026-1",
+    requiredCourses: [], electiveFills: {}, lockedSections: [],
     fullSections: [], personalRatings: [],
     preferences: { criteria: ["compactDays"], protectedBlocks: [], excludedSections: [] },
     ...overrides,
@@ -26,7 +27,7 @@ const A2 = sec("COURSE A", "2", [m(["T", "F"], 600, 690)]);
 const B1 = sec("COURSE B", "1", [m(["T", "F"], 600, 690)]);
 const B2 = sec("COURSE B", "2", [m(["T", "F"], 720, 810)]);
 const ALL = [A1, A2, B1, B2];
-const CHOSEN = { chosenCourses: ["COURSE A", "COURSE B"] };
+const CHOSEN = { requiredCourses: ["COURSE A", "COURSE B"] };
 
 describe("generate", () => {
   it("produces only conflict-free combinations", () => {
@@ -79,7 +80,7 @@ describe("generate", () => {
 
   it("TBA sections never conflict", () => {
     const tba = sec("COURSE C", "1", []);
-    const { schedules, diagnostics } = generate([A1, tba], state({ chosenCourses: ["COURSE A", "COURSE C"] }));
+    const { schedules, diagnostics } = generate([A1, tba], state({ requiredCourses: ["COURSE A", "COURSE C"] }));
     expect(diagnostics).toBeNull();
     expect(schedules).toHaveLength(1);
     expect(schedules[0]).toHaveLength(2); // both sections present, TBA included
@@ -89,7 +90,7 @@ describe("generate", () => {
     // Both courses only offer the same timeslot → impossible.
     const X1 = sec("COURSE X", "1", [m(["M"], 480, 570)]);
     const Y1 = sec("COURSE Y", "1", [m(["M"], 480, 570)]);
-    const { schedules, diagnostics } = generate([X1, Y1], state({ chosenCourses: ["COURSE X", "COURSE Y"] }));
+    const { schedules, diagnostics } = generate([X1, Y1], state({ requiredCourses: ["COURSE X", "COURSE Y"] }));
     expect(schedules).toHaveLength(0);
     expect(diagnostics).not.toBeNull();
     expect(diagnostics!.perCourse).toEqual([
@@ -119,7 +120,7 @@ describe("generate", () => {
     const C2 = sec("COURSE C", "2", [Q]);
     const { schedules, diagnostics } = generate(
       [A1, A2, B1, B2, C1, C2],
-      state({ chosenCourses: ["COURSE A", "COURSE B", "COURSE C"] })
+      state({ requiredCourses: ["COURSE A", "COURSE B", "COURSE C"] })
     );
     expect(schedules).toHaveLength(0);
     expect(diagnostics).not.toBeNull();

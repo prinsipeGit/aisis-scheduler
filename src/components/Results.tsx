@@ -41,7 +41,7 @@ export function Results({ catalog, state, ratings, onChange }: Props) {
       },
     });
 
-  if (state.chosenCourses.length === 0) return <p>Pick courses first.</p>;
+  if (state.requiredCourses.length === 0) return <p>Pick courses first.</p>;
 
   if (ranked.length === 0) {
     return (
@@ -85,19 +85,21 @@ export function Results({ catalog, state, ratings, onChange }: Props) {
       <h2>{ranked.length} valid schedule(s), best first</h2>
       {ranked.slice(0, shown).map((r, i) => (
         <article key={r.schedule.map(sectionKey).join("|")} className="schedule-card">
-          <h3>#{i + 1} · score {r.score.toFixed(2)}</h3>
+          <h3>
+            #{i + 1} · score {r.score.toFixed(2)} ·{" "}
+            {r.schedule.reduce((sum, s) => sum + s.units, 0)} units
+          </h3>
           <ScheduleGrid schedule={r.schedule} />
           <ul>
             {r.schedule.map((s) => {
               const key = sectionKey(s);
               return (
                 <li key={key}>
-                  {key} — {s.instructor}{" "}
+                  {key} — {s.instructors.length > 0 ? s.instructors.join(", ") : "TBA"}
+                  {s.modality ? ` · ${s.modality}` : ""}{" "}
+                  {/* No "Mark full" in v2 — closed-class handling is out of scope. */}
                   <button onClick={() => toggle("lockedSections", key)}>
                     {state.lockedSections.includes(key) ? "Unlock" : "Lock"}
-                  </button>{" "}
-                  <button onClick={() => toggle("fullSections", key)}>
-                    {state.fullSections.includes(key) ? "Unmark full" : "Mark full"}
                   </button>{" "}
                   <button onClick={() => exclude(key)}>Exclude</button>
                 </li>

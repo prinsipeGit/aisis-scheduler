@@ -5,12 +5,12 @@ import { mergeRatings } from "../lib/profs";
 import type { Catalog, Meeting, Section, UserState } from "../lib/types";
 
 const m = (days: Meeting["days"], start: number, end: number): Meeting => ({ days, start, end });
-const sec = (courseCode: string, sectionCode: string, meetings: Meeting[]): Section => ({
-  courseCode, sectionCode, meetings, title: courseCode, units: 3, instructor: "GARCIA, JUAN",
-  room: "CTC 102", remarks: "", raw: "",
+const sec = (courseCode: string, sectionCode: string, meetings: Meeting[], instructors: string[] = ["GARCIA, JUAN"], modality = "FULLY ONSITE"): Section => ({
+  courseCode, sectionCode, meetings, instructors, modality,
+  title: courseCode, units: 3, room: "CTC 102", remarks: "", raw: "",
 });
 const catalog: Catalog = {
-  semester: "2026-1", exportedAt: "2026-07-20T00:00:00.000Z", warnings: [],
+  term: "2026-2", exportedAt: "2026-07-21T00:00:00.000Z", warnings: [],
   sections: [
     sec("PHILO 11", "A", [m(["M", "TH"], 480, 570)]),
     sec("PHILO 11", "B", [m(["T", "F"], 660, 750)]),
@@ -18,8 +18,9 @@ const catalog: Catalog = {
   ],
 };
 const baseState: UserState = {
-  version: 1, semester: "2026-1", chosenCourses: ["PHILO 11", "CSCI 30"], lockedSections: [],
-  fullSections: [], personalRatings: [],
+  version: 2, programId: "P", blockKey: "B", calendarTerm: "2026-2",
+  requiredCourses: ["PHILO 11", "CSCI 30"], electiveFills: {},
+  lockedSections: [], fullSections: [], personalRatings: [],
   preferences: { criteria: ["compactDays"], protectedBlocks: [], excludedSections: [] },
 };
 const noRatings = mergeRatings([], []);
@@ -30,14 +31,6 @@ describe("Results", () => {
   it("renders ranked schedules", () => {
     render(<Results catalog={catalog} state={baseState} ratings={noRatings} onChange={() => {}} />);
     expect(screen.getByText(/2 valid schedule/)).toBeTruthy();
-  });
-
-  it("Mark full adds the section to fullSections", () => {
-    const onChange = vi.fn();
-    render(<Results catalog={catalog} state={baseState} ratings={noRatings} onChange={onChange} />);
-    fireEvent.click(screen.getAllByRole("button", { name: "Mark full" })[0]);
-    const next = onChange.mock.calls[0][0] as UserState;
-    expect(next.fullSections).toHaveLength(1);
   });
 
   it("Lock adds the section to lockedSections", () => {
@@ -62,7 +55,7 @@ describe("Results", () => {
   });
 
   it("prompts to pick courses when none are chosen", () => {
-    render(<Results catalog={catalog} state={{ ...baseState, chosenCourses: [] }} ratings={noRatings} onChange={() => {}} />);
+    render(<Results catalog={catalog} state={{ ...baseState, requiredCourses: [] }} ratings={noRatings} onChange={() => {}} />);
     expect(screen.getByText(/Pick courses first/)).toBeTruthy();
   });
 
@@ -83,7 +76,7 @@ describe("Results", () => {
     render(
       <Results
         catalog={nWay}
-        state={{ ...baseState, chosenCourses: ["PHILO 11", "CSCI 30", "MATH 21"] }}
+        state={{ ...baseState, requiredCourses: ["PHILO 11", "CSCI 30", "MATH 21"] }}
         ratings={noRatings}
         onChange={() => {}}
       />
@@ -92,5 +85,28 @@ describe("Results", () => {
     expect(
       screen.getByText(/These courses can't all fit together at once, even though each pair can/)
     ).toBeTruthy();
+  });
+
+  it("shows all instructors of a section", () => {
+    const pair: Catalog = { ...catalog, sections: [
+      sec("PHILO 11", "A", [m(["M"], 480, 570)], ["DE LOS SANTOS, Kurt Anthony", "MIJARES, Jim Ralphealo"]),
+      sec("CSCI 30", "A", [m(["T"], 480, 570)]),
+    ]};
+    render(<Results catalog={pair} state={baseState} ratings={noRatings} onChange={() => {}} />);
+    expect(screen.getByText(/DE LOS SANTOS, Kurt Anthony, MIJARES, Jim Ralphealo/)).toBeTruthy();
+  });
+
+  it("flags an online section", () => {
+    const online: Catalog = { ...catalog, sections: [
+      sec("PHILO 11", "A", [m(["M"], 480, 570)], ["SANTOS, ANA"], "ONLINE"),
+      sec("CSCI 30", "A", [m(["T"], 480, 570)]),
+    ]};
+    render(<Results catalog={online} state={baseState} ratings={noRatings} onChange={() => {}} />);
+    expect(screen.getAllByText(/ONLINE/).length).toBeGreaterThan(0);
+  });
+
+  it("shows the total units of a schedule", () => {
+    render(<Results catalog={catalog} state={baseState} ratings={noRatings} onChange={() => {}} />);
+    expect(screen.getAllByText(/6 units/).length).toBeGreaterThan(0);
   });
 });

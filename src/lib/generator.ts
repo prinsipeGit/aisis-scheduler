@@ -2,7 +2,7 @@ import type { Diagnostics, Schedule, Section, UserState } from "./types";
 import { sectionKey } from "./types";
 import { overlaps } from "./time";
 
-const MAX_SCHEDULES = 5000; // safety cap; far above realistic course loads
+const MAX_SCHEDULES = 500; // real courses have 40+ sections; the UI only shows the top page
 
 export interface GenerateResult {
   schedules: Schedule[];
@@ -37,7 +37,7 @@ export function generate(all: Section[], state: UserState): GenerateResult {
   const perCourse: Diagnostics["perCourse"] = [];
   const candidates = new Map<string, Section[]>();
 
-  for (const course of state.chosenCourses) {
+  for (const course of state.requiredCourses) {
     const total = all.filter((s) => s.courseCode === course);
     const locked = total.filter((s) => state.lockedSections.includes(sectionKey(s)));
     // A locked section pins the course and bypasses all filters.
@@ -46,7 +46,7 @@ export function generate(all: Section[], state: UserState): GenerateResult {
     perCourse.push({ courseCode: course, total: total.length, afterFilters: filtered.length });
   }
 
-  const order = [...state.chosenCourses].sort(
+  const order = [...state.requiredCourses].sort(
     (a, b) => candidates.get(a)!.length - candidates.get(b)!.length
   );
   const schedules: Schedule[] = [];
@@ -70,10 +70,10 @@ export function generate(all: Section[], state: UserState): GenerateResult {
   if (schedules.length > 0) return { schedules, diagnostics: null };
 
   const conflictPairs: Diagnostics["conflictPairs"] = [];
-  for (let i = 0; i < state.chosenCourses.length; i++) {
-    for (let j = i + 1; j < state.chosenCourses.length; j++) {
-      const aCourse = state.chosenCourses[i];
-      const bCourse = state.chosenCourses[j];
+  for (let i = 0; i < state.requiredCourses.length; i++) {
+    for (let j = i + 1; j < state.requiredCourses.length; j++) {
+      const aCourse = state.requiredCourses[i];
+      const bCourse = state.requiredCourses[j];
       const as = candidates.get(aCourse)!;
       const bs = candidates.get(bCourse)!;
       if (as.length === 0 || bs.length === 0) continue;
