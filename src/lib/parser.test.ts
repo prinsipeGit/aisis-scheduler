@@ -1,14 +1,14 @@
 import { describe, it, expect } from "vitest";
-import { parseAisisTable, parseDays, parseMeetings } from "./parser";
-import { AISIS_SAMPLE, AISIS_SAMPLE_WITH_BAD_ROWS } from "./fixtures/aisis-sample";
+import { parseDays, parseTimeCell, splitInstructors, parseRow, parseRows } from "./parser";
+import { REAL_ROWS, EDGE_ROWS } from "./fixtures/aisis-real";
 
 describe("parseDays", () => {
   it("expands Ateneo day-pair notation", () => {
     expect(parseDays("M-TH")).toEqual(["M", "TH"]);
     expect(parseDays("T-F")).toEqual(["T", "F"]);
-    expect(parseDays("SAT")).toEqual(["SAT"]);
     expect(parseDays("MWF")).toEqual(["M", "W", "F"]);
     expect(parseDays("TTH")).toEqual(["T", "TH"]);
+    expect(parseDays("SAT")).toEqual(["SAT"]);
   });
   it("rejects unknown tokens", () => {
     expect(parseDays("XYZ")).toBeNull();
@@ -16,61 +16,102 @@ describe("parseDays", () => {
   });
 });
 
-describe("parseMeetings", () => {
-  it("parses a single meeting", () => {
-    expect(parseMeetings("M-TH 0800-0930")).toEqual({
-      meetings: [{ days: ["M", "TH"], start: 480, end: 570 }],
+describe("parseTimeCell", () => {
+  it("parses time and strips the modality tag", () => {
+    expect(parseTimeCell("M-TH 1100-1230(FULLY ONSITE)")).toEqual({
+      meetings: [{ days: ["M", "TH"], start: 660, end: 750 }],
+      modality: "FULLY ONSITE",
       ok: true,
     });
   });
-  it("parses slash-separated multiple meetings (lec+lab)", () => {
-    expect(parseMeetings("M 1000-1100/SAT 0900-1200")).toEqual({
-      meetings: [
-        { days: ["M"], start: 600, end: 660 },
-        { days: ["SAT"], start: 540, end: 720 },
-      ],
-      ok: true,
-    });
+  it("captures a non-onsite modality", () => {
+    expect(parseTimeCell("T-F 1300-1430(ONLINE)").modality).toBe("ONLINE");
   });
-  it("treats TBA and empty as no meetings, ok", () => {
-    expect(parseMeetings("TBA")).toEqual({ meetings: [], ok: true });
-    expect(parseMeetings("")).toEqual({ meetings: [], ok: true });
+  it("parses slash-separated lecture+lab meetings", () => {
+    expect(parseTimeCell("M 1000-1100/SAT 0900-1200(FULLY ONSITE)").meetings).toEqual([
+      { days: ["M"], start: 600, end: 660 },
+      { days: ["SAT"], start: 540, end: 720 },
+    ]);
   });
-  it("flags unparseable time as not ok", () => {
-    expect(parseMeetings("M-TH 25:00-2600").ok).toBe(false);
+  it("treats TBA and empty as no meetings, still ok", () => {
+    expect(parseTimeCell("TBA")).toEqual({ meetings: [], modality: "", ok: true });
+    expect(parseTimeCell("")).toEqual({ meetings: [], modality: "", ok: true });
+  });
+  it("flags an unparseable time", () => {
+    expect(parseTimeCell("M-TH 25:00-2600(FULLY ONSITE)").ok).toBe(false);
   });
 });
 
-describe("parseAisisTable", () => {
-  it("parses the sample, skipping the header", () => {
-    const { sections, warnings } = parseAisisTable(AISIS_SAMPLE);
-    expect(sections).toHaveLength(7);
-    expect(warnings).toHaveLength(0);
-    const philo = sections[0];
-    expect(philo.courseCode).toBe("PHILO 11");
-    expect(philo.sectionCode).toBe("A");
-    expect(philo.units).toBe(3);
-    expect(philo.instructor).toBe("GARCIA, JUAN");
-    expect(philo.meetings).toEqual([{ days: ["M", "TH"], start: 480, end: 570 }]);
+describe("splitInstructors", () => {
+  it("keeps a single LAST, FIRST name intact", () => {
+    expect(splitInstructors("ABERIN, MARIA ALVA Q.")).toEqual(["ABERIN, MARIA ALVA Q."]);
   });
-  it("parses parenthesized units and TBA sections", () => {
-    const { sections } = parseAisisTable(AISIS_SAMPLE);
-    const nstp = sections.find((s) => s.courseCode === "NSTP 11")!;
-    expect(nstp.units).toBe(3);
-    expect(nstp.meetings).toEqual([]);
+  it("splits two profs whose names each contain a comma", () => {
+    expect(splitInstructors("DE LOS SANTOS, Kurt Anthony, MIJARES, Jim Ralphealo")).toEqual([
+      "DE LOS SANTOS, Kurt Anthony",
+      "MIJARES, Jim Ralphealo",
+    ]);
   });
-  it("never throws on bad rows; emits warnings instead", () => {
-    const { sections, warnings } = parseAisisTable(AISIS_SAMPLE_WITH_BAD_ROWS);
-    expect(warnings.length).toBe(2);
-    // bad-time row is still imported, as TBA-like
+  it("treats TBA and empty as no instructors", () => {
+    expect(splitInstructors("TBA")).toEqual([]);
+    expect(splitInstructors("")).toEqual([]);
+  });
+});
+
+describe("parseRow", () => {
+  it("parses a real row into a Section", () => {
+    const { section, warning } = parseRow(REAL_ROWS[0]);
+    expect(warning).toBeUndefined();
+    expect(section).toMatchObject({
+      courseCode: "MATH 1.1",
+      sectionCode: "C",
+      title: "PREPARATION FOR COLLEGE MATHEMATICS I",
+      units: 3,
+      instructors: ["ABERIN, MARIA ALVA Q."],
+      modality: "FULLY ONSITE",
+      room: "SEC-A215",
+      meetings: [{ days: ["M", "TH"], start: 660, end: 750 }],
+    });
+  });
+  it("normalizes a '-' remark to empty", () => {
+    expect(parseRow(REAL_ROWS[1]).section!.remarks).toBe("");
+  });
+  it("keeps a real remark", () => {
+    expect(parseRow(REAL_ROWS[2]).section!.remarks).toBe("1 SLOT(S) FOR CROSS REG-IXS MAJORS.");
+  });
+  it("parses multiple instructors", () => {
+    expect(parseRow(REAL_ROWS[3]).section!.instructors).toHaveLength(2);
+  });
+  it("skips a row with too few columns, with a warning", () => {
+    const { section, warning } = parseRow(EDGE_ROWS[4]);
+    expect(section).toBeNull();
+    expect(warning).toMatch(/unrecognized/i);
+  });
+});
+
+describe("parseRows", () => {
+  it("parses all real rows with no warnings", () => {
+    const { sections, warnings } = parseRows(REAL_ROWS);
+    expect(sections).toHaveLength(5);
+    expect(warnings).toEqual([]);
+  });
+  it("never throws on edge rows; imports bad-time rows as TBA-like", () => {
+    const { sections, warnings } = parseRows(EDGE_ROWS);
+    expect(sections).toHaveLength(5); // JUNK ROW skipped
     const theo = sections.find((s) => s.courseCode === "THEO 11")!;
     expect(theo.meetings).toEqual([]);
+    expect(warnings).toHaveLength(3); // bad time + tutorial time + junk row
   });
-  it("falls back to multi-space splitting when there are no tabs", () => {
-    const spaced = "HISTO 11  A  RIZAL AND THE EMERGENCE OF THE NATION  3  M-TH 1230-1400  BEL 204  DELA CRUZ, RIA  35  ENG  U  10  ";
-    const { sections, warnings } = parseAisisTable(spaced);
-    expect(warnings).toHaveLength(0);
-    expect(sections[0].courseCode).toBe("HISTO 11");
-    expect(sections[0].meetings[0].days).toEqual(["M", "TH"]);
+
+  it("treats '~' as an empty remark, like '-'", () => {
+    const { sections } = parseRows(EDGE_ROWS);
+    expect(sections.find((s) => s.courseCode === "BIO 290")!.remarks).toBe("");
+  });
+  it("skips the header row", () => {
+    const withHeader = [
+      ["Subject Code", "Section", "Course Title", "Units", "Time", "Room", "Instructor", "Lang", "Level", "Remarks"],
+      ...REAL_ROWS,
+    ];
+    expect(parseRows(withHeader).sections).toHaveLength(5);
   });
 });
