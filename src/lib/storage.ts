@@ -47,6 +47,8 @@ function isValidPreferences(v: unknown): boolean {
     const m = b as Record<string, unknown>;
     return Array.isArray(m.days) && typeof m.start === "number" && typeof m.end === "number";
   })) return false;
+  if (p.earliestStart !== undefined && typeof p.earliestStart !== "number") return false;
+  if (p.latestEnd !== undefined && typeof p.latestEnd !== "number") return false;
   return isStringArray(p.excludedSections);
 }
 
@@ -60,7 +62,9 @@ function isValidState(v: unknown): v is UserState {
   if (!isStringArray(s.requiredCourses)) return false;
   if (!isStringArray(s.lockedSections)) return false;
   if (!isStringArray(s.fullSections)) return false;
-  if (typeof s.electiveFills !== "object" || s.electiveFills === null) return false;
+  if (typeof s.electiveFills !== "object" || s.electiveFills === null || Array.isArray(s.electiveFills)) {
+    return false;
+  }
   if (!Object.values(s.electiveFills as Record<string, unknown>).every((x) => typeof x === "string")) {
     return false;
   }

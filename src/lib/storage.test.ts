@@ -71,4 +71,22 @@ describe("storage v2", () => {
     saveState({ ...defaultState("2026-2"), personalRatings: [{} as never] });
     expect(loadState("2026-2").wasReset).toBe(true);
   });
+
+  it("resets when electiveFills is an array impersonating a record", () => {
+    localStorage.setItem(KEY, JSON.stringify({
+      ...defaultState("2026-2"), electiveFills: ["MATH 55.1"],
+    }));
+    const { state, wasReset } = loadState("2026-2");
+    expect(wasReset).toBe(true);
+    expect(state).toEqual(defaultState("2026-2"));
+  });
+
+  it("resets when earliestStart is not a number", () => {
+    const state = defaultState("2026-2");
+    state.preferences = { ...state.preferences, earliestStart: "9am" as unknown as number };
+    saveState(state);
+    const { state: loaded, wasReset } = loadState("2026-2");
+    expect(wasReset).toBe(true);
+    expect(loaded).toEqual(defaultState("2026-2"));
+  });
 });
