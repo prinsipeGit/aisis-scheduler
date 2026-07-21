@@ -1,11 +1,16 @@
 # AISIS Scheduler
 
-Generates and ranks all conflict-free class schedules for Ateneo enlistment.
-Pick your courses, set preferences (compact days by default), and get every
-valid schedule ranked — then mark sections full on enlistment day to instantly
-re-rank around them. No accounts; everything personal stays in your browser.
+Generates and ranks all conflict-free class schedules for Ateneo enlistment,
+driven by your program's official curriculum (IPS).
 
-**Design spec:** `docs/superpowers/specs/2026-07-19-aisis-scheduler-design.md`
+Pick your program, the curriculum block you're taking (e.g. "2nd Year · First
+Semester") and the calendar term to enlist in. The app pre-fills the required
+courses from the official curriculum, you adjust them (fill electives, add a
+minor, overload or underload), and it generates every conflict-free schedule
+ranked by your preferences. On enlistment day, mark sections full and it
+re-ranks instantly. No accounts; everything personal stays in your browser.
+
+**Design spec:** `docs/superpowers/specs/2026-07-21-ips-driven-scheduler-design.md`
 
 ## Development
 
@@ -16,27 +21,49 @@ npx vitest run     # all tests
 npm run build      # type-check + production build (dist/)
 ```
 
-## Updating the catalog (maintainer, once per semester)
+## Refreshing the class schedule (once per semester)
 
-1. Log into AISIS, open the Class Schedule page, run `tools/aisis-export.js`
-   in the DevTools console (instructions in the file). A .txt downloads.
-2. Open the app's **Import** tab, paste the .txt contents, click **Parse**,
-   review warnings, then **Download merged catalog JSON**.
-3. Commit the downloaded file over `src/data/catalog-<semester>.json`
-   (new semester: add the new file and update the import in
-   `src/lib/catalog.ts`). Push — the site redeploys with fresh data.
+The AISIS Schedule of Classes is a **public** page — no login required.
 
-Fallback if the snippet breaks: copy-paste department tables from AISIS
-directly into the Import tab.
+```bash
+npm run scrape:schedule -- 2026-1
+```
+
+This loops every department for that term and writes
+`src/data/catalog-<term>.json`. Commit the file and push; the site redeploys
+with fresh offerings. Valid terms: `2026-2`, `2026-1`, `2026-0`, `2025-2`,
+`2025-1`, `2025-0`. A term with no data file shows an in-app message telling
+you to run this command.
+
+Note: a term only has data once AISIS publishes it. As of 2026-07-21, `2026-2`
+returns no results at all — that's AISIS, not a bug. The app defaults to
+`2026-1`, which is the currently committed catalog (`src/data/catalog-2026-1.json`,
+3,743 sections). Re-run the scraper for the enlistment term once it goes live.
+
+The scraper never sends, prompts for, or stores credentials — don't add auth.
+
+## Adding a program's curriculum
+
+Curricula come from AISIS → **Official Curriculum** (`J_VOFC.do`), which is
+behind the student login but identical for every student. `BS AMDSc` (2024) is
+seeded in `src/data/curriculum-BS-AMDSc-2024.json`. To add another program,
+transcribe its blocks into the same shape and register it in
+`src/lib/curriculum.ts`.
 
 ## Professor ratings
 
-`src/data/prof-ratings.json` is curated manually from the "Ateneo Profs to
-Pick" Facebook group (no scraping). Users can override any rating in-app;
-personal ratings stay in their browser.
+Ratings are **first-party**: you rate professors 0–5 stars in the app, per class
+or overall, and they feed the "preferred professors" ranking criterion. They
+live in your browser. There is deliberately no scraping of Facebook or any other
+platform — see spec §6.1.
 
 ## Deploying
 
-Static site — any host works. For Vercel: import the GitHub repo, framework
-preset **Vite**, build `npm run build`, output `dist/`. Every push to main
-redeploys.
+Static site — any host works. For Vercel: import the repo, framework preset
+**Vite**, build `npm run build`, output `dist/`. Every push to main redeploys.
+
+## Scaling to Supabase
+
+`src/lib/curriculum.ts` and `src/lib/catalog.ts` are the only modules that read
+bundled data. Backing them with Supabase means rewriting those two files and
+nothing else — see spec §7.

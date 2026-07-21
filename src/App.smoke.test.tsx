@@ -5,48 +5,73 @@ import App from "./App";
 beforeEach(() => localStorage.clear());
 afterEach(cleanup);
 
-describe("smoke: program → semester → generate → lock → re-rank", () => {
+describe("smoke: program → semester → courses → results → lock → re-rank", () => {
   it("runs the whole v2 flow on the real 2026-1 catalog", async () => {
-    // Third Year|First Semester is fully offered in the bundled 2026-1 catalog
-    // (CSCI 111, MATH 101.6, MATH 62.1, MATH 90.1, PHILO 12 all have sections),
-    // so it produces valid schedules without any elective slot needing a fill.
     render(<App />);
 
-    // Program tab is the default. Pick the one bundled program.
+    // 1. Program
     fireEvent.change(screen.getByLabelText(/^Program/), {
       target: { value: "BS-AMDSc-2024" },
     });
 
-    // Semester tab: pick the curriculum block (seeds requiredCourses); the
-    // calendar term is already the default (2026-1, which has real data).
+    // 2. Semester — First Year/First Semester contains MATH 10 and MATH 71.1
+    //    (both offered), plus INTACT 11 and PATHFit 1, which genuinely have
+    //    zero sections in the real 2026-1 data — exercising the "not offered
+    //    this term" path for free.
     fireEvent.click(screen.getByRole("button", { name: "Semester" }));
-    fireEvent.change(screen.getByLabelText(/Curriculum block/), {
-      target: { value: "Third Year|First Semester" },
+    fireEvent.change(screen.getByLabelText(/Curriculum block/i), {
+      target: { value: "First Year|First Semester" },
     });
 
-    // Results tab: the catalog loads asynchronously (dynamic import), so wait.
+    // 3. Courses — seeded from the IPS; catalog loads asynchronously.
+    fireEvent.click(screen.getByRole("button", { name: "Courses" }));
+    await waitFor(() => expect(screen.getByText(/units selected/)).toBeTruthy());
+    expect(screen.getByText(/MATHEMATICS IN THE MODERN WORLD/)).toBeTruthy();
+    // INTACT 11 and PATHFit 1 genuinely have no sections in the real 2026-1 data.
+    expect(screen.getAllByText(/Not offered in 2026-1/i).length).toBeGreaterThan(0);
+
+    // 4. Keep the search space small: drop everything except MATH 71.1 (3
+    //    sections) and MATH 10 (43 sections). Real courses have 40+ sections
+    //    each, so leaving them all on would generate tens of thousands of
+    //    combinations. INTACT 11 and PATHFit 1 stay checked (still
+    //    "required") but are not offered, so they must be excluded from
+    //    generation rather than silently blocking every other course.
+    for (const code of ["ENGL 11", "FILI 12", "SocSc 11", "THEO 11"]) {
+      fireEvent.click(screen.getByLabelText(new RegExp(code.replace(".", "\\."))));
+    }
+
+    // 5. Results — schedules generated from the remaining offered courses.
     fireEvent.click(screen.getByRole("button", { name: "Results" }));
-    await waitFor(() =>
-      expect(screen.getByText(/valid schedule\(s\), best first/)).toBeTruthy()
-    );
+    await waitFor(() => expect(screen.getByText(/valid schedule\(s\), best first/)).toBeTruthy());
     const before = screen.getByText(/valid schedule\(s\), best first/).textContent!;
 
-    // Lock the first schedule's PHILO 12 section (only 5 non-elective courses
-    // in this block; PHILO 12 alone has dozens of sections, so pinning it
-    // collapses the combinatorics well below the unlocked count).
-    const philoItem = screen
+    // 6. Lock a MATH 71.1 section (only 3 sections total) — pinning it
+    //    collapses the combinatorics well below the unlocked count, proving
+    //    the lock → regenerate flow still works end to end.
+    const mathItem = screen
       .getAllByRole("listitem")
-      .find((li) => li.textContent?.includes("PHILO 12"))!;
-    fireEvent.click(within(philoItem).getByRole("button", { name: "Lock" }));
+      .find((li) => li.textContent?.includes("MATH 71.1"))!;
+    fireEvent.click(within(mathItem).getByRole("button", { name: "Lock" }));
 
     const after = screen.getByText(/valid schedule\(s\), best first/).textContent!;
     expect(after).not.toBe(before);
 
-    // State persisted to localStorage under the v2 schema.
+    // 7. Preferences re-rank: switching the criterion reorders without error.
+    fireEvent.click(screen.getByRole("button", { name: "Preferences" }));
+    fireEvent.click(screen.getByLabelText(/Later starts/));
+    fireEvent.click(screen.getByRole("button", { name: "Results" }));
+    await waitFor(() => expect(screen.getByText(/valid schedule\(s\), best first/)).toBeTruthy());
+
+    // 8. State persisted to localStorage under the v2 schema.
     const stored = JSON.parse(localStorage.getItem("aisis-scheduler-state")!);
+    expect(stored.version).toBe(2);
+    expect(stored.programId).toBe("BS-AMDSc-2024");
+    expect(stored.blockKey).toBe("First Year|First Semester");
+    expect(stored.calendarTerm).toBe("2026-1");
+    expect(stored.preferences.criteria).toContain("lateStart");
     expect(stored.lockedSections).toHaveLength(1);
     expect(stored.requiredCourses.sort()).toEqual(
-      ["CSCI 111", "MATH 101.6", "MATH 62.1", "MATH 90.1", "PHILO 12"].sort()
+      ["INTACT 11", "MATH 10", "MATH 71.1", "PATHFit 1"].sort()
     );
   });
 });
