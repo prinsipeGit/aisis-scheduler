@@ -66,14 +66,36 @@ Legitimate `TBA` classes may appear without a fixed meeting time. Future scrape
 rows whose time cannot be parsed receive a separate `parse-error` status and are
 excluded from generated schedules instead of being treated as conflict-free.
 
-## Adding a program's curriculum
+## Importing program curricula
 
-Curricula come from AISIS → **Official Curriculum** (`J_VOFC.do`), which is
-behind the student login but identical for every student. `BS AMDSc` (2024) is
-seeded in `data/curricula/BS-AMDSc-M-DSc-2024.json`. To add another program,
-transcribe its blocks into the same shape, add it to `data/curricula/index.json`,
-and run `npm run push:data`. A bulk scraper covering every AISIS program is
-planned — see the multi-program spec.
+Curricula come from AISIS → **Official Curriculum** (`J_VOFC.do`). Unlike the
+class schedule, this page is behind the student login — but it is identical for
+every student in a program, so the import carries no personal data.
+
+```bash
+AISIS_COOKIE='JSESSIONID=...' npm run scrape:curricula
+npm run validate:data
+npm run push:data
+```
+
+To get the cookie: log into AISIS, open DevTools → **Application → Cookies**,
+and copy the session cookie. It is read from the environment only — never a
+command-line argument, never prompted for, never written to disk or logged, and
+held in memory just for the run. Never commit it.
+
+The run takes about 6 minutes: ~233 programs at 1.5 s apart, plus a progress
+line each. It imports the **newest version of each program track** — a program
+with parallel tracks (e.g. `AB EU` has both `18BE` and `18IR`) keeps the latest
+of each, shown in the picker as `2018 · BE`. Older version-years are skipped.
+
+The scraper refuses to write when a run looks broken — zero programs parsed, or
+fewer than 20% of those discovered. Use `--force` only after confirming the
+result is legitimate. It never deletes files for programs missing from a run, so
+a partial rerun is safe; `push:data` then reconciles the database, including
+removing rows whose files are gone.
+
+A program can still be added by hand: write the JSON in the same shape into
+`data/curricula/`, add it to `data/curricula/index.json`, and run `npm run push:data`.
 
 ## Professor ratings
 
@@ -123,5 +145,5 @@ project instead.
 credentials. Some tools accept a temporary, user-supplied token via
 environment variable only — never a CLI argument, never written to disk or
 logged, held in memory for the duration of the run: `SUPABASE_SERVICE_ROLE_KEY`
-for `push:data` above, and (for the future curricula scraper) `AISIS_COOKIE`,
-a session cookie copied from DevTools after a normal student login.
+for `push:data` above, and `AISIS_COOKIE` for `scrape:curricula`, a session
+cookie copied from DevTools after a normal student login.
