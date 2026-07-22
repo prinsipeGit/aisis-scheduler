@@ -22,7 +22,7 @@ describe("curriculum data layer", () => {
   });
 
   it("getBlock finds a block by key", () => {
-    const program = { id: "X", code: "X", name: "X", versionYear: 2024,
+    const program = { id: "X", code: "X", name: "X", version: "2024", versionYear: 2024, versionLabel: "2024",
       blocks: [{ year: "First Year", term: "First Semester", key: "First Year|First Semester", totalUnits: 3,
         entries: [] }] };
     expect(getBlock(program, "First Year|First Semester")?.totalUnits).toBe(3);

@@ -3,10 +3,10 @@ import { programToRow, catalogToRow, ratingsToRows, orphanKeys } from "./push-tr
 
 describe("push transforms", () => {
   it("maps a program file to a programs row", () => {
-    const program = { id: "X-2024", code: "X", name: "X PROG", versionYear: 2024, blocks: [{ key: "a" }] };
-    expect(programToRow(program)).toEqual({
-      id: "X-2024", code: "X", name: "X PROG", version_year: 2024, blocks: [{ key: "a" }],
-    });
+    const program = { id: "X-24BE", code: "X", name: "X PROG", version: "24BE", versionYear: 2024,
+      versionLabel: "2024 · BE", blocks: [{ key: "a" }] };
+    expect(programToRow(program)).toEqual({ id: "X-24BE", code: "X", name: "X PROG",
+      version: "24BE", version_year: 2024, version_label: "2024 · BE", blocks: [{ key: "a" }] });
   });
   it("maps a catalog file to a catalogs row", () => {
     const catalog = { term: "2026-1", exportedAt: "2026-07-21T00:00:00.000Z", sections: [], warnings: ["w"] };

@@ -4,7 +4,7 @@ import { SemesterPicker } from "./SemesterPicker";
 import type { Program } from "../lib/types";
 
 const program: Program = {
-  id: "P", code: "P", name: "PROG", versionYear: 2024,
+  id: "P", code: "P", name: "PROG", version: "2024", versionYear: 2024, versionLabel: "2024",
   blocks: [
     { year: "First Year", term: "First Semester", key: "First Year|First Semester", totalUnits: 20, entries: [] },
     { year: "Second Year", term: "First Semester", key: "Second Year|First Semester", totalUnits: 22, entries: [] },

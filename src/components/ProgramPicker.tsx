@@ -10,7 +10,7 @@ interface Props {
 export function ProgramPicker({ programs, selectedId, onSelect }: Props) {
   const [search, setSearch] = useState("");
   const visible = programs.filter((p) =>
-    `${p.code} ${p.name} ${p.versionYear}`.toLowerCase().includes(search.toLowerCase())
+    `${p.code} ${p.name} ${p.versionLabel}`.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -35,7 +35,7 @@ export function ProgramPicker({ programs, selectedId, onSelect }: Props) {
             <option value="">— select —</option>
             {visible.map((p) => (
               <option key={p.id} value={p.id}>
-                ({p.code}) {p.name} — {p.versionYear}
+                ({p.code}) {p.name} — {p.versionLabel}
               </option>
             ))}
           </select>
@@ -44,7 +44,7 @@ export function ProgramPicker({ programs, selectedId, onSelect }: Props) {
       <ul className="summary-list">
         {visible.map((p) => (
           <li key={p.id}>
-            <strong>{p.code}</strong> — {p.name} ({p.versionYear})
+            <strong>{p.code}</strong> — {p.name} ({p.versionLabel})
           </li>
         ))}
       </ul>

@@ -38,10 +38,12 @@ export interface ProfRating {
 // ---- Curriculum (official IPS) ----
 
 export interface ProgramSummary {
-  id: string;            // "BS-AMDSc-2024"
+  id: string;            // "BS-AMDSc-M-DSc-2024"
   code: string;          // "BS AMDSc-M DSc"
   name: string;          // "BACHELOR OF SCIENCE IN APPLIED MATHEMATICS"
+  version: string;       // raw AISIS version, e.g. "2024" or "24BE" (year + track)
   versionYear: number;   // 2024
+  versionLabel: string;  // display form, e.g. "2024" or "2024 · BE"
 }
 
 export interface CurriculumEntry {

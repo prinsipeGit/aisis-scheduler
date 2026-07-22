@@ -7,9 +7,12 @@ describe("row mappers", () => {
       .toEqual({ term: "2026-1", exportedAt: "2026-07-21T00:00:00.000Z", sections: [], warnings: ["w"] });
   });
   it("maps a programs row to Program and ProgramSummary", () => {
-    const row = { id: "X-2024", code: "X", name: "N", version_year: 2024, blocks: [] };
-    expect(rowToProgram(row)).toEqual({ id: "X-2024", code: "X", name: "N", versionYear: 2024, blocks: [] });
-    expect(rowToSummary(row)).toEqual({ id: "X-2024", code: "X", name: "N", versionYear: 2024 });
+    const row = { id: "X-24BE", code: "X", name: "N", version: "24BE", version_year: 2024,
+      version_label: "2024 · BE", blocks: [] };
+    expect(rowToProgram(row)).toEqual({ id: "X-24BE", code: "X", name: "N", version: "24BE",
+      versionYear: 2024, versionLabel: "2024 · BE", blocks: [] });
+    expect(rowToSummary(row)).toEqual({ id: "X-24BE", code: "X", name: "N", version: "24BE",
+      versionYear: 2024, versionLabel: "2024 · BE" });
   });
   it("maps a ratings row, dropping nulls", () => {
     expect(rowToRating({ name: "A", rating: 4.5, course_code: null, note: null, as_of: null }))

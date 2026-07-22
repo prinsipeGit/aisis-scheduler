@@ -1,5 +1,6 @@
 export const programToRow = (p) => ({
-  id: p.id, code: p.code, name: p.name, version_year: p.versionYear, blocks: p.blocks,
+  id: p.id, code: p.code, name: p.name, version: p.version,
+  version_year: p.versionYear, version_label: p.versionLabel, blocks: p.blocks,
 });
 export const catalogToRow = (c) => ({
   term: c.term, exported_at: c.exportedAt, sections: c.sections, warnings: c.warnings,

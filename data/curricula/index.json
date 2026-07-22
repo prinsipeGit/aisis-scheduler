@@ -1,4 +1,10 @@
 [
-  { "id": "BS-AMDSc-M-DSc-2024", "code": "BS AMDSc-M DSc",
-    "name": "BACHELOR OF SCIENCE IN APPLIED MATHEMATICS", "versionYear": 2024 }
+  {
+    "id": "BS-AMDSc-M-DSc-2024",
+    "code": "BS AMDSc-M DSc",
+    "name": "BACHELOR OF SCIENCE IN APPLIED MATHEMATICS",
+    "version": "2024",
+    "versionYear": 2024,
+    "versionLabel": "2024"
+  }
 ]
