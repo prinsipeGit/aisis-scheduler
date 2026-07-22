@@ -5,6 +5,7 @@ import { dirname, join } from "node:path";
 import {
   programId, parseVersion, versionLabelOf, parseProgramOptions, latestPerTrack,
   isElectiveEntry, electiveDeptFor, parseCurriculumPage,
+  looksLikeLoginPage, buildProgram, buildIndex,
 } from "./curriculum-parse.mjs";
 
 const __dir = dirname(fileURLToPath(import.meta.url));
@@ -185,5 +186,38 @@ describe("parseCurriculumPage", () => {
       expect(blocks[i].totalUnits).toBe(expected.totalUnits);
       expect(blocks[i].entries).toEqual(expected.entries);
     }
+  });
+});
+
+describe("looksLikeLoginPage", () => {
+  it("detects a login form", () => {
+    expect(looksLikeLoginPage(`<form><input type="password" name="userPwd"></form>`)).toBe(true);
+    expect(looksLikeLoginPage(`<p>Your session has expired. Please log in again.</p>`)).toBe(true);
+  });
+  it("does not flag a real curriculum page", () => {
+    expect(looksLikeLoginPage(SAMPLE)).toBe(false);
+  });
+});
+
+describe("buildProgram / buildIndex", () => {
+  const blocks = [{ year: "First Year", term: "First Semester", key: "First Year|First Semester", totalUnits: 3, entries: [] }];
+  it("assembles a Program with the slugified id and version fields", () => {
+    expect(buildProgram({
+      code: "BS AMDSc-M DSc", name: "APPLIED MATH", version: "2024",
+      versionYear: 2024, versionLabel: "2024", blocks,
+    })).toEqual({
+      id: "BS-AMDSc-M-DSc-2024", code: "BS AMDSc-M DSc", name: "APPLIED MATH",
+      version: "2024", versionYear: 2024, versionLabel: "2024", blocks,
+    });
+  });
+  it("builds a summary index sorted by code then version label", () => {
+    const programs = [
+      { id: "Z-2024", code: "Z", name: "Zed", version: "2024", versionYear: 2024, versionLabel: "2024", blocks },
+      { id: "A-2020", code: "A", name: "Ay", version: "2020", versionYear: 2020, versionLabel: "2020", blocks },
+    ];
+    expect(buildIndex(programs)).toEqual([
+      { id: "A-2020", code: "A", name: "Ay", version: "2020", versionYear: 2020, versionLabel: "2020" },
+      { id: "Z-2024", code: "Z", name: "Zed", version: "2024", versionYear: 2024, versionLabel: "2024" },
+    ]);
   });
 });

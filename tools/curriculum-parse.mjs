@@ -171,3 +171,19 @@ export function parseCurriculumPage(html) {
   flush();
   return { blocks, warnings };
 }
+
+export function looksLikeLoginPage(html) {
+  if (/<input[^>]+type\s*=\s*"password"/i.test(html)) return true;
+  return /(session\s+has\s+expired|please\s+log\s*in)/i.test(textOf(html));
+}
+
+export function buildProgram({ code, name, version, versionYear, versionLabel, blocks }) {
+  return { id: programId(code, version), code, name, version, versionYear, versionLabel, blocks };
+}
+
+export function buildIndex(programs) {
+  return programs
+    .map(({ id, code, name, version, versionYear, versionLabel }) =>
+      ({ id, code, name, version, versionYear, versionLabel }))
+    .sort((a, b) => a.code.localeCompare(b.code) || a.versionLabel.localeCompare(b.versionLabel));
+}
