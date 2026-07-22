@@ -10,7 +10,8 @@
     "test": "vitest run --passWithNoTests",
     "scrape:schedule": "tsx tools/scrape-schedule.mjs",
     "validate:data": "node tools/validate-data.mjs",
-    "push:data": "node tools/push-data.mjs"
+    "push:data": "node tools/push-data.mjs",
+    "scrape:curricula": "node tools/scrape-curricula.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.110.8",
