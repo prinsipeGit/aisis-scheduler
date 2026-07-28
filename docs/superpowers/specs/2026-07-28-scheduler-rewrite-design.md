@@ -31,7 +31,27 @@ in `migrations/`. No dark mode.
 **Only `src/` is deleted and rebuilt.** The one addition elsewhere is
 `data/course-aliases.json` (§5.1); no existing data file is edited by the rewrite.
 
-### 2.1 Branch base
+### 2.1 `tools/` is not actually self-contained yet — fix it first
+
+`tools/scrape-schedule.mjs:21` imports `parseRows` from `src/lib/parser.ts`, so deleting
+`src/` breaks the schedule scraper. The app never imports that module — it reads
+already-parsed sections from Supabase — so parsing scraped AISIS HTML is a scraper concern
+sitting in the wrong directory.
+
+**Before `src/` is touched**, move it:
+
+| symbol | only consumer | destination |
+|---|---|---|
+| `parseRows`, `parseRow`, `parseTimeCell`, `parseDays`, `splitInstructors` | `scrape-schedule.mjs` | `tools/schedule-parse.mjs` |
+| `parseTimeRange` | `parser.ts` | `tools/schedule-parse.mjs` |
+| `overlaps`, `formatTime` | the app | stays in `src/lib/time.ts` |
+
+The split is exact — nothing is duplicated and nothing is orphaned. Afterwards
+`tools/schedule-parse.mjs` is dependency-free like its siblings `curriculum-parse.mjs` and
+`extract-rows.mjs`, `tools/` imports nothing from `src/`, and `scrape:schedule` no longer
+needs `tsx` (`node tools/scrape-schedule.mjs`). `src/lib/parser.test.ts` moves with it.
+
+### 2.2 Branch base
 
 Branch off **`curricula-scraper`**, not `main`. `curricula-scraper` is 9 commits ahead and
 those commits contain `tools/scrape-curricula.mjs`, `tools/curriculum-parse.mjs`, migration
@@ -258,7 +278,7 @@ out-of-range ratings, and duplicate entries all reject.
 src/
   lib/
     types.ts         domain types
-    time.ts          parse · format · overlap
+    time.ts          overlap · format (parsing moved to tools/, §2.1)
     course-code.ts   canonicalization
     offerings.ts     NEW — slot → acceptable codes → sections (§5)
     slots.ts         NEW — the selection model (§4), replaces requirements.ts
