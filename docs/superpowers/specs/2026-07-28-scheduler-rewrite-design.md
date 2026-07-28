@@ -51,6 +51,19 @@ The split is exact — nothing is duplicated and nothing is orphaned. Afterwards
 `extract-rows.mjs`, `tools/` imports nothing from `src/`, and `scrape:schedule` no longer
 needs `tsx` (`node tools/scrape-schedule.mjs`). `src/lib/parser.test.ts` moves with it.
 
+**Two time-parsing findings must survive the move.** Re-scraping 2026-1 on 2026-07-28
+surfaced 112 sections the parser could not read, in two classes:
+
+1. **Semicolon-separated meetings — a real bug, fixed.** `parseTimeCell` split multi-meeting
+   cells on `/` only, but AISIS also uses `;`: `"M-TH 1230-1400; W 1100-1300"`,
+   `"M 0800-1100; M 1130-1430"`. Eleven fully-scheduled sections were being discarded, and
+   before `timeStatus` existed they were treated as **conflict-free**, so the app could emit
+   a schedule containing a genuine clash. The split is now `/[/;]/`, with tests for the
+   two-day and same-day-twice forms.
+2. **`TUTORIAL 0000-0000` — 101 sections, an open question (§14).** Not malformed; it is how
+   AISIS writes "tutorial, no fixed meeting time." It parses as an error today because
+   `parseTimeRange` rejects `start >= end`, so these are excluded from generation entirely.
+
 ### 2.2 Branch base
 
 Branch off **`curricula-scraper`**, not `main`. `curricula-scraper` is 9 commits ahead and
@@ -350,7 +363,27 @@ Additions targeting the gaps that let real bugs through:
 The first can run during implementation. The other two are user-triggered and the rewrite
 does not depend on them.
 
-## 14. Risks
+## 14. Open decision: `TUTORIAL 0000-0000`
+
+101 sections in 2026-1 print their time as `TUTORIAL 0000-0000` — graduate tutorials, thesis
+and special-topics slots with no fixed meeting. Today they resolve to `parse-error` and are
+excluded from generation, so a student who needs `BIO 290` can never receive a schedule
+containing it; the Results diagnostics say "0 of 1 section(s) usable".
+
+The two options:
+
+- **Treat `0000-0000` as TBA.** Those sections become schedulable with no meeting time,
+  exactly like the 667 sections already marked `tba`. A grad student can plan around a
+  tutorial. The cost is that a genuinely corrupt `0000-0000` would be silently accepted.
+- **Leave as `parse-error`.** Conservative; nothing schedules that the app cannot verify.
+  The cost is that 101 real, enlistable sections stay invisible to the generator.
+
+The recommendation is the first: the string is `TUTORIAL`, not a mangled time, so this is a
+recognised AISIS idiom rather than bad data — and the app's own `tba` handling already
+covers "real section, no fixed time". This is a behaviour change, so it is the user's call
+and is not implemented until they make it.
+
+## 15. Risks
 
 - **The alias file covers only what has been confirmed.** `PATHFit → PEPC` is mapped (§5.1);
   other irregular renames need domain knowledge that is not in the repo. §5.3 makes the gaps

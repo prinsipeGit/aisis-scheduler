@@ -34,9 +34,31 @@ describe("parseTimeCell", () => {
       { days: ["SAT"], start: 540, end: 720 },
     ]);
   });
+  it("parses semicolon-separated meetings, as AISIS also prints them", () => {
+    expect(parseTimeCell("M-TH 1230-1400; W 1100-1300(FULLY ONSITE)").meetings).toEqual([
+      { days: ["M", "TH"], start: 750, end: 840 },
+      { days: ["W"], start: 660, end: 780 },
+    ]);
+  });
+  it("parses two meetings on the same day", () => {
+    expect(parseTimeCell("M 0800-1100; M 1130-1430(FULLY ONSITE)").meetings).toEqual([
+      { days: ["M"], start: 480, end: 660 },
+      { days: ["M"], start: 690, end: 870 },
+    ]);
+  });
   it("treats TBA and empty as no meetings, still ok", () => {
     expect(parseTimeCell("TBA")).toEqual({ meetings: [], modality: "", status: "tba", ok: true });
     expect(parseTimeCell("")).toEqual({ meetings: [], modality: "", status: "tba", ok: true });
+  });
+  it("treats the TUTORIAL 0000-0000 placeholder as TBA, not bad data", () => {
+    for (const cell of ["TUTORIAL 0000-0000(FULLY ONSITE)", "TUTORIAL 0000-0000(~)", "TUTORIAL"]) {
+      expect(parseTimeCell(cell)).toMatchObject({ meetings: [], status: "tba", ok: true });
+    }
+  });
+  it("still rejects a 0000-0000 that is not the TUTORIAL placeholder", () => {
+    expect(parseTimeCell("M 0000-0000(FULLY ONSITE)")).toMatchObject({
+      meetings: [], status: "parse-error", ok: false,
+    });
   });
   it("flags an unparseable time", () => {
     expect(parseTimeCell("M-TH 25:00-2600(FULLY ONSITE)")).toMatchObject({
@@ -109,7 +131,14 @@ describe("parseRows", () => {
     expect(sections).toHaveLength(5); // JUNK ROW skipped
     const theo = sections.find((s) => s.courseCode === "THEO 11")!;
     expect(theo.meetings).toEqual([]);
-    expect(warnings).toHaveLength(3); // bad time + tutorial time + junk row
+    expect(warnings).toHaveLength(2); // bad time + junk row
+  });
+  it("imports a TUTORIAL row as a warning-free TBA section, not a parse error", () => {
+    const { sections, warnings } = parseRows(EDGE_ROWS);
+    const tutorial = sections.find((s) => s.courseCode === "BIO 290")!;
+    expect(tutorial.timeStatus).toBe("tba");
+    expect(tutorial.meetings).toEqual([]);
+    expect(warnings.some((w) => w.includes("BIO 290"))).toBe(false);
   });
 
   it("treats '~' as an empty remark, like '-'", () => {

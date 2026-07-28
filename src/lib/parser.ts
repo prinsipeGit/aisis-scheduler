@@ -51,9 +51,19 @@ export function parseTimeCell(cell: string): {
   if (!text || text.toUpperCase() === "TBA") {
     return { meetings: [], modality, status: "tba", ok: true };
   }
+  // AISIS writes "TUTORIAL 0000-0000" for tutorials, thesis and special-topics sections
+  // with no fixed meeting time. The 0000-0000 is a placeholder, not a time, so this is a
+  // real section without a schedule — TBA, not bad data. Keying on the TUTORIAL keyword
+  // (rather than on 0000-0000 alone) keeps a genuinely corrupt "M 0000-0000" an error.
+  if (/^TUTORIAL(\s+0000-0000)?$/i.test(text)) {
+    return { meetings: [], modality, status: "tba", ok: true };
+  }
 
   const meetings: Meeting[] = [];
-  for (const chunk of text.split("/")) {
+  // AISIS separates a section's meetings with either "/" or ";" — both seen live
+  // (e.g. "M-TH 1230-1400; W 1100-1300"). Splitting on "/" alone made every
+  // semicolon form a parse error, which excluded real, fully-scheduled sections.
+  for (const chunk of text.split(/[/;]/)) {
     const m = chunk.trim().match(/^(.+?)\s+(\S+)$/);
     if (!m) return { meetings: [], modality, status: "parse-error", ok: false };
     const days = parseDays(m[1]);
