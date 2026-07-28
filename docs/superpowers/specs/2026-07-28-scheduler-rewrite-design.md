@@ -115,13 +115,49 @@ requirement and `NSTP 11(ROTC)`/`(CWTS)` are a pick-one — a student takes exac
 
 ```json
 {
-  "PATHFit 1": ["PEPC 10"]
+  "PATHFit 1": ["PEPC 10"],
+  "PATHFit 2": ["PEPC 11", "PEPC 12", "PEPC 13", "PEPC 14",
+                "PEPC 15", "PEPC 16", "PEPC 17", "PEPC 18", "PEPC 19"],
+  "PATHFit 3": ["PEPC 11", "PEPC 12", "PEPC 13", "PEPC 14",
+                "PEPC 15", "PEPC 16", "PEPC 17", "PEPC 18", "PEPC 19"],
+  "PATHFit 4": ["PEPC 11", "PEPC 12", "PEPC 13", "PEPC 14",
+                "PEPC 15", "PEPC 16", "PEPC 17", "PEPC 18", "PEPC 19"]
 }
 ```
 
-Values are catalog code prefixes; the variant rule applies on top of each. The file ships
-with only entries that can be justified against real catalog data. Unknown mappings are
+Values are catalog code prefixes; the variant rule applies on top of each, so `"PEPC 13"`
+matches `PEPC 13.03`, `13.15`, and the rest of that family.
+
+`PATHFit 1 → PEPC 10` is confirmed: 123 sections, "FUNDAMENTAL MOVEMENT FOR HEALTH AND
+FITNESS" against the IPS's "PHYSICAL ACTIVITIES TOWARDS HEALTH AND FITNESS 1", both 2 units.
+
+`PATHFit 2`–`4` map to the whole PEPC activity range (martial arts, dance, aquatics,
+sports, recreation) because whether the `11 / 13 / 14 / …` grouping encodes a PATHFit level
+is **not known** and is not guessed here. The student narrows the slot themselves (§5.3),
+which is the honest handling and also the one they want — the choice between Judo and Tai
+Chi is personal, not a scheduling optimization. `PEPC 12` is listed though absent from the
+2026-1 catalog: it costs nothing and catches the family if it appears in a later term.
+
+The file ships with only entries justified against real catalog data. Unknown mappings are
 **not guessed** — they surface through §5.2 instead.
+
+### 5.3 Narrowing a multi-code slot
+
+`chosen` is the student's explicit pick and it **overrides automatic resolution**. It needs
+no new field, because §5 already resolves `chosen ?? requirement`:
+
+| Slot | `chosen: null` resolves to | after the student picks |
+|---|---|---|
+| `MATH 10` | `["MATH 10"]` | unchanged — narrowing is a no-op |
+| `PHILO 11` | the four tracks | `["PHILO 11.05"]` |
+| `NSTP 11` | `(CWTS)`, `(ROTC)` | `["NSTP 11(ROTC)"]` |
+| `PATHFit 3` | 25 activity codes | `["PEPC 13.15"]` |
+| elective | `[]` — unsatisfiable | `["MATH 101"]` |
+
+Filling an elective and narrowing a requirement are the same operation on the same field.
+The difference is only that an unfilled elective resolves to nothing while an un-narrowed
+requirement resolves to its full acceptable set, so leaving it alone is a valid choice that
+lets the generator optimize.
 
 ### 5.2 Zero-offering slots must be loud
 
@@ -234,13 +270,19 @@ left setup rail (accordion, one section open, headers showing completed state), 
 stage (candidate pager `◀ 02 / 41 ▶`, weekly grid as hero, section chips carrying
 Lock / Mark full / Exclude), right candidates rail (ranked list, click to jump).
 
-Three corrections to that spec, from the review and from §5:
+Four corrections to that spec, from the review and from §5:
 
 - **Day bounds derive from the data.** The grid hard-stops at 9:00 PM; `ITMGT 20.51 QRF`
   runs to 9:30 and overflows its column. Bounds come from the schedule's own extremes.
 - **Multi-code slots show which code the current candidate used.** A `PHILO 11` slot may
   resolve to `.03` in one candidate and `.05` in the next. The chip carries the actual code.
 - **Zero-offering slots warn on the stage** (§5.2), not only in the rail.
+- **The Courses rail gains a narrowing control** (§5.3). Any slot resolving to more than one
+  code shows a picker listing those codes with their titles — `PATHFit 3` lists Arnis, Tai
+  Chi, Badminton and the rest by name, not by code. Its default option is explicit ("any —
+  let the scheduler choose"), so leaving it open reads as a decision rather than an
+  oversight. Electives keep the catalog-wide search they have today, since their acceptable
+  set is unbounded.
 
 ## 12. Testing
 
@@ -257,8 +299,10 @@ Additions targeting the gaps that let real bugs through:
   one section after filters), and none for the rest.
 - **`validate:data` gains**: every catalog section carries `timeStatus`; every alias target
   resolves to at least one section in the newest catalog; the zero-offering report of §5.2.
-- **Offerings unit tests** against the real catalog for the three known shapes (`PHILO 11`
-  → 4 codes, `NSTP 11` → 2, `MATH 10` → 1) plus the `MATH 10` / `MATH 100` over-match guard.
+- **Offerings unit tests** against the real catalog for the four known shapes (`PHILO 11`
+  → 4 codes, `NSTP 11` → 2, `PATHFit 1` → `PEPC 10`, `MATH 10` → 1), the alias range
+  (`PATHFit 3` → 25 activity codes), the `MATH 10` / `MATH 100` over-match guard, and
+  narrowing (`chosen` set → exactly that one code, §5.3).
 
 ## 13. Data refresh — operational, does not block the rewrite
 
@@ -273,9 +317,14 @@ does not depend on them.
 
 ## 14. Risks
 
-- **The alias file starts nearly empty.** `PATHFit → PEPC` and any similar renames need
-  domain knowledge that is not in the repo. §5.2 makes the gaps visible rather than silent,
-  which is the honest handling; the file fills in over time.
+- **The alias file covers only what has been confirmed.** `PATHFit → PEPC` is mapped (§5.1);
+  other irregular renames need domain knowledge that is not in the repo. §5.2 makes the gaps
+  visible rather than silent, which is the honest handling; the file fills in over time.
+- **`PATHFit 2`–`4` are deliberately over-broad.** They offer the whole PEPC activity range
+  because the level encoding is unconfirmed. If a level rule does exist, a student could
+  narrow to an activity that does not satisfy that particular PATHFit. Narrowing is the
+  student's own choice against titles they recognise, and AISIS rejects an invalid
+  enlistment anyway — but the app cannot catch it, and the README should say so.
 - **Strict priority ranking changes results.** Schedules that ranked well by blending will
   reorder. This is intended, but it is a visible behavior change.
 - **v3 resets saved state.** Every existing user loses their selections once. Acceptable:
