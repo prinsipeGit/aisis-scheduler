@@ -69,6 +69,7 @@ interface Slot {
   origin: "ips" | "added";
   label: string;              // "PHILO 11" | "MATHEMATICS ELECTIVE"
   requirement: string | null; // curriculum catNo; null when user-added
+  category: string | null;    // AISIS requirement category, e.g. "PFT2"; null when user-added
   chosen: string | null;      // course code the student picked; null = unfilled elective
   included: boolean;          // counts toward generation
 }
@@ -99,8 +100,9 @@ the result is the deduplicated **union** of all three, so a code that matches mo
 rule does not shadow the others:
 
 1. **Exact** — canonical match against a catalog `courseCode`.
-2. **Alias** — `data/course-aliases.json` maps a curriculum code to one or more catalog
-   code prefixes, for irregular renames the rule cannot infer (`PATHFit 1 → PEPC …`).
+2. **Alias** — `data/course-aliases.json` maps a slot to one or more catalog code prefixes,
+   for irregular renames the rule cannot infer (`PFT1 → PEPC 10`). Keyed by the slot's
+   **`category`** when it has one, falling back to `requirement` (§5.1).
 3. **Variant** — a catalog code matches when it is the curriculum code plus a suffix that
    begins with `.` or `(`.
 
@@ -113,30 +115,40 @@ requirement and `NSTP 11(ROTC)`/`(CWTS)` are a pick-one — a student takes exac
 
 ### 5.1 Alias file
 
-```json
-{
-  "PATHFit 1": ["PEPC 10"],
-  "PATHFit 2": ["PEPC 11", "PEPC 12", "PEPC 13", "PEPC 14",
-                "PEPC 15", "PEPC 16", "PEPC 17", "PEPC 18", "PEPC 19"],
-  "PATHFit 3": ["PEPC 11", "PEPC 12", "PEPC 13", "PEPC 14",
-                "PEPC 15", "PEPC 16", "PEPC 17", "PEPC 18", "PEPC 19"],
-  "PATHFit 4": ["PEPC 11", "PEPC 12", "PEPC 13", "PEPC 14",
-                "PEPC 15", "PEPC 16", "PEPC 17", "PEPC 18", "PEPC 19"]
-}
-```
-
+Keys are AISIS **requirement categories** where the slot has one, and catNo otherwise.
 Values are catalog code prefixes; the variant rule applies on top of each, so `"PEPC 13"`
 matches `PEPC 13.03`, `13.15`, and the rest of that family.
 
-`PATHFit 1 → PEPC 10` is confirmed: 123 sections, "FUNDAMENTAL MOVEMENT FOR HEALTH AND
-FITNESS" against the IPS's "PHYSICAL ACTIVITIES TOWARDS HEALTH AND FITNESS 1", both 2 units.
+```json
+{
+  "PFT1": ["PEPC 10"],
+  "PFT2": ["PEPC 11", "PEPC 12"],
+  "PFT3": ["PEPC 13", "PEPC 14", "PEPC 15", "PEPC 16",
+           "PEPC 17", "PEPC 18", "PEPC 19"],
+  "PFT4": ["PEPC 13", "PEPC 14", "PEPC 15", "PEPC 16",
+           "PEPC 17", "PEPC 18", "PEPC 19"]
+}
+```
 
-`PATHFit 2`–`4` map to the whole PEPC activity range (martial arts, dance, aquatics,
-sports, recreation) because whether the `11 / 13 / 14 / …` grouping encodes a PATHFit level
-is **not known** and is not guessed here. The student narrows the slot themselves (§5.2),
-which is the honest handling and also the one they want — the choice between Judo and Tai
-Chi is personal, not a scheduling optimization. `PEPC 12` is listed though absent from the
-2026-1 catalog: it costs nothing and catches the family if it appears in a later term.
+**Why category, not catNo.** The curriculum carries a `category` per entry — `PFT1`–`PFT4`,
+`NP1`/`NP2` (NSTP 11/12), `CPH1` (PHILO 11), `NS1A`/`NS1B` (NatSc lecture/lab), `FLC1`,
+`IE1E`. These are AISIS's own requirement identifiers and are stable, whereas `catNo` is a
+printed label. Categories also disambiguate slots whose catNo is identical: `RM1` and `RM2`
+both print "MATHEMATICS ELECTIVE".
+
+**The PATHFit mapping, verified against both sides.** `PEPC 10` is a single foundational
+course (123 sections) → `PFT1`. `PEPC 11` is a *second* foundational tier — "FUNCTIONAL
+TRAINING", "FOUNDATIONAL MOVEMENT AND EXERCISE FOR GAMES AND SPORTS" — not an activity
+elective, which is why `PFT2` stands apart from `PFT3`/`PFT4`. `PEPC 13`–`19` are the
+activity pool (martial arts, dance, aquatics, racquet and board, team sports, recreation),
+shared by `PFT3` and `PFT4`. `PEPC 12` is absent from the 2026-1 catalog and is grouped with
+`PFT2` on the assumption that it is the adjacent foundational family; it costs nothing today
+and is the first thing to re-check if a `PEPC 12` course ever appears.
+
+**Scope caveat.** These categories come from the one program currently in `data/`. `PFT*` and
+`NP*` are university-wide core requirements so they are very likely universal, but that is
+unverified until the full curricula scrape runs (§13). Program-specific categories such as
+`RM1`–`RM5` are local by nature and are not alias keys.
 
 The file ships with only entries justified against real catalog data. Unknown mappings are
 **not guessed** — they surface through §5.3 instead.
@@ -149,9 +161,11 @@ no new field, because §5 already resolves `chosen ?? requirement`:
 | Slot | `chosen: null` resolves to | after the student picks |
 |---|---|---|
 | `MATH 10` | `["MATH 10"]` | unchanged — narrowing is a no-op |
-| `PHILO 11` | the four tracks | `["PHILO 11.05"]` |
-| `NSTP 11` | `(CWTS)`, `(ROTC)` | `["NSTP 11(ROTC)"]` |
-| `PATHFit 3` | 25 activity codes | `["PEPC 13.15"]` |
+| `PHILO 11` (`CPH1`) | the four tracks | `["PHILO 11.05"]` |
+| `NSTP 11` (`NP1`) | `(CWTS)`, `(ROTC)` | `["NSTP 11(ROTC)"]` |
+| `PATHFit 1` (`PFT1`) | `["PEPC 10"]` | no-op |
+| `PATHFit 2` (`PFT2`) | 2 foundational codes | `["PEPC 11.05"]` |
+| `PATHFit 3` (`PFT3`) | 23 activity codes | `["PEPC 13.15"]` |
 | elective | `[]` — unsatisfiable | `["MATH 101"]` |
 
 Filling an elective and narrowing a requirement are the same operation on the same field.
@@ -299,10 +313,11 @@ Additions targeting the gaps that let real bugs through:
   one section after filters), and none for the rest.
 - **`validate:data` gains**: every catalog section carries `timeStatus`; every alias target
   resolves to at least one section in the newest catalog; the zero-offering report of §5.3.
-- **Offerings unit tests** against the real catalog for the four known shapes (`PHILO 11`
-  → 4 codes, `NSTP 11` → 2, `PATHFit 1` → `PEPC 10`, `MATH 10` → 1), the alias range
-  (`PATHFit 3` → 25 activity codes), the `MATH 10` / `MATH 100` over-match guard, and
-  narrowing (`chosen` set → exactly that one code, §5.2).
+- **Offerings unit tests** against the real 2026-1 catalog, with counts verified while
+  writing this spec: `PHILO 11` → 4 tracks, `NSTP 11` → 2, `MATH 10` → 1 (the
+  `MATH 100`/`MATH 101` over-match guard), `PFT1` → 1, `PFT2` → 2, `PFT3` → 23. Plus
+  category-over-catNo key precedence, and narrowing (`chosen` set → exactly that one code,
+  §5.2).
 
 ## 13. Data refresh — operational, does not block the rewrite
 
@@ -320,11 +335,13 @@ does not depend on them.
 - **The alias file covers only what has been confirmed.** `PATHFit → PEPC` is mapped (§5.1);
   other irregular renames need domain knowledge that is not in the repo. §5.3 makes the gaps
   visible rather than silent, which is the honest handling; the file fills in over time.
-- **`PATHFit 2`–`4` are deliberately over-broad.** They offer the whole PEPC activity range
-  because the level encoding is unconfirmed. If a level rule does exist, a student could
-  narrow to an activity that does not satisfy that particular PATHFit. Narrowing is the
-  student's own choice against titles they recognise, and AISIS rejects an invalid
-  enlistment anyway — but the app cannot catch it, and the README should say so.
+- **`PFT3` and `PFT4` share one activity pool.** They are not distinguished, so a student
+  could in principle take the same activity family for both. AISIS rejects an invalid
+  enlistment; the app cannot catch it, and the README should say so.
+- **Category universality is unverified.** The alias keys assume `PFT*`/`NP*`/`CPH*` mean the
+  same thing across programs. Only one program's curriculum is in `data/` today. The full
+  scrape (§13) confirms or breaks this; until then a category collision in another program
+  would mis-resolve a slot. `validate:data`'s zero-offering report (§5.3) is the tripwire.
 - **Strict priority ranking changes results.** Schedules that ranked well by blending will
   reorder. This is intended, but it is a visible behavior change.
 - **v3 resets saved state.** Every existing user loses their selections once. Acceptable:
