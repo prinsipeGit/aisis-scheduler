@@ -293,16 +293,25 @@ the same block.
 Narrowing either slot (§5.2) narrows the acceptable set of the other through the same rule,
 so a student who picks Chemistry lecture cannot then be given a Biology lab.
 
-### 5.5 `INTACT` is missing from the catalog, and is not an alias problem
+### 5.5 What the zero-offering report caught: a missing department
 
-`INTACT 11` and `INTACT 12` are required by 59 of 69 programs and match **nothing** in the
-2026-1 catalog under any code or title. That is a data-coverage question, not a naming one:
-either the course is not offered in this term, or the scraper's 42-department list (from
-`tools/departments.mjs`, captured 2026-07-21) is missing the department that teaches it.
+`INTACT 11`/`12` are required by 59 of 69 programs and originally matched **nothing** in the
+catalog. The §5.3 report surfaced it, and the cause turned out to be ours, not AISIS's: the
+live `deptCode` dropdown lists **43** departments and `tools/departments.mjs` had **42**.
+`INTAC` was never queried.
 
-No alias entry is invented for it. It surfaces through the §5.3 zero-offering report until
-the cause is established, which is the correct handling for "we do not know" — inventing a
-target would produce confidently wrong schedules for most of the university.
+Fixed 2026-07-28 — the list is now verified against the live dropdown for contents and order,
+and re-scraping brought the catalog from 3,781 to 3,902 sections. `INTACT 11` has 103
+sections; it is pre-assigned, which §5.6 handles.
+
+`INTACT 12` still resolves to nothing, and that is now understood rather than unexplained:
+2026-1 is First Semester and it is a second-semester course. It is expected to appear when a
+`2026-2` catalog is scraped.
+
+The wider point is procedural. No alias was invented while the cause was unknown — an
+invented target would have produced confidently wrong schedules for most of the university,
+and would have masked a scraper bug affecting every program. **A code resolving to zero is a
+question, not a mapping to fill in.**
 
 ### 5.6 Pre-assigned courses — the student is given a section, not a choice
 
