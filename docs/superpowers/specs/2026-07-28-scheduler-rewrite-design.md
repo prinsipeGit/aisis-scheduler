@@ -304,6 +304,48 @@ No alias entry is invented for it. It surfaces through the §5.3 zero-offering r
 the cause is established, which is the correct handling for "we do not know" — inventing a
 target would produce confidently wrong schedules for most of the university.
 
+### 5.6 Pre-assigned courses — the student is given a section, not a choice
+
+Some courses are pre-enlisted: the university assigns the section and the student cannot
+pick. `INTACT 11` is the clearest case — 103 sections, codes like `INT-FJ`, `INT-MA1` that
+are block identifiers rather than enlistment options, all one-hour single-day meetings with
+instructor `TBA`. It is required by 59 of the 69 programs.
+
+Treating those 103 as free choices is wrong twice over. It models a decision the student
+does not get to make, and it **multiplies the search space by 103**, so generation hits the
+500-candidate cap immediately and every ranking below it becomes arbitrary. This is not
+hypothetical: it is what made the existing smoke test's truncation notice fire identically
+before and after locking a section.
+
+**Mechanism — no new state.** Pinning is the existing `lockedSections`: a locked section
+already pins its slot and bypasses filters (§6). What changes is *where* it can be set. Today
+a section can only be locked from the results list, which is useless when the results are the
+thing being swamped. The Courses rail gains a section picker for any slot (§11), writing to
+the same `lockedSections`.
+
+A slot counts as **pinned** when some entry in `lockedSections` names a section whose course
+code is in that slot's acceptable set (§5).
+
+**Before it is pinned**, a pre-assigned slot is *excluded from generation and prompts*:
+
+- it does not contribute candidates, so the search space stays small and rankings stay
+  meaningful;
+- the slot shows "pre-assigned — enter the section you were given", not the generic
+  "not offered this term", because the two mean entirely different things;
+- the stage lists it among the classes the displayed schedule does not include, so the week
+  is never silently presented as complete.
+
+**Which courses are pre-assigned is data, not a rule.** `data/course-aliases.json` gains:
+
+```json
+"preAssigned": ["INTACT 11"]
+```
+
+Keyed by category-or-catNo exactly like the alias map (§5.1). It is a policy fact that no
+part of the AISIS export states, so it cannot be derived — a heuristic over section counts or
+`TBA` instructors would be guessing. The list is small, user-maintained, and affects only
+prompting and exclusion; every slot remains pinnable whether or not it is listed.
+
 ## 6. Generator
 
 The unit of work changes from *"one section per course code"* to **"one section per slot,
@@ -415,6 +457,11 @@ Four corrections to that spec, from the review and from §5:
   let the scheduler choose"), so leaving it open reads as a decision rather than an
   oversight. Electives keep the catalog-wide search they have today, since their acceptable
   set is unbounded.
+- **The Courses rail gains a section picker** (§5.6). Any slot can be pinned to a specific
+  section — "I already have this one" — writing to `lockedSections`. Pre-assigned slots show
+  it prominently with the "enter the section you were given" prompt; every other slot offers
+  it quietly, since locking is currently reachable only from the results list and that is
+  the wrong place when the results are the thing being drowned.
 
 ## 12. Testing
 
@@ -439,6 +486,10 @@ Additions targeting the gaps that let real bugs through:
 - **Paired-slot tests** (§5.4): a linked `NS1A`/`NS1B` pair never yields a schedule whose
   lecture and lab have different subject prefixes; narrowing the lecture constrains the lab;
   an unpaired slot is unaffected.
+- **Pre-assigned tests** (§5.6): an unpinned `INTACT 11` slot contributes no candidates and
+  is reported as pre-assigned rather than not-offered; pinning a section makes it contribute
+  exactly that section; the candidate count with `INTACT 11` in the block does not collapse
+  into truncation — the regression that the old smoke test was silently absorbing.
 - **Cross-program regression** over all 69 curricula: every program seeds without throwing,
   every `slotId` is unique within a program, and the resolved-requirement percentage does
   not fall below its recorded baseline — so an alias or rule edit that helps one program
