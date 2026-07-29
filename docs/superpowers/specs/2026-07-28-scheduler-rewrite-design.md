@@ -391,10 +391,17 @@ and is not implemented until they make it.
 - **`PFT3` and `PFT4` share one activity pool.** They are not distinguished, so a student
   could in principle take the same activity family for both. AISIS rejects an invalid
   enlistment; the app cannot catch it, and the README should say so.
-- **Category universality is unverified.** The alias keys assume `PFT*`/`NP*`/`CPH*` mean the
-  same thing across programs. Only one program's curriculum is in `data/` today. The full
-  scrape (§13) confirms or breaks this; until then a category collision in another program
-  would mis-resolve a slot. `validate:data`'s zero-offering report (§5.3) is the tripwire.
+- **Category universality is unverified — the top open risk.** The alias keys assume
+  `PFT*`/`NP*`/`CPH*` mean the same thing across programs, but only one program's curriculum
+  is in `data/` (the bulk scrape has not run). A category collision in another program would
+  mis-resolve a slot. The design does not depend on the assumption holding — if it breaks,
+  alias keys gain a program scope — but the risk stays open until the scrape lands.
+  `validate:data`'s zero-offering report (§5.3) is the tripwire.
+
+**Scope: undergraduate programs.** Graduate curricula (MA/MS/PhD) are not a target. They may
+be scraped and stored, but unmapped codes or parse warnings from a masters program are not
+release blockers and no alias entries are written for them. The IPS-driven flow is built
+around the undergraduate year/semester block structure.
 - **Strict priority ranking changes results.** Schedules that ranked well by blending will
   reorder. This is intended, but it is a visible behavior change.
 - **v3 resets saved state.** Every existing user loses their selections once. Acceptable:
