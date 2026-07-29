@@ -17,12 +17,13 @@ approved, and never built.
 
 **Additions, all arising from real gaps found in the data rather than wishlist:** correct
 resolution of curriculum codes to offered sections (§5), pre-assigned course handling (§5.6),
-a calendar-term default (§11.2), and the enlistment handoff (§11.3) that gives the journey an
-ending.
+a calendar-term default (§11.2), the enlistment handoff (§11.3) that gives the journey an
+ending, and a unit-load comparison against the student's own IPS block (§11.4).
 
 **Non-goals.** No stack change. No change to the AISIS endpoint contracts. No change to the
-Supabase schema beyond `migrations/`. No dark mode. Prerequisite checking and unit-load
-warnings are recorded but out of scope (§11.4).
+Supabase schema beyond `migrations/`. No dark mode. **Prerequisite checking and the grades
+import are a separate, already-decided follow-on project (§11.5)** — this rewrite only
+reserves the storage field so that project does not force a second state reset.
 
 ## 2. What carries over untouched
 
@@ -421,6 +422,18 @@ Three review defects fixed here:
 an older version" banner. No migration is written — the selection model changed shape and
 the reset path already exists and is tested.
 
+v3 also carries:
+
+```ts
+completedCourses: string[];  // canonical course codes; [] until §11.5 ships
+```
+
+It is unused by this rewrite and that is deliberate, not speculative scope. The grades import
+(§11.5) is a decided follow-on, and adding the field later would force a v4 bump that wipes
+every user's saved selections a second time. One line of validation now costs less than a
+second reset. It holds **course codes only** — never grades — which is the same rule the
+importer will be built to (§11.5).
+
 Validation stays strict and total, as today: unknown criteria, malformed protected blocks,
 out-of-range ratings, and duplicate entries all reject.
 
@@ -547,16 +560,47 @@ intended use is the image open on a phone while AISIS is typed into on a laptop.
 codes as selectable text beside the download button is a cheap mitigation and is left as an
 open option rather than assumed.
 
-### 11.4 Deferred, recorded so they are not lost
+### 11.4 Unit load, measured against the student's own IPS block
 
-Neither is in scope; both are real and evidenced, and belong in the follow-up list:
+The Courses step compares selected units against `block.totalUnits` — the total the
+curriculum itself prints for that block — and says so plainly: *"24 units selected; this
+block is 19."*
 
-- **Unit-load warning.** IPS blocks run 0–26 units, median 19. The app computes and displays
-  a total but never flags an overload that would need approval.
-- **Prerequisite checking.** 1,867 of 4,547 curriculum entries (41%) carry prerequisites —
-  `PATHFit 2 ← PATHFit 1`, `ARTS 110 ← ArtAp 10`. The field is read from AISIS, stored, and
-  never used, so the app will schedule a course the student is not eligible for. A real fix
-  needs a record of completed courses, which is its own feature.
+Deliberately **no hardcoded threshold**. Real IPS blocks in the scraped data run 0–26 units
+with a median of 19, and the number that requires approval is a registrar policy this repo
+has no source for. Inventing "over 18 needs approval" would state a rule we cannot verify;
+comparing against the block's own printed total is a fact we hold. The copy notes that a load
+above the block's total generally needs approval, without asserting a specific limit.
+
+Under-load is surfaced the same way, since dropping below full-time status has consequences
+the app should not silently allow a student to walk into.
+
+### 11.5 Prerequisites and grades import — the next project, not this one
+
+1,867 of 4,547 curriculum entries (41%) carry prerequisites — `PATHFit 2 ← PATHFit 1`,
+`ARTS 110 ← ArtAp 10`. The field is scraped, stored, and never used, so the app will schedule
+a course the student is not eligible for.
+
+The check itself is easy. It is blocked on knowing which courses the student has completed,
+and that is a subsystem: file input, PDF text extraction, course matching, new state, and a
+personal-data surface the app currently does not have. It gets its own spec and plan **after**
+this rewrite. What is settled now, so the next round starts from evidence:
+
+- **Grades, not IPS, is the smaller source.** An IPS is roughly curriculum + progress. All 69
+  curricula are already scraped, so only progress is missing — and AISIS's grades export is a
+  flat `Subject Code · Course · Units · Grade` list rather than a nested year/term structure.
+- **Naive PDF text extraction does not work.** A browser-printed AISIS page stores text as
+  hex glyph IDs (`<004C0048005A>`) against subsetted fonts. A fixed glyph offset decodes one
+  browser's output and breaks on another. Correct decoding means reading each font's
+  `ToUnicode` CMap — in practice `pdfjs-dist`, a runtime dependency this spec otherwise
+  avoids. That trade is the next project's to make.
+- **Privacy rule, non-negotiable:** parsing is client-side only, never reaches Supabase, and
+  the parser **extracts the set of completed course codes and discards everything else at
+  parse time** — no grades, no name, no student number, retained or persisted. The app's
+  claim is "no accounts, everything personal stays in your browser"; an import must not
+  weaken it.
+
+`UserState` reserves the field now (§9) so the import does not force another storage reset.
 
 ## 12. Testing
 
