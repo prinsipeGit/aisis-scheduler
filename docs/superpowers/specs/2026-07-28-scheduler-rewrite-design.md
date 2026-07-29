@@ -15,9 +15,14 @@ complexity in the current code.
 The rewrite also lands the single-page cockpit UI, which was specced on 2026-07-21,
 approved, and never built.
 
-**Non-goals.** No new features. No stack change. No change to the AISIS scrapers or their
-verified endpoint contracts. No change to the Supabase schema beyond what already exists
-in `migrations/`. No dark mode.
+**Additions, all arising from real gaps found in the data rather than wishlist:** correct
+resolution of curriculum codes to offered sections (§5), pre-assigned course handling (§5.6),
+a calendar-term default (§11.2), and the enlistment handoff (§11.3) that gives the journey an
+ending.
+
+**Non-goals.** No stack change. No change to the AISIS endpoint contracts. No change to the
+Supabase schema beyond `migrations/`. No dark mode. Prerequisite checking and unit-load
+warnings are recorded but out of scope (§11.4).
 
 ## 2. What carries over untouched
 
@@ -440,18 +445,23 @@ src/
     curriculum.ts    program list, program read
   ui/
     App.tsx          three-zone shell
-    setup/           Program · Semester · Courses · Preferences (accordion rail)
+    setup/           Program · Semester · Courses · AlreadyHave · Preferences (§11.1)
     stage/           WeekGrid · Pager · SectionChips · Diagnostics · EmptyStage
     candidates/      CandidateList
+    export/          scheduleImage.ts — Canvas render + download (§11.3)
 ```
+
+`lib/term.ts` holds the term-default calculation (§11.2). It is pure and clock-injectable,
+so it lives with the logic rather than in the component that consumes it.
 
 ## 11. UI — the cockpit
 
 Layout, palette, type, and copy register are as specified in
 `2026-07-21-cockpit-ui-redesign-design.md` §2–3 and are not restated here. Three zones:
-left setup rail (accordion, one section open, headers showing completed state), center
-stage (candidate pager `◀ 02 / 41 ▶`, weekly grid as hero, section chips carrying
-Lock / Mark full / Exclude), right candidates rail (ranked list, click to jump).
+left setup rail (accordion, **five** sections — see §11.1 — one open at a time, headers
+showing completed state), center stage (candidate pager `◀ 02 / 41 ▶`, weekly grid as hero,
+section chips carrying Lock / Mark full / Exclude, and the §11.3 download), right candidates
+rail (ranked list, click to jump).
 
 Four corrections to that spec, from the review and from §5:
 
@@ -471,6 +481,82 @@ Four corrections to that spec, from the review and from §5:
   it prominently with the "enter the section you were given" prompt; every other slot offers
   it quietly, since locking is currently reachable only from the results list and that is
   the wrong place when the results are the thing being drowned.
+
+### 11.1 The journey, and what the setup rail contains
+
+Five rail sections, in order. The order is load-bearing, not cosmetic:
+
+1. **Program** — search and select (§5.1 categories come from here)
+2. **Semester** — curriculum block + calendar term, with the default of §11.2
+3. **Courses** — requirement rows, elective fills, narrowing (§5.2), add-a-course
+4. **Classes you already have** — pin sections you have been assigned or already secured (§5.6)
+5. **Preferences** — criteria, time limits, protected blocks, ratings, excluded/full lists
+
+Step 4 sits before step 5 because pinning is what makes ranking meaningful. An unpinned
+`INTACT 11` multiplies the candidate space by ~103 and generation truncates at 500, so
+preferences tuned before pinning are tuned against noise (§5.6).
+
+It is named "Classes you already have", not "Pre-enlisted", because it serves two cases with
+one mechanism: a section the university assigned, and a section already secured on enlistment
+day with the rest still to plan around it. Both are a `lockedSections` write.
+
+### 11.2 Calendar term defaults to the term you would be enlisting for
+
+Enlistment happens *before* a term starts, so the useful default is the upcoming term, not
+the running one:
+
+| month | default | rationale |
+|---|---|---|
+| Jun–Oct | `Y-1` | enlisting for First Semester of the AY starting this year |
+| Nov–Dec | `Y-2` | enlisting for Second Semester of that same AY |
+| Jan–Feb | `(Y-1)-2` | still the Second Semester of the AY that began last year |
+| Mar–May | `(Y-1)-0` | enlisting for that AY's Intersession |
+
+**The computed term is used only if it has a catalog.** Otherwise the newest term that does
+is selected instead. Without this fallback, opening the app in November defaults to `2026-2`,
+which nobody has scraped, and the first thing a user sees is an error banner. `getTerms`
+already returns `available` per term; this consumes it.
+
+The chosen default is pre-selected, never forced — the term picker still lists everything,
+with unavailable terms disabled as today.
+
+### 11.3 Enlistment handoff — a downloadable schedule image
+
+The journey previously ended at "here are ranked schedules", but the goal is *enlisting in
+AISIS*. Between the two sits transcribing codes like `INT-FM3` and `NSLEC-D-A` under time
+pressure while sections fill.
+
+The stage offers **Download schedule** on the current candidate, producing a PNG:
+
+- the weekly grid, drawn at readable size;
+- a section list beneath it — course code, **section code**, days and times, room — with the
+  section code given typographic weight, since that is the field being typed into AISIS;
+- program, curriculum block and term in a header, so a saved image is self-identifying;
+- the "unofficial planning tool — verify in AISIS" line, which travels with a shared image
+  the way the app footer does not.
+
+**Rendered with the Canvas 2D API, no new dependency.** A DOM-to-image library would be the
+obvious reach and is not needed; the grid geometry is already computed for `WeekGrid` and is
+reused. `document.fonts.ready` is awaited before drawing so the self-hosted faces are
+applied rather than silently falling back.
+
+Delivered as `<a download>` with a data URL, which on a phone lands in the camera roll — the
+intended use is the image open on a phone while AISIS is typed into on a laptop.
+
+**Known limitation:** an image cannot be pasted. Same-device users retype. Rendering the same
+codes as selectable text beside the download button is a cheap mitigation and is left as an
+open option rather than assumed.
+
+### 11.4 Deferred, recorded so they are not lost
+
+Neither is in scope; both are real and evidenced, and belong in the follow-up list:
+
+- **Unit-load warning.** IPS blocks run 0–26 units, median 19. The app computes and displays
+  a total but never flags an overload that would need approval.
+- **Prerequisite checking.** 1,867 of 4,547 curriculum entries (41%) carry prerequisites —
+  `PATHFit 2 ← PATHFit 1`, `ARTS 110 ← ArtAp 10`. The field is read from AISIS, stored, and
+  never used, so the app will schedule a course the student is not eligible for. A real fix
+  needs a record of completed courses, which is its own feature.
 
 ## 12. Testing
 
@@ -499,6 +585,13 @@ Additions targeting the gaps that let real bugs through:
   is reported as pre-assigned rather than not-offered; pinning a section makes it contribute
   exactly that section; the candidate count with `INTACT 11` in the block does not collapse
   into truncation — the regression that the old smoke test was silently absorbing.
+- **Term default tests** (§11.2): the month→term table, both AY-rollover boundaries
+  (Dec→Jan, Feb→Mar), and — the case that actually bites — falling back to the newest
+  available term when the computed one has no catalog. Tested with a fixed clock, never
+  `new Date()`.
+- **Handoff test** (§11.3): the download produces a non-empty PNG data URL whose section list
+  contains every section key in the current candidate. Canvas is stubbed; this asserts the
+  content contract, not pixels.
 - **Cross-program regression** over all 69 curricula: every program seeds without throwing,
   every `slotId` is unique within a program, and the resolved-requirement percentage does
   not fall below its recorded baseline — so an alias or rule edit that helps one program
