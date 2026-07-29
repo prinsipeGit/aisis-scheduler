@@ -18,12 +18,14 @@ approved, and never built.
 **Additions, all arising from real gaps found in the data rather than wishlist:** correct
 resolution of curriculum codes to offered sections (§5), pre-assigned course handling (§5.6),
 a calendar-term default (§11.2), the enlistment handoff (§11.3) that gives the journey an
-ending, and a unit-load comparison against the student's own IPS block (§11.4).
+ending, a unit-load comparison against the student's own IPS block (§11.4), and building a
+semester from more than one curriculum block (§11.5) for students who are off-sequence.
 
 **Non-goals.** No stack change. No change to the AISIS endpoint contracts. No change to the
-Supabase schema beyond `migrations/`. No dark mode. **Prerequisite checking and the grades
-import are a separate, already-decided follow-on project (§11.5)** — this rewrite only
-reserves the storage field so that project does not force a second state reset.
+Supabase schema beyond `migrations/`. No dark mode. **No file import of any kind** — reading
+a personal IPS is deferred to a browser extension in its own project (§11.6), and
+prerequisite checking waits on it; this rewrite only reserves the storage field so that
+project does not force a second state reset.
 
 ## 2. What carries over untouched
 
@@ -107,8 +109,9 @@ interface Slot {
   id: string;                 // "ips:First Year|First Semester#4" | "added:3"
   origin: "ips" | "added";
   label: string;              // "PHILO 11" | "MATHEMATICS ELECTIVE"
-  requirement: string | null; // curriculum catNo; null when user-added
-  category: string | null;    // AISIS requirement category, e.g. "PFT2"; null when user-added
+  requirement: string | null; // curriculum catNo; null when added from catalog
+  category: string | null;    // AISIS requirement category, e.g. "PFT2"; null when from catalog
+  sourceBlock: string | null; // block key it came from (§11.5); null when from catalog
   chosen: string | null;      // course code the student picked; null = unfilled elective
   pairedWith: string | null;  // id of a slot this must share a subject prefix with (§5.4)
   included: boolean;          // counts toward generation
@@ -425,14 +428,13 @@ the reset path already exists and is tested.
 v3 also carries:
 
 ```ts
-completedCourses: string[];  // canonical course codes; [] until §11.5 ships
+completedCourses: string[];  // canonical course codes; [] until §11.6 supplies them
 ```
 
-It is unused by this rewrite and that is deliberate, not speculative scope. The grades import
-(§11.5) is a decided follow-on, and adding the field later would force a v4 bump that wipes
-every user's saved selections a second time. One line of validation now costs less than a
-second reset. It holds **course codes only** — never grades — which is the same rule the
-importer will be built to (§11.5).
+Unused by this rewrite, and reserved rather than added later on purpose: whatever eventually
+supplies completion (§11.6) would otherwise force a v4 bump that wipes every user's saved
+selections a second time. One line of validation now costs less than a second reset. It holds
+**course codes only**.
 
 Validation stays strict and total, as today: unknown criteria, malformed protected blocks,
 out-of-range ratings, and duplicate entries all reject.
@@ -575,32 +577,65 @@ above the block's total generally needs approval, without asserting a specific l
 Under-load is surfaced the same way, since dropping below full-time status has consequences
 the app should not silently allow a student to walk into.
 
-### 11.5 Prerequisites and grades import — the next project, not this one
+### 11.5 Building a semester from more than one block
 
-1,867 of 4,547 curriculum entries (41%) carry prerequisites — `PATHFit 2 ← PATHFit 1`,
-`ARTS 110 ← ArtAp 10`. The field is scraped, stored, and never used, so the app will schedule
-a course the student is not eligible for.
+Seeding comes from a single curriculum block, which assumes the student is in lockstep with
+their IPS. Retakers, shifters, accelerated students and anyone carrying a backlog are not:
+a real semester can need `MATH 51.1` from Second Year alongside `CSCI 115` from Third Year.
 
-The check itself is easy. It is blocked on knowing which courses the student has completed,
-and that is a subsystem: file input, PDF text extraction, course matching, new state, and a
-personal-data surface the app currently does not have. It gets its own spec and plan **after**
-this rewrite. What is settled now, so the next round starts from evidence:
+Underload and overload already work — toggling a slot off, and adding slots. What is missing
+is adding a slot **as a curriculum requirement from another block**, and it is not the same
+action as searching the catalog:
 
-- **Grades, not IPS, is the smaller source.** An IPS is roughly curriculum + progress. All 69
-  curricula are already scraped, so only progress is missing — and AISIS's grades export is a
-  flat `Subject Code · Course · Units · Grade` list rather than a nested year/term structure.
-- **Naive PDF text extraction does not work.** A browser-printed AISIS page stores text as
-  hex glyph IDs (`<004C0048005A>`) against subsetted fonts. A fixed glyph offset decodes one
-  browser's output and breaks on another. Correct decoding means reading each font's
-  `ToUnicode` CMap — in practice `pdfjs-dist`, a runtime dependency this spec otherwise
-  avoids. That trade is the next project's to make.
-- **Privacy rule, non-negotiable:** parsing is client-side only, never reaches Supabase, and
-  the parser **extracts the set of completed course codes and discards everything else at
-  parse time** — no grades, no name, no student number, retained or persisted. The app's
-  claim is "no accounts, everything personal stays in your browser"; an import must not
-  weaken it.
+| action | source | the slot carries |
+|---|---|---|
+| **Add from my curriculum** | any block of the chosen program | `category`, units, elective flag, prerequisites, pairing |
+| **Add from catalog** | any offered course | nothing — a bare course code |
 
-`UserState` reserves the field now (§9) so the import does not force another storage reset.
+The distinction is load-bearing, not cosmetic. Alias resolution is keyed on `category` (§5.1),
+so a catalog search for `PATHFit 3` returns **nothing** — `PATHFit` is not a catalog code, it
+is `PEPC 13`–`19`, and only the `PFT3` category knows that. Pulled from the curriculum, the
+same requirement carries `PFT3` and resolves to all 23 activities. The same holds for `NS1A`,
+`FLC1` and every other aliased family.
+
+`Slot` records where it came from:
+
+```ts
+origin: "ips" | "added";     // ips = a curriculum requirement, from any block
+sourceBlock: string | null;  // the block key it was taken from; null when added from catalog
+```
+
+A slot seeded from the primary block and one pulled from Third Year are both `"ips"` and
+behave identically; `sourceBlock` exists so the UI can say *"MATH 51.1 · Second Year · First
+Semester"* rather than presenting an off-sequence course as if it belonged to the current one.
+
+**Paired requirements travel together** (§5.4). Pulling `NS1A` from another block pulls
+`NS1B` with it, since importing half a lecture/lab pair would produce a slot whose partner
+does not exist and silently drop the constraint.
+
+The unit-load comparison (§11.4) still measures against the **primary** block's printed
+total, and labels it as such — that is the nominal load the semester is being varied from,
+which is exactly the number an overloading student wants to see.
+
+### 11.6 Importing a personal IPS — later, and not in the web app
+
+An imported IPS would supply the student's actual position: which requirements remain, and
+therefore whether prerequisites are met. That is the eventual fix for the 1,867 of 4,547
+entries (41%) carrying prerequisites — `PATHFit 2 ← PATHFit 1`, `ARTS 110 ← ArtAp 10` — which
+are scraped, stored, and currently unused, so the app will schedule a course the student is
+not eligible for.
+
+It is **not built here, and not as a PDF upload.** A printed AISIS page is a poor source: the
+sample carries the site's nav chrome and timestamp, and stores text as hex glyph IDs against
+subsetted fonts, so correct decoding needs each font's `ToUnicode` CMap via a PDF library.
+Reading the page directly is strictly better than reading a print of it, which makes a
+**browser extension** the right vehicle — deferred to its own project.
+
+Whatever supplies it, the rule holds: the student's record stays on the student's machine,
+reduced to the course codes needed and nothing else.
+
+§11.5 covers the practical need in the meantime — an off-sequence student describes their
+semester directly instead of having it inferred.
 
 ## 12. Testing
 
