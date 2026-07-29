@@ -104,6 +104,7 @@ interface Slot {
   requirement: string | null; // curriculum catNo; null when user-added
   category: string | null;    // AISIS requirement category, e.g. "PFT2"; null when user-added
   chosen: string | null;      // course code the student picked; null = unfilled elective
+  pairedWith: string | null;  // id of a slot this must share a subject prefix with (§5.4)
   included: boolean;          // counts toward generation
 }
 ```
@@ -159,9 +160,32 @@ matches `PEPC 13.03`, `13.15`, and the rest of that family.
   "PFT3": ["PEPC 13", "PEPC 14", "PEPC 15", "PEPC 16",
            "PEPC 17", "PEPC 18", "PEPC 19"],
   "PFT4": ["PEPC 13", "PEPC 14", "PEPC 15", "PEPC 16",
-           "PEPC 17", "PEPC 18", "PEPC 19"]
+           "PEPC 17", "PEPC 18", "PEPC 19"],
+
+  "PE1": ["PEPC 10"],
+  "PE2": ["PEPC 11", "PEPC 12"],
+  "PE3": ["PEPC 13", "PEPC 14", "PEPC 15", "PEPC 16",
+          "PEPC 17", "PEPC 18", "PEPC 19"],
+  "PE4": ["PEPC 13", "PEPC 14", "PEPC 15", "PEPC 16",
+          "PEPC 17", "PEPC 18", "PEPC 19"],
+
+  "NS1A": ["BIO 10.01", "CHEM 10.01", "ENVI 10.01", "PHYS 10.01"],
+  "NS1B": ["BIO 10.02", "CHEM 10.02", "ENVI 10.02", "PHYS 10.02"],
+
+  "FLC1": ["FRE 11", "GER 11", "ITA 11", "JPN 11", "KOR 11", "RUSS 11", "SPA 11"]
 }
 ```
+
+Each family was derived from the 69-program zero-offering report (§5.3), not guessed:
+
+- **`PE1`–`PE4`** are the older numbering for `PFT1`–`PFT4`, used by 9 programs on
+  pre-PATHFit curricula (`PHYED 1`–`4`, `PE 1`–`4`). Same PEPC targets.
+- **`NS1A`/`NS1B`** are the Natural Science lecture and lab, in 47 programs. The student
+  takes one science; the four departments each offer a `10.01` lecture and a `10.02` lab.
+  The two slots are **paired** — see §5.4.
+- **`FLC1`** is Foreign Language and Culture, in 49 programs, satisfied by the first course
+  of any offered language. `FILI` is deliberately excluded: Filipino is a separate national
+  language requirement, not a foreign one.
 
 **Why category, not catNo.** The curriculum carries a `category` per entry — `PFT1`–`PFT4`,
 `NP1`/`NP2` (NSTP 11/12), `CPH1` (PHILO 11), `NS1A`/`NS1B` (NatSc lecture/lab), `FLC1`,
@@ -178,10 +202,19 @@ shared by `PFT3` and `PFT4`. `PEPC 12` is absent from the 2026-1 catalog and is 
 `PFT2` on the assumption that it is the adjacent foundational family; it costs nothing today
 and is the first thing to re-check if a `PEPC 12` course ever appears.
 
-**Scope caveat.** These categories come from the one program currently in `data/`. `PFT*` and
-`NP*` are university-wide core requirements so they are very likely universal, but that is
-unverified until the full curricula scrape runs (§13). Program-specific categories such as
-`RM1`–`RM5` are local by nature and are not alias keys.
+**Verified across all 69 undergraduate programs** (scraped 2026-07-28). `PFT1`–`PFT4` map to
+exactly one catNo each. More decisively, where catNos *drift between programs* the category
+does not:
+
+| category | catNos it is printed as |
+|---|---|
+| `NP1` | `NSTP 11` ×63, `NSTP 1` ×6 |
+| `NS1A` | `NatSc 10.01` ×44, `NATSCI 1A` ×3 |
+| `FLC1` | `FLC 11` ×52, `FLC` ×6 |
+| `CPH1` | `PHILO 11` ×63, `PH 103/PH 104` ×1 |
+
+Keying on catNo would need a separate entry per spelling; keying on category collapses them.
+Program-specific categories such as `RM1`–`RM5` are local by nature and are not alias keys.
 
 The file ships with only entries justified against real catalog data. Unknown mappings are
 **not guessed** — they surface through §5.3 instead.
@@ -223,6 +256,46 @@ instead of silent. An `included` slot resolving to zero sections:
   resolves to zero offerings in the newest catalog. That report is how the alias file gets
   maintained.
 
+### 5.4 Paired slots — lecture and lab must come from the same science
+
+`NS1A` (lecture) and `NS1B` (lab) are two separate curriculum entries, each resolving to
+four codes. Chosen independently, the generator is free to pair a `BIO 10.01` lecture with a
+`CHEM 10.02` lab: **12 of the 16 combinations are invalid**, in 47 of 69 programs. This is
+the most common shape in the dataset, so it cannot be left to the student to notice.
+
+`Slot` gains an optional link:
+
+```ts
+pairedWith: string | null;  // id of a slot this one must agree with
+```
+
+Two linked slots must resolve to catalog codes sharing a **subject prefix** — the code up to
+its first space. `BIO 10.01` and `BIO 10.02` agree; `BIO 10.01` and `CHEM 10.02` do not. The
+generator enforces this as an ordinary constraint during backtracking, alongside time
+conflicts (§6).
+
+Pairing is **data, not hardcoded**: `data/course-aliases.json` grows a `pairs` section
+listing category pairs, and `seedSlots` links the two slots when both categories appear in
+the same block.
+
+```json
+"pairs": [["NS1A", "NS1B"]]
+```
+
+Narrowing either slot (§5.2) narrows the acceptable set of the other through the same rule,
+so a student who picks Chemistry lecture cannot then be given a Biology lab.
+
+### 5.5 `INTACT` is missing from the catalog, and is not an alias problem
+
+`INTACT 11` and `INTACT 12` are required by 59 of 69 programs and match **nothing** in the
+2026-1 catalog under any code or title. That is a data-coverage question, not a naming one:
+either the course is not offered in this term, or the scraper's 42-department list (from
+`tools/departments.mjs`, captured 2026-07-21) is missing the department that teaches it.
+
+No alias entry is invented for it. It surfaces through the §5.3 zero-offering report until
+the cause is established, which is the correct handling for "we do not know" — inventing a
+target would produce confidently wrong schedules for most of the university.
+
 ## 6. Generator
 
 The unit of work changes from *"one section per course code"* to **"one section per slot,
@@ -236,9 +309,13 @@ A normal course has one acceptable code and behaves exactly as today. `PHILO 11`
 and the generator picks whichever track fits the student's week — the correct behavior, and
 it requires no extra clicking.
 
-Otherwise unchanged: backtracking ordered by fewest candidates first, `MAX_SCHEDULES = 500`
-with the find-one-extra truncation check, locked sections bypass filters and pin their
-slot, `timeStatus === "parse-error"` excluded, TBA (no meetings) conflicts with nothing.
+Backtracking gains one constraint beyond time conflicts: a slot with `pairedWith` must take
+a section whose **subject prefix** matches its partner's (§5.4). Checked as each section is
+placed, so invalid lecture/lab pairs are pruned rather than generated and filtered.
+
+Otherwise unchanged: ordered by fewest candidates first, `MAX_SCHEDULES = 500` with the
+find-one-extra truncation check, locked sections bypass filters and pin their slot,
+`timeStatus === "parse-error"` excluded, TBA (no meetings) conflicts with nothing.
 Diagnostics keep the per-slot counts, pairwise-conflict list, and n-way flag.
 
 ## 7. Ranker — strict priority
@@ -348,17 +425,24 @@ Additions targeting the gaps that let real bugs through:
   resolves to at least one section in the newest catalog; the zero-offering report of §5.3.
 - **Offerings unit tests** against the real 2026-1 catalog, with counts verified while
   writing this spec: `PHILO 11` → 4 tracks, `NSTP 11` → 2, `MATH 10` → 1 (the
-  `MATH 100`/`MATH 101` over-match guard), `PFT1` → 1, `PFT2` → 2, `PFT3` → 23. Plus
-  category-over-catNo key precedence, and narrowing (`chosen` set → exactly that one code,
-  §5.2).
+  `MATH 100`/`MATH 101` over-match guard), `PFT1` → 1, `PFT2` → 2, `PFT3` → 23,
+  `NS1A` → 4, `FLC1` → 7. Plus category-over-catNo key precedence, and narrowing
+  (`chosen` set → exactly that one code, §5.2).
+- **Paired-slot tests** (§5.4): a linked `NS1A`/`NS1B` pair never yields a schedule whose
+  lecture and lab have different subject prefixes; narrowing the lecture constrains the lab;
+  an unpaired slot is unaffected.
+- **Cross-program regression** over all 69 curricula: every program seeds without throwing,
+  every `slotId` is unique within a program, and the resolved-requirement percentage does
+  not fall below its recorded baseline — so an alias or rule edit that helps one program
+  while breaking others fails the suite.
 
 ## 13. Data refresh — operational, does not block the rewrite
 
 | Step | Needs | Fixes |
 |---|---|---|
-| Re-scrape `2026-1` | nothing; public endpoint | All 3,743 sections currently lack `timeStatus` and carry raw `~` remarks — the catalog predates both parser fixes, so the parse-error guard is inert on production data |
-| `scrape:curricula` | AISIS session cookie (user) | **1 program → ~233.** The app is currently useful only to BS AMDSc students |
-| `push:data` | `SUPABASE_SERVICE_ROLE_KEY` (user) | `version`/`version_label` are `null` in the deployed rows; publishes the above |
+| ~~Re-scrape `2026-1`~~ | — | **Done 2026-07-28.** 3,781 sections, all carrying `timeStatus`; `parse-error` 112 → 0 after two parser fixes (§2.1) |
+| ~~`scrape:curricula`~~ | — | **Done 2026-07-28.** 1 program → **69** (undergraduate only; 164 graduate/non-degree skipped) |
+| `push:data` | `SUPABASE_SERVICE_ROLE_KEY` (user) | **Still outstanding.** `version`/`version_label` are `null` in the deployed rows, and the DB still holds 1 program and the stale catalog. The app reads only from Supabase, so none of the above reaches users until this runs |
 
 The first can run during implementation. The other two are user-triggered and the rewrite
 does not depend on them.
@@ -391,12 +475,14 @@ and is not implemented until they make it.
 - **`PFT3` and `PFT4` share one activity pool.** They are not distinguished, so a student
   could in principle take the same activity family for both. AISIS rejects an invalid
   enlistment; the app cannot catch it, and the README should say so.
-- **Category universality is unverified — the top open risk.** The alias keys assume
-  `PFT*`/`NP*`/`CPH*` mean the same thing across programs, but only one program's curriculum
-  is in `data/` (the bulk scrape has not run). A category collision in another program would
-  mis-resolve a slot. The design does not depend on the assumption holding — if it breaks,
-  alias keys gain a program scope — but the risk stays open until the scrape lands.
-  `validate:data`'s zero-offering report (§5.3) is the tripwire.
+- ~~Category universality is unverified.~~ **Resolved 2026-07-28** by scraping all 69
+  undergraduate programs: categories are stable where catNos drift (§5.1). Category keying
+  is now the better-evidenced choice, not the assumption.
+- **Coverage, not naming, is the remaining gap.** Only 61.9% of the 4,010 non-elective
+  requirement entries across 69 programs resolve to a section offered in 2026-1. Most of the
+  remainder is legitimate (upper-year courses not offered this term, old curriculum
+  versions), but `INTACT 11`/`12` alone affects 59 programs and is unexplained (§5.5). The
+  §5.3 report is the working list; it is expected to shrink, not reach zero.
 
 **Scope: undergraduate programs.** Graduate curricula (MA/MS/PhD) are not a target. They may
 be scraped and stored, but unmapped codes or parse warnings from a masters program are not
