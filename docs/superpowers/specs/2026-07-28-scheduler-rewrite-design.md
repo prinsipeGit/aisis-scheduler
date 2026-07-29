@@ -546,11 +546,20 @@ and is not implemented until they make it.
 - ~~Category universality is unverified.~~ **Resolved 2026-07-28** by scraping all 69
   undergraduate programs: categories are stable where catNos drift (§5.1). Category keying
   is now the better-evidenced choice, not the assumption.
-- **Coverage, not naming, is the remaining gap.** Only 61.9% of the 4,010 non-elective
-  requirement entries across 69 programs resolve to a section offered in 2026-1. Most of the
-  remainder is legitimate (upper-year courses not offered this term, old curriculum
-  versions), but `INTACT 11`/`12` alone affects 59 programs and is unexplained (§5.5). The
-  §5.3 report is the working list; it is expected to shrink, not reach zero.
+- **Coverage is the remaining gap, and it should not reach 100%.** **69.3%** of the 4,010
+  non-elective requirement entries across 69 programs resolve to a section offered in 2026-1,
+  up from 61.9% at first measurement (the `INTAC` department fix §5.5, the `PE*`/`NS*`/`FLC*`
+  alias families §5.1, and a `KRN`/`KOR` correction). What remains is now understood:
+
+  | entries | cause | legitimate? |
+  |---|---|---|
+  | 533 | 3rd year and above | yes — major courses run in specific semesters |
+  | 334 | pre-2018 curricula (6 programs) | yes — retired courses |
+  | 363 | 1st/2nd year, incl. `INTACT 12` ×59 | mostly — `INTACT 12` is second-semester |
+
+  This figure is recorded as a **regression baseline** (§12): an alias or rule edit that
+  raises one program's resolution while lowering the aggregate fails the suite. The §5.3
+  report stays the working list, and it is expected to shrink, not empty.
 
 **Scope: undergraduate programs.** Graduate curricula (MA/MS/PhD) are not a target. They may
 be scraped and stored, but unmapped codes or parse warnings from a masters program are not
