@@ -1,10 +1,10 @@
 {
-  "id": "BS-AMDSc-M-DSc-2024",
-  "code": "BS AMDSc-M DSc",
-  "name": "BACHELOR OF SCIENCE IN APPLIED MATHEMATICS",
-  "version": "2024",
-  "versionYear": 2024,
-  "versionLabel": "2024",
+  "id": "BS-MA-2025",
+  "code": "BS MA",
+  "name": "BACHELOR OF SCIENCE IN MATHEMATICS",
+  "version": "2025",
+  "versionYear": 2025,
+  "versionLabel": "2025",
   "blocks": [
     {
       "year": "First Year",
@@ -40,11 +40,11 @@
           "slotId": "First Year|First Semester#2"
         },
         {
-          "catNo": "MATH 10",
-          "title": "MATHEMATICS IN THE MODERN WORLD",
+          "catNo": "MATH 31.1",
+          "title": "MATHEMATICAL ANALYSIS IA",
           "units": 3,
           "prerequisites": [],
-          "category": "C",
+          "category": "M",
           "isElective": false,
           "slotId": "First Year|First Semester#3"
         },
@@ -90,7 +90,7 @@
       "year": "First Year",
       "term": "Second Semester",
       "key": "First Year|Second Semester",
-      "totalUnits": 21,
+      "totalUnits": 20,
       "entries": [
         {
           "catNo": "ENLIT 12",
@@ -123,17 +123,19 @@
           "catNo": "INTACT 12",
           "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 12",
           "units": 0,
-          "prerequisites": [],
+          "prerequisites": [
+            "INTACT 11"
+          ],
           "category": "C",
           "isElective": false,
           "slotId": "First Year|Second Semester#3"
         },
         {
-          "catNo": "MATH 31.1",
-          "title": "MATHEMATICAL ANALYSIS IA",
+          "catNo": "MATH 10",
+          "title": "MATHEMATICS IN THE MODERN WORLD",
           "units": 3,
           "prerequisites": [],
-          "category": "M",
+          "category": "C",
           "isElective": false,
           "slotId": "First Year|Second Semester#4"
         },
@@ -141,7 +143,9 @@
           "catNo": "MATH 31.2",
           "title": "MATHEMATICAL ANALYSIS IB",
           "units": 3,
-          "prerequisites": [],
+          "prerequisites": [
+            "MATH 31.1"
+          ],
           "category": "M",
           "isElective": false,
           "slotId": "First Year|Second Semester#5"
@@ -151,18 +155,9 @@
           "title": "NATURAL SCIENCE, LECTURE",
           "units": 3,
           "prerequisites": [],
-          "category": "NS1A",
+          "category": "RM1",
           "isElective": false,
           "slotId": "First Year|Second Semester#6"
-        },
-        {
-          "catNo": "NatSc 10.02",
-          "title": "NATURAL SCIENCE, LABORATORY",
-          "units": 1,
-          "prerequisites": [],
-          "category": "NS1B",
-          "isElective": false,
-          "slotId": "First Year|Second Semester#7"
         },
         {
           "catNo": "PATHFit 2",
@@ -173,7 +168,7 @@
           ],
           "category": "PFT2",
           "isElective": false,
-          "slotId": "First Year|Second Semester#8"
+          "slotId": "First Year|Second Semester#7"
         }
       ]
     },
@@ -207,30 +202,8 @@
       "year": "Second Year",
       "term": "First Semester",
       "key": "Second Year|First Semester",
-      "totalUnits": 22,
+      "totalUnits": 19,
       "entries": [
-        {
-          "catNo": "CSCI 112",
-          "title": "CONTEMPORARY DATABASES",
-          "units": 3,
-          "prerequisites": [
-            "MATH 71.1"
-          ],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Second Year|First Semester#0"
-        },
-        {
-          "catNo": "HISTO 12",
-          "title": "READINGS IN PHILIPPINE HISTORY",
-          "units": 3,
-          "prerequisites": [
-            "HISTO 11"
-          ],
-          "category": "C",
-          "isElective": false,
-          "slotId": "Second Year|First Semester#1"
-        },
         {
           "catNo": "MATH 31.3",
           "title": "MATHEMATICAL ANALYSIS II",
@@ -240,7 +213,16 @@
           ],
           "category": "M",
           "isElective": false,
-          "slotId": "Second Year|First Semester#2"
+          "slotId": "Second Year|First Semester#0"
+        },
+        {
+          "catNo": "MATH 50.1",
+          "title": "ELEMENTARY NUMBER THEORY",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#1"
         },
         {
           "catNo": "PATHFit 3",
@@ -252,7 +234,7 @@
           ],
           "category": "PFT3",
           "isElective": false,
-          "slotId": "Second Year|First Semester#3"
+          "slotId": "Second Year|First Semester#2"
         },
         {
           "catNo": "PHILO 11",
@@ -261,31 +243,29 @@
           "prerequisites": [],
           "category": "CPH1",
           "isElective": false,
-          "slotId": "Second Year|First Semester#4"
+          "slotId": "Second Year|First Semester#3"
         },
         {
           "catNo": "PHYS 23.01",
           "title": "UNIVERSITY PHYSICS I, LECTURE",
           "units": 3,
           "prerequisites": [
-            "MATH 31.1",
             "MATH 31.2"
           ],
           "category": "M",
           "isElective": false,
-          "slotId": "Second Year|First Semester#5"
+          "slotId": "Second Year|First Semester#4"
         },
         {
           "catNo": "PHYS 23.02",
           "title": "UNIVERSITY PHYSICS I, LABORATORY",
           "units": 2,
           "prerequisites": [
-            "MATH 31.1",
             "MATH 31.2"
           ],
           "category": "M",
           "isElective": false,
-          "slotId": "Second Year|First Semester#6"
+          "slotId": "Second Year|First Semester#5"
         },
         {
           "catNo": "SocSc 12",
@@ -296,7 +276,7 @@
           ],
           "category": "C",
           "isElective": false,
-          "slotId": "Second Year|First Semester#7"
+          "slotId": "Second Year|First Semester#6"
         }
       ]
     },
@@ -307,27 +287,23 @@
       "totalUnits": 23,
       "entries": [
         {
-          "catNo": "CSCI 115",
-          "title": "COMPUTER SIMULATION AND MODELING",
+          "catNo": "ArtAp 10",
+          "title": "ART APPRECIATION",
           "units": 3,
-          "prerequisites": [
-            "MATH 71.1"
-          ],
-          "category": "M",
+          "prerequisites": [],
+          "category": "C",
           "isElective": false,
           "slotId": "Second Year|Second Semester#0"
         },
         {
-          "catNo": "IE 1",
-          "title": "INTERDISCIPLINARY ELECTIVE 1 - ENGLISH",
+          "catNo": "HISTO 12",
+          "title": "READINGS IN PHILIPPINE HISTORY",
           "units": 3,
           "prerequisites": [
-            "ENGL 11",
-            "ENLIT 12"
+            "HISTO 11"
           ],
-          "category": "IE1E",
-          "isElective": true,
-          "electiveDept": "**IE**",
+          "category": "C",
+          "isElective": false,
           "slotId": "Second Year|Second Semester#1"
         },
         {
@@ -427,27 +403,18 @@
       "year": "Third Year",
       "term": "First Semester",
       "key": "Third Year|First Semester",
-      "totalUnits": 18,
+      "totalUnits": 21,
       "entries": [
         {
-          "catNo": "CSCI 111",
-          "title": "INTRODUCTION TO ARTIFICIAL INTELLIGENCE",
+          "catNo": "MATH 40.5",
+          "title": "APPLIED LINEAR ALGEBRA",
           "units": 3,
           "prerequisites": [
-            "MATH 71.1"
+            "MATH 40.1"
           ],
           "category": "M",
           "isElective": false,
           "slotId": "Third Year|First Semester#0"
-        },
-        {
-          "catNo": "MATH 101.6",
-          "title": "THEORY OF INTEREST",
-          "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Third Year|First Semester#1"
         },
         {
           "catNo": "MATH 62.1",
@@ -458,7 +425,7 @@
           ],
           "category": "M",
           "isElective": false,
-          "slotId": "Third Year|First Semester#2"
+          "slotId": "Third Year|First Semester#1"
         },
         {
           "catNo": "MATH 90.1",
@@ -469,16 +436,16 @@
           ],
           "category": "M",
           "isElective": false,
-          "slotId": "Third Year|First Semester#3"
+          "slotId": "Third Year|First Semester#2"
         },
         {
-          "catNo": "MATHEMATICS ELECTIVE",
-          "title": "MATHEMATICS ELECTIVE",
+          "catNo": "NSTP 12",
+          "title": "NATIONAL SERVICE TRAINING PROGRAM 12",
           "units": 3,
           "prerequisites": [],
-          "category": "RM1",
-          "isElective": true,
-          "slotId": "Third Year|First Semester#4"
+          "category": "NP2",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#3"
         },
         {
           "catNo": "PHILO 12",
@@ -489,7 +456,29 @@
           ],
           "category": "C",
           "isElective": false,
+          "slotId": "Third Year|First Semester#4"
+        },
+        {
+          "catNo": "STS 10",
+          "title": "SCIENCE, TECHNOLOGY, AND SOCIETY",
+          "units": 3,
+          "prerequisites": [
+            "NatSc 10.01"
+          ],
+          "category": "C",
+          "isElective": false,
           "slotId": "Third Year|First Semester#5"
+        },
+        {
+          "catNo": "SocSc 13",
+          "title": "THE ECONOMY, SOCIETY, AND SUSTAINABLE DEVELOPMENT",
+          "units": 3,
+          "prerequisites": [
+            "SocSc 12"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#6"
         }
       ]
     },
@@ -497,37 +486,31 @@
       "year": "Third Year",
       "term": "Second Semester",
       "key": "Third Year|Second Semester",
-      "totalUnits": 22,
+      "totalUnits": 19,
       "entries": [
         {
-          "catNo": "CSCI 113i",
-          "title": "BUSINESS INTELLIGENCE",
+          "catNo": "IE 1",
+          "title": "INTERDISCIPLINARY ELECTIVE 1 - ENGLISH",
           "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
+          "prerequisites": [
+            "ENGL 11",
+            "ENLIT 12"
+          ],
+          "category": "IE1E",
+          "isElective": true,
+          "electiveDept": "**IE**",
           "slotId": "Third Year|Second Semester#0"
         },
         {
-          "catNo": "MATH 192",
-          "title": "UNDERGRADUATE RESEARCH SEMINAR",
+          "catNo": "MATH 199.4",
+          "title": "UNDERGRADUATE RESEARCH IN MATHEMATICS I (2025)",
           "units": 1,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Third Year|Second Semester#1"
-        },
-        {
-          "catNo": "MATH 62.2",
-          "title": "TIME SERIES AND FORECASTING",
-          "units": 3,
           "prerequisites": [
-            "MATH 40.1",
-            "MATH 62.1"
+            "MATH 31.3"
           ],
           "category": "M",
           "isElective": false,
-          "slotId": "Third Year|Second Semester#2"
+          "slotId": "Third Year|Second Semester#1"
         },
         {
           "catNo": "MATH 72.1",
@@ -539,15 +522,26 @@
           ],
           "category": "M",
           "isElective": false,
+          "slotId": "Third Year|Second Semester#2"
+        },
+        {
+          "catNo": "MATH 80.1",
+          "title": "FUNDAMENTAL CONCEPTS OF ALGEBRA",
+          "units": 3,
+          "prerequisites": [
+            "MATH 31.3"
+          ],
+          "category": "M",
+          "isElective": false,
           "slotId": "Third Year|Second Semester#3"
         },
         {
-          "catNo": "NSTP 12",
-          "title": "NATIONAL SERVICE TRAINING PROGRAM 12",
+          "catNo": "MATHEMATICS ELECTIVE",
+          "title": "MATHEMATICS ELECTIVE",
           "units": 3,
           "prerequisites": [],
-          "category": "NP2",
-          "isElective": false,
+          "category": "ME1",
+          "isElective": true,
           "slotId": "Third Year|Second Semester#4"
         },
         {
@@ -562,17 +556,6 @@
           "slotId": "Third Year|Second Semester#5"
         },
         {
-          "catNo": "SocSc 13",
-          "title": "THE ECONOMY, SOCIETY, AND SUSTAINABLE DEVELOPMENT",
-          "units": 3,
-          "prerequisites": [
-            "SocSc 12"
-          ],
-          "category": "C",
-          "isElective": false,
-          "slotId": "Third Year|Second Semester#6"
-        },
-        {
           "catNo": "THEO 13",
           "title": "A THEOLOGY OF MARRIAGE, FAMILY, AND VOCATION",
           "units": 3,
@@ -581,33 +564,7 @@
           ],
           "category": "C",
           "isElective": false,
-          "slotId": "Third Year|Second Semester#7"
-        }
-      ]
-    },
-    {
-      "year": "Fourth Year",
-      "term": "Intersession",
-      "key": "Fourth Year|Intersession",
-      "totalUnits": 6,
-      "entries": [
-        {
-          "catNo": "ArtAp 10",
-          "title": "ART APPRECIATION",
-          "units": 3,
-          "prerequisites": [],
-          "category": "C",
-          "isElective": false,
-          "slotId": "Fourth Year|Intersession#0"
-        },
-        {
-          "catNo": "FREE ELECTIVE",
-          "title": "FREE ELECTIVE",
-          "units": 3,
-          "prerequisites": [],
-          "category": "FE1",
-          "isElective": true,
-          "slotId": "Fourth Year|Intersession#1"
+          "slotId": "Third Year|Second Semester#6"
         }
       ]
     },
@@ -615,89 +572,6 @@
       "year": "Fourth Year",
       "term": "First Semester",
       "key": "Fourth Year|First Semester",
-      "totalUnits": 20,
-      "entries": [
-        {
-          "catNo": "FREE ELECTIVE",
-          "title": "FREE ELECTIVE",
-          "units": 3,
-          "prerequisites": [],
-          "category": "FE2",
-          "isElective": true,
-          "slotId": "Fourth Year|First Semester#0"
-        },
-        {
-          "catNo": "IE 2",
-          "title": "INTERDISCIPLINARY ELECTIVE 2",
-          "units": 3,
-          "prerequisites": [],
-          "category": "IE2",
-          "isElective": true,
-          "electiveDept": "**IE**",
-          "slotId": "Fourth Year|First Semester#1"
-        },
-        {
-          "catNo": "MATH 199.11",
-          "title": "UNDERGRADUATE RESEARCH IN APPLIED MATHEMATICS I",
-          "units": 2,
-          "prerequisites": [
-            "MATH 192"
-          ],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Fourth Year|First Semester#2"
-        },
-        {
-          "catNo": "MATH 71.3",
-          "title": "SCIENTIFIC COMPUTING I",
-          "units": 3,
-          "prerequisites": [
-            "MATH 40.1"
-          ],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Fourth Year|First Semester#3"
-        },
-        {
-          "catNo": "MATH 91.1",
-          "title": "REAL ANALYSIS I",
-          "units": 3,
-          "prerequisites": [
-            "MATH 90.1"
-          ],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Fourth Year|First Semester#4"
-        },
-        {
-          "catNo": "STS 10",
-          "title": "SCIENCE, TECHNOLOGY, AND SOCIETY",
-          "units": 3,
-          "prerequisites": [
-            "NatSc 10.01",
-            "NatSc 10.02"
-          ],
-          "category": "C",
-          "isElective": false,
-          "slotId": "Fourth Year|First Semester#5"
-        },
-        {
-          "catNo": "SocSc 14",
-          "title": "POLITICS, GOVERNANCE, AND CITIZENSHIP",
-          "units": 3,
-          "prerequisites": [
-            "SocSc 13"
-          ],
-          "category": "C",
-          "isElective": false,
-          "slotId": "Fourth Year|First Semester#6"
-        }
-      ]
-    },
-    {
-      "year": "Fourth Year",
-      "term": "Second Semester",
-      "key": "Fourth Year|Second Semester",
       "totalUnits": 20,
       "entries": [
         {
@@ -711,6 +585,83 @@
           ],
           "category": "C",
           "isElective": false,
+          "slotId": "Fourth Year|First Semester#0"
+        },
+        {
+          "catNo": "FREE ELECTIVE",
+          "title": "FREE ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "FE1",
+          "isElective": true,
+          "slotId": "Fourth Year|First Semester#1"
+        },
+        {
+          "catNo": "IE 2: MST ELECTIVE",
+          "title": "INTERDISCIPLINARY ELECTIVE 2: MATH, SCIENCE, TECHONOLOGY ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "IE2",
+          "isElective": true,
+          "slotId": "Fourth Year|First Semester#2"
+        },
+        {
+          "catNo": "MATH 199.5",
+          "title": "UNDERGRADUATE RESEARCH IN MATHEMATICS II (2025)",
+          "units": 2,
+          "prerequisites": [
+            "MATH 199.4"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#3"
+        },
+        {
+          "catNo": "MATH 91.1/80.2",
+          "title": "REAL ANALYSIS I OR INTRODUCTION TO GALOIS THEORY",
+          "units": 3,
+          "prerequisites": [
+            "MATH 90.1/80.1"
+          ],
+          "category": "RM2",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#4"
+        },
+        {
+          "catNo": "MATH 92.1",
+          "title": "COMPLEX ANALYSIS I",
+          "units": 3,
+          "prerequisites": [
+            "MATH 90.1"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#5"
+        },
+        {
+          "catNo": "MATHEMATICS ELECTIVE",
+          "title": "MATHEMATICS ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "ME2",
+          "isElective": true,
+          "slotId": "Fourth Year|First Semester#6"
+        }
+      ]
+    },
+    {
+      "year": "Fourth Year",
+      "term": "Second Semester",
+      "key": "Fourth Year|Second Semester",
+      "totalUnits": 20,
+      "entries": [
+        {
+          "catNo": "FREE ELECTIVE",
+          "title": "FREE ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "FE2",
+          "isElective": true,
           "slotId": "Fourth Year|Second Semester#0"
         },
         {
@@ -724,37 +675,34 @@
           "slotId": "Fourth Year|Second Semester#1"
         },
         {
-          "catNo": "MATH 102.1",
-          "title": "TOPICS IN OPERATIONS RESEARCH",
-          "units": 3,
+          "catNo": "MATH 199.6",
+          "title": "UNDERGRADUATE RESEARCH IN MATHEMATICS III (2025)",
+          "units": 2,
           "prerequisites": [
-            "MATH 40.1",
-            "MATH 61.2"
+            "MATH 199.5"
           ],
           "category": "M",
           "isElective": false,
           "slotId": "Fourth Year|Second Semester#2"
         },
         {
-          "catNo": "MATH 199.12",
-          "title": "UNDERGRADUATE RESEARCH IN APPLIED MATHEMATICS II",
-          "units": 2,
+          "catNo": "MATH 81.1",
+          "title": "MODERN GEOMETRY I",
+          "units": 3,
           "prerequisites": [
-            "MATH 199.11"
+            "MATH 40.1"
           ],
           "category": "M",
           "isElective": false,
           "slotId": "Fourth Year|Second Semester#3"
         },
         {
-          "catNo": "MATH 71.4",
-          "title": "SCIENTIFIC COMPUTING II",
+          "catNo": "MATHEMATICS ELECTIVE",
+          "title": "MATHEMATICS ELECTIVE",
           "units": 3,
-          "prerequisites": [
-            "MATH 71.3"
-          ],
-          "category": "M",
-          "isElective": false,
+          "prerequisites": [],
+          "category": "ME3",
+          "isElective": true,
           "slotId": "Fourth Year|Second Semester#4"
         },
         {
@@ -762,150 +710,20 @@
           "title": "MATHEMATICS ELECTIVE",
           "units": 3,
           "prerequisites": [],
-          "category": "RM2",
+          "category": "ME4",
           "isElective": true,
           "slotId": "Fourth Year|Second Semester#5"
         },
         {
-          "catNo": "MSYS 121i",
-          "title": "APPLIED DIGITAL LAW AND ETHICS",
+          "catNo": "SocSc 14",
+          "title": "POLITICS, GOVERNANCE, AND CITIZENSHIP",
           "units": 3,
-          "prerequisites": [],
-          "category": "M",
+          "prerequisites": [
+            "SocSc 13"
+          ],
+          "category": "C",
           "isElective": false,
           "slotId": "Fourth Year|Second Semester#6"
-        }
-      ]
-    },
-    {
-      "year": "Fifth Year",
-      "term": "Fourth Year",
-      "key": "Fifth Year|Fourth Year",
-      "totalUnits": 6,
-      "entries": [
-        {
-          "catNo": "CSCI 217",
-          "title": "DATA VISUALIZATION",
-          "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Fifth Year|Fourth Year#0"
-        },
-        {
-          "catNo": "MATH 271.2",
-          "title": "ADVANCED STATISTICAL METHODS",
-          "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Fifth Year|Fourth Year#1"
-        }
-      ]
-    },
-    {
-      "year": "Fifth Year",
-      "term": "First Semester",
-      "key": "Fifth Year|First Semester",
-      "totalUnits": 15,
-      "entries": [
-        {
-          "catNo": "CSCI 205",
-          "title": "PROGRAMMING WITH DATABASES",
-          "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Fifth Year|First Semester#0"
-        },
-        {
-          "catNo": "CSCI 214",
-          "title": "PATTERN RECOGNITION",
-          "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Fifth Year|First Semester#1"
-        },
-        {
-          "catNo": "CSCI 298.5",
-          "title": "DATA SCIENCE PROJECT I",
-          "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Fifth Year|First Semester#2"
-        },
-        {
-          "catNo": "MATH 236.3",
-          "title": "TOPICS IN STOCHASTIC CALCULUS",
-          "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Fifth Year|First Semester#3"
-        },
-        {
-          "catNo": "MATH GRAD ELECTIVE",
-          "title": "MATHEMATICS GRAD ELECTIVE",
-          "units": 3,
-          "prerequisites": [],
-          "category": "RM3",
-          "isElective": true,
-          "slotId": "Fifth Year|First Semester#4"
-        }
-      ]
-    },
-    {
-      "year": "Fifth Year",
-      "term": "Second Semester",
-      "key": "Fifth Year|Second Semester",
-      "totalUnits": 15,
-      "entries": [
-        {
-          "catNo": "CSCI 271",
-          "title": "DATA MINING",
-          "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Fifth Year|Second Semester#0"
-        },
-        {
-          "catNo": "CSCI 273",
-          "title": "BIG DATA PROCESSING",
-          "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Fifth Year|Second Semester#1"
-        },
-        {
-          "catNo": "CSCI 298.6",
-          "title": "DATA SCIENCE PROJECT II",
-          "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Fifth Year|Second Semester#2"
-        },
-        {
-          "catNo": "MATH GRAD ELECTIVE",
-          "title": "MATHEMATICS GRAD ELECTIVE",
-          "units": 3,
-          "prerequisites": [],
-          "category": "RM4",
-          "isElective": true,
-          "slotId": "Fifth Year|Second Semester#3"
-        },
-        {
-          "catNo": "MATH GRAD ELECTIVE",
-          "title": "MATHEMATICS GRAD ELECTIVE",
-          "units": 3,
-          "prerequisites": [],
-          "category": "RM5",
-          "isElective": true,
-          "slotId": "Fifth Year|Second Semester#4"
         }
       ]
     }

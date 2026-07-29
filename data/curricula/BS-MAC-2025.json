@@ -1,17 +1,35 @@
 {
-  "id": "BS-AMDSc-M-DSc-2024",
-  "code": "BS AMDSc-M DSc",
-  "name": "BACHELOR OF SCIENCE IN APPLIED MATHEMATICS",
-  "version": "2024",
-  "versionYear": 2024,
-  "versionLabel": "2024",
+  "id": "BS-MAC-2025",
+  "code": "BS MAC",
+  "name": "BACHELOR OF SCIENCE IN MANAGEMENT OF APPLIED CHEMISTRY",
+  "version": "2025",
+  "versionYear": 2025,
+  "versionLabel": "2025",
   "blocks": [
     {
       "year": "First Year",
       "term": "First Semester",
       "key": "First Year|First Semester",
-      "totalUnits": 20,
+      "totalUnits": 22,
       "entries": [
+        {
+          "catNo": "CHEM 21.11",
+          "title": "GENERAL CHEMISTRY I, LECTURE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|First Semester#0"
+        },
+        {
+          "catNo": "CHEM 21.12",
+          "title": "GENERAL CHEMISTRY I, LABORATORY",
+          "units": 2,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|First Semester#1"
+        },
         {
           "catNo": "ENGL 11",
           "title": "PURPOSIVE COMMUNICATION",
@@ -19,7 +37,7 @@
           "prerequisites": [],
           "category": "C",
           "isElective": false,
-          "slotId": "First Year|First Semester#0"
+          "slotId": "First Year|First Semester#2"
         },
         {
           "catNo": "FILI 12",
@@ -28,7 +46,7 @@
           "prerequisites": [],
           "category": "C",
           "isElective": false,
-          "slotId": "First Year|First Semester#1"
+          "slotId": "First Year|First Semester#3"
         },
         {
           "catNo": "INTACT 11",
@@ -37,25 +55,16 @@
           "prerequisites": [],
           "category": "C",
           "isElective": false,
-          "slotId": "First Year|First Semester#2"
+          "slotId": "First Year|First Semester#4"
         },
         {
-          "catNo": "MATH 10",
-          "title": "MATHEMATICS IN THE MODERN WORLD",
-          "units": 3,
-          "prerequisites": [],
-          "category": "C",
-          "isElective": false,
-          "slotId": "First Year|First Semester#3"
-        },
-        {
-          "catNo": "MATH 71.1",
-          "title": "FUNDAMENTALS OF COMPUTING I",
+          "catNo": "LAS 50",
+          "title": "ENTREPRENEURIAL MINDSET",
           "units": 3,
           "prerequisites": [],
           "category": "M",
           "isElective": false,
-          "slotId": "First Year|First Semester#4"
+          "slotId": "First Year|First Semester#5"
         },
         {
           "catNo": "PATHFit 1",
@@ -64,7 +73,7 @@
           "prerequisites": [],
           "category": "PFT1",
           "isElective": false,
-          "slotId": "First Year|First Semester#5"
+          "slotId": "First Year|First Semester#6"
         },
         {
           "catNo": "SocSc 11",
@@ -73,7 +82,7 @@
           "prerequisites": [],
           "category": "C",
           "isElective": false,
-          "slotId": "First Year|First Semester#6"
+          "slotId": "First Year|First Semester#7"
         },
         {
           "catNo": "THEO 11",
@@ -82,7 +91,7 @@
           "prerequisites": [],
           "category": "C",
           "isElective": false,
-          "slotId": "First Year|First Semester#7"
+          "slotId": "First Year|First Semester#8"
         }
       ]
     },
@@ -90,8 +99,32 @@
       "year": "First Year",
       "term": "Second Semester",
       "key": "First Year|Second Semester",
-      "totalUnits": 21,
+      "totalUnits": 22,
       "entries": [
+        {
+          "catNo": "CHEM 22.11",
+          "title": "GENERAL CHEMISTRY II, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "CHEM 21.11",
+            "CHEM 21.12"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#0"
+        },
+        {
+          "catNo": "CHEM 22.12",
+          "title": "GENERAL CHEMISTRY II, LABORATORY",
+          "units": 2,
+          "prerequisites": [
+            "CHEM 21.11",
+            "CHEM 21.12"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#1"
+        },
         {
           "catNo": "ENLIT 12",
           "title": "LITERATURE: GLOBAL VOICES AND ENCOUNTERS",
@@ -99,7 +132,7 @@
           "prerequisites": [],
           "category": "C",
           "isElective": false,
-          "slotId": "First Year|Second Semester#0"
+          "slotId": "First Year|Second Semester#2"
         },
         {
           "catNo": "FILI 11",
@@ -108,16 +141,16 @@
           "prerequisites": [],
           "category": "C",
           "isElective": false,
-          "slotId": "First Year|Second Semester#1"
+          "slotId": "First Year|Second Semester#3"
         },
         {
-          "catNo": "HISTO 11",
-          "title": "RIZAL AND THE EMERGENCE OF THE PHILIPPINE NATION",
+          "catNo": "FLC 11",
+          "title": "FOREIGN LANGUAGE AND CULTURE 11",
           "units": 3,
           "prerequisites": [],
-          "category": "C",
+          "category": "FLC1",
           "isElective": false,
-          "slotId": "First Year|Second Semester#2"
+          "slotId": "First Year|Second Semester#4"
         },
         {
           "catNo": "INTACT 12",
@@ -126,41 +159,23 @@
           "prerequisites": [],
           "category": "C",
           "isElective": false,
-          "slotId": "First Year|Second Semester#3"
-        },
-        {
-          "catNo": "MATH 31.1",
-          "title": "MATHEMATICAL ANALYSIS IA",
-          "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
-          "slotId": "First Year|Second Semester#4"
-        },
-        {
-          "catNo": "MATH 31.2",
-          "title": "MATHEMATICAL ANALYSIS IB",
-          "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
           "slotId": "First Year|Second Semester#5"
         },
         {
-          "catNo": "NatSc 10.01",
-          "title": "NATURAL SCIENCE, LECTURE",
+          "catNo": "MATH 10",
+          "title": "MATHEMATICS IN THE MODERN WORLD",
           "units": 3,
           "prerequisites": [],
-          "category": "NS1A",
+          "category": "C",
           "isElective": false,
           "slotId": "First Year|Second Semester#6"
         },
         {
-          "catNo": "NatSc 10.02",
-          "title": "NATURAL SCIENCE, LABORATORY",
-          "units": 1,
+          "catNo": "MATH 30.03",
+          "title": "APPLIED CALCULUS AND FINITE MATHEMATICS FOR THE MANAGERIAL SCIENCES",
+          "units": 3,
           "prerequisites": [],
-          "category": "NS1B",
+          "category": "M",
           "isElective": false,
           "slotId": "First Year|Second Semester#7"
         },
@@ -181,25 +196,46 @@
       "year": "Second Year",
       "term": "Intersession",
       "key": "Second Year|Intersession",
-      "totalUnits": 6,
+      "totalUnits": 8,
       "entries": [
         {
-          "catNo": "FLC 11",
-          "title": "FOREIGN LANGUAGE AND CULTURE 11",
+          "catNo": "CHEM 33.51",
+          "title": "APPLIED ANALYTICAL CHEMISTRY I, LECTURE",
           "units": 3,
-          "prerequisites": [],
-          "category": "FLC1",
+          "prerequisites": [
+            "CHEM 21.11",
+            "CHEM 21.12",
+            "CHEM 22.11",
+            "CHEM 22.12",
+            "MATH 10"
+          ],
+          "category": "M",
           "isElective": false,
           "slotId": "Second Year|Intersession#0"
         },
         {
-          "catNo": "MATH 51.1",
-          "title": "DISCRETE MATHEMATICS I",
-          "units": 3,
-          "prerequisites": [],
+          "catNo": "CHEM 33.52",
+          "title": "APPLIED ANALYTICAL CHEMISTRY I, LABORATORY",
+          "units": 2,
+          "prerequisites": [
+            "CHEM 21.11",
+            "CHEM 21.12",
+            "CHEM 22.11",
+            "CHEM 22.12",
+            "MATH 10"
+          ],
           "category": "M",
           "isElective": false,
           "slotId": "Second Year|Intersession#1"
+        },
+        {
+          "catNo": "HISTO 11",
+          "title": "RIZAL AND THE EMERGENCE OF THE PHILIPPINE NATION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|Intersession#2"
         }
       ]
     },
@@ -207,18 +243,60 @@
       "year": "Second Year",
       "term": "First Semester",
       "key": "Second Year|First Semester",
-      "totalUnits": 22,
+      "totalUnits": 21,
       "entries": [
         {
-          "catNo": "CSCI 112",
-          "title": "CONTEMPORARY DATABASES",
+          "catNo": "ArtAp 10",
+          "title": "ART APPRECIATION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#0"
+        },
+        {
+          "catNo": "CHEM 47.51",
+          "title": "SURVEY OF APPLIED ORGANIC CHEMISTRY, LECTURE",
           "units": 3,
           "prerequisites": [
-            "MATH 71.1"
+            "CHEM 33.51",
+            "CHEM 33.52",
+            "MATH 30.03"
           ],
           "category": "M",
           "isElective": false,
-          "slotId": "Second Year|First Semester#0"
+          "slotId": "Second Year|First Semester#1"
+        },
+        {
+          "catNo": "CHEM 47.52",
+          "title": "SURVEY OF APPLIED ORGANIC CHEMISTRY, LABORATORY",
+          "units": 1,
+          "prerequisites": [
+            "CHEM 33.51",
+            "CHEM 33.52",
+            "MATH 30.03"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#2"
+        },
+        {
+          "catNo": "DECSC 40.10",
+          "title": "FOUNDATIONS OF ANALYTICS FOR DATA ANALYSIS AND DECISION MAKING",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#3"
+        },
+        {
+          "catNo": "FAA 101.20",
+          "title": "FINANCIAL ACCOUNTING FOR ENTREPRENEURS",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#4"
         },
         {
           "catNo": "HISTO 12",
@@ -229,18 +307,7 @@
           ],
           "category": "C",
           "isElective": false,
-          "slotId": "Second Year|First Semester#1"
-        },
-        {
-          "catNo": "MATH 31.3",
-          "title": "MATHEMATICAL ANALYSIS II",
-          "units": 3,
-          "prerequisites": [
-            "MATH 31.2"
-          ],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Second Year|First Semester#2"
+          "slotId": "Second Year|First Semester#5"
         },
         {
           "catNo": "PATHFit 3",
@@ -252,7 +319,7 @@
           ],
           "category": "PFT3",
           "isElective": false,
-          "slotId": "Second Year|First Semester#3"
+          "slotId": "Second Year|First Semester#6"
         },
         {
           "catNo": "PHILO 11",
@@ -260,41 +327,6 @@
           "units": 3,
           "prerequisites": [],
           "category": "CPH1",
-          "isElective": false,
-          "slotId": "Second Year|First Semester#4"
-        },
-        {
-          "catNo": "PHYS 23.01",
-          "title": "UNIVERSITY PHYSICS I, LECTURE",
-          "units": 3,
-          "prerequisites": [
-            "MATH 31.1",
-            "MATH 31.2"
-          ],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Second Year|First Semester#5"
-        },
-        {
-          "catNo": "PHYS 23.02",
-          "title": "UNIVERSITY PHYSICS I, LABORATORY",
-          "units": 2,
-          "prerequisites": [
-            "MATH 31.1",
-            "MATH 31.2"
-          ],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Second Year|First Semester#6"
-        },
-        {
-          "catNo": "SocSc 12",
-          "title": "THE CONTEMPORARY WORLD",
-          "units": 3,
-          "prerequisites": [
-            "SocSc 11"
-          ],
-          "category": "C",
           "isElective": false,
           "slotId": "Second Year|First Semester#7"
         }
@@ -304,63 +336,61 @@
       "year": "Second Year",
       "term": "Second Semester",
       "key": "Second Year|Second Semester",
-      "totalUnits": 23,
+      "totalUnits": 24,
       "entries": [
         {
-          "catNo": "CSCI 115",
-          "title": "COMPUTER SIMULATION AND MODELING",
+          "catNo": "CHEM 75.51",
+          "title": "FUNDAMENTALS OF PHYSICAL CHEMISTRY I, LECTURE",
           "units": 3,
           "prerequisites": [
-            "MATH 71.1"
+            "CHEM 33.51",
+            "CHEM 33.52",
+            "MATH 30.03"
           ],
           "category": "M",
           "isElective": false,
           "slotId": "Second Year|Second Semester#0"
         },
         {
-          "catNo": "IE 1",
-          "title": "INTERDISCIPLINARY ELECTIVE 1 - ENGLISH",
-          "units": 3,
+          "catNo": "CHEM 75.52",
+          "title": "FUNDAMENTALS OF PHYSICAL CHEMISTRY I, LABORATORY",
+          "units": 1,
           "prerequisites": [
-            "ENGL 11",
-            "ENLIT 12"
+            "CHEM 33.51",
+            "CHEM 33.52",
+            "MATH 30.03"
           ],
-          "category": "IE1E",
-          "isElective": true,
-          "electiveDept": "**IE**",
+          "category": "M",
+          "isElective": false,
           "slotId": "Second Year|Second Semester#1"
         },
         {
-          "catNo": "MATH 31.4",
-          "title": "MATHEMATICAL ANALYSIS III",
+          "catNo": "DECSC 25",
+          "title": "CREATIVE THINKING AND INNOVATION MANAGEMENT",
           "units": 3,
-          "prerequisites": [
-            "MATH 31.3"
-          ],
+          "prerequisites": [],
           "category": "M",
           "isElective": false,
           "slotId": "Second Year|Second Semester#2"
         },
         {
-          "catNo": "MATH 40.1",
-          "title": "LINEAR ALGEBRA",
+          "catNo": "FAA 111.20",
+          "title": "FINANCIAL MANAGEMENT FOR ENTREPRENEURS",
           "units": 3,
           "prerequisites": [
-            "MATH 31.3"
+            "FAA 101.20"
           ],
           "category": "M",
           "isElective": false,
           "slotId": "Second Year|Second Semester#3"
         },
         {
-          "catNo": "MATH 61.2",
-          "title": "ELEMENTARY PROBABILITY THEORY",
+          "catNo": "IT ELECTIVE",
+          "title": "IT ELECTIVE",
           "units": 3,
-          "prerequisites": [
-            "MATH 31.3"
-          ],
-          "category": "M",
-          "isElective": false,
+          "prerequisites": [],
+          "category": "RM1",
+          "isElective": true,
           "slotId": "Second Year|Second Semester#4"
         },
         {
@@ -385,6 +415,17 @@
           "slotId": "Second Year|Second Semester#6"
         },
         {
+          "catNo": "SocSc 12",
+          "title": "THE CONTEMPORARY WORLD",
+          "units": 3,
+          "prerequisites": [
+            "SocSc 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#7"
+        },
+        {
           "catNo": "THEO 12",
           "title": "THEOLOGY OF THE CATHOLIC SOCIAL VISION",
           "units": 3,
@@ -393,33 +434,7 @@
           ],
           "category": "C",
           "isElective": false,
-          "slotId": "Second Year|Second Semester#7"
-        }
-      ]
-    },
-    {
-      "year": "Third Year",
-      "term": "Fourth Year",
-      "key": "Third Year|Fourth Year",
-      "totalUnits": 6,
-      "entries": [
-        {
-          "catNo": "ECON 110",
-          "title": "PRINCIPLES OF ECONOMICS",
-          "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Third Year|Fourth Year#0"
-        },
-        {
-          "catNo": "MATH 55.1",
-          "title": "FUNDAMENTAL CONCEPTS OF MATHEMATICS",
-          "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Third Year|Fourth Year#1"
+          "slotId": "Second Year|Second Semester#8"
         }
       ]
     },
@@ -427,57 +442,61 @@
       "year": "Third Year",
       "term": "First Semester",
       "key": "Third Year|First Semester",
-      "totalUnits": 18,
+      "totalUnits": 22,
       "entries": [
         {
-          "catNo": "CSCI 111",
-          "title": "INTRODUCTION TO ARTIFICIAL INTELLIGENCE",
+          "catNo": "CHEM 83.51",
+          "title": "SURVEY OF CHEMICAL-BASED INDUSTRIES I, LECTURE",
           "units": 3,
           "prerequisites": [
-            "MATH 71.1"
+            "CHEM 47.51",
+            "CHEM 47.52"
           ],
           "category": "M",
           "isElective": false,
           "slotId": "Third Year|First Semester#0"
         },
         {
-          "catNo": "MATH 101.6",
-          "title": "THEORY OF INTEREST",
-          "units": 3,
-          "prerequisites": [],
+          "catNo": "CHEM 83.52",
+          "title": "SURVEY OF CHEMICAL-BASED INDUSTRIES I, LABORATORY",
+          "units": 2,
+          "prerequisites": [
+            "CHEM 47.51",
+            "CHEM 47.52"
+          ],
           "category": "M",
           "isElective": false,
           "slotId": "Third Year|First Semester#1"
         },
         {
-          "catNo": "MATH 62.1",
-          "title": "INTRODUCTION TO STATISTICAL THEORY",
+          "catNo": "IE 1",
+          "title": "INTERDISCIPLINARY ELECTIVE 1 - ENGLISH",
           "units": 3,
           "prerequisites": [
-            "MATH 61.2"
+            "ENGL 11",
+            "ENLIT 12"
           ],
-          "category": "M",
-          "isElective": false,
+          "category": "IE1E",
+          "isElective": true,
+          "electiveDept": "**IE**",
           "slotId": "Third Year|First Semester#2"
         },
         {
-          "catNo": "MATH 90.1",
-          "title": "ADVANCED CALCULUS I",
-          "units": 3,
-          "prerequisites": [
-            "MATH 31.4"
-          ],
+          "catNo": "MKTG 143.01",
+          "title": "BUSINESS VENTURE 1: ENTREPRENEURIAL MARKETING AND RESEARCH, LECTURE",
+          "units": 5,
+          "prerequisites": [],
           "category": "M",
           "isElective": false,
           "slotId": "Third Year|First Semester#3"
         },
         {
-          "catNo": "MATHEMATICS ELECTIVE",
-          "title": "MATHEMATICS ELECTIVE",
+          "catNo": "OPMAN 120",
+          "title": "PRODUCTION AND OPERATIONS MANAGEMENT",
           "units": 3,
           "prerequisites": [],
-          "category": "RM1",
-          "isElective": true,
+          "category": "M",
+          "isElective": false,
           "slotId": "Third Year|First Semester#4"
         },
         {
@@ -490,6 +509,18 @@
           "category": "C",
           "isElective": false,
           "slotId": "Third Year|First Semester#5"
+        },
+        {
+          "catNo": "STS 10",
+          "title": "SCIENCE, TECHNOLOGY, AND SOCIETY",
+          "units": 3,
+          "prerequisites": [
+            "NatSc 10.01",
+            "NatSc 10.02"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#6"
         }
       ]
     },
@@ -497,49 +528,64 @@
       "year": "Third Year",
       "term": "Second Semester",
       "key": "Third Year|Second Semester",
-      "totalUnits": 22,
+      "totalUnits": 21,
       "entries": [
         {
-          "catNo": "CSCI 113i",
-          "title": "BUSINESS INTELLIGENCE",
+          "catNo": "CHEM 35.50",
+          "title": "APPLIED ANALYTICAL CHEMISTRY II",
           "units": 3,
-          "prerequisites": [],
+          "prerequisites": [
+            "CHEM 33.51",
+            "CHEM 33.52"
+          ],
           "category": "M",
           "isElective": false,
           "slotId": "Third Year|Second Semester#0"
         },
         {
-          "catNo": "MATH 192",
-          "title": "UNDERGRADUATE RESEARCH SEMINAR",
-          "units": 1,
-          "prerequisites": [],
+          "catNo": "CHEM 84.52",
+          "title": "SURVEY OF CHEMICAL-BASED INDUSTRIES II, LABORATORY",
+          "units": 2,
+          "prerequisites": [
+            "CHEM 83.51",
+            "CHEM 83.52"
+          ],
           "category": "M",
           "isElective": false,
           "slotId": "Third Year|Second Semester#1"
         },
         {
-          "catNo": "MATH 62.2",
-          "title": "TIME SERIES AND FORECASTING",
-          "units": 3,
+          "catNo": "CHEM 98.1",
+          "title": "INDUSTRIAL PRODUCT DEVELOPMENT I",
+          "units": 1,
           "prerequisites": [
-            "MATH 40.1",
-            "MATH 62.1"
+            "CHEM 83.51",
+            "CHEM 83.52",
+            "CHEM 84.52"
           ],
           "category": "M",
           "isElective": false,
           "slotId": "Third Year|Second Semester#2"
         },
         {
-          "catNo": "MATH 72.1",
-          "title": "ORDINARY DIFFERENTIAL EQUATIONS",
+          "catNo": "FAA 102",
+          "title": "COST ACCOUNTING AND PRODUCT PRICING",
           "units": 3,
           "prerequisites": [
-            "MATH 31.4",
-            "MATH 40.1"
+            "FAA 101.20"
           ],
           "category": "M",
           "isElective": false,
           "slotId": "Third Year|Second Semester#3"
+        },
+        {
+          "catNo": "MKTG 143.02",
+          "title": "BUSINESS VENTURE 2: ENTREPRENEURIAL MARKETING AND RESEARCH, LABORATORY",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#4"
         },
         {
           "catNo": "NSTP 12",
@@ -547,17 +593,6 @@
           "units": 3,
           "prerequisites": [],
           "category": "NP2",
-          "isElective": false,
-          "slotId": "Third Year|Second Semester#4"
-        },
-        {
-          "catNo": "PHILO 13",
-          "title": "ETHICS",
-          "units": 3,
-          "prerequisites": [
-            "PHILO 11"
-          ],
-          "category": "C",
           "isElective": false,
           "slotId": "Third Year|Second Semester#5"
         },
@@ -589,25 +624,38 @@
       "year": "Fourth Year",
       "term": "Intersession",
       "key": "Fourth Year|Intersession",
-      "totalUnits": 6,
+      "totalUnits": 7,
       "entries": [
         {
-          "catNo": "ArtAp 10",
-          "title": "ART APPRECIATION",
-          "units": 3,
-          "prerequisites": [],
-          "category": "C",
+          "catNo": "CHEM 98.2",
+          "title": "INDUSTRIAL PRODUCT DEVELOPMENT II",
+          "units": 1,
+          "prerequisites": [
+            "CHEM 98.1"
+          ],
+          "category": "M",
           "isElective": false,
           "slotId": "Fourth Year|Intersession#0"
         },
         {
-          "catNo": "FREE ELECTIVE",
-          "title": "FREE ELECTIVE",
+          "catNo": "ECON 110",
+          "title": "PRINCIPLES OF ECONOMICS",
           "units": 3,
           "prerequisites": [],
-          "category": "FE1",
-          "isElective": true,
+          "category": "M",
+          "isElective": false,
           "slotId": "Fourth Year|Intersession#1"
+        },
+        {
+          "catNo": "MKTG 144.01",
+          "title": "BUSINESS DEVELOPMENT 1, LECTURE ( MAC)",
+          "units": 3,
+          "prerequisites": [
+            "MKTG 143.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|Intersession#2"
         }
       ]
     },
@@ -615,17 +663,8 @@
       "year": "Fourth Year",
       "term": "First Semester",
       "key": "Fourth Year|First Semester",
-      "totalUnits": 20,
+      "totalUnits": 21,
       "entries": [
-        {
-          "catNo": "FREE ELECTIVE",
-          "title": "FREE ELECTIVE",
-          "units": 3,
-          "prerequisites": [],
-          "category": "FE2",
-          "isElective": true,
-          "slotId": "Fourth Year|First Semester#0"
-        },
         {
           "catNo": "IE 2",
           "title": "INTERDISCIPLINARY ELECTIVE 2",
@@ -634,48 +673,52 @@
           "category": "IE2",
           "isElective": true,
           "electiveDept": "**IE**",
+          "slotId": "Fourth Year|First Semester#0"
+        },
+        {
+          "catNo": "LAS 111",
+          "title": "STRATEGIC HUMAN RESOURCE MANAGEMENT",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
           "slotId": "Fourth Year|First Semester#1"
         },
         {
-          "catNo": "MATH 199.11",
-          "title": "UNDERGRADUATE RESEARCH IN APPLIED MATHEMATICS I",
-          "units": 2,
-          "prerequisites": [
-            "MATH 192"
-          ],
+          "catNo": "LLAW 111",
+          "title": "FUNDAMENTAL BUSINESS LAWS",
+          "units": 3,
+          "prerequisites": [],
           "category": "M",
           "isElective": false,
           "slotId": "Fourth Year|First Semester#2"
         },
         {
-          "catNo": "MATH 71.3",
-          "title": "SCIENTIFIC COMPUTING I",
+          "catNo": "MAC ELECTIVE",
+          "title": "MAJOR ELECTIVE",
           "units": 3,
-          "prerequisites": [
-            "MATH 40.1"
-          ],
-          "category": "M",
-          "isElective": false,
+          "prerequisites": [],
+          "category": "ME1",
+          "isElective": true,
           "slotId": "Fourth Year|First Semester#3"
         },
         {
-          "catNo": "MATH 91.1",
-          "title": "REAL ANALYSIS I",
+          "catNo": "MKTG 144.02",
+          "title": "BUSINESS DEVELOPMENT 2, LABORATORY (MAC)",
           "units": 3,
           "prerequisites": [
-            "MATH 90.1"
+            "MKTG 143.02"
           ],
           "category": "M",
           "isElective": false,
           "slotId": "Fourth Year|First Semester#4"
         },
         {
-          "catNo": "STS 10",
-          "title": "SCIENCE, TECHNOLOGY, AND SOCIETY",
+          "catNo": "PHILO 13",
+          "title": "ETHICS",
           "units": 3,
           "prerequisites": [
-            "NatSc 10.01",
-            "NatSc 10.02"
+            "PHILO 11"
           ],
           "category": "C",
           "isElective": false,
@@ -698,7 +741,7 @@
       "year": "Fourth Year",
       "term": "Second Semester",
       "key": "Fourth Year|Second Semester",
-      "totalUnits": 20,
+      "totalUnits": 21,
       "entries": [
         {
           "catNo": "DLQ 10",
@@ -714,6 +757,15 @@
           "slotId": "Fourth Year|Second Semester#0"
         },
         {
+          "catNo": "FREE ELECTIVE",
+          "title": "FREE ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "FE1",
+          "isElective": true,
+          "slotId": "Fourth Year|Second Semester#1"
+        },
+        {
           "catNo": "IE 3",
           "title": "INTERDISCIPLINARY ELECTIVE 3",
           "units": 3,
@@ -721,191 +773,49 @@
           "category": "IE3",
           "isElective": true,
           "electiveDept": "**IE**",
-          "slotId": "Fourth Year|Second Semester#1"
-        },
-        {
-          "catNo": "MATH 102.1",
-          "title": "TOPICS IN OPERATIONS RESEARCH",
-          "units": 3,
-          "prerequisites": [
-            "MATH 40.1",
-            "MATH 61.2"
-          ],
-          "category": "M",
-          "isElective": false,
           "slotId": "Fourth Year|Second Semester#2"
         },
         {
-          "catNo": "MATH 199.12",
-          "title": "UNDERGRADUATE RESEARCH IN APPLIED MATHEMATICS II",
-          "units": 2,
+          "catNo": "LAS 120",
+          "title": "STRATEGIC MANAGEMENT",
+          "units": 3,
           "prerequisites": [
-            "MATH 199.11"
+            "LAS 111",
+            "OPMAN 120"
           ],
           "category": "M",
           "isElective": false,
           "slotId": "Fourth Year|Second Semester#3"
         },
         {
-          "catNo": "MATH 71.4",
-          "title": "SCIENTIFIC COMPUTING II",
+          "catNo": "LAS 140",
+          "title": "SUSTAINABILITY AND SOCIAL RESPONSIBILITY",
           "units": 3,
-          "prerequisites": [
-            "MATH 71.3"
-          ],
+          "prerequisites": [],
           "category": "M",
           "isElective": false,
           "slotId": "Fourth Year|Second Semester#4"
         },
         {
-          "catNo": "MATHEMATICS ELECTIVE",
-          "title": "MATHEMATICS ELECTIVE",
+          "catNo": "MAC ELECTIVE",
+          "title": "MAJOR ELECTIVE",
           "units": 3,
           "prerequisites": [],
-          "category": "RM2",
+          "category": "ME2",
           "isElective": true,
           "slotId": "Fourth Year|Second Semester#5"
         },
         {
-          "catNo": "MSYS 121i",
-          "title": "APPLIED DIGITAL LAW AND ETHICS",
+          "catNo": "MKTG 145.02",
+          "title": "START-UP OPERATIONS 2, LABORATORY (MAC)",
           "units": 3,
-          "prerequisites": [],
+          "prerequisites": [
+            "MKTG 144.01",
+            "MKTG 144.02"
+          ],
           "category": "M",
           "isElective": false,
           "slotId": "Fourth Year|Second Semester#6"
-        }
-      ]
-    },
-    {
-      "year": "Fifth Year",
-      "term": "Fourth Year",
-      "key": "Fifth Year|Fourth Year",
-      "totalUnits": 6,
-      "entries": [
-        {
-          "catNo": "CSCI 217",
-          "title": "DATA VISUALIZATION",
-          "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Fifth Year|Fourth Year#0"
-        },
-        {
-          "catNo": "MATH 271.2",
-          "title": "ADVANCED STATISTICAL METHODS",
-          "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Fifth Year|Fourth Year#1"
-        }
-      ]
-    },
-    {
-      "year": "Fifth Year",
-      "term": "First Semester",
-      "key": "Fifth Year|First Semester",
-      "totalUnits": 15,
-      "entries": [
-        {
-          "catNo": "CSCI 205",
-          "title": "PROGRAMMING WITH DATABASES",
-          "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Fifth Year|First Semester#0"
-        },
-        {
-          "catNo": "CSCI 214",
-          "title": "PATTERN RECOGNITION",
-          "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Fifth Year|First Semester#1"
-        },
-        {
-          "catNo": "CSCI 298.5",
-          "title": "DATA SCIENCE PROJECT I",
-          "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Fifth Year|First Semester#2"
-        },
-        {
-          "catNo": "MATH 236.3",
-          "title": "TOPICS IN STOCHASTIC CALCULUS",
-          "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Fifth Year|First Semester#3"
-        },
-        {
-          "catNo": "MATH GRAD ELECTIVE",
-          "title": "MATHEMATICS GRAD ELECTIVE",
-          "units": 3,
-          "prerequisites": [],
-          "category": "RM3",
-          "isElective": true,
-          "slotId": "Fifth Year|First Semester#4"
-        }
-      ]
-    },
-    {
-      "year": "Fifth Year",
-      "term": "Second Semester",
-      "key": "Fifth Year|Second Semester",
-      "totalUnits": 15,
-      "entries": [
-        {
-          "catNo": "CSCI 271",
-          "title": "DATA MINING",
-          "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Fifth Year|Second Semester#0"
-        },
-        {
-          "catNo": "CSCI 273",
-          "title": "BIG DATA PROCESSING",
-          "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Fifth Year|Second Semester#1"
-        },
-        {
-          "catNo": "CSCI 298.6",
-          "title": "DATA SCIENCE PROJECT II",
-          "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Fifth Year|Second Semester#2"
-        },
-        {
-          "catNo": "MATH GRAD ELECTIVE",
-          "title": "MATHEMATICS GRAD ELECTIVE",
-          "units": 3,
-          "prerequisites": [],
-          "category": "RM4",
-          "isElective": true,
-          "slotId": "Fifth Year|Second Semester#3"
-        },
-        {
-          "catNo": "MATH GRAD ELECTIVE",
-          "title": "MATHEMATICS GRAD ELECTIVE",
-          "units": 3,
-          "prerequisites": [],
-          "category": "RM5",
-          "isElective": true,
-          "slotId": "Fifth Year|Second Semester#4"
         }
       ]
     }

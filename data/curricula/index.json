@@ -1,10 +1,554 @@
 [
   {
+    "id": "AB-AM-2026",
+    "code": "AB AM",
+    "name": "BACHELOR OF ARTS IN ART MANAGEMENT",
+    "version": "2026",
+    "versionYear": 2026,
+    "versionLabel": "2026"
+  },
+  {
+    "id": "AB-ChnS-2024",
+    "code": "AB ChnS",
+    "name": "BACHELOR OF ARTS IN CHINESE STUDIES",
+    "version": "2024",
+    "versionYear": 2024,
+    "versionLabel": "2024"
+  },
+  {
+    "id": "AB-ChnS-AC-2020",
+    "code": "AB ChnS-AC",
+    "name": "BACHELOR OF ARTS IN CHINESE STUDIES",
+    "version": "2020",
+    "versionYear": 2020,
+    "versionLabel": "2020"
+  },
+  {
+    "id": "AB-ChnS-B-2020",
+    "code": "AB ChnS-B",
+    "name": "BACHELOR OF ARTS IN CHINESE STUDIES",
+    "version": "2020",
+    "versionYear": 2020,
+    "versionLabel": "2020"
+  },
+  {
+    "id": "AB-ChnS-H-2018",
+    "code": "AB ChnS-H",
+    "name": "BACHELOR OF ARTS IN CHINESE STUDIES",
+    "version": "2018",
+    "versionYear": 2018,
+    "versionLabel": "2018"
+  },
+  {
+    "id": "AB-ChnS-S-2020",
+    "code": "AB ChnS-S",
+    "name": "BACHELOR OF ARTS IN CHINESE STUDIES",
+    "version": "2020",
+    "versionYear": 2020,
+    "versionLabel": "2020"
+  },
+  {
+    "id": "AB-COM-2024",
+    "code": "AB COM",
+    "name": "BACHELOR OF ARTS IN COMMUNICATION",
+    "version": "2024",
+    "versionYear": 2024,
+    "versionLabel": "2024"
+  },
+  {
+    "id": "AB-Dip-IR-2026",
+    "code": "AB Dip IR",
+    "name": "BACHELOR OF ARTS IN DIPLOMACY AND INTERNATIONAL RELATIONS WITH SPECIALIZATION IN EAST AND SOUTHEAST ASIAN STUDIES",
+    "version": "2026",
+    "versionYear": 2026,
+    "versionLabel": "2026"
+  },
+  {
+    "id": "AB-DS-2024",
+    "code": "AB DS",
+    "name": "BACHELOR OF ARTS IN DEVELOPMENT STUDIES",
+    "version": "2024",
+    "versionYear": 2024,
+    "versionLabel": "2024"
+  },
+  {
+    "id": "AB-EC-2024",
+    "code": "AB EC",
+    "name": "BACHELOR OF ARTS IN ECONOMICS",
+    "version": "2024",
+    "versionYear": 2024,
+    "versionLabel": "2024"
+  },
+  {
+    "id": "AB-EC-H-2024",
+    "code": "AB EC-H",
+    "name": "BACHELOR OF ARTS IN ECONOMICS (HONORS PROGRAM)",
+    "version": "2024",
+    "versionYear": 2024,
+    "versionLabel": "2024"
+  },
+  {
+    "id": "AB-EU-20IR",
+    "code": "AB EU",
+    "name": "BACHELOR OF ARTS IN EUROPEAN STUDIES",
+    "version": "20IR",
+    "versionYear": 2020,
+    "versionLabel": "2020 · IR"
+  },
+  {
+    "id": "AB-EU-24BE",
+    "code": "AB EU",
+    "name": "BACHELOR OF ARTS IN EUROPEAN STUDIES",
+    "version": "24BE",
+    "versionYear": 2024,
+    "versionLabel": "2024 · BE"
+  },
+  {
+    "id": "AB-HI-2025",
+    "code": "AB HI",
+    "name": "BACHELOR OF ARTS IN HISTORY",
+    "version": "2025",
+    "versionYear": 2025,
+    "versionLabel": "2025"
+  },
+  {
+    "id": "AB-HUM-2024",
+    "code": "AB HUM",
+    "name": "BACHELOR OF ARTS IN HUMANITIES",
+    "version": "2024",
+    "versionYear": 2024,
+    "versionLabel": "2024"
+  },
+  {
+    "id": "AB-IS-2025",
+    "code": "AB IS",
+    "name": "BACHELOR OF ARTS IN INTERDISCIPLINARY STUDIES",
+    "version": "2025",
+    "versionYear": 2025,
+    "versionLabel": "2025"
+  },
+  {
+    "id": "AB-LIT-ENG-18TA",
+    "code": "AB LIT(ENG)",
+    "name": "BACHELOR OF ARTS IN LITERATURE (ENGLISH)",
+    "version": "18TA",
+    "versionYear": 2018,
+    "versionLabel": "2018 · TA"
+  },
+  {
+    "id": "AB-LIT-ENG-24TB",
+    "code": "AB LIT(ENG)",
+    "name": "BACHELOR OF ARTS IN LITERATURE (ENGLISH)",
+    "version": "24TB",
+    "versionYear": 2024,
+    "versionLabel": "2024 · TB"
+  },
+  {
+    "id": "AB-LIT-ENG-LCS-18TA",
+    "code": "AB LIT(ENG)-LCS",
+    "name": "BACHELOR OF ARTS IN LITERATURE (ENGLISH)",
+    "version": "18TA",
+    "versionYear": 2018,
+    "versionLabel": "2018 · TA"
+  },
+  {
+    "id": "AB-LIT-ENG-LCS-24TB",
+    "code": "AB LIT(ENG)-LCS",
+    "name": "BACHELOR OF ARTS IN LITERATURE (ENGLISH)",
+    "version": "24TB",
+    "versionYear": 2024,
+    "versionLabel": "2024 · TB"
+  },
+  {
+    "id": "AB-MA-POS-2020",
+    "code": "AB MA-POS",
+    "name": "BACHELOR OF ARTS IN POLITICAL SCIENCE",
+    "version": "2020",
+    "versionYear": 2020,
+    "versionLabel": "2020"
+  },
+  {
+    "id": "AB-MEC-2024",
+    "code": "AB MEC",
+    "name": "BACHELOR OF ARTS IN MANAGEMENT ECONOMICS",
+    "version": "2024",
+    "versionYear": 2024,
+    "versionLabel": "2024"
+  },
+  {
+    "id": "AB-PanFil-2024",
+    "code": "AB PanFil",
+    "name": "BATSILYER NG SINING SA PANITIKANG FILIPINO",
+    "version": "2024",
+    "versionYear": 2024,
+    "versionLabel": "2024"
+  },
+  {
+    "id": "AB-PH-2024",
+    "code": "AB PH",
+    "name": "BACHELOR OF ARTS IN PHILOSOPHY",
+    "version": "2024",
+    "versionYear": 2024,
+    "versionLabel": "2024"
+  },
+  {
+    "id": "AB-PH-PRE-DIV-2006",
+    "code": "AB PH (PRE-DIV)",
+    "name": "BACHELOR OF ARTS IN PHILOSOPHY",
+    "version": "2006",
+    "versionYear": 2006,
+    "versionLabel": "2006"
+  },
+  {
+    "id": "AB-POS-2026",
+    "code": "AB POS",
+    "name": "BACHELOR OF ARTS IN POLITICAL SCIENCE",
+    "version": "2026",
+    "versionYear": 2026,
+    "versionLabel": "2026"
+  },
+  {
+    "id": "AB-POS-MPM-2020",
+    "code": "AB POS-MPM",
+    "name": "BACHELOR OF ARTS IN POLITICAL SCIENCE",
+    "version": "2020",
+    "versionYear": 2020,
+    "versionLabel": "2020"
+  },
+  {
+    "id": "AB-PSY-2026",
+    "code": "AB PSY",
+    "name": "BACHELOR OF ARTS IN PSYCHOLOGY",
+    "version": "2026",
+    "versionYear": 2026,
+    "versionLabel": "2026"
+  },
+  {
+    "id": "AB-SOCIO-2024",
+    "code": "AB SOCIO",
+    "name": "BACHELOR OF ARTS IN SOCIOLOGY",
+    "version": "2024",
+    "versionYear": 2024,
+    "versionLabel": "2024"
+  },
+  {
+    "id": "AB-SOS-2002",
+    "code": "AB SOS",
+    "name": "BACHELOR OF ARTS IN SOCIAL SCIENCES",
+    "version": "2002",
+    "versionYear": 2002,
+    "versionLabel": "2002"
+  },
+  {
+    "id": "BFA-AM-2014",
+    "code": "BFA AM",
+    "name": "BACHELOR OF FINE ARTS IN ART MANAGEMENT",
+    "version": "2014",
+    "versionYear": 2014,
+    "versionLabel": "2014"
+  },
+  {
+    "id": "BFA-CW-2026",
+    "code": "BFA CW",
+    "name": "BACHELOR OF FINE ARTS IN CREATIVE WRITING",
+    "version": "2026",
+    "versionYear": 2026,
+    "versionLabel": "2026"
+  },
+  {
+    "id": "BFA-ID-2026",
+    "code": "BFA ID",
+    "name": "BACHELOR OF FINE ARTS IN INFORMATION DESIGN",
+    "version": "2026",
+    "versionYear": 2026,
+    "versionLabel": "2026"
+  },
+  {
+    "id": "BFA-TA-2026",
+    "code": "BFA TA",
+    "name": "BACHELOR OF FINE ARTS IN THEATER ARTS",
+    "version": "2026",
+    "versionYear": 2026,
+    "versionLabel": "2026"
+  },
+  {
     "id": "BS-AMDSc-M-DSc-2024",
     "code": "BS AMDSc-M DSc",
     "name": "BACHELOR OF SCIENCE IN APPLIED MATHEMATICS",
     "version": "2024",
     "versionYear": 2024,
     "versionLabel": "2024"
+  },
+  {
+    "id": "BS-APS-MSE-2024",
+    "code": "BS APS-MSE",
+    "name": "BACHELOR OF SCIENCE IN APPLIED PHYSICS - BACHELOR OF SCIENCE IN MATERIALS SCIENCE AND ENGINEERING",
+    "version": "2024",
+    "versionYear": 2024,
+    "versionLabel": "2024"
+  },
+  {
+    "id": "BS-BIO-2024",
+    "code": "BS BIO",
+    "name": "BACHELOR OF SCIENCE IN BIOLOGY",
+    "version": "2024",
+    "versionYear": 2024,
+    "versionLabel": "2024"
+  },
+  {
+    "id": "BS-CH-2024",
+    "code": "BS CH",
+    "name": "BACHELOR OF SCIENCE IN CHEMISTRY",
+    "version": "2024",
+    "versionYear": 2024,
+    "versionLabel": "2024"
+  },
+  {
+    "id": "BS-CH-MSE-2024",
+    "code": "BS CH-MSE",
+    "name": "BACHELOR OF SCIENCE IN CHEMISTRY - BACHELOR OF SCIENCE IN MATERIALS SCIENCE AND ENGINEERING",
+    "version": "2024",
+    "versionYear": 2024,
+    "versionLabel": "2024"
+  },
+  {
+    "id": "BS-CoE-2007",
+    "code": "BS CoE",
+    "name": "BACHELOR OF SCIENCE IN COMPUTER ENGINEERING",
+    "version": "2007",
+    "versionYear": 2007,
+    "versionLabel": "2007"
+  },
+  {
+    "id": "BS-COMTECH-2024",
+    "code": "BS COMTECH",
+    "name": "BACHELOR OF SCIENCE IN COMMUNICATIONS TECHNOLOGY MANAGEMENT",
+    "version": "2024",
+    "versionYear": 2024,
+    "versionLabel": "2024"
+  },
+  {
+    "id": "BS-CpE-2024",
+    "code": "BS CpE",
+    "name": "BACHELOR OF SCIENCE IN COMPUTER ENGINEERING",
+    "version": "2024",
+    "versionYear": 2024,
+    "versionLabel": "2024"
+  },
+  {
+    "id": "BS-CS-2024",
+    "code": "BS CS",
+    "name": "BACHELOR OF SCIENCE IN COMPUTER SCIENCE",
+    "version": "2024",
+    "versionYear": 2024,
+    "versionLabel": "2024"
+  },
+  {
+    "id": "BS-CS-DGDD-2024",
+    "code": "BS CS-DGDD",
+    "name": "BACHELOR OF SCIENCE IN COMPUTER SCIENCE - BACHELOR OF SCIENCE IN DIGITAL GAME DESIGN AND DEVELOPMENT",
+    "version": "2024",
+    "versionYear": 2024,
+    "versionLabel": "2024"
+  },
+  {
+    "id": "BS-CTMGT-2026",
+    "code": "BS CTMGT",
+    "name": "BACHELOR OF SCIENCE IN COMMUNICATION TECHNOLOGY MANAGEMENT",
+    "version": "2026",
+    "versionYear": 2026,
+    "versionLabel": "2026"
+  },
+  {
+    "id": "BS-EcE-2024",
+    "code": "BS EcE",
+    "name": "BACHELOR OF SCIENCE IN ELECTRONICS ENGINEERING",
+    "version": "2024",
+    "versionYear": 2024,
+    "versionLabel": "2024"
+  },
+  {
+    "id": "BS-ES-2024",
+    "code": "BS ES",
+    "name": "BACHELOR OF SCIENCE IN ENVIRONMENTAL SCIENCE",
+    "version": "2024",
+    "versionYear": 2024,
+    "versionLabel": "2024"
+  },
+  {
+    "id": "BS-HS-2026",
+    "code": "BS HS",
+    "name": "BACHELOR OF SCIENCE IN HEALTH SCIENCES",
+    "version": "2026",
+    "versionYear": 2026,
+    "versionLabel": "2026"
+  },
+  {
+    "id": "BS-IDE-2025",
+    "code": "BS IDE",
+    "name": "BACHELOR OF SCIENCE IN INNOVATION DESIGN ENGINEERING",
+    "version": "2025",
+    "versionYear": 2025,
+    "versionLabel": "2025"
+  },
+  {
+    "id": "BS-ITE-2025",
+    "code": "BS ITE",
+    "name": "BACHELOR OF SCIENCE IN INFORMATION TECHNOLOGY ENTREPRENEURSHIP",
+    "version": "2025",
+    "versionYear": 2025,
+    "versionLabel": "2025"
+  },
+  {
+    "id": "BS-LEARN-2024",
+    "code": "BS LEARN",
+    "name": "BACHELOR OF SCIENCE IN LEARNING SCIENCE AND DESIGN",
+    "version": "2024",
+    "versionYear": 2024,
+    "versionLabel": "2024"
+  },
+  {
+    "id": "BS-LfSci-2013",
+    "code": "BS LfSci",
+    "name": "BACHELOR OF SCIENCE IN LIFE SCIENCES",
+    "version": "2013",
+    "versionYear": 2013,
+    "versionLabel": "2013"
+  },
+  {
+    "id": "BS-LfSci-24CT",
+    "code": "BS LfSci",
+    "name": "BACHELOR OF SCIENCE IN LIFE SCIENCES",
+    "version": "24CT",
+    "versionYear": 2024,
+    "versionLabel": "2024 · CT"
+  },
+  {
+    "id": "BS-LfSci-24MT",
+    "code": "BS LfSci",
+    "name": "BACHELOR OF SCIENCE IN LIFE SCIENCES",
+    "version": "24MT",
+    "versionYear": 2024,
+    "versionLabel": "2024 · MT"
+  },
+  {
+    "id": "BS-LM-2026",
+    "code": "BS LM",
+    "name": "BACHELOR OF SCIENCE IN LEGAL MANAGEMENT",
+    "version": "2026",
+    "versionYear": 2026,
+    "versionLabel": "2026"
+  },
+  {
+    "id": "BS-MA-2025",
+    "code": "BS MA",
+    "name": "BACHELOR OF SCIENCE IN MATHEMATICS",
+    "version": "2025",
+    "versionYear": 2025,
+    "versionLabel": "2025"
+  },
+  {
+    "id": "BS-MAC-2025",
+    "code": "BS MAC",
+    "name": "BACHELOR OF SCIENCE IN MANAGEMENT OF APPLIED CHEMISTRY",
+    "version": "2025",
+    "versionYear": 2025,
+    "versionLabel": "2025"
+  },
+  {
+    "id": "BS-ME-2025",
+    "code": "BS ME",
+    "name": "BACHELOR OF SCIENCE IN MANAGEMENT ENGINEERING",
+    "version": "2025",
+    "versionYear": 2025,
+    "versionLabel": "2025"
+  },
+  {
+    "id": "BS-MGT-2025",
+    "code": "BS MGT",
+    "name": "BACHELOR OF SCIENCE IN MANAGEMENT",
+    "version": "2025",
+    "versionYear": 2025,
+    "versionLabel": "2025"
+  },
+  {
+    "id": "BS-MGT-H-2025",
+    "code": "BS MGT-H",
+    "name": "BACHELOR OF SCIENCE IN MANAGEMENT (HONORS PROGRAM)",
+    "version": "2025",
+    "versionYear": 2025,
+    "versionLabel": "2025"
+  },
+  {
+    "id": "BS-MIS-2024",
+    "code": "BS MIS",
+    "name": "BACHELOR OF SCIENCE IN MANAGEMENT INFORMATION SYSTEMS",
+    "version": "2024",
+    "versionYear": 2024,
+    "versionLabel": "2024"
+  },
+  {
+    "id": "BS-PS-2026",
+    "code": "BS PS",
+    "name": "BACHELOR OF SCIENCE IN PHYSICS",
+    "version": "2026",
+    "versionYear": 2026,
+    "versionLabel": "2026"
+  },
+  {
+    "id": "BS-PSY-2026",
+    "code": "BS PSY",
+    "name": "BACHELOR OF SCIENCE IN PSYCHOLOGY",
+    "version": "2026",
+    "versionYear": 2026,
+    "versionLabel": "2026"
+  },
+  {
+    "id": "BS-REnt-2025",
+    "code": "BS REnt",
+    "name": "BACHELOR OF SCIENCE IN RESTAURANT ENTREPRENEURSHIP",
+    "version": "2025",
+    "versionYear": 2025,
+    "versionLabel": "2025"
+  },
+  {
+    "id": "BS-PS-2011",
+    "code": "BS-PS",
+    "name": "BACHELOR OF SCIENCE IN PHYSICS",
+    "version": "2011",
+    "versionYear": 2011,
+    "versionLabel": "2011"
+  },
+  {
+    "id": "BSM-AMF-2024",
+    "code": "BSM AMF",
+    "name": "BACHELOR OF SCIENCE IN APPLIED MATHEMATICS WITH SPECIALIZATION IN MATHEMATICAL FINANCE",
+    "version": "2024",
+    "versionYear": 2024,
+    "versionLabel": "2024"
+  },
+  {
+    "id": "BSMIS-MSCS-2020",
+    "code": "BSMIS-MSCS",
+    "name": "BACHELOR OF SCIENCE IN MANAGEMENT INFORMATION SYSTEMS",
+    "version": "2020",
+    "versionYear": 2020,
+    "versionLabel": "2020"
+  },
+  {
+    "id": "BSMS-CH-2020",
+    "code": "BSMS CH",
+    "name": "BACHELOR OF SCIENCE IN CHEMISTRY",
+    "version": "2020",
+    "versionYear": 2020,
+    "versionLabel": "2020"
+  },
+  {
+    "id": "BSMS-CS-2020",
+    "code": "BSMS CS",
+    "name": "BACHELOR OF SCIENCE IN COMPUTER SCIENCE",
+    "version": "2020",
+    "versionYear": 2020,
+    "versionLabel": "2020"
   }
 ]

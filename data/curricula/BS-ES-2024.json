@@ -1,0 +1,853 @@
+{
+  "id": "BS-ES-2024",
+  "code": "BS ES",
+  "name": "BACHELOR OF SCIENCE IN ENVIRONMENTAL SCIENCE",
+  "version": "2024",
+  "versionYear": 2024,
+  "versionLabel": "2024",
+  "blocks": [
+    {
+      "year": "First Year",
+      "term": "First Semester",
+      "key": "First Year|First Semester",
+      "totalUnits": 20,
+      "entries": [
+        {
+          "catNo": "BIO 110.01",
+          "title": "GENERAL BOTANY, LECTURE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|First Semester#0"
+        },
+        {
+          "catNo": "BIO 110.02",
+          "title": "GENERAL BOTANY, LABORATORY",
+          "units": 2,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|First Semester#1"
+        },
+        {
+          "catNo": "ENGL 11",
+          "title": "PURPOSIVE COMMUNICATION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#2"
+        },
+        {
+          "catNo": "ENVI 10.01",
+          "title": "INTRODUCTION TO ENVIRONMENTAL SCIENCE, LECTURE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|First Semester#3"
+        },
+        {
+          "catNo": "ENVI 10.02",
+          "title": "INTRODUCTION TO ENVIRONMENTAL SCIENCE, LABORATORY",
+          "units": 1,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|First Semester#4"
+        },
+        {
+          "catNo": "FILI 12",
+          "title": "PANITIKAN NG PILIPINAS",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#5"
+        },
+        {
+          "catNo": "INTACT 11",
+          "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+          "units": 0,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#6"
+        },
+        {
+          "catNo": "MATH 10",
+          "title": "MATHEMATICS IN THE MODERN WORLD",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#7"
+        },
+        {
+          "catNo": "PATHFit 1",
+          "title": "PHYSICAL ACTIVITIES TOWARDS HEALTH AND FITNESS 1",
+          "units": 2,
+          "prerequisites": [],
+          "category": "PFT1",
+          "isElective": false,
+          "slotId": "First Year|First Semester#8"
+        }
+      ]
+    },
+    {
+      "year": "First Year",
+      "term": "Second Semester",
+      "key": "First Year|Second Semester",
+      "totalUnits": 22,
+      "entries": [
+        {
+          "catNo": "BIO 100.01",
+          "title": "GENERAL ZOOLOGY, LECTURE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#0"
+        },
+        {
+          "catNo": "BIO 100.02",
+          "title": "GENERAL ZOOLOGY, LABORATORY",
+          "units": 2,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#1"
+        },
+        {
+          "catNo": "ENLIT 12",
+          "title": "LITERATURE: GLOBAL VOICES AND ENCOUNTERS",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#2"
+        },
+        {
+          "catNo": "FILI 11",
+          "title": "MALAYUNING KOMUNIKASYON",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#3"
+        },
+        {
+          "catNo": "IE 2: ENVI STUD",
+          "title": "INTERDISCIPLINARY ELECTIVE 2: ENVIRONMENTAL STUDIES ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "IE2",
+          "isElective": true,
+          "slotId": "First Year|Second Semester#4"
+        },
+        {
+          "catNo": "INTACT 12",
+          "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 12",
+          "units": 0,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#5"
+        },
+        {
+          "catNo": "PATHFit 2",
+          "title": "PHYSICAL ACTIVITIES TOWARDS HEALTH AND FITNESS 2",
+          "units": 2,
+          "prerequisites": [
+            "PATHFit 1"
+          ],
+          "category": "PFT2",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#6"
+        },
+        {
+          "catNo": "SocSc 11",
+          "title": "UNDERSTANDING THE SELF",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#7"
+        },
+        {
+          "catNo": "THEO 11",
+          "title": "FAITH, SPIRITUALITY, AND THE CHURCH",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#8"
+        }
+      ]
+    },
+    {
+      "year": "Second Year",
+      "term": "Intersession",
+      "key": "Second Year|Intersession",
+      "totalUnits": 9,
+      "entries": [
+        {
+          "catNo": "FLC 11",
+          "title": "FOREIGN LANGUAGE AND CULTURE 11",
+          "units": 3,
+          "prerequisites": [],
+          "category": "FLC1",
+          "isElective": false,
+          "slotId": "Second Year|Intersession#0"
+        },
+        {
+          "catNo": "HISTO 11",
+          "title": "RIZAL AND THE EMERGENCE OF THE PHILIPPINE NATION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|Intersession#1"
+        },
+        {
+          "catNo": "MATH 21",
+          "title": "UNIVERSITY PRECALCULUS",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Intersession#2"
+        }
+      ]
+    },
+    {
+      "year": "Second Year",
+      "term": "First Semester",
+      "key": "Second Year|First Semester",
+      "totalUnits": 21,
+      "entries": [
+        {
+          "catNo": "CHEM 21.11",
+          "title": "GENERAL CHEMISTRY I, LECTURE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#0"
+        },
+        {
+          "catNo": "CHEM 21.12",
+          "title": "GENERAL CHEMISTRY I, LABORATORY",
+          "units": 2,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#1"
+        },
+        {
+          "catNo": "ENVI 110.01",
+          "title": "ENVIRONMENTAL ECOLOGY, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "BIO 100.01",
+            "BIO 100.02",
+            "BIO 110.01",
+            "BIO 110.02",
+            "ENVI 10.01",
+            "ENVI 10.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#2"
+        },
+        {
+          "catNo": "ENVI 110.02",
+          "title": "ENVIRONMENTAL ECOLOGY, LABORATORY",
+          "units": 2,
+          "prerequisites": [
+            "BIO 100.01",
+            "BIO 100.02",
+            "BIO 110.01",
+            "BIO 110.02",
+            "ENVI 10.01",
+            "ENVI 10.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#3"
+        },
+        {
+          "catNo": "MATH 30.23",
+          "title": "APPLIED CALCULUS FOR SCIENCE AND ENGINEERING I",
+          "units": 3,
+          "prerequisites": [
+            "MATH 21"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#4"
+        },
+        {
+          "catNo": "PATHFit 3",
+          "title": "PHYSICAL ACTIVITIES TOWARDS HEALTH AND FITNESS 3",
+          "units": 2,
+          "prerequisites": [
+            "PATHFit 1",
+            "PATHFit 2"
+          ],
+          "category": "PF3",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#5"
+        },
+        {
+          "catNo": "PHILO 11",
+          "title": "PHILOSOPHY: THE HUMAN CONDITION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "CPH1",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#6"
+        },
+        {
+          "catNo": "STS 10",
+          "title": "SCIENCE, TECHNOLOGY, AND SOCIETY",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#7"
+        }
+      ]
+    },
+    {
+      "year": "Second Year",
+      "term": "Second Semester",
+      "key": "Second Year|Second Semester",
+      "totalUnits": 26,
+      "entries": [
+        {
+          "catNo": "BIO 120.01",
+          "title": "MICROBIOLOGY, LECTURE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#0"
+        },
+        {
+          "catNo": "BIO 120.02",
+          "title": "MICROBIOLOGY, LABORATORY",
+          "units": 2,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#1"
+        },
+        {
+          "catNo": "CHEM 22.11",
+          "title": "GENERAL CHEMISTRY II, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "CHEM 21.11",
+            "CHEM 21.12"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#2"
+        },
+        {
+          "catNo": "CHEM 22.12",
+          "title": "GENERAL CHEMISTRY II, LABORATORY",
+          "units": 2,
+          "prerequisites": [
+            "CHEM 21.11",
+            "CHEM 21.12"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#3"
+        },
+        {
+          "catNo": "ENVI 155.01",
+          "title": "INTRODUCTION TO EARTH SCIENCES, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "CHEM 21.11",
+            "CHEM 21.12"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#4"
+        },
+        {
+          "catNo": "ENVI 155.02",
+          "title": "INTRODUCTION TO EARTH SCIENCES, LABORATORY",
+          "units": 2,
+          "prerequisites": [
+            "CHEM 21.11",
+            "CHEM 21.12"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#5"
+        },
+        {
+          "catNo": "MATH 30.24",
+          "title": "APPLIED CALCULUS FOR SCIENCE AND ENGINEERING II",
+          "units": 3,
+          "prerequisites": [
+            "MATH 30.23"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#6"
+        },
+        {
+          "catNo": "NSTP 11",
+          "title": "NATIONAL SERVICE TRAINING PROGRAM 11",
+          "units": 3,
+          "prerequisites": [],
+          "category": "NP1",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#7"
+        },
+        {
+          "catNo": "PATHFit 4",
+          "title": "PHYSICAL ACTIVITIES TOWARDS HEALTH AND FITNESS 4",
+          "units": 2,
+          "prerequisites": [
+            "PATHFit 1",
+            "PATHFit 2"
+          ],
+          "category": "PFT4",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#8"
+        },
+        {
+          "catNo": "THEO 12",
+          "title": "THEOLOGY OF THE CATHOLIC SOCIAL VISION",
+          "units": 3,
+          "prerequisites": [
+            "THEO 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#9"
+        }
+      ]
+    },
+    {
+      "year": "Third Year",
+      "term": "Fourth Year",
+      "key": "Third Year|Fourth Year",
+      "totalUnits": 9,
+      "entries": [
+        {
+          "catNo": "ArtAp 10",
+          "title": "ART APPRECIATION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|Fourth Year#0"
+        },
+        {
+          "catNo": "HISTO 12",
+          "title": "READINGS IN PHILIPPINE HISTORY",
+          "units": 3,
+          "prerequisites": [
+            "HISTO 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|Fourth Year#1"
+        },
+        {
+          "catNo": "IE 1",
+          "title": "INTERDISCIPLINARY ELECTIVE 1 - ENGLISH",
+          "units": 3,
+          "prerequisites": [
+            "ENGL 11",
+            "ENLIT 12"
+          ],
+          "category": "IE1E",
+          "isElective": true,
+          "electiveDept": "**IE**",
+          "slotId": "Third Year|Fourth Year#2"
+        }
+      ]
+    },
+    {
+      "year": "Third Year",
+      "term": "First Semester",
+      "key": "Third Year|First Semester",
+      "totalUnits": 19,
+      "entries": [
+        {
+          "catNo": "CHEM 34.41",
+          "title": "SURVEY OF ANALYTICAL CHEMISTRY, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "CHEM 22.11",
+            "CHEM 22.12",
+            "MATH 10"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#0"
+        },
+        {
+          "catNo": "CHEM 34.42",
+          "title": "SURVEY OF ANALYTICAL CHEMISTRY, LABORATORY",
+          "units": 2,
+          "prerequisites": [
+            "CHEM 22.11",
+            "CHEM 22.12",
+            "MATH 10"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#1"
+        },
+        {
+          "catNo": "ENVI 160.01",
+          "title": "INTRODUCTION TO ENVIRONMENTAL POLLUTION, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "CHEM 22.11",
+            "CHEM 22.12"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#2"
+        },
+        {
+          "catNo": "ENVI 160.02",
+          "title": "INTRODUCTION TO ENVIRONMENTAL POLLUTION, LABORATORY",
+          "units": 2,
+          "prerequisites": [
+            "CHEM 22.11",
+            "CHEM 22.12"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#3"
+        },
+        {
+          "catNo": "MATH 60.1",
+          "title": "STATISTICS FOR LIFE SCIENCES",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#4"
+        },
+        {
+          "catNo": "PHILO 12",
+          "title": "PHILOSOPHY OF RELIGION",
+          "units": 3,
+          "prerequisites": [
+            "PHILO 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#5"
+        },
+        {
+          "catNo": "SocSc 12",
+          "title": "THE CONTEMPORARY WORLD",
+          "units": 3,
+          "prerequisites": [
+            "SocSc 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#6"
+        }
+      ]
+    },
+    {
+      "year": "Third Year",
+      "term": "Second Semester",
+      "key": "Third Year|Second Semester",
+      "totalUnits": 23,
+      "entries": [
+        {
+          "catNo": "ENVI 100.01",
+          "title": "ENVIRONMENTAL MONITORING: INSTRUMENTATION AND ANALYSIS, LECTURE",
+          "units": 2,
+          "prerequisites": [
+            "ENVI 110.01",
+            "ENVI 110.02",
+            "ENVI 155.01",
+            "ENVI 155.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#0"
+        },
+        {
+          "catNo": "ENVI 100.02",
+          "title": "ENVIRONMENTAL MONITORING: INSTRUMENTATION AND ANALYSIS, LABORATORY",
+          "units": 1,
+          "prerequisites": [
+            "ENVI 110.01",
+            "ENVI 110.02",
+            "ENVI 155.01",
+            "ENVI 155.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#1"
+        },
+        {
+          "catNo": "ENVI 176i",
+          "title": "ENVIRONMENTAL IMPACT ASSESSMENT",
+          "units": 3,
+          "prerequisites": [
+            "ENVI 10.01"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#2"
+        },
+        {
+          "catNo": "ENVI 180",
+          "title": "SPECIAL TOPICS IN ENVIRONMENTAL SCIENCE",
+          "units": 3,
+          "prerequisites": [
+            "BIO 120.01",
+            "BIO 120.02",
+            "CHEM 34.41",
+            "CHEM 34.42",
+            "ENVI 10.01",
+            "ENVI 10.02",
+            "ENVI 110.01",
+            "ENVI 110.02",
+            "ENVI 155.01",
+            "ENVI 155.02",
+            "ENVI 160.01",
+            "ENVI 160.02",
+            "MATH 60.1"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#3"
+        },
+        {
+          "catNo": "ENVIMOD/DATSC ELEC",
+          "title": "ENVIRONMENTAL MODELING/DATA SCIENCE ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "RM1",
+          "isElective": true,
+          "slotId": "Third Year|Second Semester#4"
+        },
+        {
+          "catNo": "NSTP 12",
+          "title": "NATIONAL SERVICE TRAINING PROGRAM 12",
+          "units": 3,
+          "prerequisites": [],
+          "category": "NP2",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#5"
+        },
+        {
+          "catNo": "PHYS 23.21",
+          "title": "UNIVERSITY PHYSICS FOR ENVIRONMENTAL SCIENCE I, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "MATH 30.24"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#6"
+        },
+        {
+          "catNo": "PHYS 23.22",
+          "title": "UNIVERSITY PHYSICS FOR ENVIRONMENTAL SCIENCE I, LABORATORY",
+          "units": 2,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#7"
+        },
+        {
+          "catNo": "SocSc 13",
+          "title": "THE ECONOMY, SOCIETY, AND SUSTAINABLE DEVELOPMENT",
+          "units": 3,
+          "prerequisites": [
+            "SocSc 12"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#8"
+        }
+      ]
+    },
+    {
+      "year": "Fourth Year",
+      "term": "Intersession",
+      "key": "Fourth Year|Intersession",
+      "totalUnits": 3,
+      "entries": [
+        {
+          "catNo": "ENVI 100.03",
+          "title": "ENVIRONMENTAL MONITORING: FIELD RESEARCH STUDIES",
+          "units": 3,
+          "prerequisites": [
+            "ENVI 100.01",
+            "ENVI 100.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|Intersession#0"
+        }
+      ]
+    },
+    {
+      "year": "Fourth Year",
+      "term": "First Semester",
+      "key": "Fourth Year|First Semester",
+      "totalUnits": 18,
+      "entries": [
+        {
+          "catNo": "EARTH SCI ELECTIVE",
+          "title": "EARTH SCIENCE ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "RM3",
+          "isElective": true,
+          "slotId": "Fourth Year|First Semester#0"
+        },
+        {
+          "catNo": "ENVI 199.1",
+          "title": "SENIOR THESIS I",
+          "units": 3,
+          "prerequisites": [
+            "ENVI 100.01",
+            "ENVI 100.02",
+            "ENVI 100.03",
+            "ENVI 180"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#1"
+        },
+        {
+          "catNo": "ENVI SCI ELECTIVE",
+          "title": "ENVIRONMENTAL SCIENCE ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "RM2",
+          "isElective": true,
+          "slotId": "Fourth Year|First Semester#2"
+        },
+        {
+          "catNo": "ENVI STUD ELECTIVE",
+          "title": "ENVIRONMENTAL STUDIES ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "ME1",
+          "isElective": true,
+          "slotId": "Fourth Year|First Semester#3"
+        },
+        {
+          "catNo": "PHILO 13",
+          "title": "ETHICS",
+          "units": 3,
+          "prerequisites": [
+            "PHILO 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#4"
+        },
+        {
+          "catNo": "THEO 13",
+          "title": "A THEOLOGY OF MARRIAGE, FAMILY, AND VOCATION",
+          "units": 3,
+          "prerequisites": [
+            "THEO 12"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#5"
+        }
+      ]
+    },
+    {
+      "year": "Fourth Year",
+      "term": "Second Semester",
+      "key": "Fourth Year|Second Semester",
+      "totalUnits": 18,
+      "entries": [
+        {
+          "catNo": "DLQ 10",
+          "title": "DISCERNING LIFE QUESTIONS: TOWARDS LEADERSHIP AND COMMITMENT",
+          "units": 3,
+          "prerequisites": [
+            "PHILO 13",
+            "SocSc 13",
+            "THEO 13"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#0"
+        },
+        {
+          "catNo": "ENVI 199.2",
+          "title": "SENIOR THESIS II",
+          "units": 3,
+          "prerequisites": [
+            "ENVI 199.1"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#1"
+        },
+        {
+          "catNo": "ENVI STUD ELECTIVE",
+          "title": "ENVIRONMENTAL STUDIES ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "ME2",
+          "isElective": true,
+          "slotId": "Fourth Year|Second Semester#2"
+        },
+        {
+          "catNo": "IE 3",
+          "title": "INTERDISCIPLINARY ELECTIVE 3",
+          "units": 3,
+          "prerequisites": [],
+          "category": "IE3",
+          "isElective": true,
+          "electiveDept": "**IE**",
+          "slotId": "Fourth Year|Second Semester#3"
+        },
+        {
+          "catNo": "IE 4",
+          "title": "INTERDISCIPLINARY ELECTIVE 4",
+          "units": 3,
+          "prerequisites": [],
+          "category": "IE4",
+          "isElective": true,
+          "electiveDept": "**IE**",
+          "slotId": "Fourth Year|Second Semester#4"
+        },
+        {
+          "catNo": "SocSc 14",
+          "title": "POLITICS, GOVERNANCE, AND CITIZENSHIP",
+          "units": 3,
+          "prerequisites": [
+            "SocSc 13"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#5"
+        }
+      ]
+    }
+  ]
+}

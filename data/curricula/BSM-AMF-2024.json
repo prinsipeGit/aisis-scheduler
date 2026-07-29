@@ -1,7 +1,7 @@
 {
-  "id": "BS-AMDSc-M-DSc-2024",
-  "code": "BS AMDSc-M DSc",
-  "name": "BACHELOR OF SCIENCE IN APPLIED MATHEMATICS",
+  "id": "BSM-AMF-2024",
+  "code": "BSM AMF",
+  "name": "BACHELOR OF SCIENCE IN APPLIED MATHEMATICS WITH SPECIALIZATION IN MATHEMATICAL FINANCE",
   "version": "2024",
   "versionYear": 2024,
   "versionLabel": "2024",
@@ -210,12 +210,10 @@
       "totalUnits": 22,
       "entries": [
         {
-          "catNo": "CSCI 112",
-          "title": "CONTEMPORARY DATABASES",
+          "catNo": "ACCT 115",
+          "title": "FINANCIAL ACCOUNTING",
           "units": 3,
-          "prerequisites": [
-            "MATH 71.1"
-          ],
+          "prerequisites": [],
           "category": "M",
           "isElective": false,
           "slotId": "Second Year|First Semester#0"
@@ -268,7 +266,6 @@
           "title": "UNIVERSITY PHYSICS I, LECTURE",
           "units": 3,
           "prerequisites": [
-            "MATH 31.1",
             "MATH 31.2"
           ],
           "category": "M",
@@ -280,7 +277,6 @@
           "title": "UNIVERSITY PHYSICS I, LABORATORY",
           "units": 2,
           "prerequisites": [
-            "MATH 31.1",
             "MATH 31.2"
           ],
           "category": "M",
@@ -307,11 +303,11 @@
       "totalUnits": 23,
       "entries": [
         {
-          "catNo": "CSCI 115",
-          "title": "COMPUTER SIMULATION AND MODELING",
+          "catNo": "FINN 115",
+          "title": "FINANCIAL MANAGEMENT",
           "units": 3,
           "prerequisites": [
-            "MATH 71.1"
+            "ACCT 115"
           ],
           "category": "M",
           "isElective": false,
@@ -430,15 +426,26 @@
       "totalUnits": 18,
       "entries": [
         {
-          "catNo": "CSCI 111",
-          "title": "INTRODUCTION TO ARTIFICIAL INTELLIGENCE",
+          "catNo": "ECON 112",
+          "title": "INTERMEDIATE MACROECONOMIC THEORY",
           "units": 3,
           "prerequisites": [
-            "MATH 71.1"
+            "ECON 110"
           ],
           "category": "M",
           "isElective": false,
           "slotId": "Third Year|First Semester#0"
+        },
+        {
+          "catNo": "FINN 121",
+          "title": "INVESTMENT MANAGEMENT",
+          "units": 3,
+          "prerequisites": [
+            "FINN 115"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#1"
         },
         {
           "catNo": "MATH 101.6",
@@ -447,7 +454,7 @@
           "prerequisites": [],
           "category": "M",
           "isElective": false,
-          "slotId": "Third Year|First Semester#1"
+          "slotId": "Third Year|First Semester#2"
         },
         {
           "catNo": "MATH 62.1",
@@ -458,7 +465,7 @@
           ],
           "category": "M",
           "isElective": false,
-          "slotId": "Third Year|First Semester#2"
+          "slotId": "Third Year|First Semester#3"
         },
         {
           "catNo": "MATH 90.1",
@@ -469,15 +476,6 @@
           ],
           "category": "M",
           "isElective": false,
-          "slotId": "Third Year|First Semester#3"
-        },
-        {
-          "catNo": "MATHEMATICS ELECTIVE",
-          "title": "MATHEMATICS ELECTIVE",
-          "units": 3,
-          "prerequisites": [],
-          "category": "RM1",
-          "isElective": true,
           "slotId": "Third Year|First Semester#4"
         },
         {
@@ -500,8 +498,8 @@
       "totalUnits": 22,
       "entries": [
         {
-          "catNo": "CSCI 113i",
-          "title": "BUSINESS INTELLIGENCE",
+          "catNo": "MATH 100.1",
+          "title": "TOPICS IN FINANCIAL MATHEMATICS I",
           "units": 3,
           "prerequisites": [],
           "category": "M",
@@ -512,7 +510,9 @@
           "catNo": "MATH 192",
           "title": "UNDERGRADUATE RESEARCH SEMINAR",
           "units": 1,
-          "prerequisites": [],
+          "prerequisites": [
+            "MATH 31.3"
+          ],
           "category": "M",
           "isElective": false,
           "slotId": "Third Year|Second Semester#1"
@@ -618,15 +618,6 @@
       "totalUnits": 20,
       "entries": [
         {
-          "catNo": "FREE ELECTIVE",
-          "title": "FREE ELECTIVE",
-          "units": 3,
-          "prerequisites": [],
-          "category": "FE2",
-          "isElective": true,
-          "slotId": "Fourth Year|First Semester#0"
-        },
-        {
           "catNo": "IE 2",
           "title": "INTERDISCIPLINARY ELECTIVE 2",
           "units": 3,
@@ -634,6 +625,15 @@
           "category": "IE2",
           "isElective": true,
           "electiveDept": "**IE**",
+          "slotId": "Fourth Year|First Semester#0"
+        },
+        {
+          "catNo": "MATH 100.2",
+          "title": "TOPICS IN FINANCIAL MATHEMATICS II",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
           "slotId": "Fourth Year|First Semester#1"
         },
         {
@@ -714,6 +714,15 @@
           "slotId": "Fourth Year|Second Semester#0"
         },
         {
+          "catNo": "FREE ELECTIVE",
+          "title": "FREE ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "FE2",
+          "isElective": true,
+          "slotId": "Fourth Year|Second Semester#1"
+        },
+        {
           "catNo": "IE 3",
           "title": "INTERDISCIPLINARY ELECTIVE 3",
           "units": 3,
@@ -721,7 +730,7 @@
           "category": "IE3",
           "isElective": true,
           "electiveDept": "**IE**",
-          "slotId": "Fourth Year|Second Semester#1"
+          "slotId": "Fourth Year|Second Semester#2"
         },
         {
           "catNo": "MATH 102.1",
@@ -733,7 +742,7 @@
           ],
           "category": "M",
           "isElective": false,
-          "slotId": "Fourth Year|Second Semester#2"
+          "slotId": "Fourth Year|Second Semester#3"
         },
         {
           "catNo": "MATH 199.12",
@@ -744,7 +753,7 @@
           ],
           "category": "M",
           "isElective": false,
-          "slotId": "Fourth Year|Second Semester#3"
+          "slotId": "Fourth Year|Second Semester#4"
         },
         {
           "catNo": "MATH 71.4",
@@ -755,22 +764,15 @@
           ],
           "category": "M",
           "isElective": false,
-          "slotId": "Fourth Year|Second Semester#4"
-        },
-        {
-          "catNo": "MATHEMATICS ELECTIVE",
-          "title": "MATHEMATICS ELECTIVE",
-          "units": 3,
-          "prerequisites": [],
-          "category": "RM2",
-          "isElective": true,
           "slotId": "Fourth Year|Second Semester#5"
         },
         {
-          "catNo": "MSYS 121i",
-          "title": "APPLIED DIGITAL LAW AND ETHICS",
+          "catNo": "MATH 72.2",
+          "title": "PARTIAL DIFFERENTIAL EQUATIONS",
           "units": 3,
-          "prerequisites": [],
+          "prerequisites": [
+            "MATH 72.1"
+          ],
           "category": "M",
           "isElective": false,
           "slotId": "Fourth Year|Second Semester#6"
@@ -784,10 +786,15 @@
       "totalUnits": 6,
       "entries": [
         {
-          "catNo": "CSCI 217",
-          "title": "DATA VISUALIZATION",
+          "catNo": "MATH 232.1",
+          "title": "FINANCIAL DERIVATIVES I",
           "units": 3,
-          "prerequisites": [],
+          "prerequisites": [
+            "FINN 115",
+            "MATH 100.2",
+            "MATH 61.2",
+            "MATH 71.4"
+          ],
           "category": "M",
           "isElective": false,
           "slotId": "Fifth Year|Fourth Year#0"
@@ -810,8 +817,8 @@
       "totalUnits": 15,
       "entries": [
         {
-          "catNo": "CSCI 205",
-          "title": "PROGRAMMING WITH DATABASES",
+          "catNo": "MATH 231.4",
+          "title": "PRACTITIONERS' SEMINAR",
           "units": 3,
           "prerequisites": [],
           "category": "M",
@@ -819,17 +826,19 @@
           "slotId": "Fifth Year|First Semester#0"
         },
         {
-          "catNo": "CSCI 214",
-          "title": "PATTERN RECOGNITION",
+          "catNo": "MATH 232.2",
+          "title": "FINANCIAL DERIVATIVES II",
           "units": 3,
-          "prerequisites": [],
+          "prerequisites": [
+            "MATH 232.1"
+          ],
           "category": "M",
           "isElective": false,
           "slotId": "Fifth Year|First Semester#1"
         },
         {
-          "catNo": "CSCI 298.5",
-          "title": "DATA SCIENCE PROJECT I",
+          "catNo": "MATH 233.2",
+          "title": "FINANCIAL RISK MANAGEMENT I",
           "units": 3,
           "prerequisites": [],
           "category": "M",
@@ -837,8 +846,8 @@
           "slotId": "Fifth Year|First Semester#2"
         },
         {
-          "catNo": "MATH 236.3",
-          "title": "TOPICS IN STOCHASTIC CALCULUS",
+          "catNo": "MATH 236.1",
+          "title": "STOCHASTIC CALCULUS I",
           "units": 3,
           "prerequisites": [],
           "category": "M",
@@ -846,12 +855,12 @@
           "slotId": "Fifth Year|First Semester#3"
         },
         {
-          "catNo": "MATH GRAD ELECTIVE",
-          "title": "MATHEMATICS GRAD ELECTIVE",
+          "catNo": "MATH 236.4",
+          "title": "ADVANCED PROBABILITY AND MARTINGALES",
           "units": 3,
           "prerequisites": [],
-          "category": "RM3",
-          "isElective": true,
+          "category": "M",
+          "isElective": false,
           "slotId": "Fifth Year|First Semester#4"
         }
       ]
@@ -863,48 +872,55 @@
       "totalUnits": 15,
       "entries": [
         {
-          "catNo": "CSCI 271",
-          "title": "DATA MINING",
+          "catNo": "AMF ELECTIVE",
+          "title": "AMF ELECTIVE",
           "units": 3,
           "prerequisites": [],
-          "category": "M",
-          "isElective": false,
+          "category": "ME2",
+          "isElective": true,
           "slotId": "Fifth Year|Second Semester#0"
         },
         {
-          "catNo": "CSCI 273",
-          "title": "BIG DATA PROCESSING",
+          "catNo": "AMF ELECTIVE",
+          "title": "AMF ELECTIVE",
           "units": 3,
           "prerequisites": [],
-          "category": "M",
-          "isElective": false,
+          "category": "ME1",
+          "isElective": true,
           "slotId": "Fifth Year|Second Semester#1"
         },
         {
-          "catNo": "CSCI 298.6",
-          "title": "DATA SCIENCE PROJECT II",
+          "catNo": "MATH 233.4",
+          "title": "FINANCIAL RISK MANAGEMENT II",
           "units": 3,
-          "prerequisites": [],
+          "prerequisites": [
+            "MATH 233.2"
+          ],
           "category": "M",
           "isElective": false,
           "slotId": "Fifth Year|Second Semester#2"
         },
         {
-          "catNo": "MATH GRAD ELECTIVE",
-          "title": "MATHEMATICS GRAD ELECTIVE",
+          "catNo": "MATH 236.2",
+          "title": "STOCHASTIC CALCULUS II",
           "units": 3,
-          "prerequisites": [],
-          "category": "RM4",
-          "isElective": true,
+          "prerequisites": [
+            "MATH 236.1"
+          ],
+          "category": "M",
+          "isElective": false,
           "slotId": "Fifth Year|Second Semester#3"
         },
         {
-          "catNo": "MATH GRAD ELECTIVE",
-          "title": "MATHEMATICS GRAD ELECTIVE",
+          "catNo": "MATH 298.1",
+          "title": "MATHEMATICAL FINANCE PROJECT",
           "units": 3,
-          "prerequisites": [],
-          "category": "RM5",
-          "isElective": true,
+          "prerequisites": [
+            "MATH 232.2",
+            "MATH 233.2"
+          ],
+          "category": "M",
+          "isElective": false,
           "slotId": "Fifth Year|Second Semester#4"
         }
       ]

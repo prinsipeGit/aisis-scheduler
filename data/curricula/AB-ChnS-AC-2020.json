@@ -1,0 +1,632 @@
+{
+  "id": "AB-ChnS-AC-2020",
+  "code": "AB ChnS-AC",
+  "name": "BACHELOR OF ARTS IN CHINESE STUDIES",
+  "version": "2020",
+  "versionYear": 2020,
+  "versionLabel": "2020",
+  "blocks": [
+    {
+      "year": "First Year",
+      "term": "First Semester",
+      "key": "First Year|First Semester",
+      "totalUnits": 20,
+      "entries": [
+        {
+          "catNo": "CSP 90",
+          "title": "HISTORY OF CHINA",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|First Semester#0"
+        },
+        {
+          "catNo": "ENGL 11",
+          "title": "PURPOSIVE COMMUNICATION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#1"
+        },
+        {
+          "catNo": "FILI 12",
+          "title": "PANITIKAN NG PILIPINAS",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#2"
+        },
+        {
+          "catNo": "INTACT 11",
+          "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+          "units": 0,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#3"
+        },
+        {
+          "catNo": "MATH 10",
+          "title": "MATHEMATICS IN THE MODERN WORLD",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#4"
+        },
+        {
+          "catNo": "PHYED 1",
+          "title": "PHYSICAL EDUCATION 1",
+          "units": 2,
+          "prerequisites": [],
+          "category": "PE1",
+          "isElective": false,
+          "slotId": "First Year|First Semester#5"
+        },
+        {
+          "catNo": "SocSc 11",
+          "title": "UNDERSTANDING THE SELF",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#6"
+        },
+        {
+          "catNo": "THEO 11",
+          "title": "FAITH, SPIRITUALITY, AND THE CHURCH",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#7"
+        }
+      ]
+    },
+    {
+      "year": "First Year",
+      "term": "Second Semester",
+      "key": "First Year|Second Semester",
+      "totalUnits": 21,
+      "entries": [
+        {
+          "catNo": "CSP 11",
+          "title": "CHINESE MANDARIN AND CULTURE 1",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#0"
+        },
+        {
+          "catNo": "CSP 57",
+          "title": "CROSS CULTURAL COMMUNICATION IN A CHINESE CONTEXT",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#1"
+        },
+        {
+          "catNo": "ENLIT 12",
+          "title": "LITERATURE: GLOBAL VOICES AND ENCOUNTERS",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#2"
+        },
+        {
+          "catNo": "FILI 11",
+          "title": "MALAYUNING KOMUNIKASYON",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#3"
+        },
+        {
+          "catNo": "HISTO 11",
+          "title": "RIZAL AND THE EMERGENCE OF THE PHILIPPINE NATION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#4"
+        },
+        {
+          "catNo": "INTACT 12",
+          "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 12",
+          "units": 0,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#5"
+        },
+        {
+          "catNo": "NatSc 10.01",
+          "title": "NATURAL SCIENCE, LECTURE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "NS1A",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#6"
+        },
+        {
+          "catNo": "NatSc 10.02",
+          "title": "NATURAL SCIENCE, LABORATORY",
+          "units": 1,
+          "prerequisites": [],
+          "category": "NS1B",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#7"
+        },
+        {
+          "catNo": "PHYED 2",
+          "title": "PHYSICAL EDUCATION 2",
+          "units": 2,
+          "prerequisites": [],
+          "category": "PE2",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#8"
+        }
+      ]
+    },
+    {
+      "year": "Second Year",
+      "term": "First Semester",
+      "key": "Second Year|First Semester",
+      "totalUnits": 20,
+      "entries": [
+        {
+          "catNo": "ArtAp 10",
+          "title": "ART APPRECIATION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#0"
+        },
+        {
+          "catNo": "CHNS-AC SPEC COURSE",
+          "title": "CHINESE-AC SPECIALIZATION COURSE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "RM2",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#1"
+        },
+        {
+          "catNo": "CHNS-AC SPEC COURSE",
+          "title": "CHINESE-AC SPECIALIZATION COURSE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "RM1",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#2"
+        },
+        {
+          "catNo": "CSP 12",
+          "title": "CHINESE MANDARIN AND CULTURE 2",
+          "units": 3,
+          "prerequisites": [
+            "CSP 11"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#3"
+        },
+        {
+          "catNo": "HISTO 12",
+          "title": "READINGS IN PHILIPPINE HISTORY",
+          "units": 3,
+          "prerequisites": [
+            "HISTO 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#4"
+        },
+        {
+          "catNo": "PHILO 11",
+          "title": "PHILOSOPHY: THE HUMAN CONDITION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "CPH1",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#5"
+        },
+        {
+          "catNo": "PHYED 3",
+          "title": "PHYSICAL EDUCATION 3",
+          "units": 2,
+          "prerequisites": [],
+          "category": "PE3",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#6"
+        }
+      ]
+    },
+    {
+      "year": "Second Year",
+      "term": "Second Semester",
+      "key": "Second Year|Second Semester",
+      "totalUnits": 23,
+      "entries": [
+        {
+          "catNo": "CHNS-AC SPEC COURSE",
+          "title": "CHINESE-AC SPECIALIZATION COURSE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "RM3",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#0"
+        },
+        {
+          "catNo": "CSP 13",
+          "title": "INTERMEDIATE CHINESE 1",
+          "units": 3,
+          "prerequisites": [
+            "CSP 12"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#1"
+        },
+        {
+          "catNo": "CSP 71",
+          "title": "CHINESE ART AND SOCIETY",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#2"
+        },
+        {
+          "catNo": "NSTP 11",
+          "title": "NATIONAL SERVICE TRAINING PROGRAM 11",
+          "units": 3,
+          "prerequisites": [],
+          "category": "NP1",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#3"
+        },
+        {
+          "catNo": "PHYED 4",
+          "title": "PHYSICAL EDUCATION 4",
+          "units": 2,
+          "prerequisites": [],
+          "category": "PE4",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#4"
+        },
+        {
+          "catNo": "STS 10",
+          "title": "SCIENCE, TECHNOLOGY, AND SOCIETY",
+          "units": 3,
+          "prerequisites": [
+            "NatSc 10.01",
+            "NatSc 10.02"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#5"
+        },
+        {
+          "catNo": "SocSc 12",
+          "title": "THE CONTEMPORARY WORLD",
+          "units": 3,
+          "prerequisites": [
+            "SocSc 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#6"
+        },
+        {
+          "catNo": "THEO 12",
+          "title": "THEOLOGY OF THE CATHOLIC SOCIAL VISION",
+          "units": 3,
+          "prerequisites": [
+            "THEO 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#7"
+        }
+      ]
+    },
+    {
+      "year": "Third Year",
+      "term": "First Semester",
+      "key": "Third Year|First Semester",
+      "totalUnits": 18,
+      "entries": [
+        {
+          "catNo": "CHNS-AC SPEC COURSE",
+          "title": "CHINESE-AC SPECIALIZATION COURSE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "RM4",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#0"
+        },
+        {
+          "catNo": "CSP 14",
+          "title": "INTERMEDIATE CHINESE 2",
+          "units": 3,
+          "prerequisites": [
+            "CSP 13"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#1"
+        },
+        {
+          "catNo": "CSP 41",
+          "title": "INTRODUCTION TO CHINESE LITERATURE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#2"
+        },
+        {
+          "catNo": "IE 1",
+          "title": "INTERDISCIPLINARY ELECTIVE 1 - ENGLISH",
+          "units": 3,
+          "prerequisites": [
+            "ENGL 11",
+            "ENLIT 12"
+          ],
+          "category": "IE1E",
+          "isElective": true,
+          "electiveDept": "**IE**",
+          "slotId": "Third Year|First Semester#3"
+        },
+        {
+          "catNo": "PHILO 12",
+          "title": "PHILOSOPHY OF RELIGION",
+          "units": 3,
+          "prerequisites": [
+            "PHILO 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#4"
+        },
+        {
+          "catNo": "THEO 13",
+          "title": "A THEOLOGY OF MARRIAGE, FAMILY, AND VOCATION",
+          "units": 3,
+          "prerequisites": [
+            "THEO 12"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#5"
+        }
+      ]
+    },
+    {
+      "year": "Third Year",
+      "term": "Second Semester",
+      "key": "Third Year|Second Semester",
+      "totalUnits": 21,
+      "entries": [
+        {
+          "catNo": "CSP 15",
+          "title": "INTERMEDIATE CHINESE 3",
+          "units": 3,
+          "prerequisites": [
+            "CSP 14"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#0"
+        },
+        {
+          "catNo": "CSP 192",
+          "title": "RESEARCH METHODS",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#1"
+        },
+        {
+          "catNo": "CSP 32",
+          "title": "GOVERNMENT AND POLITICS OF CHINA",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#2"
+        },
+        {
+          "catNo": "IE 2",
+          "title": "INTERDISCIPLINARY ELECTIVE 2",
+          "units": 3,
+          "prerequisites": [],
+          "category": "IE2",
+          "isElective": true,
+          "electiveDept": "**IE**",
+          "slotId": "Third Year|Second Semester#3"
+        },
+        {
+          "catNo": "NSTP 12",
+          "title": "NATIONAL SERVICE TRAINING PROGRAM 12",
+          "units": 3,
+          "prerequisites": [],
+          "category": "NP2",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#4"
+        },
+        {
+          "catNo": "PHILO 13",
+          "title": "ETHICS",
+          "units": 3,
+          "prerequisites": [
+            "PHILO 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#5"
+        },
+        {
+          "catNo": "SocSc 13",
+          "title": "THE ECONOMY, SOCIETY, AND SUSTAINABLE DEVELOPMENT",
+          "units": 3,
+          "prerequisites": [
+            "SocSc 12"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#6"
+        }
+      ]
+    },
+    {
+      "year": "Fourth Year",
+      "term": "Intersession",
+      "key": "Fourth Year|Intersession",
+      "totalUnits": 6,
+      "entries": [
+        {
+          "catNo": "CSP 35",
+          "title": "INTRODUCTION TO CHINESE SOCIETY",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|Intersession#0"
+        },
+        {
+          "catNo": "CSP ELECTIVE",
+          "title": "CHINESE STUDIES PROGRAM ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "RM6",
+          "isElective": true,
+          "slotId": "Fourth Year|Intersession#1"
+        }
+      ]
+    },
+    {
+      "year": "Fourth Year",
+      "term": "First Semester",
+      "key": "Fourth Year|First Semester",
+      "totalUnits": 15,
+      "entries": [
+        {
+          "catNo": "CHNS-AC ELECTIVE",
+          "title": "CHINESE-AC ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "ME1",
+          "isElective": true,
+          "slotId": "Fourth Year|First Semester#0"
+        },
+        {
+          "catNo": "CSP 40",
+          "title": "CHINESE PHILOSOPHY",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#1"
+        },
+        {
+          "catNo": "CSP 73",
+          "title": "CONTEMPORARY CHINESE ART: AN INTRODUCTION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#2"
+        },
+        {
+          "catNo": "IE 3",
+          "title": "INTERDISCIPLINARY ELECTIVE 3",
+          "units": 3,
+          "prerequisites": [],
+          "category": "IE3",
+          "isElective": true,
+          "electiveDept": "**IE**",
+          "slotId": "Fourth Year|First Semester#3"
+        },
+        {
+          "catNo": "SocSc 14",
+          "title": "POLITICS, GOVERNANCE, AND CITIZENSHIP",
+          "units": 3,
+          "prerequisites": [
+            "SocSc 13"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#4"
+        }
+      ]
+    },
+    {
+      "year": "Fourth Year",
+      "term": "Second Semester",
+      "key": "Fourth Year|Second Semester",
+      "totalUnits": 15,
+      "entries": [
+        {
+          "catNo": "CHNS-AC SPEC COURSE",
+          "title": "CHINESE-AC SPECIALIZATION COURSE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "RM5",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#0"
+        },
+        {
+          "catNo": "CSP 199",
+          "title": "RESEARCH IN CHINESE STUDIES",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#1"
+        },
+        {
+          "catNo": "CSP ELECTIVE",
+          "title": "CHINESE STUDIES PROGRAM ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "RM7",
+          "isElective": true,
+          "slotId": "Fourth Year|Second Semester#2"
+        },
+        {
+          "catNo": "DLQ 10",
+          "title": "DISCERNING LIFE QUESTIONS: TOWARDS LEADERSHIP AND COMMITMENT",
+          "units": 3,
+          "prerequisites": [
+            "PHILO 13",
+            "SocSc 13",
+            "THEO 13"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#3"
+        },
+        {
+          "catNo": "FREE ELECTIVE",
+          "title": "FREE ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "FE1",
+          "isElective": true,
+          "slotId": "Fourth Year|Second Semester#4"
+        }
+      ]
+    }
+  ]
+}

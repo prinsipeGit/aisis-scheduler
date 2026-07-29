@@ -1,7 +1,7 @@
 {
-  "id": "BS-AMDSc-M-DSc-2024",
-  "code": "BS AMDSc-M DSc",
-  "name": "BACHELOR OF SCIENCE IN APPLIED MATHEMATICS",
+  "id": "BS-APS-MSE-2024",
+  "code": "BS APS-MSE",
+  "name": "BACHELOR OF SCIENCE IN APPLIED PHYSICS - BACHELOR OF SCIENCE IN MATERIALS SCIENCE AND ENGINEERING",
   "version": "2024",
   "versionYear": 2024,
   "versionLabel": "2024",
@@ -10,8 +10,26 @@
       "year": "First Year",
       "term": "First Semester",
       "key": "First Year|First Semester",
-      "totalUnits": 20,
+      "totalUnits": 22,
       "entries": [
+        {
+          "catNo": "CHEM 21.11",
+          "title": "GENERAL CHEMISTRY I, LECTURE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|First Semester#0"
+        },
+        {
+          "catNo": "CHEM 21.12",
+          "title": "GENERAL CHEMISTRY I, LABORATORY",
+          "units": 2,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|First Semester#1"
+        },
         {
           "catNo": "ENGL 11",
           "title": "PURPOSIVE COMMUNICATION",
@@ -19,7 +37,7 @@
           "prerequisites": [],
           "category": "C",
           "isElective": false,
-          "slotId": "First Year|First Semester#0"
+          "slotId": "First Year|First Semester#2"
         },
         {
           "catNo": "FILI 12",
@@ -28,7 +46,7 @@
           "prerequisites": [],
           "category": "C",
           "isElective": false,
-          "slotId": "First Year|First Semester#1"
+          "slotId": "First Year|First Semester#3"
         },
         {
           "catNo": "INTACT 11",
@@ -37,7 +55,7 @@
           "prerequisites": [],
           "category": "C",
           "isElective": false,
-          "slotId": "First Year|First Semester#2"
+          "slotId": "First Year|First Semester#4"
         },
         {
           "catNo": "MATH 10",
@@ -46,16 +64,7 @@
           "prerequisites": [],
           "category": "C",
           "isElective": false,
-          "slotId": "First Year|First Semester#3"
-        },
-        {
-          "catNo": "MATH 71.1",
-          "title": "FUNDAMENTALS OF COMPUTING I",
-          "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
-          "slotId": "First Year|First Semester#4"
+          "slotId": "First Year|First Semester#5"
         },
         {
           "catNo": "PATHFit 1",
@@ -64,7 +73,7 @@
           "prerequisites": [],
           "category": "PFT1",
           "isElective": false,
-          "slotId": "First Year|First Semester#5"
+          "slotId": "First Year|First Semester#6"
         },
         {
           "catNo": "SocSc 11",
@@ -73,7 +82,7 @@
           "prerequisites": [],
           "category": "C",
           "isElective": false,
-          "slotId": "First Year|First Semester#6"
+          "slotId": "First Year|First Semester#7"
         },
         {
           "catNo": "THEO 11",
@@ -82,7 +91,7 @@
           "prerequisites": [],
           "category": "C",
           "isElective": false,
-          "slotId": "First Year|First Semester#7"
+          "slotId": "First Year|First Semester#8"
         }
       ]
     },
@@ -90,8 +99,17 @@
       "year": "First Year",
       "term": "Second Semester",
       "key": "First Year|Second Semester",
-      "totalUnits": 21,
+      "totalUnits": 22,
       "entries": [
+        {
+          "catNo": "ENGG 10",
+          "title": "ENGINEERING WORKSHOP AND PRACTICES",
+          "units": 1,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#0"
+        },
         {
           "catNo": "ENLIT 12",
           "title": "LITERATURE: GLOBAL VOICES AND ENCOUNTERS",
@@ -99,7 +117,7 @@
           "prerequisites": [],
           "category": "C",
           "isElective": false,
-          "slotId": "First Year|Second Semester#0"
+          "slotId": "First Year|Second Semester#1"
         },
         {
           "catNo": "FILI 11",
@@ -108,7 +126,7 @@
           "prerequisites": [],
           "category": "C",
           "isElective": false,
-          "slotId": "First Year|Second Semester#1"
+          "slotId": "First Year|Second Semester#2"
         },
         {
           "catNo": "HISTO 11",
@@ -117,7 +135,7 @@
           "prerequisites": [],
           "category": "C",
           "isElective": false,
-          "slotId": "First Year|Second Semester#2"
+          "slotId": "First Year|Second Semester#3"
         },
         {
           "catNo": "INTACT 12",
@@ -126,7 +144,7 @@
           "prerequisites": [],
           "category": "C",
           "isElective": false,
-          "slotId": "First Year|Second Semester#3"
+          "slotId": "First Year|Second Semester#4"
         },
         {
           "catNo": "MATH 31.1",
@@ -135,7 +153,7 @@
           "prerequisites": [],
           "category": "M",
           "isElective": false,
-          "slotId": "First Year|Second Semester#4"
+          "slotId": "First Year|Second Semester#5"
         },
         {
           "catNo": "MATH 31.2",
@@ -144,25 +162,7 @@
           "prerequisites": [],
           "category": "M",
           "isElective": false,
-          "slotId": "First Year|Second Semester#5"
-        },
-        {
-          "catNo": "NatSc 10.01",
-          "title": "NATURAL SCIENCE, LECTURE",
-          "units": 3,
-          "prerequisites": [],
-          "category": "NS1A",
-          "isElective": false,
           "slotId": "First Year|Second Semester#6"
-        },
-        {
-          "catNo": "NatSc 10.02",
-          "title": "NATURAL SCIENCE, LABORATORY",
-          "units": 1,
-          "prerequisites": [],
-          "category": "NS1B",
-          "isElective": false,
-          "slotId": "First Year|Second Semester#7"
         },
         {
           "catNo": "PATHFit 2",
@@ -173,7 +173,25 @@
           ],
           "category": "PFT2",
           "isElective": false,
+          "slotId": "First Year|Second Semester#7"
+        },
+        {
+          "catNo": "PHYS 31.01",
+          "title": "ANALYTICAL PHYSICS I, LECTURE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
           "slotId": "First Year|Second Semester#8"
+        },
+        {
+          "catNo": "PHYS 31.02",
+          "title": "ANALYTICAL PHYSICS I, LABORATORY",
+          "units": 1,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#9"
         }
       ]
     },
@@ -181,8 +199,17 @@
       "year": "Second Year",
       "term": "Intersession",
       "key": "Second Year|Intersession",
-      "totalUnits": 6,
+      "totalUnits": 9,
       "entries": [
+        {
+          "catNo": "ArtAp 10",
+          "title": "ART APPRECIATION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|Intersession#0"
+        },
         {
           "catNo": "FLC 11",
           "title": "FOREIGN LANGUAGE AND CULTURE 11",
@@ -190,16 +217,19 @@
           "prerequisites": [],
           "category": "FLC1",
           "isElective": false,
-          "slotId": "Second Year|Intersession#0"
+          "slotId": "Second Year|Intersession#1"
         },
         {
-          "catNo": "MATH 51.1",
-          "title": "DISCRETE MATHEMATICS I",
+          "catNo": "PHYS 111",
+          "title": "MATHEMATICAL PHYSICS I",
           "units": 3,
-          "prerequisites": [],
+          "prerequisites": [
+            "MATH 31.1",
+            "MATH 31.2"
+          ],
           "category": "M",
           "isElective": false,
-          "slotId": "Second Year|Intersession#1"
+          "slotId": "Second Year|Intersession#2"
         }
       ]
     },
@@ -207,18 +237,31 @@
       "year": "Second Year",
       "term": "First Semester",
       "key": "Second Year|First Semester",
-      "totalUnits": 22,
+      "totalUnits": 23,
       "entries": [
         {
-          "catNo": "CSCI 112",
-          "title": "CONTEMPORARY DATABASES",
+          "catNo": "CHEM 43.11",
+          "title": "SURVEY OF ORGANIC CHEMISTRY, LECTURE",
           "units": 3,
           "prerequisites": [
-            "MATH 71.1"
+            "CHEM 21.11",
+            "CHEM 21.12"
           ],
           "category": "M",
           "isElective": false,
           "slotId": "Second Year|First Semester#0"
+        },
+        {
+          "catNo": "CHEM 43.12",
+          "title": "SURVEY OF ORGANIC CHEMISTRY, LABORATORY",
+          "units": 2,
+          "prerequisites": [
+            "CHEM 21.11",
+            "CHEM 21.12"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#1"
         },
         {
           "catNo": "HISTO 12",
@@ -229,7 +272,7 @@
           ],
           "category": "C",
           "isElective": false,
-          "slotId": "Second Year|First Semester#1"
+          "slotId": "Second Year|First Semester#2"
         },
         {
           "catNo": "MATH 31.3",
@@ -240,7 +283,7 @@
           ],
           "category": "M",
           "isElective": false,
-          "slotId": "Second Year|First Semester#2"
+          "slotId": "Second Year|First Semester#3"
         },
         {
           "catNo": "PATHFit 3",
@@ -252,7 +295,7 @@
           ],
           "category": "PFT3",
           "isElective": false,
-          "slotId": "Second Year|First Semester#3"
+          "slotId": "Second Year|First Semester#4"
         },
         {
           "catNo": "PHILO 11",
@@ -261,42 +304,38 @@
           "prerequisites": [],
           "category": "CPH1",
           "isElective": false,
-          "slotId": "Second Year|First Semester#4"
-        },
-        {
-          "catNo": "PHYS 23.01",
-          "title": "UNIVERSITY PHYSICS I, LECTURE",
-          "units": 3,
-          "prerequisites": [
-            "MATH 31.1",
-            "MATH 31.2"
-          ],
-          "category": "M",
-          "isElective": false,
           "slotId": "Second Year|First Semester#5"
         },
         {
-          "catNo": "PHYS 23.02",
-          "title": "UNIVERSITY PHYSICS I, LABORATORY",
-          "units": 2,
+          "catNo": "PHYS 112",
+          "title": "MATHEMATICAL PHYSICS II",
+          "units": 3,
           "prerequisites": [
-            "MATH 31.1",
-            "MATH 31.2"
+            "PHYS 111"
           ],
           "category": "M",
           "isElective": false,
           "slotId": "Second Year|First Semester#6"
         },
         {
-          "catNo": "SocSc 12",
-          "title": "THE CONTEMPORARY WORLD",
+          "catNo": "PHYS 32.01",
+          "title": "ANALYTICAL PHYSICS II, LECTURE",
           "units": 3,
           "prerequisites": [
-            "SocSc 11"
+            "PHYS 31.01"
           ],
-          "category": "C",
+          "category": "M",
           "isElective": false,
           "slotId": "Second Year|First Semester#7"
+        },
+        {
+          "catNo": "PHYS 32.02",
+          "title": "ANALYTICAL PHYSICS II, LABORATORY",
+          "units": 1,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#8"
         }
       ]
     },
@@ -304,64 +343,16 @@
       "year": "Second Year",
       "term": "Second Semester",
       "key": "Second Year|Second Semester",
-      "totalUnits": 23,
+      "totalUnits": 25,
       "entries": [
         {
-          "catNo": "CSCI 115",
-          "title": "COMPUTER SIMULATION AND MODELING",
-          "units": 3,
-          "prerequisites": [
-            "MATH 71.1"
-          ],
+          "catNo": "ENGG 11",
+          "title": "COMPUTER-AIDED DRAFTING",
+          "units": 1,
+          "prerequisites": [],
           "category": "M",
           "isElective": false,
           "slotId": "Second Year|Second Semester#0"
-        },
-        {
-          "catNo": "IE 1",
-          "title": "INTERDISCIPLINARY ELECTIVE 1 - ENGLISH",
-          "units": 3,
-          "prerequisites": [
-            "ENGL 11",
-            "ENLIT 12"
-          ],
-          "category": "IE1E",
-          "isElective": true,
-          "electiveDept": "**IE**",
-          "slotId": "Second Year|Second Semester#1"
-        },
-        {
-          "catNo": "MATH 31.4",
-          "title": "MATHEMATICAL ANALYSIS III",
-          "units": 3,
-          "prerequisites": [
-            "MATH 31.3"
-          ],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Second Year|Second Semester#2"
-        },
-        {
-          "catNo": "MATH 40.1",
-          "title": "LINEAR ALGEBRA",
-          "units": 3,
-          "prerequisites": [
-            "MATH 31.3"
-          ],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Second Year|Second Semester#3"
-        },
-        {
-          "catNo": "MATH 61.2",
-          "title": "ELEMENTARY PROBABILITY THEORY",
-          "units": 3,
-          "prerequisites": [
-            "MATH 31.3"
-          ],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Second Year|Second Semester#4"
         },
         {
           "catNo": "NSTP 11",
@@ -370,7 +361,7 @@
           "prerequisites": [],
           "category": "NP1",
           "isElective": false,
-          "slotId": "Second Year|Second Semester#5"
+          "slotId": "Second Year|Second Semester#1"
         },
         {
           "catNo": "PATHFit 4",
@@ -382,7 +373,71 @@
           ],
           "category": "PFT4",
           "isElective": false,
+          "slotId": "Second Year|Second Semester#2"
+        },
+        {
+          "catNo": "PHYS 113",
+          "title": "MATHEMATICAL PHYSICS III",
+          "units": 3,
+          "prerequisites": [
+            "MATH 31.3",
+            "PHYS 112"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#3"
+        },
+        {
+          "catNo": "PHYS 114",
+          "title": "MATHEMATICAL PHYSICS IV",
+          "units": 3,
+          "prerequisites": [
+            "MATH 31.3",
+            "PHYS 112"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#4"
+        },
+        {
+          "catNo": "PHYS 33.01",
+          "title": "ANALYTICAL PHYSICS III, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "PHYS 32.01"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#5"
+        },
+        {
+          "catNo": "PHYS 33.02",
+          "title": "ANALYTICAL PHYSICS III, LABORATORY",
+          "units": 1,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
           "slotId": "Second Year|Second Semester#6"
+        },
+        {
+          "catNo": "STS 10",
+          "title": "SCIENCE, TECHNOLOGY, AND SOCIETY",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#7"
+        },
+        {
+          "catNo": "SocSc 12",
+          "title": "THE CONTEMPORARY WORLD",
+          "units": 3,
+          "prerequisites": [
+            "SocSc 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#8"
         },
         {
           "catNo": "THEO 12",
@@ -393,7 +448,7 @@
           ],
           "category": "C",
           "isElective": false,
-          "slotId": "Second Year|Second Semester#7"
+          "slotId": "Second Year|Second Semester#9"
         }
       ]
     },
@@ -401,25 +456,40 @@
       "year": "Third Year",
       "term": "Fourth Year",
       "key": "Third Year|Fourth Year",
-      "totalUnits": 6,
+      "totalUnits": 7,
       "entries": [
         {
-          "catNo": "ECON 110",
-          "title": "PRINCIPLES OF ECONOMICS",
+          "catNo": "IE 1",
+          "title": "INTERDISCIPLINARY ELECTIVE 1 - ENGLISH",
           "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
+          "prerequisites": [
+            "ENGL 11",
+            "ENLIT 12"
+          ],
+          "category": "IE1E",
+          "isElective": true,
+          "electiveDept": "**IE**",
           "slotId": "Third Year|Fourth Year#0"
         },
         {
-          "catNo": "MATH 55.1",
-          "title": "FUNDAMENTAL CONCEPTS OF MATHEMATICS",
+          "catNo": "PHYS 34.01",
+          "title": "ANALYTICAL PHYSICS IV, LECTURE",
           "units": 3,
-          "prerequisites": [],
+          "prerequisites": [
+            "PHYS 33.01"
+          ],
           "category": "M",
           "isElective": false,
           "slotId": "Third Year|Fourth Year#1"
+        },
+        {
+          "catNo": "PHYS 34.02",
+          "title": "ANALYTICAL PHYSICS IV, LABORATORY",
+          "units": 1,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Fourth Year#2"
         }
       ]
     },
@@ -427,58 +497,18 @@
       "year": "Third Year",
       "term": "First Semester",
       "key": "Third Year|First Semester",
-      "totalUnits": 18,
+      "totalUnits": 21,
       "entries": [
         {
-          "catNo": "CSCI 111",
-          "title": "INTRODUCTION TO ARTIFICIAL INTELLIGENCE",
+          "catNo": "MATSE 101",
+          "title": "PRINCIPLES OF MATERIALS SCIENCE AND ENGINEERING I",
           "units": 3,
           "prerequisites": [
-            "MATH 71.1"
+            "PHYS 33.01"
           ],
           "category": "M",
           "isElective": false,
           "slotId": "Third Year|First Semester#0"
-        },
-        {
-          "catNo": "MATH 101.6",
-          "title": "THEORY OF INTEREST",
-          "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Third Year|First Semester#1"
-        },
-        {
-          "catNo": "MATH 62.1",
-          "title": "INTRODUCTION TO STATISTICAL THEORY",
-          "units": 3,
-          "prerequisites": [
-            "MATH 61.2"
-          ],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Third Year|First Semester#2"
-        },
-        {
-          "catNo": "MATH 90.1",
-          "title": "ADVANCED CALCULUS I",
-          "units": 3,
-          "prerequisites": [
-            "MATH 31.4"
-          ],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Third Year|First Semester#3"
-        },
-        {
-          "catNo": "MATHEMATICS ELECTIVE",
-          "title": "MATHEMATICS ELECTIVE",
-          "units": 3,
-          "prerequisites": [],
-          "category": "RM1",
-          "isElective": true,
-          "slotId": "Third Year|First Semester#4"
         },
         {
           "catNo": "PHILO 12",
@@ -489,7 +519,80 @@
           ],
           "category": "C",
           "isElective": false,
+          "slotId": "Third Year|First Semester#1"
+        },
+        {
+          "catNo": "PHYS 121",
+          "title": "CLASSICAL MECHANICS I",
+          "units": 3,
+          "prerequisites": [
+            "PHYS 112",
+            "PHYS 31.01"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#2"
+        },
+        {
+          "catNo": "PHYS 131",
+          "title": "ELECTROMAGNETICS",
+          "units": 3,
+          "prerequisites": [
+            "PHYS 111",
+            "PHYS 112",
+            "PHYS 114",
+            "PHYS 33.01",
+            "PHYS 33.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#3"
+        },
+        {
+          "catNo": "PHYS 161.01",
+          "title": "PHYSICAL ELECTRONICS, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "PHYS 33.01",
+            "PHYS 33.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#4"
+        },
+        {
+          "catNo": "PHYS 161.02",
+          "title": "PHYSICAL ELECTRONICS, LABORATORY",
+          "units": 1,
+          "prerequisites": [
+            "PHYS 33.01",
+            "PHYS 33.02"
+          ],
+          "category": "M",
+          "isElective": false,
           "slotId": "Third Year|First Semester#5"
+        },
+        {
+          "catNo": "PHYS 199.1",
+          "title": "UNDERGRADUATE THESIS I",
+          "units": 2,
+          "prerequisites": [
+            "PHYS 34.01"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#6"
+        },
+        {
+          "catNo": "THEO 13",
+          "title": "A THEOLOGY OF MARRIAGE, FAMILY, AND VOCATION",
+          "units": 3,
+          "prerequisites": [
+            "THEO 12"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#7"
         }
       ]
     },
@@ -500,8 +603,8 @@
       "totalUnits": 22,
       "entries": [
         {
-          "catNo": "CSCI 113i",
-          "title": "BUSINESS INTELLIGENCE",
+          "catNo": "ENGG 30.30",
+          "title": "INTRODUCTION TO PROGRAMMING FOR SCIENTISTS",
           "units": 3,
           "prerequisites": [],
           "category": "M",
@@ -509,37 +612,15 @@
           "slotId": "Third Year|Second Semester#0"
         },
         {
-          "catNo": "MATH 192",
-          "title": "UNDERGRADUATE RESEARCH SEMINAR",
-          "units": 1,
-          "prerequisites": [],
+          "catNo": "MATSE 102",
+          "title": "PRINCIPLES OF MATERIALS SCIENCE AND ENGINEERING II",
+          "units": 3,
+          "prerequisites": [
+            "MATSE 101"
+          ],
           "category": "M",
           "isElective": false,
           "slotId": "Third Year|Second Semester#1"
-        },
-        {
-          "catNo": "MATH 62.2",
-          "title": "TIME SERIES AND FORECASTING",
-          "units": 3,
-          "prerequisites": [
-            "MATH 40.1",
-            "MATH 62.1"
-          ],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Third Year|Second Semester#2"
-        },
-        {
-          "catNo": "MATH 72.1",
-          "title": "ORDINARY DIFFERENTIAL EQUATIONS",
-          "units": 3,
-          "prerequisites": [
-            "MATH 31.4",
-            "MATH 40.1"
-          ],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Third Year|Second Semester#3"
         },
         {
           "catNo": "NSTP 12",
@@ -548,7 +629,7 @@
           "prerequisites": [],
           "category": "NP2",
           "isElective": false,
-          "slotId": "Third Year|Second Semester#4"
+          "slotId": "Third Year|Second Semester#2"
         },
         {
           "catNo": "PHILO 13",
@@ -559,7 +640,42 @@
           ],
           "category": "C",
           "isElective": false,
+          "slotId": "Third Year|Second Semester#3"
+        },
+        {
+          "catNo": "PHYS 132",
+          "title": "ELECTROMAGNETIC ENERGY TRANSFER",
+          "units": 3,
+          "prerequisites": [
+            "PHYS 131"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#4"
+        },
+        {
+          "catNo": "PHYS 141",
+          "title": "INTRODUCTION TO QUANTUM MECHANICS I",
+          "units": 3,
+          "prerequisites": [
+            "PHYS 111",
+            "PHYS 112",
+            "PHYS 34.01"
+          ],
+          "category": "M",
+          "isElective": false,
           "slotId": "Third Year|Second Semester#5"
+        },
+        {
+          "catNo": "PHYS 199.2",
+          "title": "UNDERGRADUATE THESIS II",
+          "units": 1,
+          "prerequisites": [
+            "PHYS 199.1"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#6"
         },
         {
           "catNo": "SocSc 13",
@@ -567,17 +683,6 @@
           "units": 3,
           "prerequisites": [
             "SocSc 12"
-          ],
-          "category": "C",
-          "isElective": false,
-          "slotId": "Third Year|Second Semester#6"
-        },
-        {
-          "catNo": "THEO 13",
-          "title": "A THEOLOGY OF MARRIAGE, FAMILY, AND VOCATION",
-          "units": 3,
-          "prerequisites": [
-            "THEO 12"
           ],
           "category": "C",
           "isElective": false,
@@ -589,25 +694,16 @@
       "year": "Fourth Year",
       "term": "Intersession",
       "key": "Fourth Year|Intersession",
-      "totalUnits": 6,
+      "totalUnits": 3,
       "entries": [
         {
-          "catNo": "ArtAp 10",
-          "title": "ART APPRECIATION",
+          "catNo": "PHYS 197",
+          "title": "PHYSICS IN SOCIETY WITH PRACTICUM",
           "units": 3,
           "prerequisites": [],
-          "category": "C",
+          "category": "M",
           "isElective": false,
           "slotId": "Fourth Year|Intersession#0"
-        },
-        {
-          "catNo": "FREE ELECTIVE",
-          "title": "FREE ELECTIVE",
-          "units": 3,
-          "prerequisites": [],
-          "category": "FE1",
-          "isElective": true,
-          "slotId": "Fourth Year|Intersession#1"
         }
       ]
     },
@@ -615,69 +711,73 @@
       "year": "Fourth Year",
       "term": "First Semester",
       "key": "Fourth Year|First Semester",
-      "totalUnits": 20,
+      "totalUnits": 17,
       "entries": [
         {
-          "catNo": "FREE ELECTIVE",
-          "title": "FREE ELECTIVE",
-          "units": 3,
-          "prerequisites": [],
-          "category": "FE2",
-          "isElective": true,
-          "slotId": "Fourth Year|First Semester#0"
-        },
-        {
-          "catNo": "IE 2",
-          "title": "INTERDISCIPLINARY ELECTIVE 2",
+          "catNo": "IE 2: MATSE 111 SERIES",
+          "title": "INTERDISCIPLINARY ELECTIVE: MATSE 111 SERIES",
           "units": 3,
           "prerequisites": [],
           "category": "IE2",
           "isElective": true,
-          "electiveDept": "**IE**",
+          "slotId": "Fourth Year|First Semester#0"
+        },
+        {
+          "catNo": "MATSE 106.1i",
+          "title": "MATERIALS AND TESTING LABORATORY I",
+          "units": 3,
+          "prerequisites": [
+            "MATSE 101"
+          ],
+          "category": "M",
+          "isElective": false,
           "slotId": "Fourth Year|First Semester#1"
         },
         {
-          "catNo": "MATH 199.11",
-          "title": "UNDERGRADUATE RESEARCH IN APPLIED MATHEMATICS I",
-          "units": 2,
+          "catNo": "PHYS 151",
+          "title": "INTRODUCTORY THERMODYNAMICS AND STATISTICAL MECHANICS",
+          "units": 3,
           "prerequisites": [
-            "MATH 192"
+            "PHYS 141"
           ],
           "category": "M",
           "isElective": false,
           "slotId": "Fourth Year|First Semester#2"
         },
         {
-          "catNo": "MATH 71.3",
-          "title": "SCIENTIFIC COMPUTING I",
+          "catNo": "PHYS 162.01i",
+          "title": "COMPUTATIONAL PHYSICS, LECTURE",
           "units": 3,
           "prerequisites": [
-            "MATH 40.1"
+            "PHYS 114",
+            "PHYS 33.01",
+            "PHYS 33.02"
           ],
           "category": "M",
           "isElective": false,
           "slotId": "Fourth Year|First Semester#3"
         },
         {
-          "catNo": "MATH 91.1",
-          "title": "REAL ANALYSIS I",
-          "units": 3,
+          "catNo": "PHYS 162.02",
+          "title": "COMPUTATIONAL PHYSICS, LABORATORY",
+          "units": 1,
           "prerequisites": [
-            "MATH 90.1"
+            "PHYS 114",
+            "PHYS 33.01",
+            "PHYS 33.02"
           ],
           "category": "M",
           "isElective": false,
           "slotId": "Fourth Year|First Semester#4"
         },
         {
-          "catNo": "STS 10",
-          "title": "SCIENCE, TECHNOLOGY, AND SOCIETY",
-          "units": 3,
+          "catNo": "PHYS 199.3",
+          "title": "UNDERGRADUATE THESIS III",
+          "units": 1,
           "prerequisites": [
-            "NatSc 10.01",
-            "NatSc 10.02"
+            "PHYS 199.2"
           ],
-          "category": "C",
+          "category": "M",
           "isElective": false,
           "slotId": "Fourth Year|First Semester#5"
         },
@@ -698,7 +798,7 @@
       "year": "Fourth Year",
       "term": "Second Semester",
       "key": "Fourth Year|Second Semester",
-      "totalUnits": 20,
+      "totalUnits": 17,
       "entries": [
         {
           "catNo": "DLQ 10",
@@ -714,63 +814,63 @@
           "slotId": "Fourth Year|Second Semester#0"
         },
         {
-          "catNo": "IE 3",
-          "title": "INTERDISCIPLINARY ELECTIVE 3",
+          "catNo": "IE 3: MATSE 160 SERIES",
+          "title": "MATSE 160 SERIES",
           "units": 3,
           "prerequisites": [],
           "category": "IE3",
-          "isElective": true,
-          "electiveDept": "**IE**",
+          "isElective": false,
           "slotId": "Fourth Year|Second Semester#1"
         },
         {
-          "catNo": "MATH 102.1",
-          "title": "TOPICS IN OPERATIONS RESEARCH",
+          "catNo": "MATSE 106.2",
+          "title": "MATERIALS AND TESTING LABORATORY II",
           "units": 3,
           "prerequisites": [
-            "MATH 40.1",
-            "MATH 61.2"
+            "MATSE 102"
           ],
           "category": "M",
           "isElective": false,
           "slotId": "Fourth Year|Second Semester#2"
         },
         {
-          "catNo": "MATH 199.12",
-          "title": "UNDERGRADUATE RESEARCH IN APPLIED MATHEMATICS II",
-          "units": 2,
+          "catNo": "MATSE 121.01",
+          "title": "POLYMERIC MATERIALS, LECTURE",
+          "units": 3,
           "prerequisites": [
-            "MATH 199.11"
+            "MATSE 102"
           ],
           "category": "M",
           "isElective": false,
           "slotId": "Fourth Year|Second Semester#3"
         },
         {
-          "catNo": "MATH 71.4",
-          "title": "SCIENTIFIC COMPUTING II",
-          "units": 3,
+          "catNo": "MATSE 121.02",
+          "title": "POLYMERIC MATERIALS, LABORATORY",
+          "units": 1,
           "prerequisites": [
-            "MATH 71.3"
+            "MATSE 102"
           ],
           "category": "M",
           "isElective": false,
           "slotId": "Fourth Year|Second Semester#4"
         },
         {
-          "catNo": "MATHEMATICS ELECTIVE",
-          "title": "MATHEMATICS ELECTIVE",
-          "units": 3,
+          "catNo": "MATSE 161",
+          "title": "ENGINEERING MANAGEMENT",
+          "units": 2,
           "prerequisites": [],
-          "category": "RM2",
-          "isElective": true,
+          "category": "M",
+          "isElective": false,
           "slotId": "Fourth Year|Second Semester#5"
         },
         {
-          "catNo": "MSYS 121i",
-          "title": "APPLIED DIGITAL LAW AND ETHICS",
-          "units": 3,
-          "prerequisites": [],
+          "catNo": "PHYS 199.4",
+          "title": "UNDERGRADUATE THESIS IV",
+          "units": 2,
+          "prerequisites": [
+            "PHYS 199.3"
+          ],
           "category": "M",
           "isElective": false,
           "slotId": "Fourth Year|Second Semester#6"
@@ -781,25 +881,18 @@
       "year": "Fifth Year",
       "term": "Fourth Year",
       "key": "Fifth Year|Fourth Year",
-      "totalUnits": 6,
+      "totalUnits": 3,
       "entries": [
         {
-          "catNo": "CSCI 217",
-          "title": "DATA VISUALIZATION",
+          "catNo": "MATSE 199.1",
+          "title": "MATERIALS RESEARCH PROJECT I",
           "units": 3,
-          "prerequisites": [],
+          "prerequisites": [
+            "PHYS 199.3"
+          ],
           "category": "M",
           "isElective": false,
           "slotId": "Fifth Year|Fourth Year#0"
-        },
-        {
-          "catNo": "MATH 271.2",
-          "title": "ADVANCED STATISTICAL METHODS",
-          "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Fifth Year|Fourth Year#1"
         }
       ]
     },
@@ -807,105 +900,69 @@
       "year": "Fifth Year",
       "term": "First Semester",
       "key": "Fifth Year|First Semester",
-      "totalUnits": 15,
+      "totalUnits": 18,
       "entries": [
         {
-          "catNo": "CSCI 205",
-          "title": "PROGRAMMING WITH DATABASES",
+          "catNo": "MATSE 131",
+          "title": "CERAMIC MATERIALS",
           "units": 3,
-          "prerequisites": [],
+          "prerequisites": [
+            "MATSE 102"
+          ],
           "category": "M",
           "isElective": false,
           "slotId": "Fifth Year|First Semester#0"
         },
         {
-          "catNo": "CSCI 214",
-          "title": "PATTERN RECOGNITION",
+          "catNo": "MATSE 141",
+          "title": "ELECTRONIC MATERIALS",
           "units": 3,
-          "prerequisites": [],
+          "prerequisites": [
+            "MATSE 102"
+          ],
           "category": "M",
           "isElective": false,
           "slotId": "Fifth Year|First Semester#1"
         },
         {
-          "catNo": "CSCI 298.5",
-          "title": "DATA SCIENCE PROJECT I",
+          "catNo": "MATSE 151",
+          "title": "ENGINEERING COMPOSITES",
           "units": 3,
-          "prerequisites": [],
+          "prerequisites": [
+            "MATSE 102"
+          ],
           "category": "M",
           "isElective": false,
           "slotId": "Fifth Year|First Semester#2"
         },
         {
-          "catNo": "MATH 236.3",
-          "title": "TOPICS IN STOCHASTIC CALCULUS",
+          "catNo": "MATSE 199.2",
+          "title": "MATERIALS RESEARCH PROJECT II",
           "units": 3,
-          "prerequisites": [],
+          "prerequisites": [
+            "PHYS 199.3"
+          ],
           "category": "M",
           "isElective": false,
           "slotId": "Fifth Year|First Semester#3"
         },
         {
-          "catNo": "MATH GRAD ELECTIVE",
-          "title": "MATHEMATICS GRAD ELECTIVE",
+          "catNo": "MATSE ELEC",
+          "title": "MATERIALS SCIENCE AND ENGINEERING ELECTIVE",
           "units": 3,
           "prerequisites": [],
-          "category": "RM3",
+          "category": "ME2",
           "isElective": true,
           "slotId": "Fifth Year|First Semester#4"
-        }
-      ]
-    },
-    {
-      "year": "Fifth Year",
-      "term": "Second Semester",
-      "key": "Fifth Year|Second Semester",
-      "totalUnits": 15,
-      "entries": [
-        {
-          "catNo": "CSCI 271",
-          "title": "DATA MINING",
-          "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Fifth Year|Second Semester#0"
         },
         {
-          "catNo": "CSCI 273",
-          "title": "BIG DATA PROCESSING",
+          "catNo": "MATSE ELEC",
+          "title": "MATERIALS SCIENCE AND ENGINEERING ELECTIVE",
           "units": 3,
           "prerequisites": [],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Fifth Year|Second Semester#1"
-        },
-        {
-          "catNo": "CSCI 298.6",
-          "title": "DATA SCIENCE PROJECT II",
-          "units": 3,
-          "prerequisites": [],
-          "category": "M",
-          "isElective": false,
-          "slotId": "Fifth Year|Second Semester#2"
-        },
-        {
-          "catNo": "MATH GRAD ELECTIVE",
-          "title": "MATHEMATICS GRAD ELECTIVE",
-          "units": 3,
-          "prerequisites": [],
-          "category": "RM4",
+          "category": "ME1",
           "isElective": true,
-          "slotId": "Fifth Year|Second Semester#3"
-        },
-        {
-          "catNo": "MATH GRAD ELECTIVE",
-          "title": "MATHEMATICS GRAD ELECTIVE",
-          "units": 3,
-          "prerequisites": [],
-          "category": "RM5",
-          "isElective": true,
-          "slotId": "Fifth Year|Second Semester#4"
+          "slotId": "Fifth Year|First Semester#5"
         }
       ]
     }

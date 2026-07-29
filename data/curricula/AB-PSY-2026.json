@@ -1,0 +1,697 @@
+{
+  "id": "AB-PSY-2026",
+  "code": "AB PSY",
+  "name": "BACHELOR OF ARTS IN PSYCHOLOGY",
+  "version": "2026",
+  "versionYear": 2026,
+  "versionLabel": "2026",
+  "blocks": [
+    {
+      "year": "First Year",
+      "term": "First Semester",
+      "key": "First Year|First Semester",
+      "totalUnits": 21,
+      "entries": [
+        {
+          "catNo": "ENLIT 12",
+          "title": "LITERATURE: GLOBAL VOICES AND ENCOUNTERS",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#0"
+        },
+        {
+          "catNo": "FILI 11",
+          "title": "MALAYUNING KOMUNIKASYON",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#1"
+        },
+        {
+          "catNo": "INTACT 11",
+          "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+          "units": 0,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#2"
+        },
+        {
+          "catNo": "NatSc 10.01",
+          "title": "NATURAL SCIENCE, LECTURE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "NS1A",
+          "isElective": false,
+          "slotId": "First Year|First Semester#3"
+        },
+        {
+          "catNo": "NatSc 10.02",
+          "title": "NATURAL SCIENCE, LABORATORY",
+          "units": 1,
+          "prerequisites": [],
+          "category": "NS1B",
+          "isElective": false,
+          "slotId": "First Year|First Semester#4"
+        },
+        {
+          "catNo": "PATHFit 1",
+          "title": "PHYSICAL ACTIVITIES TOWARDS HEALTH AND FITNESS 1",
+          "units": 2,
+          "prerequisites": [],
+          "category": "PFT1",
+          "isElective": false,
+          "slotId": "First Year|First Semester#5"
+        },
+        {
+          "catNo": "PSYC 20",
+          "title": "GENERAL PSYCHOLOGY",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|First Semester#6"
+        },
+        {
+          "catNo": "SocSc 11",
+          "title": "UNDERSTANDING THE SELF",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#7"
+        },
+        {
+          "catNo": "THEO 11",
+          "title": "FAITH, SPIRITUALITY, AND THE CHURCH",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#8"
+        }
+      ]
+    },
+    {
+      "year": "First Year",
+      "term": "Second Semester",
+      "key": "First Year|Second Semester",
+      "totalUnits": 22,
+      "entries": [
+        {
+          "catNo": "ArtAp 10",
+          "title": "ART APPRECIATION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#0"
+        },
+        {
+          "catNo": "ENGL 11",
+          "title": "PURPOSIVE COMMUNICATION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#1"
+        },
+        {
+          "catNo": "FILI 12",
+          "title": "PANITIKAN NG PILIPINAS",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#2"
+        },
+        {
+          "catNo": "HISTO 11",
+          "title": "RIZAL AND THE EMERGENCE OF THE PHILIPPINE NATION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#3"
+        },
+        {
+          "catNo": "INTACT 12",
+          "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 12",
+          "units": 0,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#4"
+        },
+        {
+          "catNo": "MATH 10",
+          "title": "MATHEMATICS IN THE MODERN WORLD",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#5"
+        },
+        {
+          "catNo": "PATHFit 2",
+          "title": "PHYSICAL ACTIVITIES TOWARDS HEALTH AND FITNESS 2",
+          "units": 2,
+          "prerequisites": [
+            "PATHFit 1"
+          ],
+          "category": "PFT2",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#6"
+        },
+        {
+          "catNo": "PSYC 90.01",
+          "title": "PSYCHOLOGICAL STATISTICS, LECTURE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#7"
+        },
+        {
+          "catNo": "PSYC 90.02",
+          "title": "PSYCHOLOGICAL STATISTICS, LABORATORY",
+          "units": 2,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#8"
+        }
+      ]
+    },
+    {
+      "year": "Second Year",
+      "term": "First Semester",
+      "key": "Second Year|First Semester",
+      "totalUnits": 23,
+      "entries": [
+        {
+          "catNo": "NSTP 11",
+          "title": "NATIONAL SERVICE TRAINING PROGRAM 11",
+          "units": 3,
+          "prerequisites": [],
+          "category": "NP1",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#0"
+        },
+        {
+          "catNo": "PATHFit 3",
+          "title": "PHYSICAL ACTIVITIES TOWARDS HEALTH AND FITNESS 3",
+          "units": 2,
+          "prerequisites": [
+            "PATHFit 1",
+            "PATHFit 2"
+          ],
+          "category": "PFT3",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#1"
+        },
+        {
+          "catNo": "PSYC 21",
+          "title": "PHYSIOLOGICAL PSYCHOLOGY",
+          "units": 3,
+          "prerequisites": [
+            "PSYC 20"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#2"
+        },
+        {
+          "catNo": "PSYC 23",
+          "title": "COGNITIVE PSYCHOLOGY",
+          "units": 3,
+          "prerequisites": [
+            "PSYC 20"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#3"
+        },
+        {
+          "catNo": "PSYC 24",
+          "title": "THEORIES OF PERSONALITY",
+          "units": 3,
+          "prerequisites": [
+            "PSYC 20"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#4"
+        },
+        {
+          "catNo": "STS 10",
+          "title": "SCIENCE, TECHNOLOGY, AND SOCIETY",
+          "units": 3,
+          "prerequisites": [
+            "NatSc 10.01",
+            "NatSc 10.02"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#5"
+        },
+        {
+          "catNo": "SocSc 12",
+          "title": "THE CONTEMPORARY WORLD",
+          "units": 3,
+          "prerequisites": [
+            "SocSc 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#6"
+        },
+        {
+          "catNo": "THEO 12",
+          "title": "THEOLOGY OF THE CATHOLIC SOCIAL VISION",
+          "units": 3,
+          "prerequisites": [
+            "THEO 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#7"
+        }
+      ]
+    },
+    {
+      "year": "Second Year",
+      "term": "Second Semester",
+      "key": "Second Year|Second Semester",
+      "totalUnits": 19,
+      "entries": [
+        {
+          "catNo": "FLC 11",
+          "title": "FOREIGN LANGUAGE AND CULTURE 11",
+          "units": 3,
+          "prerequisites": [],
+          "category": "FLC1",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#0"
+        },
+        {
+          "catNo": "HISTO 12",
+          "title": "READINGS IN PHILIPPINE HISTORY",
+          "units": 3,
+          "prerequisites": [
+            "HISTO 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#1"
+        },
+        {
+          "catNo": "PATHFit 4",
+          "title": "PHYSICAL ACTIVITIES TOWARDS HEALTH AND FITNESS 4",
+          "units": 2,
+          "prerequisites": [
+            "PATHFit 1",
+            "PATHFit 2"
+          ],
+          "category": "PFT4",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#2"
+        },
+        {
+          "catNo": "PHILO 11",
+          "title": "PHILOSOPHY: THE HUMAN CONDITION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "CPH1",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#3"
+        },
+        {
+          "catNo": "PSYC 22",
+          "title": "SOCIAL PSYCHOLOGY",
+          "units": 3,
+          "prerequisites": [
+            "PSYC 20"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#4"
+        },
+        {
+          "catNo": "PSYC 91.01",
+          "title": "EXPERIMENTAL PSYCHOLOGY, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "PSYC 90.01",
+            "PSYC 90.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#5"
+        },
+        {
+          "catNo": "PSYC 91.02",
+          "title": "EXPERIMENTAL PSYCHOLOGY, LABORATORY",
+          "units": 2,
+          "prerequisites": [
+            "PSYC 90.01",
+            "PSYC 90.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#6"
+        }
+      ]
+    },
+    {
+      "year": "Third Year",
+      "term": "First Semester",
+      "key": "Third Year|First Semester",
+      "totalUnits": 20,
+      "entries": [
+        {
+          "catNo": "NSTP 12",
+          "title": "NATIONAL SERVICE TRAINING PROGRAM 12",
+          "units": 3,
+          "prerequisites": [],
+          "category": "NP2",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#0"
+        },
+        {
+          "catNo": "PHILO 13",
+          "title": "ETHICS",
+          "units": 3,
+          "prerequisites": [
+            "PHILO 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#1"
+        },
+        {
+          "catNo": "PSYC 192.01",
+          "title": "FIELD METHODS, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "PSYC 91.01",
+            "PSYC 91.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#2"
+        },
+        {
+          "catNo": "PSYC 192.02",
+          "title": "FIELD METHODS, LABORATORY",
+          "units": 2,
+          "prerequisites": [
+            "PSYC 91.01",
+            "PSYC 91.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#3"
+        },
+        {
+          "catNo": "PSYC 25",
+          "title": "DEVELOPMENTAL PSYCHOLOGY",
+          "units": 3,
+          "prerequisites": [
+            "PSYC 20"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#4"
+        },
+        {
+          "catNo": "PSYC 26",
+          "title": "ABNORMAL PSYCHOLOGY",
+          "units": 3,
+          "prerequisites": [
+            "PSYC 24"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#5"
+        },
+        {
+          "catNo": "SocSc 13",
+          "title": "THE ECONOMY, SOCIETY, AND SUSTAINABLE DEVELOPMENT",
+          "units": 3,
+          "prerequisites": [
+            "SocSc 12"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#6"
+        }
+      ]
+    },
+    {
+      "year": "Third Year",
+      "term": "Second Semester",
+      "key": "Third Year|Second Semester",
+      "totalUnits": 17,
+      "entries": [
+        {
+          "catNo": "IE 1",
+          "title": "INTERDISCIPLINARY ELECTIVE 1 - ENGLISH",
+          "units": 3,
+          "prerequisites": [
+            "ENGL 11",
+            "ENLIT 12"
+          ],
+          "category": "IE1E",
+          "isElective": true,
+          "electiveDept": "**IE**",
+          "slotId": "Third Year|Second Semester#0"
+        },
+        {
+          "catNo": "PHILO 12",
+          "title": "PHILOSOPHY OF RELIGION",
+          "units": 3,
+          "prerequisites": [
+            "PHILO 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#1"
+        },
+        {
+          "catNo": "PSYC 27",
+          "title": "INDUSTRIAL ORGANIZATIONAL PSYCHOLOGY",
+          "units": 3,
+          "prerequisites": [
+            "PSYC 20"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#2"
+        },
+        {
+          "catNo": "PSYC 92.01",
+          "title": "PSYCHOLOGICAL ASSESSMENT, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "PSYC 24"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#3"
+        },
+        {
+          "catNo": "PSYC 92.02",
+          "title": "PSYCHOLOGICAL ASSESSMENT, LABORATORY",
+          "units": 2,
+          "prerequisites": [
+            "PSYC 24"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#4"
+        },
+        {
+          "catNo": "THEO 13",
+          "title": "A THEOLOGY OF MARRIAGE, FAMILY, AND VOCATION",
+          "units": 3,
+          "prerequisites": [
+            "THEO 12"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#5"
+        }
+      ]
+    },
+    {
+      "year": "Fourth Year",
+      "term": "Intersession",
+      "key": "Fourth Year|Intersession",
+      "totalUnits": 3,
+      "entries": [
+        {
+          "catNo": "PSYC 197/50/70",
+          "title": "PRACTICUM/MAJOR ELECTIVE",
+          "units": 3,
+          "prerequisites": [
+            "PSYC 20"
+          ],
+          "category": "RM1",
+          "isElective": true,
+          "slotId": "Fourth Year|Intersession#0"
+        }
+      ]
+    },
+    {
+      "year": "Fourth Year",
+      "term": "First Semester",
+      "key": "Fourth Year|First Semester",
+      "totalUnits": 18,
+      "entries": [
+        {
+          "catNo": "DLQ 10",
+          "title": "DISCERNING LIFE QUESTIONS: TOWARDS LEADERSHIP AND COMMITMENT",
+          "units": 3,
+          "prerequisites": [
+            "PHILO 13",
+            "SocSc 13",
+            "THEO 13"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#0"
+        },
+        {
+          "catNo": "IE 2-PSYC 50i/PSYC 70i",
+          "title": "INTERDISCIPLINARY ELECTIVE 2 - MAJOR ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "IE2",
+          "isElective": true,
+          "slotId": "Fourth Year|First Semester#1"
+        },
+        {
+          "catNo": "IE 3",
+          "title": "INTERDISCIPLINARY ELECTIVE 3",
+          "units": 3,
+          "prerequisites": [],
+          "category": "IE3",
+          "isElective": true,
+          "electiveDept": "**IE**",
+          "slotId": "Fourth Year|First Semester#2"
+        },
+        {
+          "catNo": "PSYC 199.1",
+          "title": "RESEARCH IN PSYCHOLOGY I",
+          "units": 3,
+          "prerequisites": [
+            "PSYC 192.01",
+            "PSYC 192.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#3"
+        },
+        {
+          "catNo": "PSYC 50/70",
+          "title": "MAJOR ELECTIVE 1",
+          "units": 3,
+          "prerequisites": [
+            "PSYC 20"
+          ],
+          "category": "RM2",
+          "isElective": true,
+          "slotId": "Fourth Year|First Semester#4"
+        },
+        {
+          "catNo": "PSYC 70.06",
+          "title": "BASIC COUNSELING PRINCIPLES AND TECHNIQUES",
+          "units": 3,
+          "prerequisites": [
+            "PSYC 25"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#5"
+        }
+      ]
+    },
+    {
+      "year": "Fourth Year",
+      "term": "Second Semester",
+      "key": "Fourth Year|Second Semester",
+      "totalUnits": 18,
+      "entries": [
+        {
+          "catNo": "FREE ELECTIVE",
+          "title": "FREE ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "FE1",
+          "isElective": true,
+          "slotId": "Fourth Year|Second Semester#0"
+        },
+        {
+          "catNo": "PSYC 199.2",
+          "title": "RESEARCH IN PSYCHOLOGY II",
+          "units": 3,
+          "prerequisites": [
+            "PSYC 199.1"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#1"
+        },
+        {
+          "catNo": "PSYC 28",
+          "title": "CULTURE AND PSYCHOLOGY",
+          "units": 3,
+          "prerequisites": [
+            "PSYC 20"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#2"
+        },
+        {
+          "catNo": "PSYC 50/70",
+          "title": "MAJOR ELECTIVE 1",
+          "units": 3,
+          "prerequisites": [
+            "PSYC 20"
+          ],
+          "category": "RM3",
+          "isElective": true,
+          "slotId": "Fourth Year|Second Semester#3"
+        },
+        {
+          "catNo": "PSYC 70.03",
+          "title": "PSYCHOLOGICAL INTERVENTIONS IN DIVERSE SETTINGS",
+          "units": 3,
+          "prerequisites": [
+            "PSYC 92.01",
+            "PSYC 92.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#4"
+        },
+        {
+          "catNo": "SocSc 14",
+          "title": "POLITICS, GOVERNANCE, AND CITIZENSHIP",
+          "units": 3,
+          "prerequisites": [
+            "SocSc 13"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#5"
+        }
+      ]
+    }
+  ]
+}
