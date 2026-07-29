@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import {
-  programId, parseVersion, versionLabelOf, parseProgramOptions, latestPerTrack,
+  programId, parseVersion, versionLabelOf, parseProgramOptions, latestPerTrack, isUndergraduate,
   isElectiveEntry, electiveDeptFor, parseCurriculumPage,
   looksLikeLoginPage, buildProgram, buildIndex,
 } from "./curriculum-parse.mjs";
@@ -95,6 +95,34 @@ describe("latestPerTrack", () => {
     expect(ids).toContain("AB-EU-24BE");
     expect(ids).toContain("AB-EU-20IR");
     expect(latest).toHaveLength(233);
+  });
+});
+
+describe("isUndergraduate", () => {
+  const mk = (name: string) => ({ name } as Parameters<typeof isUndergraduate>[0]);
+
+  it("accepts English and Filipino bachelor's degrees", () => {
+    expect(isUndergraduate(mk("BACHELOR OF SCIENCE IN APPLIED MATHEMATICS"))).toBe(true);
+    expect(isUndergraduate(mk("BACHELOR OF FINE ARTS IN CREATIVE WRITING"))).toBe(true);
+    // AB PanFil — a real undergraduate program named in Filipino. A /^BACHELOR/ rule
+    // would silently drop it.
+    expect(isUndergraduate(mk("BATSILYER NG SINING SA PANITIKANG FILIPINO"))).toBe(true);
+  });
+
+  it("rejects graduate and non-degree programs, including the Filipino master's", () => {
+    expect(isUndergraduate(mk("MASTER IN DATA SCIENCE"))).toBe(false);
+    expect(isUndergraduate(mk("DALUBHASA NG SINING SA PANITIKANG FILIPINO"))).toBe(false);
+    expect(isUndergraduate(mk("NON-DEGREE"))).toBe(false);
+  });
+
+  it("selects exactly the 69 undergraduate programs in the real dropdown", () => {
+    const latest = latestPerTrack(parseProgramOptions(SAMPLE).options);
+    const under = latest.filter(isUndergraduate);
+    expect(under).toHaveLength(69);
+    // Cross-check against an independent signal: the AB/BS/BFA/BSM* code prefixes.
+    const byCode = latest.filter((o) => /^(AB|BS|BFA|BSM)/i.test(o.code.trim()));
+    expect(new Set(under.map((o) => o.code))).toEqual(new Set(byCode.map((o) => o.code)));
+    expect(under.map((o) => o.code)).toContain("AB PanFil");
   });
 });
 

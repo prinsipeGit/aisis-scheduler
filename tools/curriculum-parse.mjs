@@ -66,6 +66,20 @@ export function parseProgramOptions(html) {
   return { options, skipped };
 }
 
+// AISIS prints program names in English or Filipino. The undergraduate degrees are
+// "BACHELOR …" and its Filipino equivalent "BATSILYER …"; graduate programs are
+// "MASTER …" / "DALUBHASA …", and there is one "NON-DEGREE" entry.
+//
+// Matching on the name rather than the code matters: AB PanFil is "BATSILYER NG SINING
+// SA PANITIKANG FILIPINO", so a /^BACHELOR/ rule would silently drop a real undergraduate
+// program. Verified against all 233 programs in the 2026 dropdown — this rule selects
+// exactly the same 69 programs as the AB/BS/BFA/BSM* code prefixes.
+const UNDERGRAD_NAME = /^(BACHELOR|BATSILYER)\b/i;
+
+export function isUndergraduate(option) {
+  return UNDERGRAD_NAME.test(option.name.trim());
+}
+
 // Latest per (code, track): grouping by code alone would drop whole programs whose
 // only versions are track-suffixed (AB EU, AB LIT(ENG), AB LIT(ENG)-LCS).
 export function latestPerTrack(options) {

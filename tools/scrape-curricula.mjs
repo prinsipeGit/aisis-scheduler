@@ -15,13 +15,17 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   parseProgramOptions, latestPerTrack, parseCurriculumPage,
-  looksLikeLoginPage, buildProgram, buildIndex,
+  looksLikeLoginPage, buildProgram, buildIndex, isUndergraduate,
 } from "./curriculum-parse.mjs";
 
 const ENDPOINT = "https://aisis.ateneo.edu/j_aisis/J_VOFC.do";
 const DELAY_MS = 1500;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const force = process.argv.includes("--force");
+// Graduate curricula have no year/term block structure, so they parse to zero blocks and
+// only add noise and ~4 minutes to the run. The app is undergraduate-only by design.
+// --all opts back in so they stay reachable if that ever changes.
+const includeGraduate = process.argv.includes("--all");
 
 const COOKIE = process.env.AISIS_COOKIE;
 if (!COOKIE) {
@@ -55,12 +59,19 @@ const fetchPage = async (body) => {
 const landing = await fetchPage(null);
 const { options, skipped } = parseProgramOptions(landing);
 for (const value of skipped) console.warn(`  ! unparseable option value, skipped: ${value}`);
-const discovered = latestPerTrack(options);
+const everyProgram = latestPerTrack(options);
+const discovered = includeGraduate ? everyProgram : everyProgram.filter(isUndergraduate);
 if (discovered.length === 0) {
   console.error("No programs found in the page's dropdown — the page layout may have changed.");
   process.exit(1);
 }
-console.log(`Discovered ${discovered.length} programs (latest version per code+track) from ${options.length} options; ${skipped.length} unparseable.`);
+const scope = includeGraduate
+  ? "every level (--all)"
+  : `undergraduate only, skipping ${everyProgram.length - discovered.length} graduate/non-degree`;
+console.log(
+  `Discovered ${discovered.length} programs — ${scope} — from ${options.length} options ` +
+  `(latest version per code+track); ${skipped.length} unparseable.`
+);
 
 // The form field names are read from the live page so a rename upstream is visible
 // immediately rather than silently producing empty results.

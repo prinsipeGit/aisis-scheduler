@@ -83,10 +83,19 @@ and copy the session cookie. It is read from the environment only — never a
 command-line argument, never prompted for, never written to disk or logged, and
 held in memory just for the run. Never commit it.
 
-The run takes about 6 minutes: ~233 programs at 1.5 s apart, plus a progress
-line each. It imports the **newest version of each program track** — a program
-with parallel tracks (e.g. `AB EU` has both `18BE` and `18IR`) keeps the latest
-of each, shown in the picker as `2018 · BE`. Older version-years are skipped.
+The run takes about 2 minutes: 69 programs at 1.5 s apart, plus a progress line
+each. It imports the **newest version of each program track** — a program with
+parallel tracks (e.g. `AB EU` has both `18BE` and `18IR`) keeps the latest of
+each, shown in the picker as `2018 · BE`. Older version-years are skipped.
+
+**Undergraduate only.** The dropdown lists 233 programs; 164 of them are
+graduate or non-degree and have no year/term block structure, so they parse to
+zero blocks. They are skipped before any request is made, which removes ~4
+minutes and a wall of `no blocks parsed` warnings that would bury real ones.
+The filter reads the program *name* — `BACHELOR …` and the Filipino
+`BATSILYER …` — because `AB PanFil` is named "BATSILYER NG SINING SA PANITIKANG
+FILIPINO" and a code-prefix rule would drop it. Pass `--all` to include
+graduate programs anyway.
 
 The scraper refuses to write when a run looks broken — zero programs parsed, or
 fewer than 20% of those discovered. Use `--force` only after confirming the
