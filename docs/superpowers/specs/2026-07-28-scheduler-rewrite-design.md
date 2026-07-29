@@ -172,9 +172,17 @@ matches `PEPC 13.03`, `13.15`, and the rest of that family.
   "NS1A": ["BIO 10.01", "CHEM 10.01", "ENVI 10.01", "PHYS 10.01"],
   "NS1B": ["BIO 10.02", "CHEM 10.02", "ENVI 10.02", "PHYS 10.02"],
 
-  "FLC1": ["FRE 11", "GER 11", "ITA 11", "JPN 11", "KOR 11", "RUSS 11", "SPA 11"]
+  "FLC1": ["FRE 11", "GER 11", "ITA 11", "JPN 11", "KRN 11", "RUSS 11", "SPA 11"],
+  "FLC 12": ["FRE 12", "GER 12", "JPN 12", "KRN 12", "SPA 12"]
 }
 ```
+
+Note `KRN`, not `KOR`: `KRN 11`–`14` are the Korean *language* courses, while `KOR 113`/`115`
+are upper-level Korean studies. The narrow variant rule (§5) is what keeps `KOR 11` from
+quietly swallowing `KOR 113` — the remainder `3` starts with neither `.` nor `(`.
+
+`FLC 12` is keyed by **catNo, not category**: in the 6 programs that require it the category
+is `RM1`, which is program-local and therefore not a safe alias key (§5.1).
 
 Each family was derived from the 69-program zero-offering report (§5.3), not guessed:
 

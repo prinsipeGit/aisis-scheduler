@@ -1,6 +1,6 @@
 {
   "term": "2026-1",
-  "exportedAt": "2026-07-28T13:02:45.931Z",
+  "exportedAt": "2026-07-29T08:20:54.695Z",
   "sections": [
     {
       "courseCode": "BIO 10.01",
@@ -636,7 +636,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "SEC-A117",
-      "remarks": "",
+      "remarks": "1 SLOT(S) FOR CROSS REG-IXS MAJORS.",
       "raw": ""
     },
     {
@@ -1382,7 +1382,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "CTC 216",
-      "remarks": "",
+      "remarks": "1 SLOT(S) FOR CROSS REG-IXS MAJORS.",
       "raw": ""
     },
     {
@@ -1834,7 +1834,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "SEC-A116",
-      "remarks": "ALL SLOTS FOR BS LfSci MAJORS.",
+      "remarks": "ALL SLOTS FOR BS LfSci MAJORS. 1 SLOT(S) FOR CROSS REG-IXS MAJORS.",
       "raw": ""
     },
     {
@@ -1927,7 +1927,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "SEC-B216A",
-      "remarks": "ALL SLOTS FOR BS LfSci MAJORS.",
+      "remarks": "ALL SLOTS FOR BS LfSci MAJORS. 1 SLOT(S) FOR CROSS REG-IXS MAJORS.",
       "raw": ""
     },
     {
@@ -2281,7 +2281,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "SEC-A201A",
-      "remarks": "",
+      "remarks": "3 SLOT(S) FOR CROSS REG-IXS MAJORS.",
       "raw": ""
     },
     {
@@ -2331,7 +2331,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "SEC-A116",
-      "remarks": "",
+      "remarks": "1 SLOT(S) FOR CROSS REG-IXS MAJORS.",
       "raw": ""
     },
     {
@@ -2428,7 +2428,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "SEC-B107A",
-      "remarks": "",
+      "remarks": "1 SLOT(S) FOR CROSS REG-IXS MAJORS.",
       "raw": ""
     },
     {
@@ -2452,7 +2452,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "SEC-A116",
-      "remarks": "",
+      "remarks": "2 SLOT(S) FOR CROSS REG-IXS MAJORS.",
       "raw": ""
     },
     {
@@ -6921,7 +6921,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "CTC 204",
-      "remarks": "3 SLOT(S) FOR CROSS REG-IXS MAJORS.",
+      "remarks": "",
       "raw": ""
     },
     {
@@ -7185,7 +7185,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "CTC 204",
-      "remarks": "2 SLOT(S) FOR 3RD YEAR AB Dip IR MAJORS.",
+      "remarks": "1 SLOT(S) FOR 3RD YEAR AB Dip IR MAJORS.",
       "raw": ""
     },
     {
@@ -10083,6 +10083,21 @@
       "raw": ""
     },
     {
+      "courseCode": "CPA 298.3",
+      "sectionCode": "CAPS1",
+      "title": "PROJECT DEVELOPMENT AND PRESENTATION",
+      "units": 6,
+      "instructors": [
+        "DE LEON, MARLENE M."
+      ],
+      "modality": "~",
+      "meetings": [],
+      "timeStatus": "tba",
+      "room": "TBA",
+      "remarks": "",
+      "raw": ""
+    },
+    {
       "courseCode": "CPA 298.44",
       "sectionCode": "CAPOD",
       "title": "CAPSTONE PROJECT FINAL ORAL DEFENSE",
@@ -10151,6 +10166,21 @@
       "units": 6,
       "instructors": [
         "NGO, GALVIN RADLEY L."
+      ],
+      "modality": "~",
+      "meetings": [],
+      "timeStatus": "tba",
+      "room": "TBA",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "CPA 298",
+      "sectionCode": "CAPS13",
+      "title": "INTEGRATING PAPER",
+      "units": 6,
+      "instructors": [
+        "SUAREZ, CECILIA A."
       ],
       "modality": "~",
       "meetings": [],
@@ -10319,21 +10349,6 @@
         "MARTIN, MARIA ISABEL P."
       ],
       "modality": "FULLY ONSITE",
-      "meetings": [],
-      "timeStatus": "tba",
-      "room": "TBA",
-      "remarks": "",
-      "raw": ""
-    },
-    {
-      "courseCode": "CPA 299.1",
-      "sectionCode": "THES/DISS5",
-      "title": "THESIS I",
-      "units": 0,
-      "instructors": [
-        "MORENO, MA MONICA L."
-      ],
-      "modality": "FULLY ONLINE",
       "meetings": [],
       "timeStatus": "tba",
       "room": "TBA",
@@ -10827,6 +10842,36 @@
       "units": 0,
       "instructors": [
         "DE LEON, MARLENE M."
+      ],
+      "modality": "~",
+      "meetings": [],
+      "timeStatus": "tba",
+      "room": "TBA",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "CPA 399.1",
+      "sectionCode": "THES/DISS7",
+      "title": "DISSERTATION 1",
+      "units": 0,
+      "instructors": [
+        "ORACION, CARMELA C."
+      ],
+      "modality": "~",
+      "meetings": [],
+      "timeStatus": "tba",
+      "room": "TBA",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "CPA 399.1",
+      "sectionCode": "THES/DISS8",
+      "title": "DISSERTATION 1",
+      "units": 0,
+      "instructors": [
+        "DELA PAZ, ERWINE S."
       ],
       "modality": "~",
       "meetings": [],
@@ -12362,7 +12407,7 @@
       "meetings": [],
       "timeStatus": "tba",
       "room": "DS DEPT",
-      "remarks": "",
+      "remarks": "ALL SLOTS FOR AB DS MAJORS.",
       "raw": ""
     },
     {
@@ -12893,7 +12938,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "CTC 206",
-      "remarks": "ALL SLOTS FOR 3RD YEAR AB EC MAJORS. ALL SLOTS FOR 3RD YEAR AB MEC MAJORS. ALL SLOTS FOR 3RD YEAR AB EC-H MAJORS. ALL SLOTS FOR 4TH YEAR AB EC MAJORS. ALL SLOTS FOR 4TH YEAR AB MEC MAJORS. 1 SLOT(S) FOR 4TH YEAR BS MA MAJORS.",
+      "remarks": "ALL SLOTS FOR 3RD YEAR AB EC MAJORS. ALL SLOTS FOR 3RD YEAR AB MEC MAJORS. ALL SLOTS FOR 3RD YEAR AB EC-H MAJORS. ALL SLOTS FOR 4TH YEAR AB EC MAJORS. ALL SLOTS FOR 4TH YEAR AB MEC MAJORS.",
       "raw": ""
     },
     {
@@ -14065,6 +14110,21 @@
       "raw": ""
     },
     {
+      "courseCode": "ECON 399.1",
+      "sectionCode": "THES/DISS4",
+      "title": "DISSERTATION I",
+      "units": 0,
+      "instructors": [
+        "TAN, ROSALINA P."
+      ],
+      "modality": "FULLY ONLINE",
+      "meetings": [],
+      "timeStatus": "tba",
+      "room": "TBA",
+      "remarks": "",
+      "raw": ""
+    },
+    {
       "courseCode": "ECON 399.19",
       "sectionCode": "TWPD",
       "title": "DISSERTATION PROPOSAL DEFENSE",
@@ -14103,6 +14163,21 @@
         "MAGANTE, Maire Carroline"
       ],
       "modality": "FULLY ONLINE",
+      "meetings": [],
+      "timeStatus": "tba",
+      "room": "TBA",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "ECON 399.6",
+      "sectionCode": "SUB-A",
+      "title": "FINAL PAPER SUBMISSION",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "~",
       "meetings": [],
       "timeStatus": "tba",
       "room": "TBA",
@@ -20210,7 +20285,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "SEC-A205",
-      "remarks": "",
+      "remarks": "2 SLOT(S) FOR PHD STUDENTS.",
       "raw": ""
     },
     {
@@ -20359,7 +20434,30 @@
     },
     {
       "courseCode": "ENVI 10.02",
-      "sectionCode": "LAB1-AB",
+      "sectionCode": "LAB1-DE",
+      "title": "INTRODUCTION TO ENVIRONMENTAL SCIENCE, LABORATORY",
+      "units": 1,
+      "instructors": [
+        "LAGATA, Cleodette"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "M"
+          ],
+          "start": 780,
+          "end": 900
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "SEC-C307A",
+      "remarks": "*Students enrolled in this class should be enrolled in ENVI 10.01 Section D",
+      "raw": ""
+    },
+    {
+      "courseCode": "ENVI 10.02",
+      "sectionCode": "LAB1-EF",
       "title": "INTRODUCTION TO ENVIRONMENTAL SCIENCE, LABORATORY",
       "units": 1,
       "instructors": [
@@ -20371,36 +20469,13 @@
           "days": [
             "M"
           ],
-          "start": 480,
-          "end": 600
+          "start": 900,
+          "end": 1020
         }
       ],
       "timeStatus": "scheduled",
       "room": "SEC-C306A",
       "remarks": "*Students enrolled in this class should be enrolled in ENVI 10.01 Section C",
-      "raw": ""
-    },
-    {
-      "courseCode": "ENVI 10.02",
-      "sectionCode": "LAB1-KL",
-      "title": "INTRODUCTION TO ENVIRONMENTAL SCIENCE, LABORATORY",
-      "units": 1,
-      "instructors": [
-        "LAGATA, Cleodette"
-      ],
-      "modality": "FULLY ONSITE",
-      "meetings": [
-        {
-          "days": [
-            "T"
-          ],
-          "start": 600,
-          "end": 720
-        }
-      ],
-      "timeStatus": "scheduled",
-      "room": "SEC-C306A",
-      "remarks": "*Students enrolled in this class should be enrolled in ENVI 10.01 Section D",
       "raw": ""
     },
     {
@@ -20771,7 +20846,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "CTC 106",
-      "remarks": "",
+      "remarks": "2 SLOT(S) FOR PHD STUDENTS.",
       "raw": ""
     },
     {
@@ -20819,7 +20894,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "SEC-C307A",
-      "remarks": "",
+      "remarks": "2 SLOT(S) FOR PHD STUDENTS.",
       "raw": ""
     },
     {
@@ -31390,29 +31465,6 @@
     },
     {
       "courseCode": "ArtAp 10",
-      "sectionCode": "ST1A",
-      "title": "ART APPRECIATION",
-      "units": 3,
-      "instructors": [
-        "TBA, -"
-      ],
-      "modality": "FULLY ONSITE",
-      "meetings": [
-        {
-          "days": [
-            "W"
-          ],
-          "start": 480,
-          "end": 660
-        }
-      ],
-      "timeStatus": "scheduled",
-      "room": "INNOVATION 202",
-      "remarks": "",
-      "raw": ""
-    },
-    {
-      "courseCode": "ArtAp 10",
       "sectionCode": "UV1",
       "title": "ART APPRECIATION",
       "units": 3,
@@ -31436,6 +31488,29 @@
     },
     {
       "courseCode": "ArtAp 10",
+      "sectionCode": "UV1A",
+      "title": "ART APPRECIATION",
+      "units": 3,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 660,
+          "end": 840
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "SOM 304",
+      "remarks": "*FOR BFA CW",
+      "raw": ""
+    },
+    {
+      "courseCode": "ArtAp 10",
       "sectionCode": "WX1",
       "title": "ART APPRECIATION",
       "units": 3,
@@ -31453,7 +31528,7 @@
         }
       ],
       "timeStatus": "scheduled",
-      "room": "BEL-102",
+      "room": "SOM 210",
       "remarks": "",
       "raw": ""
     },
@@ -31934,7 +32009,7 @@
         }
       ],
       "timeStatus": "scheduled",
-      "room": "CTC 303",
+      "room": "K-203",
       "remarks": "",
       "raw": ""
     },
@@ -32183,7 +32258,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "CTC 215",
-      "remarks": "ALL SLOTS FOR 1ST YEAR BS CS MAJORS.",
+      "remarks": "ALL SLOTS FOR 1ST YEAR BS CS MAJORS. 1 SLOT(S) FOR 3RD YEAR BS CS-DGDD MAJORS.",
       "raw": ""
     },
     {
@@ -33375,7 +33450,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "CTC 215",
-      "remarks": "3 SLOT(S) FOR AB IS MAJORS. 2 SLOT(S) FOR CROSS REG-IXS MAJORS. *For non-DISCS IE takers only. DISCS majors and minors should NOT enlist in this section.",
+      "remarks": "3 SLOT(S) FOR AB IS MAJORS. *For non-DISCS IE takers only. DISCS majors and minors should NOT enlist in this section.",
       "raw": ""
     },
     {
@@ -33507,7 +33582,7 @@
       "meetings": [],
       "timeStatus": "tba",
       "room": "TBA",
-      "remarks": "ALL SLOTS FOR AB IS MAJORS.",
+      "remarks": "1 SLOT(S) FOR 4TH YEAR BS CpE MAJORS. ALL SLOTS FOR AB IS MAJORS.",
       "raw": ""
     },
     {
@@ -34028,6 +34103,21 @@
       "raw": ""
     },
     {
+      "courseCode": "CSCI 205",
+      "sectionCode": "YYY1",
+      "title": "PROGRAMMING WITH DATABASES",
+      "units": 3,
+      "instructors": [
+        "NAVARRO, ANDREI M."
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [],
+      "timeStatus": "tba",
+      "room": "CS DEPT",
+      "remarks": "*ALL SLOTS FOR MS DS MAJORS",
+      "raw": ""
+    },
+    {
       "courseCode": "CSCI 211",
       "sectionCode": "RT-GRAD",
       "title": "INTRODUCTION TO ARTIFICIAL INTELLIGENCE",
@@ -34047,7 +34137,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "F-227",
-      "remarks": "ALL SLOTS FOR GRAD SCHOOL DISCS STUDENTS.",
+      "remarks": "ALL SLOTS FOR GRAD SCHOOL DISCS STUDENTS. 1 SLOT(S) FOR GRAD SCHOOL TMP STUDENTS.",
       "raw": ""
     },
     {
@@ -34070,7 +34160,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "CTC 214",
-      "remarks": "ALL SLOTS FOR GRAD SCHOOL DISCS STUDENTS.",
+      "remarks": "ALL SLOTS FOR M DSc MAJORS.",
       "raw": ""
     },
     {
@@ -34093,7 +34183,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "CTC 214",
-      "remarks": "ALL SLOTS FOR GRAD SCHOOL DISCS STUDENTS.",
+      "remarks": "ALL SLOTS FOR MS DS MAJORS. ALL SLOTS FOR MS CS MAJORS. ALL SLOTS FOR MS CS-STRAIGHT MAJORS. 1 SLOT(S) FOR GRAD SCHOOL TMP STUDENTS.",
       "raw": ""
     },
     {
@@ -34186,7 +34276,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "F-227",
-      "remarks": "ALL SLOTS FOR GRAD SCHOOL DISCS STUDENTS.",
+      "remarks": "ALL SLOTS FOR GRAD SCHOOL DISCS STUDENTS. 1 SLOT(S) FOR GRAD SCHOOL TMP STUDENTS.",
       "raw": ""
     },
     {
@@ -34209,7 +34299,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "F-227",
-      "remarks": "ALL SLOTS FOR GRAD SCHOOL DISCS STUDENTS.",
+      "remarks": "ALL SLOTS FOR GRAD SCHOOL DISCS STUDENTS. 1 SLOT(S) FOR GRAD SCHOOL TMP STUDENTS.",
       "raw": ""
     },
     {
@@ -36691,7 +36781,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "F-228",
-      "remarks": "ALL SLOTS FOR DATA SCIENCE AND ANALYTICS SPECIALIZATION. ALL SLOTS FOR ENTERPRISE SYSTEMS SPECIALIZATION.",
+      "remarks": "ALL SLOTS FOR DATA SCIENCE AND ANALYTICS SPECIALIZATION. ALL SLOTS FOR ENTERPRISE SYSTEMS SPECIALIZATION. 2 SLOT(S) FOR CROSS REG-IXS MAJORS.",
       "raw": ""
     },
     {
@@ -37174,6 +37264,2375 @@
       "raw": ""
     },
     {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-FJ",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "F"
+          ],
+          "start": 480,
+          "end": 540
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-FJ1",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "F"
+          ],
+          "start": 480,
+          "end": 540
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-FK1",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "F"
+          ],
+          "start": 540,
+          "end": 600
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-FL",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "F"
+          ],
+          "start": 600,
+          "end": 660
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-FL1",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "F"
+          ],
+          "start": 600,
+          "end": 660
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-FM",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "F"
+          ],
+          "start": 660,
+          "end": 720
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-FM1",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "F"
+          ],
+          "start": 660,
+          "end": 720
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-FM3",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "F"
+          ],
+          "start": 660,
+          "end": 720
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "F-AVR",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-FN1",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "F"
+          ],
+          "start": 780,
+          "end": 840
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-FN2",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "F"
+          ],
+          "start": 780,
+          "end": 840
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-FO",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "F"
+          ],
+          "start": 840,
+          "end": 900
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-FO1",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "F"
+          ],
+          "start": 840,
+          "end": 900
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-FP",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "F"
+          ],
+          "start": 900,
+          "end": 960
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-FP1",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "F"
+          ],
+          "start": 900,
+          "end": 960
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-FQ",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "F"
+          ],
+          "start": 960,
+          "end": 1020
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-FQ2",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "F"
+          ],
+          "start": 960,
+          "end": 1020
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-MA",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "M"
+          ],
+          "start": 480,
+          "end": 540
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-MA1",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "M"
+          ],
+          "start": 480,
+          "end": 540
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-MA2",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "M"
+          ],
+          "start": 480,
+          "end": 540
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "SOM 303",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-MA3",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "M"
+          ],
+          "start": 480,
+          "end": 540
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "F-114",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-MA4",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "M"
+          ],
+          "start": 480,
+          "end": 540
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "FA ANNEX 104",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-MB",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "M"
+          ],
+          "start": 540,
+          "end": 600
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-MB1",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "M"
+          ],
+          "start": 540,
+          "end": 600
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-MC",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "M"
+          ],
+          "start": 600,
+          "end": 660
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-MC2",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "M"
+          ],
+          "start": 600,
+          "end": 660
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-MD1",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "M"
+          ],
+          "start": 660,
+          "end": 720
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-MD2",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "M"
+          ],
+          "start": 660,
+          "end": 720
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "SS-284",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-ME",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "M"
+          ],
+          "start": 780,
+          "end": 840
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-ME1",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "M"
+          ],
+          "start": 780,
+          "end": 840
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-ME2",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "M"
+          ],
+          "start": 780,
+          "end": 840
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "SOM 305",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-MF",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "M"
+          ],
+          "start": 840,
+          "end": 900
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-MF1",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "M"
+          ],
+          "start": 840,
+          "end": 900
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-MG1",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "M"
+          ],
+          "start": 900,
+          "end": 960
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-MG2",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "M"
+          ],
+          "start": 900,
+          "end": 960
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-MH",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "M"
+          ],
+          "start": 960,
+          "end": 1020
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-MH1",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "M"
+          ],
+          "start": 960,
+          "end": 1020
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-THA",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "TH"
+          ],
+          "start": 480,
+          "end": 540
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-THA2",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "TH"
+          ],
+          "start": 480,
+          "end": 540
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-THA3",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "TH"
+          ],
+          "start": 480,
+          "end": 540
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "CTC 118",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-THB",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "TH"
+          ],
+          "start": 540,
+          "end": 600
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-THB1",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "TH"
+          ],
+          "start": 540,
+          "end": 600
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-THC",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "TH"
+          ],
+          "start": 600,
+          "end": 660
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-THC1",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "TH"
+          ],
+          "start": 600,
+          "end": 660
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-THC2",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "TH"
+          ],
+          "start": 600,
+          "end": 660
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "G-312A",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-THD2",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "TH"
+          ],
+          "start": 660,
+          "end": 720
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-THD3",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "TH"
+          ],
+          "start": 660,
+          "end": 720
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-THE",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "TH"
+          ],
+          "start": 780,
+          "end": 840
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-THE1",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "TH"
+          ],
+          "start": 780,
+          "end": 840
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-THF",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "TH"
+          ],
+          "start": 840,
+          "end": 900
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-THF1",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "TH"
+          ],
+          "start": 840,
+          "end": 900
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-THG",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "TH"
+          ],
+          "start": 900,
+          "end": 960
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-THG1",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "TH"
+          ],
+          "start": 900,
+          "end": 960
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-THG2",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "TH"
+          ],
+          "start": 900,
+          "end": 960
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "SS-284",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-THH1",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "TH"
+          ],
+          "start": 960,
+          "end": 1020
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-TJ",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "T"
+          ],
+          "start": 480,
+          "end": 540
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-TJ1",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "T"
+          ],
+          "start": 480,
+          "end": 540
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-TK",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "T"
+          ],
+          "start": 540,
+          "end": 600
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-TL",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "T"
+          ],
+          "start": 600,
+          "end": 660
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-TL1",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "T"
+          ],
+          "start": 600,
+          "end": 660
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-TM",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "T"
+          ],
+          "start": 660,
+          "end": 720
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-TN",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "T"
+          ],
+          "start": 780,
+          "end": 840
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-TN1",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "T"
+          ],
+          "start": 780,
+          "end": 840
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "CTC 404",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-TN2",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "T"
+          ],
+          "start": 780,
+          "end": 840
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-TN3",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "T"
+          ],
+          "start": 780,
+          "end": 840
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-309",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-TO",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "T"
+          ],
+          "start": 840,
+          "end": 900
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-TO1",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "T"
+          ],
+          "start": 840,
+          "end": 900
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-TO2",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "T"
+          ],
+          "start": 840,
+          "end": 900
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "TBA",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-TP",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "T"
+          ],
+          "start": 900,
+          "end": 960
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-TP1",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "T"
+          ],
+          "start": 900,
+          "end": 960
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-TQ",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "T"
+          ],
+          "start": 960,
+          "end": 1020
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-TQ2",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "T"
+          ],
+          "start": 960,
+          "end": 1020
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-TQ3",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "T"
+          ],
+          "start": 960,
+          "end": 1020
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "CTC 105",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-W",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 720,
+          "end": 780
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "CTC 101",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WT",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 540,
+          "end": 600
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WT1",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 540,
+          "end": 600
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WT2",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 540,
+          "end": 600
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "CTC 305",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WT3",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 540,
+          "end": 600
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "B-102",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WU",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 600,
+          "end": 660
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WU1",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 600,
+          "end": 660
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-313",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WU2",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 600,
+          "end": 660
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WU3",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "SUGAY, JESSICA O."
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 600,
+          "end": 660
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "CTC 215",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WU4",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "PURISIMA, Rachel Angelique"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 600,
+          "end": 660
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "F-204",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WU5",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 600,
+          "end": 660
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "B-104",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WU6",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "SANTOS, JOHN MICHAEL B."
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 600,
+          "end": 660
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "CTC 214",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WU7",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 600,
+          "end": 660
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "B-106",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WV",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 660,
+          "end": 720
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WV1",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 660,
+          "end": 720
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "B-102",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WV2",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 660,
+          "end": 720
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WV3",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 660,
+          "end": 720
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "SEC-B201A",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WV4",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "SUGAY, JESSICA O."
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 660,
+          "end": 720
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "CTC 215",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WV5",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "BAROT, ANTONN BENJAMIN D."
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 660,
+          "end": 720
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "F-204",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WV6",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 660,
+          "end": 720
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "B-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WV7",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 660,
+          "end": 720
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "B-308",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WW",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 780,
+          "end": 840
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WW2",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "SUGAY, JESSICA O."
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 780,
+          "end": 840
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "F-204",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WW3",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "MEJILLA, Mar Joseph Aureos"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 780,
+          "end": 840
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "CTC 215",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WW4",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 780,
+          "end": 840
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-307",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WW5",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 780,
+          "end": 840
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "B-103",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WX",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 840,
+          "end": 900
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WX1",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "SUGAY, JESSICA O."
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 840,
+          "end": 900
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "F-204",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WX10",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "CLAUDIO, JESSICA SANDRA R."
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 840,
+          "end": 900
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "SEC-B201A",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WX2",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 840,
+          "end": 900
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "B-102",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "INTACT 11",
+      "sectionCode": "INT-WZ",
+      "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+      "units": 0,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 960,
+          "end": 1020
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-306",
+      "remarks": "",
+      "raw": ""
+    },
+    {
       "courseCode": "HUMAN 141",
       "sectionCode": "F",
       "title": "INTRODUCTION TO AESTHETICS",
@@ -37242,7 +39701,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "CTC 205",
-      "remarks": "*Class is limited to 12 students only, and no extra slots will be added during regular registration or through LoadRev.",
+      "remarks": "*Class is limited to 13 students only, and no extra slots will be added during regular registration or through LoadRev.",
       "raw": ""
     },
     {
@@ -37424,7 +39883,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "G-312A",
-      "remarks": "6 SLOT(S) FOR CROSS REG-IXS MAJORS. *Class is limited to 27 students only, and no extra slots will be added during regular registration or through LoadRev.",
+      "remarks": "6 SLOT(S) FOR CROSS REG-IXS MAJORS. 1 SLOT(S) FOR BS PSY MAJORS. *Class is limited to 27 students only, and no extra slots will be added during regular registration or through LoadRev.",
       "raw": ""
     },
     {
@@ -38996,7 +41455,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "CTC 203",
-      "remarks": "2 SLOT(S) FOR CROSS REG-IXS MAJORS. 1 SLOT(S) FOR 4TH YEAR AB Dip IR MAJORS. 1 SLOT(S) FOR 4TH YEAR BS PSY MAJORS.",
+      "remarks": "2 SLOT(S) FOR CROSS REG-IXS MAJORS. 1 SLOT(S) FOR 4TH YEAR AB Dip IR MAJORS.",
       "raw": ""
     },
     {
@@ -39988,7 +42447,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "SOM 103",
-      "remarks": "ALL SLOTS FOR BS MGT MAJORS. 2 SLOT(S) FOR CROSS REG-IXS MAJORS.",
+      "remarks": "ALL SLOTS FOR BS MGT MAJORS. 2 SLOT(S) FOR CROSS REG-IXS MAJORS. 1 SLOT(S) FOR 2ND YEAR BS MGT-H MAJORS.",
       "raw": ""
     },
     {
@@ -40489,7 +42948,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "SOM 103",
-      "remarks": "25 SLOT(S) FOR 2ND YEAR BS MGT MAJORS.",
+      "remarks": "25 SLOT(S) FOR 2ND YEAR BS MGT MAJORS. 1 SLOT(S) FOR 3RD YEAR BSM AMF MAJORS.",
       "raw": ""
     },
     {
@@ -43382,7 +45841,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "CTC 304",
-      "remarks": "28 SLOT(S) FOR 2ND YEAR BS MGT MAJORS. 4 SLOT(S) FOR 2ND YEAR BS ITE MAJORS. 3 SLOT(S) FOR 3RD YEAR BS MGT MAJORS.",
+      "remarks": "28 SLOT(S) FOR 2ND YEAR BS MGT MAJORS. 4 SLOT(S) FOR 2ND YEAR BS ITE MAJORS. 3 SLOT(S) FOR 3RD YEAR BS MGT MAJORS. 1 SLOT(S) FOR 4TH YEAR BS ITE MAJORS.",
       "raw": ""
     },
     {
@@ -45696,7 +48155,7 @@
       "title": "MATHEMATICS IN THE MODERN WORLD",
       "units": 3,
       "instructors": [
-        "TOMENES, Mark"
+        "TABARES, WINFER C."
       ],
       "modality": "FULLY ONSITE",
       "meetings": [
@@ -45768,7 +48227,7 @@
       "title": "MATHEMATICS IN THE MODERN WORLD",
       "units": 3,
       "instructors": [
-        "FERNANDEZ, Patrick John"
+        "TABARES, WINFER C."
       ],
       "modality": "FULLY ONSITE",
       "meetings": [
@@ -45792,8 +48251,7 @@
       "title": "MATHEMATICS IN THE MODERN WORLD",
       "units": 3,
       "instructors": [
-        "DE LOS SANTOS, Kurt Anthony",
-        "MIJARES, Jim Ralphealo"
+        "FERNANDEZ, Patrick John"
       ],
       "modality": "FULLY ONSITE",
       "meetings": [
@@ -45976,7 +48434,7 @@
       "title": "MATHEMATICS IN THE MODERN WORLD",
       "units": 3,
       "instructors": [
-        "SANTOS, DURWIN C."
+        "MALLARI, JUAN CARLO F."
       ],
       "modality": "FULLY ONSITE",
       "meetings": [
@@ -45991,30 +48449,6 @@
       ],
       "timeStatus": "scheduled",
       "room": "SEC-A215",
-      "remarks": "",
-      "raw": ""
-    },
-    {
-      "courseCode": "MATH 10",
-      "sectionCode": "J2",
-      "title": "MATHEMATICS IN THE MODERN WORLD",
-      "units": 3,
-      "instructors": [
-        "IYULORES, Paolo Manuel"
-      ],
-      "modality": "FULLY ONSITE",
-      "meetings": [
-        {
-          "days": [
-            "T",
-            "F"
-          ],
-          "start": 480,
-          "end": 570
-        }
-      ],
-      "timeStatus": "scheduled",
-      "room": "SEC-A214",
       "remarks": "",
       "raw": ""
     },
@@ -46048,7 +48482,8 @@
       "title": "MATHEMATICS IN THE MODERN WORLD",
       "units": 3,
       "instructors": [
-        "GATPATAN, JANREE RUARK C."
+        "DE LOS SANTOS, Kurt Anthony",
+        "MIJARES, Jim Ralphealo"
       ],
       "modality": "FULLY ONSITE",
       "meetings": [
@@ -46096,7 +48531,7 @@
       "title": "MATHEMATICS IN THE MODERN WORLD",
       "units": 3,
       "instructors": [
-        "MALLARI, JUAN CARLO F."
+        "SANTOS, DURWIN C."
       ],
       "modality": "FULLY ONSITE",
       "meetings": [
@@ -46384,7 +48819,7 @@
       "title": "MATHEMATICS IN THE MODERN WORLD",
       "units": 3,
       "instructors": [
-        "TABARES, WINFER C."
+        "GATPATAN, JANREE RUARK C."
       ],
       "modality": "FULLY ONSITE",
       "meetings": [
@@ -46600,7 +49035,7 @@
       "title": "MATHEMATICS IN THE MODERN WORLD",
       "units": 3,
       "instructors": [
-        "TABARES, WINFER C."
+        "TOMENES, Mark"
       ],
       "modality": "FULLY ONSITE",
       "meetings": [
@@ -47043,6 +49478,30 @@
     },
     {
       "courseCode": "MATH 21",
+      "sectionCode": "J4",
+      "title": "UNIVERSITY PRECALCULUS",
+      "units": 3,
+      "instructors": [
+        "GATPATAN, JANREE RUARK C."
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "T",
+            "F"
+          ],
+          "start": 480,
+          "end": 570
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "BEL-310",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "MATH 21",
       "sectionCode": "K2",
       "title": "UNIVERSITY PRECALCULUS",
       "units": 3,
@@ -47215,7 +49674,7 @@
       "title": "UNIVERSITY PRECALCULUS",
       "units": 3,
       "instructors": [
-        "GATPATAN, JANREE RUARK C."
+        "TBA, -"
       ],
       "modality": "FULLY ONSITE",
       "meetings": [
@@ -47230,7 +49689,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "",
+      "remarks": "*To be dissolved.",
       "raw": ""
     },
     {
@@ -47350,6 +49809,30 @@
       ],
       "timeStatus": "scheduled",
       "room": "K-301",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "MATH 30.03",
+      "sectionCode": "J1",
+      "title": "APPLIED CALCULUS AND FINITE MATHEMATICS FOR THE MANAGERIAL SCIENCES",
+      "units": 3,
+      "instructors": [
+        "IYULORES, Paolo Manuel"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "T",
+            "F"
+          ],
+          "start": 480,
+          "end": 570
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "SEC-A214",
       "remarks": "",
       "raw": ""
     },
@@ -49489,6 +51972,21 @@
       "raw": ""
     },
     {
+      "courseCode": "MATH 298",
+      "sectionCode": "CAPS",
+      "title": "CAPSTONE PROJECT",
+      "units": 3,
+      "instructors": [
+        "GUZON, ANGELA FATIMA H."
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [],
+      "timeStatus": "tba",
+      "room": "MATH DEPT",
+      "remarks": "",
+      "raw": ""
+    },
+    {
       "courseCode": "MATH 299.1",
       "sectionCode": "THES/DISS",
       "title": "THESIS I",
@@ -49849,10 +52347,10 @@
       "raw": ""
     },
     {
-      "courseCode": "MTHED 298.1",
-      "sectionCode": "YYY",
-      "title": "PRACTICUM I",
-      "units": 3,
+      "courseCode": "MTHED 298",
+      "sectionCode": "CAPS",
+      "title": "CAPSTONE PROJECT",
+      "units": 0,
       "instructors": [
         "GUZON, ANGELA FATIMA H."
       ],
@@ -50697,8 +53195,32 @@
         }
       ],
       "timeStatus": "scheduled",
-      "room": "SOM 203",
+      "room": "TBA",
       "remarks": "*This section will be dissolved/deleted. Kindly enlist to section E, MTH 2:00-3:30 PM",
+      "raw": ""
+    },
+    {
+      "courseCode": "GER 14",
+      "sectionCode": "E",
+      "title": "INTERMEDIATE GERMAN 2",
+      "units": 3,
+      "instructors": [
+        "JOSE, JACKIE LOU L."
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "M",
+            "TH"
+          ],
+          "start": 840,
+          "end": 930
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "MOD LANG DEPT",
+      "remarks": "",
       "raw": ""
     },
     {
@@ -51179,7 +53701,7 @@
         }
       ],
       "timeStatus": "scheduled",
-      "room": "MOD LANG DEPT",
+      "room": "SOM 203",
       "remarks": "ALL SLOTS FOR AB HI MAJORS.",
       "raw": ""
     },
@@ -51249,7 +53771,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 C (BERNARDO) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 C (BERNARDO) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -51273,7 +53795,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 M (COMILING) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 M (COMILING) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -51297,7 +53819,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 Q (MENESES) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 Q (MENESES) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -51320,7 +53842,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 N2 (REYES) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 N2 (REYES) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -51343,7 +53865,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 N1 (RACAZA) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 N1 (RACAZA) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -51366,7 +53888,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 L4 (MENESES) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 L4 (MENESES) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -51389,7 +53911,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 J2 (DELA CRUZ) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 J2 (DELA CRUZ) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -51412,7 +53934,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 K4 (REYES) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 K4 (REYES) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -51481,7 +54003,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 J4 (SANCHEZ) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 J4 (SANCHEZ) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -51505,7 +54027,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 E (BOLANO) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 E (BOLANO) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -51552,7 +54074,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 M1 (GEMENTIZA) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 M1 (GEMENTIZA) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -51575,7 +54097,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 E1 (IBERA) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 E1 (IBERA) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -51598,7 +54120,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 K (AGTARAP) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 K (AGTARAP) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -51621,7 +54143,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 F (IBERA) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 F (IBERA) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -51644,7 +54166,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 J (BOLANO) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 J (BOLANO) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -51667,7 +54189,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 D (BERNARDO) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 D (BERNARDO) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -51713,7 +54235,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 O1 (RACAZA) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 O1 (RACAZA) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -51736,7 +54258,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 M2 (MENESES) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 M2 (MENESES) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -51759,7 +54281,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 O (MENESES) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 O (MENESES) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -51782,7 +54304,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 K2 (DELA CRUZ) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 K2 (DELA CRUZ) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -51805,7 +54327,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 F1 (LANOT) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 F1 (LANOT) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -51851,7 +54373,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 B (RACAZA) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 B (RACAZA) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -51875,7 +54397,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 K3 (GARCIA) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 K3 (GARCIA) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -51921,7 +54443,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 L (AGTARAP) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 L (AGTARAP) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -51968,7 +54490,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 J3 (REYES) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 J3 (REYES) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -52014,7 +54536,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 D1 (BOLANO) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 D1 (BOLANO) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -52037,7 +54559,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 D1 (BOLANO) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 C1 (RACAZA) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -52060,7 +54582,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 L3 (GEMENTIZA) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 L3 (GEMENTIZA) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -52084,7 +54606,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 WX1 (MENESES) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 WX1 (MENESES) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -52107,7 +54629,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 M3 (REYES) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 M3 (REYES) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -52131,7 +54653,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 L2 (GARCIA) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 L2 (GARCIA) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -52154,7 +54676,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 ST1 (AGTARAP) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 ST1 (AGTARAP) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -52200,7 +54722,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 ST1A (DELA CRUZ) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 ST1A (DELA CRUZ) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -52223,7 +54745,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "TBA",
-      "remarks": "*This section is strictly paired with THEO12 E2 (LANOT) *4-hour class with possible extension. Details to be announced in class.",
+      "remarks": "**This section is strictly paired with THEO12 E2 (LANOT) *4-hour class with possible extension. Details to be announced in class.",
       "raw": ""
     },
     {
@@ -54339,7 +56861,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "BEL-103B",
-      "remarks": "3 SLOT(S) FOR BS LEARN MAJORS.",
+      "remarks": "CLASS IS RESTRICTED.",
       "raw": ""
     },
     {
@@ -66069,7 +68591,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "BEL-207",
-      "remarks": "10 SLOT(S) FOR EU STUDENTS. 5 SLOT(S) FOR CROSS REG-IXS MAJORS. 7 SLOT(S) FOR POS STUDENTS. *for POS JTA students only",
+      "remarks": "10 SLOT(S) FOR EU STUDENTS. 5 SLOT(S) FOR CROSS REG-IXS MAJORS. 7 SLOT(S) FOR POS STUDENTS. 1 SLOT(S) FOR AB Dip IR MAJORS. *for POS JTA students only",
       "raw": ""
     },
     {
@@ -66115,7 +68637,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "CTC 103",
-      "remarks": "ALL SLOTS FOR AB Dip IR MAJORS.",
+      "remarks": "",
       "raw": ""
     },
     {
@@ -66138,7 +68660,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "CTC 103",
-      "remarks": "ALL SLOTS FOR AB Dip IR MAJORS.",
+      "remarks": "",
       "raw": ""
     },
     {
@@ -66161,7 +68683,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "SOM 202",
-      "remarks": "ALL SLOTS FOR AB Dip IR MAJORS.",
+      "remarks": "",
       "raw": ""
     },
     {
@@ -67206,7 +69728,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "K-202",
-      "remarks": "1 SLOT(S) FOR GRAD SCHOOL PSY STUDENTS. 2 SLOT(S) FOR AB IS MAJORS. ALL SLOTS FOR AB PSY MAJORS.",
+      "remarks": "2 SLOT(S) FOR GRAD SCHOOL PSY STUDENTS. 2 SLOT(S) FOR AB IS MAJORS. ALL SLOTS FOR AB PSY MAJORS.",
       "raw": ""
     },
     {
@@ -67422,7 +69944,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "G-206",
-      "remarks": "ALL SLOTS FOR AB PSY MAJORS. 3 SLOT(S) FOR AB IS MAJORS.",
+      "remarks": "ALL SLOTS FOR AB PSY MAJORS. 3 SLOT(S) FOR AB IS MAJORS. 1 SLOT(S) FOR GRAD SCHOOL PSY STUDENTS.",
       "raw": ""
     },
     {
@@ -67470,7 +69992,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "K-203",
-      "remarks": "22 SLOT(S) FOR 2ND YEAR AB PSY MAJORS. 1 SLOT(S) FOR GRAD SCHOOL PSY STUDENTS. 2 SLOT(S) FOR AB IS MAJORS. 1 SLOT(S) FOR 4TH YEAR AB PSY MAJORS.",
+      "remarks": "22 SLOT(S) FOR 2ND YEAR AB PSY MAJORS. 2 SLOT(S) FOR AB IS MAJORS. 3 SLOT(S) FOR GRAD SCHOOL PSY STUDENTS. 1 SLOT(S) FOR 4TH YEAR AB PSY MAJORS.",
       "raw": ""
     },
     {
@@ -69086,7 +71608,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "K-202",
-      "remarks": "ALL SLOTS FOR AB PSY MAJORS.",
+      "remarks": "",
       "raw": ""
     },
     {
@@ -69795,6 +72317,21 @@
       "raw": ""
     },
     {
+      "courseCode": "PSYC 299.2",
+      "sectionCode": "THES/DISS4",
+      "title": "THESIS II",
+      "units": 0,
+      "instructors": [
+        "CANOY, NICO A."
+      ],
+      "modality": "~",
+      "meetings": [],
+      "timeStatus": "tba",
+      "room": "TBA",
+      "remarks": "",
+      "raw": ""
+    },
+    {
       "courseCode": "PSYC 299.5",
       "sectionCode": "RESID",
       "title": "RESIDENCY",
@@ -69994,6 +72531,21 @@
     },
     {
       "courseCode": "PSYC 399.1",
+      "sectionCode": "THES/DISS1",
+      "title": "DISSERTATION I",
+      "units": 0,
+      "instructors": [
+        "FERNANDEZ, KARINA THERESE G."
+      ],
+      "modality": "~",
+      "meetings": [],
+      "timeStatus": "tba",
+      "room": "TBA",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "PSYC 399.1",
       "sectionCode": "THES/DISS2",
       "title": "DISSERTATION I",
       "units": 0,
@@ -70001,6 +72553,21 @@
         "HECHANOVA, MARIA REGINA M."
       ],
       "modality": "~",
+      "meetings": [],
+      "timeStatus": "tba",
+      "room": "TBA",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "PSYC 399.1",
+      "sectionCode": "THES/DISS3",
+      "title": "DISSERTATION I",
+      "units": 0,
+      "instructors": [
+        "UYHENG, JOSHUA ERIC ROMULO B."
+      ],
+      "modality": "FULLY ONSITE",
       "meetings": [],
       "timeStatus": "tba",
       "room": "TBA",
@@ -74391,6 +76958,29 @@
     },
     {
       "courseCode": "SocSc 11",
+      "sectionCode": "PSY-ST1",
+      "title": "UNDERSTANDING THE SELF",
+      "units": 3,
+      "instructors": [
+        "TBA, -"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [
+        {
+          "days": [
+            "W"
+          ],
+          "start": 480,
+          "end": 660
+        }
+      ],
+      "timeStatus": "scheduled",
+      "room": "SOM 111",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "SocSc 11",
       "sectionCode": "PSY-UV1",
       "title": "UNDERSTANDING THE SELF",
       "units": 3,
@@ -74791,7 +77381,7 @@
       ],
       "timeStatus": "scheduled",
       "room": "B-305",
-      "remarks": "2 SLOT(S) FOR CROSS REG-IXS MAJORS.",
+      "remarks": "4 SLOT(S) FOR CROSS REG-IXS MAJORS.",
       "raw": ""
     },
     {
@@ -77744,6 +80334,21 @@
       "raw": ""
     },
     {
+      "courseCode": "SOAN 292.2",
+      "sectionCode": "ZZZ",
+      "title": "READINGS IN SOCIAL SYSTEMS",
+      "units": 3,
+      "instructors": [
+        "CANUDAY, JOSE JOWEL P."
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [],
+      "timeStatus": "tba",
+      "room": "TBA",
+      "remarks": "",
+      "raw": ""
+    },
+    {
       "courseCode": "SOAN 296",
       "sectionCode": "COMP",
       "title": "COMPREHENSIVE EXAMINATIONS",
@@ -77795,6 +80400,36 @@
       "units": 0,
       "instructors": [
         "ZULUETA, JOHANNA O."
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [],
+      "timeStatus": "tba",
+      "room": "TBA",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "SOAN 299.1",
+      "sectionCode": "ZZZ",
+      "title": "THESIS I",
+      "units": 0,
+      "instructors": [
+        "LIM, LIZA L."
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [],
+      "timeStatus": "tba",
+      "room": "TBA",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "SOAN 299.1",
+      "sectionCode": "ZZZ1",
+      "title": "THESIS I",
+      "units": 0,
+      "instructors": [
+        "NAVARRA, Melissa"
       ],
       "modality": "FULLY ONSITE",
       "meetings": [],
@@ -78225,6 +80860,21 @@
       "raw": ""
     },
     {
+      "courseCode": "SOCIO 212",
+      "sectionCode": "ZZZ",
+      "title": "RURAL SOCIETY",
+      "units": 3,
+      "instructors": [
+        "CANUDAY, JOSE JOWEL P."
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [],
+      "timeStatus": "tba",
+      "room": "TBA",
+      "remarks": "",
+      "raw": ""
+    },
+    {
       "courseCode": "SOCIO 215.2",
       "sectionCode": "RT-GRAD",
       "title": "SPECIAL TOPICS IN SOCIOLOGY AND ANTHROPOLOGY: URBAN SOCIAL ISSUES AND PROBLEMS",
@@ -78331,6 +80981,21 @@
       "units": 3,
       "instructors": [
         "WUI, Ma. Glenda"
+      ],
+      "modality": "FULLY ONSITE",
+      "meetings": [],
+      "timeStatus": "tba",
+      "room": "TBA",
+      "remarks": "",
+      "raw": ""
+    },
+    {
+      "courseCode": "SOCIO 390.9",
+      "sectionCode": "ZZZ",
+      "title": "SEMINAR ON RURAL STRUCTURES",
+      "units": 3,
+      "instructors": [
+        "CANUDAY, JOSE JOWEL P."
       ],
       "modality": "FULLY ONSITE",
       "meetings": [],
@@ -78458,7 +81123,7 @@
     {
       "courseCode": "RELED 241",
       "sectionCode": "ST2B",
-      "title": "CONTEMPORARY TOPICS",
+      "title": "ENGAGING CONTEMPORARY TOPICS THROUGH DIALOGUE",
       "units": 3,
       "instructors": [
         "ODULIO, EDWIN B."
@@ -78474,7 +81139,7 @@
         }
       ],
       "timeStatus": "scheduled",
-      "room": "K-303",
+      "room": "K-304",
       "remarks": "",
       "raw": ""
     },

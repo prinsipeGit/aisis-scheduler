@@ -38,9 +38,10 @@ describe("smoke: program → semester → courses → results → lock → re-ra
     });
 
     // 2. Semester — First Year/First Semester contains MATH 10 and MATH 71.1
-    //    (both offered), plus INTACT 11 and PATHFit 1, which genuinely have
-    //    zero sections in the real 2026-1 data — exercising the "not offered
-    //    this term" path for free.
+    //    (both offered), plus PATHFit 1, which has zero sections under exact
+    //    matching in the real 2026-1 data — exercising the "not offered this
+    //    term" path for free. (PATHFit is offered as PEPC 10; resolving that
+    //    is the rewrite's job, so here it correctly reads as unavailable.)
     fireEvent.click(screen.getByRole("button", { name: "Semester" }));
     await waitFor(() => expect(screen.getAllByRole("option").length).toBeGreaterThan(1));
     fireEvent.change(screen.getByLabelText(/Curriculum block/i), {
@@ -51,16 +52,18 @@ describe("smoke: program → semester → courses → results → lock → re-ra
     fireEvent.click(screen.getByRole("button", { name: "Courses" }));
     await waitFor(() => expect(screen.getByText(/units selected/)).toBeTruthy());
     expect(screen.getByText(/MATHEMATICS IN THE MODERN WORLD/)).toBeTruthy();
-    // INTACT 11 and PATHFit 1 genuinely have no sections in the real 2026-1 data.
+    // PATHFit 1 has no exact-match sections in the real 2026-1 data.
     expect(screen.getAllByText(/Not offered in 2026-1/i).length).toBeGreaterThan(0);
 
     // 4. Keep the search space small: drop everything except MATH 71.1 (3
     //    sections) and MATH 10 (43 sections). Real courses have 40+ sections
     //    each, so leaving them all on would generate tens of thousands of
-    //    combinations. INTACT 11 and PATHFit 1 stay checked (still
-    //    "required") but are not offered, so they must be excluded from
-    //    generation rather than silently blocking every other course.
-    for (const code of ["ENGL 11", "FILI 12", "SocSc 11", "THEO 11"]) {
+    //    combinations. INTACT 11 is dropped for the same reason — it has 103
+    //    sections since the INTAC department was added to the scraper.
+    //    PATHFit 1 stays checked (still "required") but is not offered, so it
+    //    must be excluded from generation rather than silently blocking every
+    //    other course.
+    for (const code of ["ENGL 11", "FILI 12", "SocSc 11", "THEO 11", "INTACT 11"]) {
       fireEvent.click(screen.getByLabelText(new RegExp(code.replace(".", "\\."))));
     }
 
@@ -95,7 +98,7 @@ describe("smoke: program → semester → courses → results → lock → re-ra
     expect(stored.preferences.criteria).toContain("lateStart");
     expect(stored.lockedSections).toHaveLength(1);
     expect(stored.requiredCourses.sort()).toEqual(
-      ["INTACT 11", "MATH 10", "MATH 71.1", "PATHFit 1"].sort()
+      ["MATH 10", "MATH 71.1", "PATHFit 1"].sort()
     );
   });
 
