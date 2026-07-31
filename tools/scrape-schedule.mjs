@@ -18,7 +18,7 @@ import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { DEPARTMENTS, TERMS } from "./departments.mjs";
 import { extractRows } from "./extract-rows.mjs";
-import { parseRows } from "../src/lib/parser.ts";
+import { parseRows } from "./schedule-parse.mjs";
 
 const ENDPOINT = "https://aisis.ateneo.edu/j_aisis/classSkeds.do";
 const DELAY_MS = 1500; // politeness between department requests
