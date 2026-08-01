@@ -210,6 +210,28 @@ describe("CoursesSection", () => {
     expect(new Set(ids).size).toBe(4);
   });
 
+  it("prices an added course by its resolved units even when the typed code only differs in case from the catalog", () => {
+    // Baseline for twoEntryBlock is 6 units (MATH 10 + PATHFit 3, 3 units each, both
+    // included by default). "math 71.1" is not a literal key in any units map - the
+    // catalog spells it "MATH 71.1" - but it genuinely resolves to 3 real sections (each
+    // 3 units, verified against data/catalogs/catalog-2026-1.json), so the total must
+    // grow to 9, not stay at 6.
+    render(<StatefulHarness initialSlots={seedSlots(twoEntryBlock, aliases)} />);
+    fireEvent.change(screen.getByLabelText(/add from the catalog/i), { target: { value: "math 71.1" } });
+    fireEvent.click(screen.getByRole("button", { name: /add course/i }));
+    expect(screen.getByText(/^9 units selected$/i)).toBeTruthy();
+  });
+
+  it("prices an added course through what it resolves to when it is a variant base with no literal catalog match", () => {
+    // "MATH 71" never appears as a catNo or a catalog courseCode - only "MATH 71.1" and
+    // "MATH 71.3" do (both 3 units, verified against the catalog fixture) - yet it resolves
+    // via acceptableCodes' variant-suffix rule. It must price at 3 units, not 0.
+    render(<StatefulHarness initialSlots={seedSlots(twoEntryBlock, aliases)} />);
+    fireEvent.change(screen.getByLabelText(/add from the catalog/i), { target: { value: "MATH 71" } });
+    fireEvent.click(screen.getByRole("button", { name: /add course/i }));
+    expect(screen.getByText(/^9 units selected$/i)).toBeTruthy();
+  });
+
   it("removes an added course slot", () => {
     const slots = [...seedSlots(block, aliases), slotFromCatalog("MATH 71.1", 0)];
     const { onChange } = setup(slots);

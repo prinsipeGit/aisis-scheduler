@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import type { Catalog, CurriculumBlock, Program, UserState } from "../../lib/types";
 import { acceptableCodes, type AliasFile } from "../../lib/offerings";
 import { slotFromCatalog, slotsFromCurriculum, totalUnits, type ResolvedSlot, type SlotStatus } from "../../lib/slots";
-import { sameCourseCode } from "../../lib/course-code";
+import { canonicalCourseCode, sameCourseCode } from "../../lib/course-code";
 
 interface Props {
   program: Program | undefined;
@@ -33,22 +33,43 @@ export function CoursesSection({ program, block, catalog, state, resolved, alias
     return map;
   }, [catalog]);
 
-  // Keyed by every code that can appear as a slot's `chosen ?? requirement`: a curriculum
-  // entry's own catNo (so an un-narrowed slot answers from what the block itself printed,
-  // even when that catNo is a requirement like "NSTP 11" that never appears verbatim in the
-  // catalog — offerings there are "NSTP 11(CWTS)" etc.) and, for anything else, the exact
-  // catalog course code a narrowed or catalog-added slot names.
+  // Keyed by every code that can appear as a slot's `chosen ?? requirement`, canonicalized
+  // so a typed code that differs only in case or whitespace (e.g. "math 71.1") still hits
+  // the catalog's "MATH 71.1" entry: a curriculum entry's own catNo (so an un-narrowed slot
+  // answers from what the block itself printed, even when that catNo is a requirement like
+  // "NSTP 11" that never appears verbatim in the catalog — offerings there are
+  // "NSTP 11(CWTS)" etc.) and, for anything else, the exact catalog course code a narrowed
+  // or catalog-added slot names.
   const unitsOf = useMemo(() => {
     const map = new Map<string, number>();
-    for (const b of program?.blocks ?? []) for (const e of b.entries) map.set(e.catNo, e.units);
-    for (const s of catalog?.sections ?? []) if (!map.has(s.courseCode)) map.set(s.courseCode, s.units);
+    for (const b of program?.blocks ?? []) for (const e of b.entries) map.set(canonicalCourseCode(e.catNo), e.units);
+    for (const s of catalog?.sections ?? []) {
+      const key = canonicalCourseCode(s.courseCode);
+      if (!map.has(key)) map.set(key, s.units);
+    }
     return map;
   }, [program, catalog]);
+
+  // A typed code can resolve to real sections (acceptableCodes' variant-suffix rule) without
+  // ever being a literal key above — a variant base like "MATH 71" prices nothing on its own;
+  // only "MATH 71.1" / "MATH 71.3" are catalog codes. Price it from the units of whatever this
+  // slot actually resolved to, using the resolution `resolved` already computed.
+  const resolvedUnitsOf = useMemo(() => {
+    const map = new Map<string, number>();
+    for (const r of resolved) {
+      const code = r.slot.chosen ?? r.slot.requirement;
+      if (code && r.allSections.length > 0) map.set(canonicalCourseCode(code), r.allSections[0].units);
+    }
+    return map;
+  }, [resolved]);
 
   if (!program || !block) return <p>Choose a program and semester first.</p>;
   if (!catalog) return <p>Loading the catalog for {state.calendarTerm}...</p>;
 
-  const selectedUnits = totalUnits(resolved, (code) => unitsOf.get(code) ?? 0);
+  const selectedUnits = totalUnits(resolved, (code) => {
+    const canon = canonicalCourseCode(code);
+    return unitsOf.get(canon) ?? resolvedUnitsOf.get(canon) ?? 0;
+  });
 
   const update = (slots: UserState["slots"]) => onChange({ ...state, slots });
 
