@@ -83,12 +83,17 @@ export function CoursesSection({ program, block, catalog, state, resolved, alias
 
   const addCourse = () => {
     if (!fromCatalog) return;
-    if (!catalogCodeSet.has(fromCatalog)) {
+    // Resolvability, not literal catalog membership: acceptableCodes matches a requirement
+    // by canonical equality plus variant suffixes ("NSTP 11" -> "NSTP 11(CWTS)"), and that
+    // canonicalization is case- and whitespace-insensitive. A literal-membership check
+    // rejects codes ("NSTP 11", "PHILO 11", lowercase "math 71.1") that genuinely resolve.
+    const candidate = slotFromCatalog(fromCatalog, nextAddedIndex());
+    if (acceptableCodes(candidate, catalog, aliases).length === 0) {
       setAddCourseError("That is not a course in this term's catalog.");
       return;
     }
     if (state.slots.some((s) => s.requirement && sameCourseCode(s.requirement, fromCatalog))) return;
-    update([...state.slots, slotFromCatalog(fromCatalog, nextAddedIndex())]);
+    update([...state.slots, candidate]);
     setFromCatalog("");
     setAddCourseError(null);
   };
@@ -145,8 +150,26 @@ export function CoursesSection({ program, block, catalog, state, resolved, alias
                          value={fillDrafts[r.slot.id] ?? r.slot.chosen ?? ""}
                          onChange={(e) => {
                            const value = e.target.value;
-                           setFillDrafts((prev) => ({ ...prev, [r.slot.id]: value }));
-                           if (catalogCodeSet.has(value)) setChosen(r.slot.id, value);
+                           // A narrowed slot resolves by exact match only (offerings.ts:
+                           // slot.chosen !== null filters on canonical equality, no variant
+                           // suffixes), so exact catalog membership is the right rule here -
+                           // unlike Add-course, which checks resolvability. Empty string is
+                           // let through alongside a valid code so clearing the input can
+                           // reset `chosen` back to null; there is no other way to clear an
+                           // elective once it has been filled.
+                           if (value === "" || catalogCodeSet.has(value)) {
+                             setChosen(r.slot.id, value);
+                             // Drop the draft once committed: keeping it would shadow any
+                             // later external change to `chosen` (e.g. cleared elsewhere)
+                             // behind this now-stale typed value forever.
+                             setFillDrafts((prev) => {
+                               if (!(r.slot.id in prev)) return prev;
+                               const { [r.slot.id]: _dropped, ...rest } = prev;
+                               return rest;
+                             });
+                           } else {
+                             setFillDrafts((prev) => ({ ...prev, [r.slot.id]: value }));
+                           }
                          }} />
                 </label>
               )}

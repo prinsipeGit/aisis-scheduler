@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { readFileSync } from "node:fs";
@@ -26,6 +27,28 @@ const program: Program = {
   id: "P", code: "P", name: "P", version: "2024", versionYear: 2024, versionLabel: "2024",
   blocks: [block, other],
 };
+
+// A minimal two-entry block (no elective) for the id-collision regression: it seeds exactly
+// two ips slots, so a buggy `added:${state.slots.length}` derivation and a correct
+// free-index scan diverge visibly once one added slot is removed and another is added.
+const twoEntryBlock: CurriculumBlock = {
+  year: "First Year", term: "First Semester", key: "First Year|First Semester", totalUnits: 6,
+  entries: [entry("MATH 10", "C", 0), entry("PATHFit 3", "PFT3", 1)],
+};
+
+// Feeds onChange back into state so a real add/add/remove/add sequence can be driven through
+// the DOM, the way it would in the running app - a mocked one-shot onChange cannot expose the
+// id-collision bug because it never re-renders with the previous add already applied.
+function StatefulHarness({ initialSlots }: { initialSlots: UserState["slots"] }) {
+  const [state, setState] = useState<UserState>({
+    ...defaultState("2026-1"), blockKey: twoEntryBlock.key, slots: initialSlots,
+  });
+  const resolved = resolveSlots(state.slots, catalog, aliases, state.lockedSections);
+  return (
+    <CoursesSection program={program} block={twoEntryBlock} catalog={catalog}
+      state={state} resolved={resolved} aliases={aliases} onChange={setState} />
+  );
+}
 
 const setup = (slots = seedSlots(block, aliases)) => {
   const state: UserState = { ...defaultState("2026-1"), blockKey: block.key, slots };
@@ -128,11 +151,63 @@ describe("CoursesSection", () => {
     });
   });
 
-  it("does not add a slot when the typed catalog code is not a real course", () => {
+  it("does not add a slot when the typed catalog code resolves to no sections at all", () => {
+    const { onChange } = setup();
+    fireEvent.change(screen.getByLabelText(/add from the catalog/i), { target: { value: "ZZZZ 999" } });
+    fireEvent.click(screen.getByRole("button", { name: /add course/i }));
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it("accepts a requirement-style code that only resolves through catalog variant suffixes", () => {
+    // "NSTP 11" never appears verbatim in the catalog - only "NSTP 11(CWTS)" and
+    // "NSTP 11(ROTC)" do - but it genuinely resolves via acceptableCodes' variant-suffix
+    // rule, so the guard must accept it rather than testing literal catalog membership.
     const { onChange } = setup();
     fireEvent.change(screen.getByLabelText(/add from the catalog/i), { target: { value: "NSTP 11" } });
     fireEvent.click(screen.getByRole("button", { name: /add course/i }));
-    expect(onChange).not.toHaveBeenCalled();
+    const next = onChange.mock.calls[0][0] as UserState;
+    expect(next.slots.find((s) => s.requirement === "NSTP 11")).toMatchObject({
+      origin: "added", category: null, sourceBlock: null,
+    });
+  });
+
+  it("wires the add-course control to a free-text input backed by the catalog datalist", () => {
+    setup();
+    const input = screen.getByLabelText(/add from the catalog/i) as HTMLInputElement;
+    expect(input.tagName).toBe("INPUT");
+    expect(input.getAttribute("list")).toBe("catalog-codes");
+    const datalist = document.getElementById("catalog-codes");
+    expect(datalist).not.toBeNull();
+    expect(datalist!.tagName).toBe("DATALIST");
+    // MATH 71.1 is a real code in the fixture catalog; its <option> must be present so the
+    // browser's native autocomplete actually offers it.
+    expect(datalist!.querySelector('option[value="MATH 71.1"]')).not.toBeNull();
+  });
+
+  it("gives every added slot a distinct id across add, add, remove, add (regression)", () => {
+    render(<StatefulHarness initialSlots={seedSlots(twoEntryBlock, aliases)} />);
+    const catalogInput = () => screen.getByLabelText(/add from the catalog/i);
+    const addButton = () => screen.getByRole("button", { name: /add course/i });
+
+    fireEvent.change(catalogInput(), { target: { value: "MATH 71.1" } });
+    fireEvent.click(addButton());
+
+    fireEvent.change(catalogInput(), { target: { value: "NSTP 11" } });
+    fireEvent.click(addButton());
+
+    // Remove the FIRST added slot (MATH 71.1). This frees its id while a later id (NSTP 11's)
+    // stays taken - the arrangement that exposes a length-based derivation, since the freed
+    // index is not the most recently handed-out one.
+    const mathRow = screen.getByText("MATH 71.1").closest("li")!;
+    fireEvent.click(within(mathRow).getByRole("button", { name: /remove/i }));
+
+    fireEvent.change(catalogInput(), { target: { value: "PHILO 11" } });
+    fireEvent.click(addButton());
+
+    const items = screen.getAllByRole("listitem");
+    const ids = items.map((li) => li.getAttribute("data-testid"));
+    expect(ids).toHaveLength(4); // 2 seeded ips slots + NSTP 11 + PHILO 11
+    expect(new Set(ids).size).toBe(4);
   });
 
   it("removes an added course slot", () => {
@@ -159,6 +234,18 @@ describe("CoursesSection", () => {
     const elective = next.slots.find((s) => s.category === "FE1")!;
     expect(elective.chosen).toBe("MATH 71.1");
     expect(elective.included).toBe(true);
+  });
+
+  it("clears a filled elective's chosen course back to null when the Fill input is emptied", () => {
+    const slots = seedSlots(block, aliases).map((s) =>
+      s.category === "FE1" ? { ...s, chosen: "MATH 71.1", included: true } : s);
+    const { onChange } = setup(slots);
+    const row = screen.getByTestId("slot-ips:First Year|First Semester#2");
+    fireEvent.change(within(row).getByLabelText(/fill/i), { target: { value: "" } });
+    expect(onChange).toHaveBeenCalled();
+    const next = onChange.mock.calls[onChange.mock.calls.length - 1][0] as UserState;
+    const elective = next.slots.find((s) => s.category === "FE1")!;
+    expect(elective.chosen).toBeNull();
   });
 
   it("reports a slot with no offerings this term instead of hiding it", () => {
