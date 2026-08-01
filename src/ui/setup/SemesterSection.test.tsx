@@ -41,5 +41,8 @@ describe("SemesterSection", () => {
     render(<SemesterSection program={program} blockKey="" calendarTerm="2026-1" terms={terms} onChangeBlock={onChangeBlock} onChangeTerm={onChangeTerm} />);
     fireEvent.change(screen.getByLabelText(/curriculum block/i), { target: { value: "Second Year|First Semester" } });
     expect(onChangeBlock).toHaveBeenCalledWith("Second Year|First Semester");
+
+    fireEvent.change(screen.getByLabelText(/calendar term/i), { target: { value: "2026-1" } });
+    expect(onChangeTerm).toHaveBeenCalledWith("2026-1");
   });
 });
