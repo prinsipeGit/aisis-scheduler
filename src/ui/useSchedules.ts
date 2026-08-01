@@ -25,12 +25,20 @@ export function useSchedules(
 
   const { schedules, diagnostics, search } = useMemo(
     () => generate(resolved, state),
-    [resolved, state]
+    [
+      resolved,
+      state.fullSections,
+      state.lockedSections,
+      state.preferences.excludedSections,
+      state.preferences.earliestStart,
+      state.preferences.latestEnd,
+      state.preferences.protectedBlocks,
+    ]
   );
 
   const ranked = useMemo(
     () => rank(schedules, state.preferences, ratings),
-    [schedules, state.preferences, ratings]
+    [schedules, state.preferences.criteria, ratings]
   );
 
   return { resolved, ranked, diagnostics, search };
