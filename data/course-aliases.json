@@ -1,0 +1,21 @@
+{
+  "aliases": {
+    "PFT1": ["PEPC 10"],
+    "PFT2": ["PEPC 11", "PEPC 12"],
+    "PFT3": ["PEPC 13", "PEPC 14", "PEPC 15", "PEPC 16", "PEPC 17", "PEPC 18", "PEPC 19"],
+    "PFT4": ["PEPC 13", "PEPC 14", "PEPC 15", "PEPC 16", "PEPC 17", "PEPC 18", "PEPC 19"],
+
+    "PE1": ["PEPC 10"],
+    "PE2": ["PEPC 11", "PEPC 12"],
+    "PE3": ["PEPC 13", "PEPC 14", "PEPC 15", "PEPC 16", "PEPC 17", "PEPC 18", "PEPC 19"],
+    "PE4": ["PEPC 13", "PEPC 14", "PEPC 15", "PEPC 16", "PEPC 17", "PEPC 18", "PEPC 19"],
+
+    "NS1A": ["BIO 10.01", "CHEM 10.01", "ENVI 10.01", "PHYS 10.01"],
+    "NS1B": ["BIO 10.02", "CHEM 10.02", "ENVI 10.02", "PHYS 10.02"],
+
+    "FLC1": ["FRE 11", "GER 11", "ITA 11", "JPN 11", "KRN 11", "RUSS 11", "SPA 11"],
+    "FLC 12": ["FRE 12", "GER 12", "JPN 12", "KRN 12", "SPA 12"]
+  },
+  "pairs": [["NS1A", "NS1B"]],
+  "preAssigned": ["INTACT 11"]
+}
