@@ -2,7 +2,7 @@ import { describe, it, expect, vi, afterEach } from "vitest";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { readFileSync } from "node:fs";
 import { CoursesSection } from "./CoursesSection";
-import { seedSlots, resolveSlots } from "../../lib/slots";
+import { seedSlots, resolveSlots, slotFromCatalog, type ResolvedSlot } from "../../lib/slots";
 import { defaultState } from "../../lib/storage";
 import type { AliasFile } from "../../lib/offerings";
 import type { Catalog, CurriculumBlock, Program, UserState } from "../../lib/types";
@@ -44,6 +44,31 @@ describe("CoursesSection", () => {
   it("compares selected units against the block's own printed total", () => {
     setup();
     expect(screen.getByText(/this block is 19/i)).toBeTruthy();
+  });
+
+  it("computes the selected total from the included slots' own units, not a placeholder", () => {
+    // MATH 10 (3 units) and PATHFit 3 (3 units) are included by default; the FREE
+    // ELECTIVE entry starts unfilled and excluded, so it must not contribute.
+    setup();
+    expect(screen.getByText(/^6 units selected$/i)).toBeTruthy();
+  });
+
+  it("flags an overload when selected units exceed the block's own plan", () => {
+    const overBlock: CurriculumBlock = { ...block, totalUnits: 5 };
+    const state: UserState = {
+      ...defaultState("2026-1"), blockKey: overBlock.key, slots: seedSlots(block, aliases),
+    };
+    render(
+      <CoursesSection program={program} block={overBlock} catalog={catalog} state={state}
+        resolved={resolveSlots(state.slots, catalog, aliases, [])} aliases={aliases} onChange={vi.fn()} />
+    );
+    expect(screen.getByText(/above what this block plans for/i)).toBeTruthy();
+  });
+
+  it("hints when under the block's planned load", () => {
+    // Default seeded selection (6 units) is below this block's printed total (19).
+    setup();
+    expect(screen.getByText(/below this block's planned load/i)).toBeTruthy();
   });
 
   it("offers a narrowing picker listing activity titles for a multi-code slot", () => {
@@ -101,6 +126,57 @@ describe("CoursesSection", () => {
     expect(next.slots.find((s) => s.requirement === "MATH 71.1")).toMatchObject({
       origin: "added", category: null, sourceBlock: null,
     });
+  });
+
+  it("does not add a slot when the typed catalog code is not a real course", () => {
+    const { onChange } = setup();
+    fireEvent.change(screen.getByLabelText(/add from the catalog/i), { target: { value: "NSTP 11" } });
+    fireEvent.click(screen.getByRole("button", { name: /add course/i }));
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it("removes an added course slot", () => {
+    const slots = [...seedSlots(block, aliases), slotFromCatalog("MATH 71.1", 0)];
+    const { onChange } = setup(slots);
+    const row = screen.getByTestId("slot-added:0");
+    fireEvent.click(within(row).getByRole("button", { name: /remove/i }));
+    const next = onChange.mock.calls[0][0] as UserState;
+    expect(next.slots.find((s) => s.id === "added:0")).toBeUndefined();
+  });
+
+  it("does not write a partial value while typing into an elective's Fill input", () => {
+    const { onChange } = setup();
+    const row = screen.getByTestId("slot-ips:First Year|First Semester#2");
+    fireEvent.change(within(row).getByLabelText(/fill/i), { target: { value: "MATH 71" } });
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it("fills an elective once the typed value matches a real catalog code", () => {
+    const { onChange } = setup();
+    const row = screen.getByTestId("slot-ips:First Year|First Semester#2");
+    fireEvent.change(within(row).getByLabelText(/fill/i), { target: { value: "MATH 71.1" } });
+    const next = onChange.mock.calls[0][0] as UserState;
+    const elective = next.slots.find((s) => s.category === "FE1")!;
+    expect(elective.chosen).toBe("MATH 71.1");
+    expect(elective.included).toBe(true);
+  });
+
+  it("reports a slot with no offerings this term instead of hiding it", () => {
+    const slots = seedSlots(block, aliases);
+    const state: UserState = { ...defaultState("2026-1"), blockKey: block.key, slots };
+    const resolved = resolveSlots(state.slots, catalog, aliases, state.lockedSections);
+    const noOfferings: ResolvedSlot = {
+      slot: {
+        id: "added:0", origin: "added", label: "ZZZZ 999", requirement: "ZZZZ 999",
+        category: null, sourceBlock: null, chosen: null, pairedWith: null, included: true,
+      },
+      sections: [], allSections: [], status: "no-offerings", pinned: null,
+    };
+    render(
+      <CoursesSection program={program} block={block} catalog={catalog} state={state}
+        resolved={[...resolved, noOfferings]} aliases={aliases} onChange={vi.fn()} />
+    );
+    expect(screen.getByText(/not offered this term/i)).toBeTruthy();
   });
 
   it("labels a pre-assigned slot as awaiting a section, not as unavailable", () => {

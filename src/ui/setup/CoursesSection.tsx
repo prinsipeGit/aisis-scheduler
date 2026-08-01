@@ -24,6 +24,8 @@ const STATUS_TEXT: Record<SlotStatus, string> = {
 export function CoursesSection({ program, block, catalog, state, resolved, aliases, onChange }: Props) {
   const [fromCurriculum, setFromCurriculum] = useState("");
   const [fromCatalog, setFromCatalog] = useState("");
+  const [addCourseError, setAddCourseError] = useState<string | null>(null);
+  const [fillDrafts, setFillDrafts] = useState<Record<string, string>>({});
 
   const titleOf = useMemo(() => {
     const map = new Map<string, string>();
@@ -71,11 +73,24 @@ export function CoursesSection({ program, block, catalog, state, resolved, alias
     setFromCurriculum("");
   };
 
+  // Ids for added slots are derived from a free index, not the slot count: `remove`
+  // shrinks the count, so reusing it as an index would hand out an id already in use.
+  const nextAddedIndex = () => {
+    let i = 0;
+    while (state.slots.some((s) => s.id === `added:${i}`)) i++;
+    return i;
+  };
+
   const addCourse = () => {
     if (!fromCatalog) return;
+    if (!catalogCodeSet.has(fromCatalog)) {
+      setAddCourseError("That is not a course in this term's catalog.");
+      return;
+    }
     if (state.slots.some((s) => s.requirement && sameCourseCode(s.requirement, fromCatalog))) return;
-    update([...state.slots, slotFromCatalog(fromCatalog, state.slots.length)]);
+    update([...state.slots, slotFromCatalog(fromCatalog, nextAddedIndex())]);
     setFromCatalog("");
+    setAddCourseError(null);
   };
 
   const available = program.blocks.flatMap((b) =>
@@ -83,6 +98,7 @@ export function CoursesSection({ program, block, catalog, state, resolved, alias
       .filter((e) => !state.slots.some((s) => s.id === `ips:${e.slotId}`))
       .map((e) => ({ block: b, entry: e })));
   const catalogCodes = [...new Set(catalog.sections.map((s) => s.courseCode))].sort();
+  const catalogCodeSet = new Set(catalogCodes);
 
   return (
     <div>
@@ -125,8 +141,13 @@ export function CoursesSection({ program, block, catalog, state, resolved, alias
                 <label>
                   {" "}Fill{" "}
                   <input list="catalog-codes" aria-label={`Fill ${r.slot.label}`}
-                         placeholder="Search the catalog..." value={r.slot.chosen ?? ""}
-                         onChange={(e) => setChosen(r.slot.id, e.target.value)} />
+                         placeholder="Search the catalog..."
+                         value={fillDrafts[r.slot.id] ?? r.slot.chosen ?? ""}
+                         onChange={(e) => {
+                           const value = e.target.value;
+                           setFillDrafts((prev) => ({ ...prev, [r.slot.id]: value }));
+                           if (catalogCodeSet.has(value)) setChosen(r.slot.id, value);
+                         }} />
                 </label>
               )}
               {STATUS_TEXT[r.status] && <em> {STATUS_TEXT[r.status]}</em>}
@@ -157,9 +178,11 @@ export function CoursesSection({ program, block, catalog, state, resolved, alias
         <label>
           Add from the catalog{" "}
           <input list="catalog-codes" placeholder="Search the catalog..."
-                 value={fromCatalog} onChange={(e) => setFromCatalog(e.target.value)} />
+                 value={fromCatalog}
+                 onChange={(e) => { setFromCatalog(e.target.value); setAddCourseError(null); }} />
         </label>{" "}
         <button type="button" onClick={addCourse}>Add course</button>
+        {addCourseError && <p className="hint">{addCourseError}</p>}
       </div>
 
       <datalist id="catalog-codes">
