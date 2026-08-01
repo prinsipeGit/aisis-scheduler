@@ -14,6 +14,8 @@
     "scrape:curricula": "node tools/scrape-curricula.mjs"
   },
   "dependencies": {
+    "@fontsource/archivo-black": "^5.3.0",
+    "@fontsource/inter": "^5.3.0",
     "@supabase/supabase-js": "^2.110.8",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
