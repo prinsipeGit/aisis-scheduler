@@ -54,6 +54,8 @@ describe("loadState", () => {
     ["a protected block with an unknown day", { preferences: { criteria: [], protectedBlocks: [{ days: ["X"], start: 500, end: 600 }], excludedSections: [] } }],
     ["a rating above 5", { personalRatings: [{ name: "A", rating: 6 }] }],
     ["a non-string completedCourses entry", { completedCourses: [1] }],
+    ["a personalRating with a non-string note", { personalRatings: [{ name: "A", rating: 3, note: 12345 }] }],
+    ["a personalRating with a non-string asOf", { personalRatings: [{ name: "A", rating: 3, asOf: { nested: true } }] }],
   ])("rejects %s", (_label, patch) => {
     localStorage.setItem(KEY, JSON.stringify({ ...valid(), ...patch }));
     expect(loadState("2026-1").wasReset).toBe(true);

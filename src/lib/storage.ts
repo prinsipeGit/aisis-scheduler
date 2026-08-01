@@ -84,7 +84,9 @@ function isValidState(v: unknown): v is UserState {
     const rt = x as Record<string, unknown>;
     return typeof rt.name === "string" && rt.name.trim() !== "" &&
       typeof rt.rating === "number" && Number.isFinite(rt.rating) && rt.rating >= 0 && rt.rating <= 5 &&
-      (rt.courseCode === undefined || typeof rt.courseCode === "string");
+      (rt.courseCode === undefined || typeof rt.courseCode === "string") &&
+      (rt.note === undefined || typeof rt.note === "string") &&
+      (rt.asOf === undefined || typeof rt.asOf === "string");
   })) return false;
   return isValidPreferences(s.preferences);
 }
