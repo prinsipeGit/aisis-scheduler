@@ -42,7 +42,10 @@ export function SectionChips({ schedule, state, onChange }: Props) {
             <button type="button" onClick={() => toggle("lockedSections", key)}>
               {state.lockedSections.includes(key) ? "Unlock" : "Lock"}
             </button>{" "}
-            <button type="button" onClick={() => toggle("fullSections", key)}>Mark full</button>{" "}
+            <button type="button" aria-pressed={state.fullSections.includes(key)}
+                    onClick={() => toggle("fullSections", key)}>
+              {state.fullSections.includes(key) ? "Unmark full" : "Mark full"}
+            </button>{" "}
             <button type="button" onClick={() => exclude(key)}>Exclude</button>
           </li>
         );

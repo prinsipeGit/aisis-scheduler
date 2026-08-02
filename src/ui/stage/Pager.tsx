@@ -29,7 +29,8 @@ export function Pager({ index, count, score, onIndex }: Props) {
   // even though they are genuinely ranked apart. Showing that as a bare "100% match" would lie.
   // Instead: rank position is the headline (always true, always distinguishes candidates), and
   // the score is folded in as a qualifier on the *top* criterion specifically, not as overall
-  // schedule quality.
+  // schedule quality. It is rendered here in the visible row (not just the .sr-only live
+  // region below) so a sighted student sees it too, always attached to the rank position.
   const percent = Math.round(score * 100);
 
   return (
@@ -39,11 +40,10 @@ export function Pager({ index, count, score, onIndex }: Props) {
         Prev
       </button>
       <span className="pager-count" aria-hidden="true">
-        {String(index + 1).padStart(2, "0")} / {count}
+        {String(index + 1).padStart(2, "0")} / {count} &mdash; {percent}% on your top preference
       </span>
       <span className="sr-only" role="status" aria-live="polite">
-        Schedule {index + 1} of {count}, rank {index + 1} of {count} on your top preference
-        &mdash; {percent}% of this set's best score on that measure.
+        Schedule {index + 1} of {count} &mdash; {percent}% on your top preference.
       </span>
       <button type="button" aria-label="Next schedule"
               disabled={index >= count - 1} onClick={() => onIndex(index + 1)}>

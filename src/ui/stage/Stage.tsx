@@ -27,6 +27,17 @@ export function Stage({ schedules, index, onIndex, state, block, program, onChan
     if (!program || !block || state.slots.length === 0) {
       return <EmptyStage hasProgram={!!program} hasBlock={!!block} hasCourses={state.slots.length > 0} />;
     }
+    // useSchedules returns resolved: [] exactly while the catalog hasn't loaded yet (it's one
+    // ResolvedSlot per slot once the catalog is in). With courses chosen but nothing resolved,
+    // there is no schedule failure to report yet — just data still on its way.
+    if (resolved.length === 0) {
+      return (
+        <section>
+          <h2>Loading your courses</h2>
+          <p>Fetching this term's offerings. Your schedule will appear here shortly.</p>
+        </section>
+      );
+    }
     return (
       <section>
         <h2>No schedule fits</h2>
@@ -37,7 +48,8 @@ export function Stage({ schedules, index, onIndex, state, block, program, onChan
     );
   }
 
-  const current = ranked[Math.min(index, ranked.length - 1)];
+  const clampedIndex = Math.min(index, ranked.length - 1);
+  const current = ranked[clampedIndex];
 
   return (
     <section>
@@ -47,7 +59,7 @@ export function Stage({ schedules, index, onIndex, state, block, program, onChan
           pin a section or add a filter to narrow it.
         </p>
       )}
-      <Pager index={index} count={ranked.length} score={current.score} onIndex={onIndex} />
+      <Pager index={clampedIndex} count={ranked.length} score={current.score} onIndex={onIndex} />
       <WeekGrid schedule={current.schedule} />
       {missing.length > 0 && <MissingList missing={missing} />}
       <SectionChips schedule={current.schedule} state={state} onChange={onChange} />
