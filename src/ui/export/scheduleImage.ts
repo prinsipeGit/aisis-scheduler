@@ -22,6 +22,44 @@ function hueFor(courseCode: string): string {
   return HUES[hash % HUES.length];
 }
 
+// jsdom's canvas stub either has no measureText or ignores its argument, so width lookups must
+// never throw and must degrade to *some* bound rather than silently permitting overflow. A flat
+// per-character estimate is a safe fallback: it still clamps, just less precisely than a real
+// canvas would.
+function textWidth(ctx: CanvasRenderingContext2D, text: string): number {
+  if (typeof ctx.measureText !== "function") return text.length * 7;
+  const measured = ctx.measureText(text)?.width;
+  return typeof measured === "number" && Number.isFinite(measured) ? measured : text.length * 7;
+}
+
+function ellipsize(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string {
+  if (maxWidth <= 0) return "";
+  if (textWidth(ctx, text) <= maxWidth) return text;
+  const ELLIPSIS = "…";
+  if (textWidth(ctx, ELLIPSIS) > maxWidth) return "";
+  let lo = 0;
+  let hi = text.length;
+  while (lo < hi) {
+    const mid = (lo + hi + 1) >> 1;
+    if (textWidth(ctx, text.slice(0, mid) + ELLIPSIS) <= maxWidth) lo = mid; else hi = mid - 1;
+  }
+  return text.slice(0, lo) + ELLIPSIS;
+}
+
+// Bounds the day/time + room text to the column's available width. Time is prioritized over
+// room: an MWF section with a long room string drops or truncates the room first, and only
+// truncates the time itself if it doesn't fit even with the room gone entirely - the meeting
+// time is one of the four fields this image exists to carry into AISIS, the room is secondary.
+export function fitDayTimeRoom(ctx: CanvasRenderingContext2D, when: string, room: string, maxWidth: number): string {
+  const sep = "   ";
+  const full = room ? `${when}${sep}${room}` : when;
+  if (textWidth(ctx, full) <= maxWidth) return full;
+  if (textWidth(ctx, when) >= maxWidth) return ellipsize(ctx, when, maxWidth);
+  const roomBudget = maxWidth - textWidth(ctx, when + sep);
+  const fittedRoom = room ? ellipsize(ctx, room, roomBudget) : "";
+  return fittedRoom ? `${when}${sep}${fittedRoom}` : when;
+}
+
 // Rendered with the Canvas 2D API rather than a DOM-to-image library: the grid geometry is
 // simple, and this adds no dependency (§11.3).
 export function renderScheduleImage(
@@ -92,6 +130,8 @@ export function renderScheduleImage(
   ctx.font = "600 15px Inter, sans-serif";
   ctx.fillText("Enlist these sections", PAD, y);
   y += 24;
+  const LIST_COL_X = PAD + 360;
+  const LIST_AVAIL_W = W - PAD - LIST_COL_X;
   for (const s of rows) {
     ctx.font = "13px Inter, sans-serif";
     ctx.fillStyle = "#1b2233";
@@ -103,7 +143,7 @@ export function renderScheduleImage(
     const when = s.meetings.length === 0
       ? "no fixed time"
       : s.meetings.map((m) => `${m.days.join("")} ${formatTime(m.start)}-${formatTime(m.end)}`).join(", ");
-    ctx.fillText(`${when}   ${s.room}`, PAD + 360, y);
+    ctx.fillText(fitDayTimeRoom(ctx, when, s.room, LIST_AVAIL_W), LIST_COL_X, y);
     y += ROW_H;
   }
 
