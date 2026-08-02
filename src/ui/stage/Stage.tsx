@@ -1,5 +1,6 @@
 import type { CurriculumBlock, Program, UserState } from "../../lib/types";
 import type { Schedules } from "../useSchedules";
+import { downloadScheduleImage } from "../export/scheduleImage";
 import { Pager } from "./Pager";
 import { WeekGrid } from "./WeekGrid";
 import { SectionChips } from "./SectionChips";
@@ -63,6 +64,14 @@ export function Stage({ schedules, index, onIndex, state, block, program, onChan
       <WeekGrid schedule={current.schedule} />
       {missing.length > 0 && <MissingList missing={missing} />}
       <SectionChips schedule={current.schedule} state={state} onChange={onChange} />
+      <button type="button"
+              onClick={() => downloadScheduleImage(current.schedule, {
+                program: program?.code ?? "",
+                block: block?.key.replace("|", " / ") ?? "",
+                term: state.calendarTerm,
+              })}>
+        Download schedule
+      </button>
     </section>
   );
 }

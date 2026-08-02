@@ -5,10 +5,11 @@ import { defaultState } from "../../lib/storage";
 import type { Schedules } from "../useSchedules";
 import type { CurriculumBlock, Program, Section, Slot } from "../../lib/types";
 
-// downloadScheduleImage / src/ui/export/scheduleImage.ts is Task 15's deliverable and does not
-// exist yet. Stage.tsx therefore has no "Download schedule" button in this task (see task-13-report
-// for the resequencing rationale, matching Task 9's App.tsx/Task 9b precedent) — nothing here needs
-// to mock that module.
+// scheduleImage.ts renders through the real <canvas> 2D API, which jsdom does not implement.
+// The button's click handler is what Stage owns; the rendering itself is scheduleImage's own
+// test's responsibility (src/ui/export/scheduleImage.test.ts), so it is mocked here.
+vi.mock("../export/scheduleImage", () => ({ downloadScheduleImage: vi.fn() }));
+import { downloadScheduleImage } from "../export/scheduleImage";
 
 const section = (code: string): Section => ({
   courseCode: code, sectionCode: "1", title: code, units: 3, instructors: [], modality: "",
@@ -56,6 +57,16 @@ describe("Stage", () => {
                   onIndex={() => {}} state={defaultState("2026-1")} block={block}
                   program={program} onChange={() => {}} />);
     expect(screen.getByText(/hit its 500-schedule limit/)).toBeTruthy();
+  });
+
+  it("offers a download of the schedule on screen, for carrying into AISIS", () => {
+    render(<Stage schedules={schedules()} index={0} onIndex={() => {}}
+                  state={defaultState("2026-1")} block={block} program={program} onChange={() => {}} />);
+    fireEvent.click(screen.getByRole("button", { name: /download schedule/i }));
+    expect(downloadScheduleImage).toHaveBeenCalledWith(
+      [section("MATH 10")],
+      { program: "P", block: "First Year / First Semester", term: "2026-1" }
+    );
   });
 
   it("shows the setup checklist before anything is chosen", () => {
