@@ -88,6 +88,17 @@ describe("Stage", () => {
     expect(onIndex).toHaveBeenCalledWith(1);
   });
 
+  it("clamps a negative index to the first candidate instead of throwing", () => {
+    // Math.min(index, ranked.length - 1) alone never rejects a negative index, so
+    // ranked[clampedIndex] becomes ranked[-1] (undefined) and the next property access throws.
+    render(
+      <Stage schedules={schedules()} index={-3} onIndex={() => {}} state={defaultState("2026-1")}
+             block={block} program={program} onChange={() => {}} />
+    );
+    const count = document.querySelector(".pager-count");
+    expect(count?.textContent).toMatch(/01/);
+  });
+
   it("shows a loading state, distinct from 'no schedule fits', while the catalog has not resolved yet", () => {
     render(
       <Stage schedules={schedules({ ranked: [], resolved: [] })} index={0} onIndex={() => {}}

@@ -48,7 +48,7 @@ export function Stage({ schedules, index, onIndex, state, block, program, onChan
     );
   }
 
-  const clampedIndex = Math.min(index, ranked.length - 1);
+  const clampedIndex = Math.max(0, Math.min(index, ranked.length - 1));
   const current = ranked[clampedIndex];
 
   return (

@@ -18,16 +18,20 @@ describe("SectionChips", () => {
 
     const markFull = screen.getByRole("button", { name: /mark full|unmark full/i });
     expect(markFull.textContent).toBe("Mark full");
-    expect(markFull.getAttribute("aria-pressed")).toBe("false");
+    // Lock/Unlock carries state through its label alone, with no aria-pressed. Mark full now
+    // uses the same single idiom: pairing a label swap with aria-pressed double-signals state
+    // (a screen reader would announce "Unmark full, toggle button, pressed" — the label already
+    // names the next action, so aria-pressed says the same thing a second, redundant way).
+    expect(markFull.getAttribute("aria-pressed")).toBeNull();
   });
 
-  it("swaps label and aria-pressed once a section is marked full", () => {
+  it("swaps the label, not aria-pressed, once a section is marked full", () => {
     const state = { ...defaultState("2026-1"), fullSections: ["MATH 10 1"] };
     render(<SectionChips schedule={[section]} state={state} onChange={() => {}} />);
 
     const markFull = screen.getByRole("button", { name: /mark full|unmark full/i });
-    expect(markFull.textContent).not.toBe("Mark full");
-    expect(markFull.getAttribute("aria-pressed")).toBe("true");
+    expect(markFull.textContent).toBe("Unmark full");
+    expect(markFull.getAttribute("aria-pressed")).toBeNull();
   });
 
   it("toggles fullSections when clicked", () => {

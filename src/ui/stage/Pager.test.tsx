@@ -23,6 +23,27 @@ describe("Pager", () => {
     expect(outsideSrOnly).toBe(true);
   });
 
+  it("frames the score relative to the rest of the set, never as a bare percentage", () => {
+    // score is a min-max normalization of the top criterion across the CURRENT candidate set
+    // (ranker.ts), not a ratio to anything absolute. "91%" alone reads as "91% match" — a false
+    // claim about how well this schedule satisfies the student's preference. The copy must say,
+    // in plain words, that the number is this candidate's standing among the other candidates
+    // shown, not a standalone quality score.
+    const { container } = render(<Pager index={1} count={41} score={0.91} onIndex={() => {}} />);
+    const visible = container.querySelector(".pager-count");
+    expect(visible?.textContent).toBe(
+      "02 / 41 — 91% toward the best of this set, on your top preference"
+    );
+  });
+
+  it("announces the same relative framing in the live region", () => {
+    render(<Pager index={1} count={41} score={0.91} onIndex={() => {}} />);
+    const live = screen.getByRole("status");
+    expect(live.textContent).toBe(
+      "Schedule 2 of 41 — 91% toward the best of this set, on your top preference."
+    );
+  });
+
   it("disables previous at the start and next at the end, with no wraparound", () => {
     const { rerender } = render(<Pager index={0} count={3} score={1} onIndex={() => {}} />);
     expect((screen.getByRole("button", { name: /previous/i }) as HTMLButtonElement).disabled).toBe(true);
