@@ -119,4 +119,17 @@ describe("Stage", () => {
     expect(screen.queryByText(/No schedule fits/)).toBeFalsy();
     expect(screen.getByText(/Loading/)).toBeTruthy();
   });
+
+  it("shows a genuine error state, not the loading text, when the catalog failed to load", () => {
+    render(
+      <Stage schedules={schedules({ ranked: [], resolved: [] })} index={0} onIndex={() => {}}
+             state={{ ...defaultState("2026-1"), slots: [slot] }} block={block} program={program}
+             onChange={() => {}} catalogFailed={true} />
+    );
+    // The banner above already explains what went wrong; the stage must stop claiming data
+    // is still on its way, without parroting the banner's own wording.
+    expect(screen.queryByText(/Fetching this term's offerings/)).toBeFalsy();
+    expect(screen.queryByText(/^Loading your courses/)).toBeFalsy();
+    expect(screen.getByText(/didn't load/)).toBeTruthy();
+  });
 });

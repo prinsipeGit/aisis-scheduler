@@ -40,6 +40,30 @@ describe("App banners", () => {
     await waitFor(() => expect(screen.getByText(/npm run scrape:schedule -- 2026-1/)).toBeTruthy());
   });
 
+  it("degrades ratings independently: pickers still work and no banner blames terms or programs", async () => {
+    vi.mocked(catalog.getTerms).mockResolvedValue([{ term: "2026-1", label: "2026-2027 First Semester", available: true }]);
+    vi.mocked(curriculum.getPrograms).mockResolvedValue([
+      { id: "P1", code: "CS", name: "Computer Science", version: "2024", versionYear: 2024, versionLabel: "2024" },
+    ]);
+    vi.mocked(catalog.loadCommunityRatings).mockRejectedValue(new Error("ratings down"));
+    // The term picker's default-term logic will pick "2026-1" and trigger a catalog fetch;
+    // give it something to resolve so that unrelated effect doesn't leak a stale mock result
+    // (e.g. the CatalogUnavailableError rejection set up by an earlier test in this file) into
+    // this one as a spurious alert banner.
+    vi.mocked(catalog.loadCatalog).mockResolvedValue({ term: "2026-1", exportedAt: new Date().toISOString(), sections: [], warnings: [] });
+    render(<App />);
+
+    // The program picker (open by default) must still list the program that loaded fine —
+    // a ratings-only failure must not take down the pickers.
+    await waitFor(() => {
+      expect(screen.getByText(/Computer Science/)).toBeTruthy();
+    });
+
+    // No banner should blame the term/program pickers for a ratings-only failure.
+    expect(screen.queryByText(/Could not load programs or terms/)).toBeFalsy();
+    expect(screen.queryByRole("alert")).toBeFalsy();
+  });
+
   it("shows the reset banner when stored state is from an older version", async () => {
     localStorage.setItem("aisis-scheduler-state", JSON.stringify({ version: 2, requiredCourses: [] }));
     vi.mocked(catalog.getTerms).mockResolvedValue([]);

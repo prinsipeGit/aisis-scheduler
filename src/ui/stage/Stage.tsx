@@ -15,9 +15,13 @@ interface Props {
   block: CurriculumBlock | undefined;
   program: Program | undefined;
   onChange: (s: UserState) => void;
+  // Whether the term's catalog fetch failed outright, as opposed to simply not having
+  // resolved yet. Stage can't tell those two apart on its own — App owns the fetch and the
+  // resulting error, so it hands the verdict down instead of Stage guessing from `resolved`.
+  catalogFailed?: boolean;
 }
 
-export function Stage({ schedules, index, onIndex, state, block, program, onChange }: Props) {
+export function Stage({ schedules, index, onIndex, state, block, program, onChange, catalogFailed = false }: Props) {
   const { ranked, diagnostics, search, resolved } = schedules;
 
   // Excluded from generation but still required: the week on screen is not the whole story,
@@ -32,6 +36,16 @@ export function Stage({ schedules, index, onIndex, state, block, program, onChan
     // ResolvedSlot per slot once the catalog is in). With courses chosen but nothing resolved,
     // there is no schedule failure to report yet — just data still on its way.
     if (resolved.length === 0) {
+      if (catalogFailed) {
+        // The banner above already explains what broke; this just has to stop claiming data
+        // is still on its way.
+        return (
+          <section>
+            <h2>Course data unavailable</h2>
+            <p>This term's offerings didn't load. See the notice above for what happened.</p>
+          </section>
+        );
+      }
       return (
         <section>
           <h2>Loading your courses</h2>

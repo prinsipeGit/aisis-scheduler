@@ -49,22 +49,39 @@ export default function App() {
   const [catalogError, setCatalogError] = useState("");
   const [programError, setProgramError] = useState("");
   const [listError, setListError] = useState("");
+  const [ratingsError, setRatingsError] = useState("");
 
   useEffect(() => { saveState(state); }, [state]);
 
-  // Lists. Failures surface as a banner rather than an empty picker with no explanation (§8).
+  // Terms and programs are load-bearing for setup — the pickers have nothing to show without
+  // them, so either failing is fatal and surfaces as a banner rather than an empty picker with
+  // no explanation (§8).
   useEffect(() => {
     let cancelled = false;
-    Promise.all([getTerms(), getPrograms(), loadCommunityRatings()])
-      .then(([t, p, r]) => {
+    Promise.all([getTerms(), getPrograms()])
+      .then(([t, p]) => {
         if (cancelled) return;
-        setTerms(t); setPrograms(p); setCommunityRatings(r);
+        setTerms(t); setPrograms(p);
         setState((s) => s.calendarTerm
           ? s
           : { ...s, calendarTerm: defaultTerm(new Date(), t.filter((x) => x.available).map((x) => x.term)) });
       })
       .catch((err: unknown) => {
         if (!cancelled) setListError(`Could not load programs or terms: ${err instanceof Error ? err.message : String(err)}`);
+      });
+    return () => { cancelled = true; };
+  }, []);
+
+  // Community ratings only tilt the ranking of candidate schedules — they are not load-bearing
+  // for the term/program pickers. Kept in its own effect (rather than joining the Promise.all
+  // above) so a ratings failure can't take the pickers down with it and degrades to an empty
+  // ratings list instead.
+  useEffect(() => {
+    let cancelled = false;
+    loadCommunityRatings()
+      .then((r) => { if (!cancelled) setCommunityRatings(r); })
+      .catch(() => {
+        if (!cancelled) setRatingsError("Community ratings didn't load, so rankings may be a little off this session.");
       });
     return () => { cancelled = true; };
   }, []);
@@ -126,6 +143,7 @@ export default function App() {
         {catalogError && <p className="banner" role="alert">{catalogError}</p>}
         {programError && <p className="banner" role="alert">{programError}</p>}
         {catalog && isStale(catalog) && <p className="banner">This catalog is over 30 days old — re-run the scraper.</p>}
+        {ratingsError && <p className="banner">{ratingsError}</p>}
       </div>
 
       <div className="zones">
@@ -191,6 +209,7 @@ export default function App() {
             block={block}
             program={program ?? undefined}
             onChange={setState}
+            catalogFailed={!!catalogError}
           />
         </main>
 
