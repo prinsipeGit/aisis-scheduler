@@ -186,4 +186,31 @@ describe("resolveSlots feeding generate", () => {
       expect(s).toHaveLength(2);
     }
   });
+
+  it("does not let an excluded slot claim a locked key, leaving the included sibling pinned", () => {
+    // Unchecking PFT3 in the Courses rail is the only affordance offered for block-seeded
+    // slots (Remove is withheld for them). If PFT3 still claims the locked key, it never
+    // generates - excluded slots are filtered out of `active` - and the still-included PFT4
+    // is left free to plan around the very section the student was assigned.
+    const pathfit: CurriculumBlock = {
+      ...block, entries: [entry("PATHFit 3", "PFT3", 0), entry("PATHFit 4", "PFT4", 1)],
+    };
+    const one = catalog.sections.find((s) => s.courseCode.startsWith("PEPC 13"))!;
+    const key = `${one.courseCode} ${one.sectionCode}`;
+    const slots = seedSlots(pathfit, file).map((s) =>
+      s.category === "PFT3" ? { ...s, included: false } : s);
+
+    const resolved = resolveSlots(slots, catalog, file, [key]);
+    const pft3 = resolved.find((r) => r.slot.category === "PFT3")!;
+    const pft4 = resolved.find((r) => r.slot.category === "PFT4")!;
+    expect(pft3.pinned).toBeNull();
+    expect(pft4.pinned).toBe(key);
+
+    const result = generate(resolved, { ...state, lockedSections: [key] });
+    expect(result.diagnostics).toBeNull();
+    expect(result.schedules.length).toBeGreaterThan(0);
+    for (const s of result.schedules) {
+      expect(s.map((x) => `${x.courseCode} ${x.sectionCode}`)).toContain(key);
+    }
+  });
 });

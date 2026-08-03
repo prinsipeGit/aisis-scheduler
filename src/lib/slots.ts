@@ -84,20 +84,27 @@ export function slotFromCatalog(code: string, index: number): Slot {
 export function resolveSlots(
   slots: Slot[], catalog: Catalog, file: AliasFile, locked: string[]
 ): ResolvedSlot[] {
-  // A locked key belongs to exactly one slot, first match wins. Slots may accept the same
-  // codes — PFT3 and PFT4 alias to the identical 23-activity pool — and letting both claim
-  // one key pins both to one section, which then conflicts with itself and reports zero
-  // schedules as "PATHFit 3 and PATHFit 4 always conflict".
+  // A locked key belongs to exactly one slot, first match among included slots wins. Slots
+  // may accept the same codes — PFT3 and PFT4 alias to the identical 23-activity pool — and
+  // letting both claim one key pins both to one section, which then conflicts with itself and
+  // reports zero schedules as "PATHFit 3 and PATHFit 4 always conflict".
+  //
+  // An excluded slot must never claim: `generate` filters `active` on `slot.included`, so a
+  // claim by an excluded slot is inert - that slot never generates - while the still-included
+  // sibling that shares the pool sees `pinned: null` and plans freely around the very section
+  // the student was assigned. Unchecking a block-seeded slot in the Courses rail is the only
+  // affordance offered for it (Remove is withheld there), so this is reachable.
   const claimed = new Set<string>();
   return slots.map((slot) => {
     // Computed once and returned on every branch: the pin picker must still list the
     // alternatives when `sections` has been narrowed to one or emptied.
     const allSections = sectionsFor(slot, catalog, file);
 
-    // A pin is a locked section belonging to one of this slot's acceptable codes.
-    const pinnedSection = allSections.find(
-      (s) => locked.includes(sectionKey(s)) && !claimed.has(sectionKey(s))
-    );
+    // A pin is a locked section belonging to one of this slot's acceptable codes, claimable
+    // only by a slot that will actually generate.
+    const pinnedSection = slot.included
+      ? allSections.find((s) => locked.includes(sectionKey(s)) && !claimed.has(sectionKey(s)))
+      : undefined;
     if (pinnedSection) {
       claimed.add(sectionKey(pinnedSection));
       return {
