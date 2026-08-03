@@ -57,13 +57,30 @@ describe("CandidateList", () => {
     // uses ("... toward the best of this set, on your top preference"), so the two on-screen
     // components never contradict each other. An exact-string assertion is what finally held
     // this requirement in Pager.tsx after it regressed twice untested — same treatment here.
+    //
+    // The sentence now lives in the row's accessible name rather than its visible text: 500
+    // rows each printing "100%" drowned out the facts that actually differ between candidates,
+    // so the visible row leads with rank and those facts and draws the score as a bar. The
+    // invariant is unchanged and still asserted exactly — the qualifier travels with the
+    // number wherever it appears.
     render(<CandidateList ranked={ranked} index={0} onPick={() => {}} />);
-    expect(screen.getByRole("button", { name: /#1/ }).textContent).toBe(
-      "#1 — 100% toward the best of this set, on your top preference — 1 day on campus — showing now"
+    const first = screen.getByRole("button", { name: /#1/ });
+    const second = screen.getByRole("button", { name: /#2/ });
+    expect(first.querySelector(".sr-only")?.textContent).toBe(
+      "#1 — 100% toward the best of this set, on your top preference — 1 day on campus, 8:00 AM to 9:00 AM — showing now"
     );
-    expect(screen.getByRole("button", { name: /#2/ }).textContent).toBe(
-      "#2 — 50% toward the best of this set, on your top preference — 2 days on campus"
+    expect(second.querySelector(".sr-only")?.textContent).toBe(
+      "#2 — 50% toward the best of this set, on your top preference — 2 days on campus, 8:00 AM to 9:00 AM"
     );
+    // And no bare percentage anywhere a sighted student can read one: the only place a digit
+    // followed by "%" may appear is inside that qualified sentence.
+    for (const row of [first, second]) {
+      const visible = Array.from(row.children)
+        .filter((el) => !el.classList.contains("sr-only"))
+        .map((el) => el.textContent ?? "")
+        .join(" ");
+      expect(visible).not.toMatch(/\d%/);
+    }
   });
 
   it("clamps an out-of-range index instead of selecting outside the list", () => {

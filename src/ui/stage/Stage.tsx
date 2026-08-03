@@ -93,15 +93,24 @@ export function Stage({ schedules, index, onIndex, state, block, program, onChan
       <Pager index={clampedIndex} count={ranked.length} score={current.score} onIndex={onIndex} />
       <WeekGrid schedule={current.schedule} />
       {missing.length > 0 && <MissingList missing={missing} />}
-      <SectionChips schedule={current.schedule} state={state} onChange={onChange} />
-      <button type="button"
-              onClick={() => downloadScheduleImage(current.schedule, {
-                program: program?.code ?? "",
-                block: block?.key.replace("|", " / ") ?? "",
-                term: state.calendarTerm,
-              })}>
-        Download schedule
-      </button>
+      {/* The codes are what the student actually types into AISIS, so they get a frame of
+          their own with the handoff attached, rather than trailing off the bottom of the page. */}
+      <div className="enlist">
+        <div className="enlist-head">
+          <span className="enlist-title">Enlist these sections</span>
+          <span className="enlist-actions">
+            <button type="button" className="btn-primary"
+                    onClick={() => downloadScheduleImage(current.schedule, {
+                      program: program?.code ?? "",
+                      block: block?.key.replace("|", " / ") ?? "",
+                      term: state.calendarTerm,
+                    })}>
+              Download schedule
+            </button>
+          </span>
+        </div>
+        <SectionChips schedule={current.schedule} state={state} onChange={onChange} />
+      </div>
     </section>
   );
 }

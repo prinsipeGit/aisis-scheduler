@@ -32,20 +32,23 @@ export function SectionChips({ schedule, state, onChange }: Props) {
       {schedule.map((s) => {
         const key = sectionKey(s);
         return (
-          <li key={key} className="chip">
+          <li key={key} className="chip" data-locked={state.lockedSections.includes(key)}>
             {/* The code shown is the one THIS candidate used: a PHILO 11 slot may be
-                .03 here and .05 in the next candidate (§11). */}
-            <strong>{key}</strong>{" "}
-            <span>{s.instructors.length > 0 ? s.instructors.join(", ") : "TBA"}</span>
-            {s.modality && <span> {s.modality}</span>}
-            {s.meetings.length === 0 && <span> time TBA</span>}{" "}
-            <button type="button" onClick={() => toggle("lockedSections", key)}>
-              {state.lockedSections.includes(key) ? "Unlock" : "Lock"}
-            </button>{" "}
-            <button type="button" onClick={() => toggle("fullSections", key)}>
-              {state.fullSections.includes(key) ? "Unmark full" : "Mark full"}
-            </button>{" "}
-            <button type="button" onClick={() => exclude(key)}>Exclude</button>
+                .03 here and .05 in the next candidate (§11). It leads the row, in mono,
+                because it is the string the student retypes into AISIS. */}
+            <span className="chip-code">{key}</span>{" "}
+            <span className="chip-who">{s.instructors.length > 0 ? s.instructors.join(", ") : "TBA"}</span>
+            {s.modality && <span className="chip-flag">{s.modality}</span>}
+            {s.meetings.length === 0 && <span className="chip-flag">time TBA</span>}{" "}
+            <span className="chip-actions">
+              <button type="button" onClick={() => toggle("lockedSections", key)}>
+                {state.lockedSections.includes(key) ? "Unlock" : "Lock"}
+              </button>{" "}
+              <button type="button" onClick={() => toggle("fullSections", key)}>
+                {state.fullSections.includes(key) ? "Unmark full" : "Mark full"}
+              </button>{" "}
+              <button type="button" onClick={() => exclude(key)}>Exclude</button>
+            </span>
           </li>
         );
       })}

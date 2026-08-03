@@ -45,9 +45,14 @@ export function Pager({ index, count, score, onIndex }: Props) {
               disabled={index === 0} onClick={() => onIndex(index - 1)}>
         Prev
       </button>
+      {/* Same words, different weight: the rank is what a student reads at a glance, so it
+          carries the size, and the qualifier sits quiet beside it. Split across spans purely
+          for typography — the text content is unchanged. */}
       <span className="pager-count" aria-hidden="true">
-        {String(index + 1).padStart(2, "0")} / {count} &mdash; {percent}% toward the best of this set, on your top preference
+        <span className="pager-rank">{String(index + 1).padStart(2, "0")} / {count}</span>
+        <span className="pager-score">{" "}&mdash; {percent}% toward the best of this set, on your top preference</span>
       </span>
+      <span className="spacer" />
       <span className="sr-only" role="status" aria-live="polite">
         Schedule {index + 1} of {count} &mdash; {percent}% toward the best of this set, on your top preference.
       </span>
