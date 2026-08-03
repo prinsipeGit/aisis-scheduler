@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
-import "@fontsource/archivo-black/400.css";
-import "@fontsource/inter/400.css";
-import "@fontsource/inter/600.css";
+import "@fontsource-variable/space-grotesk";
+import "@fontsource-variable/plus-jakarta-sans";
+import "@fontsource-variable/jetbrains-mono";
 import { getTerms, loadCatalog, loadCommunityRatings, isStale, CatalogUnavailableError, type TermOption } from "../lib/catalog";
 import { getPrograms, loadProgram, getBlock } from "../lib/curriculum";
 import { mergeRatings } from "../lib/profs";
@@ -16,21 +16,19 @@ import { ProgramSection } from "./setup/ProgramSection";
 import { SemesterSection } from "./setup/SemesterSection";
 import { CoursesSection } from "./setup/CoursesSection";
 import { AlreadyHaveSection } from "./setup/AlreadyHaveSection";
-import { PreferencesSection } from "./setup/PreferencesSection";
+import { PreferencesDialog } from "./setup/PreferencesDialog";
 import { Stage } from "./stage/Stage";
-import { CandidateList } from "./candidates/CandidateList";
 
 // The JSON import's inferred type ("pairs" as string[][]) doesn't structurally match the
 // AliasFile tuple type ([string, string][]), so the cast must go through `unknown` first.
 const aliases = aliasData as unknown as AliasFile;
 
-type SetupId = "program" | "semester" | "courses" | "have" | "preferences";
+type SetupId = "program" | "semester" | "courses" | "have";
 const SETUP: { id: SetupId; label: string }[] = [
   { id: "program", label: "Program" },
   { id: "semester", label: "Semester" },
   { id: "courses", label: "Courses" },
   { id: "have", label: "Classes you already have" },
-  { id: "preferences", label: "Preferences" },
 ];
 
 export default function App() {
@@ -39,6 +37,7 @@ export default function App() {
   const [loaded] = useState(() => loadState(""));
   const [state, setState] = useState<UserState>(loaded.state);
   const [open, setOpen] = useState<SetupId>("program");
+  const [prefsOpen, setPrefsOpen] = useState(false);
 
   const [terms, setTerms] = useState<TermOption[]>([]);
   const [programs, setPrograms] = useState<ProgramSummary[]>([]);
@@ -191,13 +190,18 @@ export default function App() {
                   {id === "have" && (
                     <AlreadyHaveSection resolved={schedules.resolved} state={state} onChange={setState} />
                   )}
-                  {id === "preferences" && (
-                    <PreferencesSection catalog={catalog} state={state} resolved={schedules.resolved} onChange={setState} />
-                  )}
                 </div>
               )}
             </section>
           ))}
+          <div className="rail-foot">
+            <button type="button" className="prefs-trigger" onClick={() => setPrefsOpen(true)}>
+              <span>Preferences</span>
+              {/* Supplementary: the button's accessible name should be the action, not a
+                  recital of everything behind it. */}
+              <span className="hint" aria-hidden="true">Ranking, time limits, protected time, professors</span>
+            </button>
+          </div>
         </aside>
 
         <main className="stage">
@@ -213,10 +217,12 @@ export default function App() {
           />
         </main>
 
-        <aside className="rail rail-candidates" aria-label="Candidates">
-          <CandidateList ranked={schedules.ranked} index={index} onPick={setIndex} />
-        </aside>
       </div>
+
+      {prefsOpen && (
+        <PreferencesDialog catalog={catalog} state={state} resolved={schedules.resolved}
+                           onChange={setState} onClose={() => setPrefsOpen(false)} />
+      )}
 
       <footer className="cockpit-footer">Unofficial planning tool · Always verify your final schedule in AISIS.</footer>
     </div>

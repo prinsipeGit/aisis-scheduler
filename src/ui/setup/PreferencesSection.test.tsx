@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, afterEach } from "vitest";
+import { describe, it, expect, vi, afterEach, beforeEach } from "vitest";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { PreferencesSection } from "./PreferencesSection";
 import { defaultState } from "../../lib/storage";
@@ -28,10 +28,15 @@ const resolvedSlot = (sections: Section[], included = true): ResolvedSlot => ({
 const prefs = (over: Partial<Preferences> = {}): Preferences =>
   ({ ...defaultState("2026-1").preferences, ...over });
 
+// Which tab the controls under test live behind. Set per describe block rather than passed at
+// every call site, so the 17 assertions below stay about payloads instead of navigation.
+let TAB = "Ranking";
+
 const setup = (over: Partial<UserState> = {}, resolved: ResolvedSlot[] = []) => {
   const state: UserState = { ...defaultState("2026-1"), ...over };
   const onChange = vi.fn();
   render(<PreferencesSection catalog={catalog} state={state} resolved={resolved} onChange={onChange} />);
+  fireEvent.click(screen.getByRole("tab", { name: TAB }));
   const written = () => onChange.mock.calls[onChange.mock.calls.length - 1][0] as UserState;
   return { onChange, written };
 };
@@ -42,6 +47,7 @@ const optionValues = (select: HTMLElement) =>
 afterEach(cleanup);
 
 describe("PreferencesSection time limits", () => {
+  beforeEach(() => { TAB = "Time"; });
   it("offers every hour on both bounds while neither is set", () => {
     setup({ preferences: prefs() });
     // 15 hours (7 AM - 9 PM) plus "any time".
@@ -89,6 +95,7 @@ describe("PreferencesSection time limits", () => {
 });
 
 describe("PreferencesSection ranking criteria", () => {
+  beforeEach(() => { TAB = "Ranking"; });
   it("reorders a criterion without changing the rest", () => {
     const { written } = setup({
       preferences: prefs({ criteria: ["compactDays", "fewestDays", "lateStart"] }),
@@ -122,6 +129,7 @@ describe("PreferencesSection ranking criteria", () => {
 });
 
 describe("PreferencesSection protected time", () => {
+  beforeEach(() => { TAB = "Time"; });
   it("adds a protected block with a usable default", () => {
     const { written } = setup({ preferences: prefs() });
     fireEvent.click(screen.getByRole("button", { name: /add protected block/i }));
@@ -156,6 +164,7 @@ describe("PreferencesSection protected time", () => {
 });
 
 describe("PreferencesSection professor ratings", () => {
+  beforeEach(() => { TAB = "Professors"; });
   const withProf = [resolvedSlot([section("MATH 10", ["DELA CRUZ, JUAN"])])];
 
   it("writes a rating keyed by both professor and course", () => {

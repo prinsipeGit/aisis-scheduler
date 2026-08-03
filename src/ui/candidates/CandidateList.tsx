@@ -41,19 +41,16 @@ export function CandidateList({ ranked, index, onPick }: Props) {
         const percent = Math.round(r.score * 100);
         const isCurrent = i === current;
 
-        // `score` is the top ranking criterion, min-max normalized across the schedules on
-        // screen right now (lib/ranker.ts) — a within-set relative position, not an absolute
-        // match quality. Sorting happens before normalizing, so row 0 always reads 100% and the
-        // last row always reads 0%, even when the real spread is a single minute; when the top
-        // criterion ties across the whole set every row reads 100% too.
+        // `score` is a within-set relative position across every criterion the student ordered
+        // (lib/ranker.ts), capped so it never rises as rank falls — not an absolute match quality.
         //
-        // Which is why the number is not printed on every row: 500 rows each stating "100%"
-        // told the student nothing and drowned out the facts that DO differ. It is drawn as a
-        // relative bar instead — equal bars are the truth when the criterion ties — while the
-        // full qualified sentence, in the same framing the Pager uses, stays in the row's
-        // accessible name so the number never appears anywhere stripped of its qualifier.
+        // It is drawn as a bar rather than printed on every row: 500 rows each stating a
+        // percentage drowned out the facts that actually differ between candidates. Equal bars
+        // are the truth where candidates genuinely tie. The full qualified sentence, in the same
+        // framing the Pager uses, stays in the row's accessible name, so the number never appears
+        // anywhere stripped of its qualifier.
         const label =
-          `#${i + 1} — ${percent}% toward the best of this set, on your top preference` +
+          `#${i + 1} — ${percent}% toward the best of this set, across your preferences` +
           ` — ${days} ${days === 1 ? "day" : "days"} on campus` +
           (span !== null ? `, ${formatTime(span.start)} to ${formatTime(span.end)}` : "") +
           (isCurrent ? " — showing now" : "");

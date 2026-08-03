@@ -21,7 +21,7 @@ function deptFor(courseCode: string): { background: string; color: string } {
   return { background: `var(--dept-${n})`, color: `var(--dept-${n}-ink)` };
 }
 
-export function WeekGrid({ schedule }: { schedule: Schedule }) {
+export function WeekGrid({ schedule, changed }: { schedule: Schedule; changed?: Set<string> }) {
   const timed = schedule.flatMap((s) => s.meetings);
   // Bounds still come from the data — ITMGT 20.51 QRF runs to 21:30 and used to overflow a grid
   // that hard-stopped at 21:00 (§11) — but the default frame is the teaching day, 7am to 6pm,
@@ -64,7 +64,8 @@ export function WeekGrid({ schedule }: { schedule: Schedule }) {
               s.meetings
                 .filter((m) => m.days.includes(day))
                 .map((m, i) => (
-                  <div key={`${sectionKey(s)}-${day}-${i}`} className="block"
+                  <div key={`${sectionKey(s)}-${day}-${i}`}
+                       className={changed?.has(sectionKey(s)) ? "block is-changed" : "block"}
                        style={{
                          top: HEADER + (m.start - start) * PX_PER_MIN,
                          height: (m.end - m.start) * PX_PER_MIN,

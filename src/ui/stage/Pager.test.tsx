@@ -32,7 +32,7 @@ describe("Pager", () => {
     const { container } = render(<Pager index={1} count={41} score={0.91} onIndex={() => {}} />);
     const visible = container.querySelector(".pager-count");
     expect(visible?.textContent).toBe(
-      "02 / 41 — 91% toward the best of this set, on your top preference"
+      "02 / 41 — 91% toward the best of this set, across your preferences"
     );
   });
 
@@ -40,7 +40,7 @@ describe("Pager", () => {
     render(<Pager index={1} count={41} score={0.91} onIndex={() => {}} />);
     const live = screen.getByRole("status");
     expect(live.textContent).toBe(
-      "Schedule 2 of 41 — 91% toward the best of this set, on your top preference."
+      "Schedule 2 of 41 — 91% toward the best of this set, across your preferences."
     );
   });
 

@@ -23,20 +23,13 @@ export function Pager({ index, count, score, onIndex }: Props) {
     return () => window.removeEventListener("keydown", onKey);
   }, [index, count, onIndex]);
 
-  // `score` is metrics[0] (the top criterion) min-max normalized across the CURRENT candidate
-  // set (ranker.ts): (value - min) / (max - min) over the schedules on screen right now. It is
-  // a within-set relative position, not a ratio to anything absolute — it says nothing about
-  // how well a schedule satisfies the student, only how it stands next to its neighbors here.
-  // Sorting is lexicographic, so row 0 always holds the max on the top criterion and the last
-  // row always holds the min: candidate 1 is always 100% and the last candidate is always 0%,
-  // regardless of how tight or wide the real gap is. And when the top criterion ties across the
-  // whole set (spread 0), every candidate reads 100% too — which is honest under this framing
-  // (tied candidates are, by definition, all at the best value in the set) but would be a false
-  // "full match" claim under an absolute-quality framing. So the copy never says "match" or
-  // "satisfies" — it says where this schedule sits between the worst and best of this set on the
-  // student's top preference, always attached to the rank position, never standing alone. It is
-  // rendered here in the visible row (not just the .sr-only live region below) so a sighted
-  // student sees it too.
+  // `score` is a within-set relative position (ranker.ts): every criterion the student ordered,
+  // normalised across the candidates on screen right now and combined with decaying weights, then
+  // capped so it can never rise as rank falls. It says where this schedule sits between the worst
+  // and best of THIS set — nothing about how well it satisfies the student in absolute terms, and
+  // nothing that carries to a different set. So the copy never says "match" or "satisfies", and
+  // the number never appears without the rank position beside it. Rendered in the visible row, not
+  // only the .sr-only live region, so a sighted student sees it too.
   const percent = Math.round(score * 100);
 
   return (
@@ -50,11 +43,11 @@ export function Pager({ index, count, score, onIndex }: Props) {
           for typography — the text content is unchanged. */}
       <span className="pager-count" aria-hidden="true">
         <span className="pager-rank">{String(index + 1).padStart(2, "0")} / {count}</span>
-        <span className="pager-score">{" "}&mdash; {percent}% toward the best of this set, on your top preference</span>
+        <span className="pager-score">{" "}&mdash; {percent}% toward the best of this set, across your preferences</span>
       </span>
       <span className="spacer" />
       <span className="sr-only" role="status" aria-live="polite">
-        Schedule {index + 1} of {count} &mdash; {percent}% toward the best of this set, on your top preference.
+        Schedule {index + 1} of {count} &mdash; {percent}% toward the best of this set, across your preferences.
       </span>
       <button type="button" aria-label="Next schedule"
               disabled={index >= count - 1} onClick={() => onIndex(index + 1)}>

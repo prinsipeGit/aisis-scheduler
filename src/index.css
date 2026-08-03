@@ -1,41 +1,66 @@
-/* AISIS Scheduler — "enlistment desk"
-   The job of this page is to produce a short list of section codes a student types by hand,
-   under time pressure, into a system that fills seats in seconds. So the code is the hero:
-   set in mono, high contrast, always legible. Everything else is scaffolding that helps the
-   student trust those codes. Display type appears exactly once, in the wordmark. */
+/* AISIS Scheduler — "Studio"
+   A student comes here to produce one thing: a short list of section codes they will retype,
+   fast, into a system that fills seats in seconds. So the code is the hero — set in mono,
+   high contrast, always legible — and everything else is scaffolding that helps them trust it.
+
+   Type: Space Grotesk carries the personality (wordmark, headings, the rank numerals), Plus
+   Jakarta Sans does the reading, JetBrains Mono does the data. All three are shipped, not
+   system stacks, so the app looks the same on a Windows lab machine as on a Mac.
+
+   Motion is spent in one place: what changed between candidates. */
 
 :root {
-  /* Paper is cool, not cream: this is an instrument, not stationery. */
-  --paper: #f2f4f7;
+  /* Surfaces: three layers, so panels read as stacked rather than outlined. */
+  --paper: #eef1f7;
   --surface: #ffffff;
-  --sunken: #f7f8fa;
-  --ink: #0e1621;
-  --muted: #626e7e;
-  --rule: #dce1e8;
-  --rule-soft: #e9edf2;
-  /* Ateneo blue. The accent belongs to the student's own school, not to a design trend. */
-  --accent: #0b3c6e;
-  --accent-soft: #e8eef5;
-  --signal: #8a4b06;
-  --signal-bg: #fdf4e5;
-  --radius: 10px;
-  --radius-sm: 6px;
+  --sunken: #f4f6fa;
+  --raised: #ffffff;
 
-  /* Department tints. Low saturation, dark text on top — a timetable board, not a candy chart.
-     Assigned by subject prefix in WeekGrid, so every MATH section shares one tint. */
-  --dept-1: #dce7f3; --dept-1-ink: #123a63;
-  --dept-2: #e5e3f4; --dept-2-ink: #3a3072;
-  --dept-3: #d9ece4; --dept-3-ink: #14513c;
-  --dept-4: #f6e3e2; --dept-4-ink: #6d2a2a;
-  --dept-5: #f3e8d9; --dept-5-ink: #5f4413;
-  --dept-6: #dee9ec; --dept-6-ink: #1b4a55;
+  --ink: #131a2a;
+  --ink-soft: #414b60;
+  --muted: #6b7689;
+  --rule: #dbe1ea;
+  --rule-soft: #e9edf3;
 
-  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  /* Ateneo blue, brightened for actions and kept deep for emphasis. */
+  --accent: #1f4fd8;
+  --accent-deep: #0b3c6e;
+  --accent-soft: #e7edfd;
+  --accent-ring: rgba(31, 79, 216, 0.28);
 
-  font-family: Inter, ui-sans-serif, -apple-system, "Segoe UI", sans-serif;
+  --ok: #0d8f68;
+  --ok-soft: #e2f4ee;
+  --warn: #9a5b06;
+  --warn-soft: #fdf3e3;
+  --stop: #b3305a;
+  --stop-soft: #fceef2;
+
+  --radius: 14px;
+  --radius-sm: 9px;
+  --radius-xs: 6px;
+  --shadow-sm: 0 1px 2px rgba(19, 26, 42, 0.06), 0 1px 3px rgba(19, 26, 42, 0.04);
+  --shadow: 0 1px 2px rgba(19, 26, 42, 0.05), 0 10px 26px -8px rgba(19, 26, 42, 0.16);
+  --shadow-lg: 0 24px 70px -18px rgba(19, 26, 42, 0.38);
+
+  /* Department tints. Assigned by subject prefix, so the colour tells you which department a
+     block belongs to. Saturated enough to tell apart at a glance, light enough to read on. */
+  --dept-1: #dce8fb; --dept-1-ink: #14396f;
+  --dept-2: #e6e2fa; --dept-2-ink: #3b2d78;
+  --dept-3: #d6efe4; --dept-3-ink: #0f5340;
+  --dept-4: #fbe1e6; --dept-4-ink: #7a2440;
+  --dept-5: #fcebd6; --dept-5-ink: #6d4310;
+  --dept-6: #d7edf3; --dept-6-ink: #14505f;
+
+  --display: "Space Grotesk Variable", "Space Grotesk", system-ui, sans-serif;
+  --body: "Plus Jakarta Sans Variable", "Plus Jakarta Sans", system-ui, sans-serif;
+  --mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  font-family: var(--body);
   color: var(--ink);
   background: var(--paper);
-  line-height: 1.5;
+  line-height: 1.55;
   font-synthesis: none;
   -webkit-font-smoothing: antialiased;
 }
@@ -47,122 +72,180 @@ body { margin: 0; min-width: 320px; }
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
 }
-
 .tabular { font-variant-numeric: tabular-nums; }
 
 /* ---------- shell ---------- */
 
-.cockpit { max-width: 1480px; margin: 0 auto; padding: 0 20px 28px; }
+.cockpit { max-width: 1440px; margin: 0 auto; padding: 0 22px 32px; }
 
 .cockpit-header {
-  display: flex; align-items: baseline; gap: 12px;
-  padding: 18px 0 14px; margin-bottom: 18px;
+  display: flex; align-items: center; gap: 12px;
+  padding: 20px 0 16px; margin-bottom: 20px;
   border-bottom: 1px solid var(--rule);
 }
 .wordmark {
-  font-family: "Archivo Black", Inter, sans-serif;
-  font-size: 1.05rem; letter-spacing: -0.015em;
+  font-family: var(--display); font-weight: 700; font-size: 1.15rem;
+  letter-spacing: -0.02em;
 }
 .term-badge {
-  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.04em;
-  color: var(--accent); background: var(--accent-soft);
-  border-radius: var(--radius-sm); padding: 3px 8px;
+  font-family: var(--mono); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.02em;
+  color: var(--accent-deep); background: var(--accent-soft);
+  border-radius: 999px; padding: 3px 10px;
 }
-.privacy-badge { margin-left: auto; font-size: 0.75rem; color: var(--muted); }
+.privacy-badge { margin-left: auto; font-size: 0.76rem; color: var(--muted); }
 
-.notice-stack { display: grid; gap: 8px; margin-bottom: 16px; }
+.notice-stack { display: grid; gap: 9px; margin-bottom: 18px; }
 .banner {
-  background: var(--signal-bg); color: var(--signal);
-  border: 1px solid #f0e0c4; border-left: 3px solid var(--signal);
-  border-radius: var(--radius-sm); padding: 10px 14px; margin: 0; font-size: 0.86rem;
+  background: var(--warn-soft); color: var(--warn);
+  border: 1px solid #f2e2c6; border-left: 3px solid var(--warn);
+  border-radius: var(--radius-sm); padding: 11px 15px; margin: 0; font-size: 0.86rem;
+  animation: rise 0.32s var(--ease) both;
 }
 
-.zones { display: grid; grid-template-columns: 328px minmax(0, 1fr) 268px; gap: 18px; align-items: start; }
+/* Two zones now. Candidates moved into the stage, so setup gets the width it was starving for. */
+.zones { display: grid; grid-template-columns: 384px minmax(0, 1fr); gap: 20px; align-items: start; }
 .rail, .stage {
   background: var(--surface); border: 1px solid var(--rule);
-  border-radius: var(--radius); padding: 4px 16px;
+  border-radius: var(--radius); box-shadow: var(--shadow-sm);
 }
-.stage { padding: 16px 18px 18px; }
-.rail-candidates { padding: 14px 14px 16px; }
+.rail { padding: 6px 20px 16px; }
+.stage { padding: 18px 20px 20px; }
 
 /* ---------- setup rail ---------- */
 
-/* The five steps are a real sequence — you cannot pick courses before a semester — so the
-   numbering carries information rather than decorating the list. */
+/* Five real steps in order — you cannot pick courses before a semester — so the numbering
+   carries information instead of decorating the list. */
 .rail-setup { counter-reset: step; }
 .accordion { counter-increment: step; }
 .accordion + .accordion { border-top: 1px solid var(--rule-soft); }
-.accordion h2 { margin: 0; font-size: 0.9rem; }
+.accordion h2 { margin: 0; font-size: 0.95rem; font-family: var(--display); letter-spacing: -0.01em; }
 .accordion h2 button {
-  width: 100%; display: flex; align-items: center; gap: 10px;
-  background: none; border: 0; padding: 13px 0; font: inherit;
+  width: 100%; display: flex; align-items: center; gap: 11px;
+  background: none; border: 0; padding: 15px 0; font: inherit;
   font-weight: 600; color: inherit; cursor: pointer; text-align: left;
+  transition: color 0.18s var(--ease);
 }
 .accordion h2 button::before {
   content: counter(step, decimal-leading-zero);
-  font-family: var(--mono); font-size: 0.7rem; font-weight: 400;
-  color: var(--muted); letter-spacing: 0.03em;
+  font-family: var(--mono); font-size: 0.68rem; font-weight: 500;
+  color: var(--muted); transition: color 0.18s var(--ease);
 }
-.accordion h2 button[aria-expanded="true"] { color: var(--accent); }
+.accordion h2 button:hover { color: var(--accent); }
+.accordion h2 button[aria-expanded="true"],
 .accordion h2 button[aria-expanded="true"]::before { color: var(--accent); }
-.accordion-body { padding: 0 0 16px 26px; }
+.accordion-body { padding: 0 0 18px 27px; animation: unfold 0.26s var(--ease) both; }
 
-.form-grid { display: grid; gap: 12px; }
+.rail-foot { border-top: 1px solid var(--rule-soft); padding-top: 14px; margin-top: 2px; }
+.prefs-trigger {
+  width: 100%; display: grid; gap: 2px; text-align: left; cursor: pointer;
+  background: var(--sunken); border: 1px solid var(--rule); border-radius: var(--radius-sm);
+  padding: 12px 14px; font: inherit; color: inherit;
+  transition: background 0.18s var(--ease), border-color 0.18s var(--ease), transform 0.18s var(--ease);
+}
+.prefs-trigger > span:first-child { font-family: var(--display); font-weight: 600; font-size: 0.92rem; }
+.prefs-trigger .hint { margin: 0; }
+.prefs-trigger:hover { background: var(--accent-soft); border-color: var(--accent); transform: translateY(-1px); }
+
+.form-grid { display: grid; gap: 13px; }
 .form-grid label { display: flex; flex-direction: column; gap: 5px; font-size: 0.8rem; color: var(--muted); }
 
 input[type="text"], input[type="search"], select {
-  font: inherit; font-size: 0.86rem; color: var(--ink);
+  font: inherit; font-size: 0.88rem; color: var(--ink);
   background: var(--surface); border: 1px solid var(--rule);
-  border-radius: var(--radius-sm); padding: 7px 9px; width: 100%;
+  border-radius: var(--radius-xs); padding: 8px 10px; width: 100%;
+  transition: border-color 0.16s var(--ease), box-shadow 0.16s var(--ease);
 }
 select { cursor: pointer; }
-input:hover, select:hover { border-color: #c3ccd8; }
+input:hover, select:hover { border-color: #bcc6d4; }
+input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-ring); outline: none; }
 
-.hint { font-size: 0.78rem; color: var(--muted); margin: 5px 0 0; line-height: 1.45; }
+.hint { font-size: 0.79rem; color: var(--muted); margin: 6px 0 0; line-height: 1.5; }
 
-/* The unit count is a number you compare against a target — mono keeps the digits aligned. */
-.metric { font-size: 0.86rem; margin: 0 0 10px; color: var(--muted); }
-.metric strong { font-family: var(--mono); font-size: 0.95rem; color: var(--ink); font-weight: 600; }
+.metric { font-size: 0.87rem; margin: 0 0 11px; color: var(--muted); }
+.metric strong { font-family: var(--mono); font-size: 0.98rem; color: var(--ink); font-weight: 600; }
 
 .add-panel {
   background: var(--sunken); border: 1px solid var(--rule-soft);
-  border-radius: var(--radius-sm); padding: 11px 12px; margin-top: 12px;
+  border-radius: var(--radius-sm); padding: 12px 13px; margin-top: 13px;
 }
 .add-panel > :first-child { margin-top: 0; }
 
-.course-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
+.course-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .course-list li {
   border: 1px solid var(--rule); border-radius: var(--radius-sm);
-  padding: 9px 11px; font-size: 0.86rem;
+  padding: 10px 12px; font-size: 0.87rem;
+  transition: border-color 0.16s var(--ease), background 0.16s var(--ease);
 }
-.course-list li > label { display: inline-flex; align-items: baseline; gap: 8px; font-weight: 500; }
-/* A slot excluded from generation. Recessed rather than struck through: it is still a real
-   requirement, just not counted this run. */
+.course-list li:hover { border-color: #c6cfdc; }
+.course-list li > label { display: inline-flex; align-items: baseline; gap: 9px; font-weight: 500; }
+/* Excluded from generation. Recessed rather than struck through: still a real requirement,
+   just not counted this run. */
 .muted-row { background: var(--sunken); color: var(--muted); border-style: dashed; }
 
-/* ---------- stage ---------- */
-
-/* A control, not a headline. The rank reads at a glance; the qualifier stays quiet beside it. */
-.pager { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
-.pager-count { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
-.pager-rank {
-  font-family: var(--mono); font-size: 1.25rem; font-weight: 600;
-  font-variant-numeric: tabular-nums; letter-spacing: -0.01em; white-space: nowrap;
-}
-.pager-score { font-size: 0.76rem; color: var(--muted); line-height: 1.35; }
-.pager .spacer { margin-left: auto; }
+/* ---------- buttons ---------- */
 
 button {
-  font: inherit; font-size: 0.82rem; cursor: pointer;
+  font: inherit; font-size: 0.83rem; cursor: pointer;
   background: var(--surface); color: var(--ink);
-  border: 1px solid var(--rule); border-radius: var(--radius-sm); padding: 6px 11px;
+  border: 1px solid var(--rule); border-radius: var(--radius-xs); padding: 7px 12px;
+  transition: background 0.16s var(--ease), border-color 0.16s var(--ease),
+              transform 0.16s var(--ease), box-shadow 0.16s var(--ease);
 }
-button:hover:not(:disabled) { border-color: #b8c2d0; background: var(--sunken); }
-button:disabled { color: #adb6c2; cursor: default; }
+button:hover:not(:disabled) { border-color: #b4bfcf; background: var(--sunken); }
+button:active:not(:disabled) { transform: translateY(1px); }
+button:disabled { color: #b0b9c6; cursor: default; }
 .btn-primary {
-  background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 500;
+  background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600;
+  box-shadow: 0 1px 2px rgba(31, 79, 216, 0.3);
 }
-.btn-primary:hover:not(:disabled) { background: #0d4a86; border-color: #0d4a86; }
+.btn-primary:hover:not(:disabled) { background: #1a45bf; border-color: #1a45bf; }
+.icon-button {
+  border: 0; background: none; font-size: 1.4rem; line-height: 1;
+  padding: 2px 9px; color: var(--muted); border-radius: var(--radius-xs);
+}
+.icon-button:hover { background: var(--sunken); color: var(--ink); }
+
+/* ---------- pager ---------- */
+
+.pager { display: flex; align-items: center; gap: 13px; margin-bottom: 13px; }
+.pager-count { display: flex; align-items: baseline; gap: 11px; min-width: 0; }
+.pager-rank {
+  font-family: var(--display); font-size: 1.5rem; font-weight: 700;
+  font-variant-numeric: tabular-nums; letter-spacing: -0.03em; white-space: nowrap;
+}
+.pager-score { font-size: 0.77rem; color: var(--muted); line-height: 1.4; }
+.pager .spacer { margin-left: auto; }
+
+/* ---------- candidate filmstrip ---------- */
+
+.candidate-list {
+  list-style: none; margin: 0 0 15px; padding: 3px 1px 9px;
+  display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x proximity;
+}
+.candidate-list li { flex: 0 0 auto; scroll-snap-align: start; }
+.candidate-list button {
+  display: grid; gap: 6px; text-align: left; min-width: 158px;
+  background: var(--surface); border: 1px solid var(--rule);
+  border-radius: var(--radius-sm); padding: 9px 11px; color: inherit;
+}
+.candidate-list button:hover { background: var(--sunken); border-color: #bcc6d4; }
+.candidate-list button[aria-current="true"] {
+  border-color: var(--accent); background: var(--accent-soft);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.cand-top { display: flex; align-items: baseline; gap: 9px; }
+.cand-rank {
+  font-family: var(--mono); font-size: 0.79rem; font-weight: 600;
+  color: var(--muted); font-variant-numeric: tabular-nums;
+}
+.candidate-list button[aria-current="true"] .cand-rank { color: var(--accent-deep); }
+.cand-facts { font-size: 0.73rem; color: var(--muted); margin-left: auto; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.cand-bar { height: 3px; border-radius: 2px; background: var(--rule-soft); overflow: hidden; }
+.cand-bar > span {
+  display: block; height: 100%; background: var(--accent); opacity: 0.5;
+  transition: width 0.4s var(--ease);
+}
+.candidate-list button[aria-current="true"] .cand-bar > span { opacity: 1; }
 
 /* ---------- week grid ---------- */
 
@@ -171,8 +254,7 @@ button:disabled { color: #adb6c2; cursor: default; }
 .grid { display: grid; gap: 3px; }
 .day-col {
   position: relative; background: var(--sunken);
-  border-radius: var(--radius-sm); overflow: hidden;
-  /* Hour rules, so a block's position reads against real time rather than floating. */
+  border-radius: var(--radius-xs); overflow: hidden;
   background-image: repeating-linear-gradient(
     to bottom,
     transparent 0, transparent calc(var(--hour) - 1px),
@@ -183,109 +265,179 @@ button:disabled { color: #adb6c2; cursor: default; }
 }
 .day-label {
   position: relative; z-index: 1; text-align: center; height: 28px; line-height: 28px;
-  font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.06em;
+  font-family: var(--mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.07em;
   color: var(--muted); background: var(--surface);
 }
 .time-axis { position: relative; }
 .time-axis span {
-  position: absolute; right: 8px; transform: translateY(-50%);
+  position: absolute; right: 9px; transform: translateY(-50%);
   font-family: var(--mono); font-size: 0.64rem; color: var(--muted);
   font-variant-numeric: tabular-nums;
 }
 .block {
-  position: absolute; left: 3px; right: 3px; border-radius: 4px;
-  padding: 4px 5px; overflow: hidden; font-size: 0.66rem; line-height: 1.3;
+  position: absolute; left: 3px; right: 3px; border-radius: var(--radius-xs);
+  padding: 5px 6px; overflow: hidden; font-size: 0.67rem; line-height: 1.35;
   background: var(--dept-1); color: var(--dept-1-ink);
   border-left: 2px solid currentColor;
+  animation: settle 0.3s var(--ease) both;
 }
 .block strong {
-  display: block; font-family: var(--mono); font-size: 0.68rem;
+  display: block; font-family: var(--mono); font-size: 0.69rem;
   font-weight: 600; letter-spacing: -0.02em;
 }
 .block-when { font-variant-numeric: tabular-nums; opacity: 0.85; }
-.block-room { opacity: 0.7; }
+.block-room { opacity: 0.68; }
+/* The one place motion earns its keep: paging through near-identical weeks, only the classes
+   that actually changed announce themselves. */
+.block.is-changed { animation: swapped 0.62s var(--ease) both; }
 
-.tba-note { font-size: 0.78rem; color: var(--muted); margin: 10px 0 0; }
+.tba-note { font-size: 0.79rem; color: var(--muted); margin: 11px 0 0; }
 .tba-note code { font-family: var(--mono); color: var(--ink); }
 
-/* ---------- the enlistment strip: what you carry into AISIS ---------- */
+/* ---------- enlistment strip ---------- */
 
 .enlist {
-  margin-top: 16px; border: 1px solid var(--rule);
-  border-radius: var(--radius-sm); overflow: hidden;
+  margin-top: 17px; border: 1px solid var(--rule);
+  border-radius: var(--radius-sm); overflow: hidden; background: var(--surface);
 }
 .enlist-head {
-  display: flex; align-items: center; gap: 10px;
-  padding: 9px 12px; background: var(--sunken); border-bottom: 1px solid var(--rule);
+  display: flex; align-items: center; gap: 11px;
+  padding: 10px 13px; background: var(--sunken); border-bottom: 1px solid var(--rule);
 }
 .enlist-title {
-  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.07em;
-  text-transform: uppercase; color: var(--muted);
+  font-family: var(--display); font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted);
 }
-.enlist-actions { margin-left: auto; display: flex; gap: 7px; }
+.enlist-actions { margin-left: auto; display: flex; gap: 8px; }
 
 .chips { list-style: none; margin: 0; padding: 0; }
 .chip {
-  display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
-  padding: 9px 12px; font-size: 0.8rem;
+  display: flex; align-items: baseline; gap: 11px; flex-wrap: wrap;
+  padding: 10px 13px; font-size: 0.81rem;
+  transition: background 0.16s var(--ease);
 }
 .chip + .chip { border-top: 1px solid var(--rule-soft); }
+.chip:hover { background: var(--sunken); }
 .chip-code {
-  font-family: var(--mono); font-size: 0.88rem; font-weight: 600;
+  font-family: var(--mono); font-size: 0.89rem; font-weight: 600;
   letter-spacing: -0.02em; min-width: 8.5em;
 }
 .chip-who { color: var(--muted); flex: 1 1 auto; min-width: 0; }
 .chip-flag {
-  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.04em;
-  color: var(--signal); background: var(--signal-bg);
-  border-radius: 3px; padding: 1px 5px;
+  font-family: var(--mono); font-size: 0.67rem; letter-spacing: 0.03em;
+  color: var(--warn); background: var(--warn-soft);
+  border-radius: 3px; padding: 1px 6px;
 }
 .chip-actions { display: flex; gap: 6px; margin-left: auto; }
-.chip-actions button { padding: 3px 8px; font-size: 0.74rem; }
-.chip[data-locked="true"] { background: var(--accent-soft); }
-.chip[data-locked="true"] .chip-code { color: var(--accent); }
+.chip-actions button { padding: 3px 9px; font-size: 0.75rem; }
+.chip[data-locked="true"] { background: var(--ok-soft); }
+.chip[data-locked="true"] .chip-code { color: var(--ok); }
+
+/* ---------- preferences dialog ---------- */
+
+.scrim {
+  position: fixed; inset: 0; z-index: 40;
+  background: rgba(19, 26, 42, 0.42);
+  backdrop-filter: blur(3px);
+  /* minmax(0, …) rather than the default content-sized track: with an auto track the dialog's
+     own width is what sizes the column, so a percentage width resolves against itself and the
+     dialog stays at its full 720px on a 375px phone — overflowing, and invisibly so, because
+     opening the dialog also sets body { overflow: hidden }. */
+  display: grid; grid-template-columns: minmax(0, 1fr); justify-items: center; align-content: center;
+  padding: 22px;
+  animation: fade 0.2s var(--ease) both;
+}
+.dialog {
+  width: 100%; max-width: 720px; max-height: min(84vh, 780px);
+  display: flex; flex-direction: column;
+  background: var(--raised); border-radius: var(--radius);
+  box-shadow: var(--shadow-lg); outline: none;
+  animation: lift 0.28s var(--ease) both;
+}
+.dialog-head {
+  display: flex; align-items: center; gap: 12px;
+  padding: 16px 18px; border-bottom: 1px solid var(--rule);
+}
+.dialog-head h2 { margin: 0; font-family: var(--display); font-size: 1.05rem; letter-spacing: -0.02em; }
+.dialog-head .icon-button { margin-left: auto; }
+.dialog-body { overflow-y: auto; padding: 4px 18px 18px; }
+.dialog-foot {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 18px; border-top: 1px solid var(--rule); background: var(--sunken);
+  border-radius: 0 0 var(--radius) var(--radius);
+}
+.dialog-foot .hint { margin: 0; }
+.dialog-foot .btn-primary { margin-left: auto; }
+
+.tablist {
+  display: flex; gap: 3px; padding: 4px;
+  background: var(--sunken); border-radius: var(--radius-sm);
+  position: sticky; top: 0; z-index: 1; margin: 14px 0 4px;
+}
+.tab {
+  flex: 1 1 0; border: 0; background: none; border-radius: var(--radius-xs);
+  padding: 8px 10px; font-size: 0.84rem; font-weight: 500; color: var(--muted);
+}
+.tab:hover { background: rgba(255, 255, 255, 0.7); color: var(--ink); }
+.tab.is-active {
+  background: var(--surface); color: var(--accent-deep); font-weight: 600;
+  box-shadow: var(--shadow-sm);
+}
+.tabpanel { outline: none; animation: unfold 0.24s var(--ease) both; }
+.tabpanel h3 {
+  font-family: var(--display); font-size: 0.95rem; letter-spacing: -0.01em;
+  margin: 20px 0 8px;
+}
+.tabpanel h3:first-child { margin-top: 14px; }
+.tabpanel ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
+.tabpanel li { font-size: 0.86rem; }
+
+/* Ranking rows: label grows, the reorder buttons stay pinned right so the column of controls
+   reads as one edge instead of stepping in and out with the length of each label. */
+.criterion {
+  display: flex; align-items: center; gap: 10px;
+  border: 1px solid var(--rule-soft); border-radius: var(--radius-xs);
+  padding: 8px 10px; transition: background 0.16s var(--ease), border-color 0.16s var(--ease);
+}
+.criterion > label { display: flex; align-items: center; gap: 9px; flex: 1 1 auto; cursor: pointer; }
+.criterion.is-on { background: var(--accent-soft); border-color: #c9d8f7; }
+.criterion-move { display: flex; gap: 5px; flex: 0 0 auto; }
+.criterion-move button { padding: 3px 10px; font-size: 0.74rem; }
+
+.tabpanel .protected-row { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; margin-bottom: 8px; }
+.tabpanel .protected-row select { width: auto; min-width: 5.5em; }
+
+/* A time bound is a short value, not a paragraph — keep the control beside its label. */
+.tabpanel > label {
+  display: flex; align-items: center; gap: 12px;
+  padding: 9px 10px; margin-bottom: 7px; font-size: 0.87rem;
+  border: 1px solid var(--rule-soft); border-radius: var(--radius-xs);
+}
+.tabpanel > label select { width: auto; min-width: 8.5em; margin-left: auto; }
 
 /* ---------- diagnostics / empty ---------- */
 
-.empty-stage { text-align: center; padding: 56px 20px; color: var(--muted); }
-.empty-stage h2 { color: var(--ink); font-size: 1.05rem; margin: 0 0 10px; }
-.empty-stage p { margin: 0 auto; max-width: 46ch; font-size: 0.88rem; }
-.empty-stage ul { display: inline-block; text-align: left; font-size: 0.88rem; margin-top: 10px; }
-
-/* ---------- candidates rail ---------- */
-
-/* Every candidate used to repeat one identical sentence. What a student actually compares is
-   how many days they come in and how early they start — so those lead, and the score sits
-   underneath as a bar. When the top criterion ties the bars are equal, which is the truth. */
-.rail-candidates > h2 {
-  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.07em;
-  text-transform: uppercase; color: var(--muted); margin: 0 0 10px;
-}
-.candidate-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; max-height: 74vh; overflow-y: auto; }
-.candidate-list button {
-  width: 100%; display: grid; gap: 5px; text-align: left;
-  background: var(--surface); border: 1px solid var(--rule);
-  border-radius: var(--radius-sm); padding: 9px 10px; color: inherit;
-}
-.candidate-list button:hover { background: var(--sunken); border-color: #c3ccd8; }
-.candidate-list button[aria-current="true"] {
-  border-color: var(--accent); background: var(--accent-soft);
-  box-shadow: inset 2px 0 0 var(--accent);
-}
-.cand-top { display: flex; align-items: baseline; gap: 8px; }
-.cand-rank {
-  font-family: var(--mono); font-size: 0.78rem; font-weight: 600;
-  color: var(--muted); font-variant-numeric: tabular-nums;
-}
-.candidate-list button[aria-current="true"] .cand-rank { color: var(--accent); }
-.cand-facts { font-size: 0.76rem; color: var(--muted); margin-left: auto; font-variant-numeric: tabular-nums; }
-.cand-bar { height: 3px; border-radius: 2px; background: var(--rule-soft); overflow: hidden; }
-.cand-bar > span { display: block; height: 100%; background: var(--accent); opacity: 0.55; }
-.candidate-list button[aria-current="true"] .cand-bar > span { opacity: 1; }
+.empty-stage { text-align: center; padding: 60px 20px; color: var(--muted); }
+.empty-stage h2 { color: var(--ink); font-family: var(--display); font-size: 1.15rem; margin: 0 0 11px; letter-spacing: -0.02em; }
+.empty-stage p { margin: 0 auto; max-width: 46ch; font-size: 0.89rem; }
+.empty-stage ul { display: inline-block; text-align: left; font-size: 0.89rem; margin-top: 12px; }
 
 .cockpit-footer {
-  color: var(--muted); font-size: 0.76rem; text-align: center;
-  padding: 22px 0 0; margin-top: 22px; border-top: 1px solid var(--rule);
+  color: var(--muted); font-size: 0.77rem; text-align: center;
+  padding: 24px 0 0; margin-top: 24px; border-top: 1px solid var(--rule);
+}
+
+/* ---------- motion ---------- */
+
+@keyframes fade { from { opacity: 0; } }
+@keyframes rise { from { opacity: 0; transform: translateY(-5px); } }
+@keyframes unfold { from { opacity: 0; transform: translateY(-4px); } }
+@keyframes lift { from { opacity: 0; transform: translateY(10px) scale(0.985); } }
+@keyframes settle { from { opacity: 0; } }
+@keyframes swapped {
+  0% { opacity: 0; transform: scale(0.94); }
+  55% { box-shadow: 0 0 0 3px var(--accent-ring); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
 /* ---------- quality floor ---------- */
@@ -294,22 +446,21 @@ button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focu
   outline: 2px solid var(--accent); outline-offset: 2px;
 }
 
-@media (max-width: 1180px) {
-  .zones { grid-template-columns: 300px minmax(0, 1fr); }
-  .rail-candidates { grid-column: 1 / -1; }
-  .candidate-list { max-height: none; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); }
+@media (max-width: 1080px) {
+  .zones { grid-template-columns: 336px minmax(0, 1fr); }
 }
-@media (max-width: 760px) {
+@media (max-width: 860px) {
   /* minmax(0, …), not 1fr: a grid item's default min-width is its content, so a plain 1fr
      track refuses to shrink below the week grid and pushes the whole page sideways. */
   .zones { grid-template-columns: minmax(0, 1fr); }
-  .cockpit { padding: 0 12px 20px; }
+  .cockpit { padding: 0 13px 22px; }
   .accordion-body { padding-left: 0; }
-  /* Squeezed between Prev and Next, the qualifier collapses into a one-word column. Give it
-     the full width on its own line and let the buttons sit under it. */
   .pager { flex-wrap: wrap; }
   .pager-count { order: -1; flex: 1 0 100%; }
+  .dialog { max-height: 92vh; }
+  .scrim { padding: 10px; }
 }
+
 @media (prefers-reduced-motion: reduce) {
-  * { transition: none !important; animation: none !important; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
 }

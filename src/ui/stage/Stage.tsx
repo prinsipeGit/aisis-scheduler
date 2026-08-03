@@ -1,4 +1,6 @@
+import { useEffect, useRef } from "react";
 import type { CurriculumBlock, Program, UserState } from "../../lib/types";
+import { sectionKey } from "../../lib/types";
 import type { Schedules } from "../useSchedules";
 import { downloadScheduleImage } from "../export/scheduleImage";
 import { Pager } from "./Pager";
@@ -6,6 +8,7 @@ import { WeekGrid } from "./WeekGrid";
 import { SectionChips } from "./SectionChips";
 import { Diagnostics } from "./Diagnostics";
 import { EmptyStage } from "./EmptyStage";
+import { CandidateList } from "../candidates/CandidateList";
 
 interface Props {
   schedules: Schedules;
@@ -23,10 +26,26 @@ interface Props {
 
 export function Stage({ schedules, index, onIndex, state, block, program, onChange, catalogFailed = false }: Props) {
   const { ranked, diagnostics, search, resolved } = schedules;
+  // Survives across renders so a candidate change can be compared with the one before it.
+  const seen = useRef<Set<string>>(new Set());
 
   // Excluded from generation but still required: the week on screen is not the whole story,
   // and saying so is the point (§5.3, §5.6).
   const missing = resolved.filter((r) => r.slot.included && r.status !== "ok");
+
+  // Which sections this candidate has that the last one did not. Paging through 500 near-identical
+  // weeks the useful question is never "what is this schedule" but "what moved", so the blocks
+  // that actually changed announce themselves and the rest stay put.
+  //
+  // Computed before the early returns below, because the effect that advances the ref is a hook
+  // and hooks cannot sit behind a conditional return. The ref is read during render but written
+  // only after commit: writing it during render makes the diff wrong under StrictMode, which
+  // invokes render twice — the second pass would see the ref already advanced and conclude that
+  // nothing had changed.
+  const clampedIndex = Math.max(0, Math.min(index, ranked.length - 1));
+  const keys = ranked.length > 0 ? ranked[clampedIndex].schedule.map(sectionKey) : [];
+  const changed = new Set(keys.filter((k) => !seen.current.has(k)));
+  useEffect(() => { seen.current = new Set(keys); });
 
   if (ranked.length === 0) {
     if (!program || !block || state.slots.length === 0) {
@@ -79,7 +98,6 @@ export function Stage({ schedules, index, onIndex, state, block, program, onChan
     );
   }
 
-  const clampedIndex = Math.max(0, Math.min(index, ranked.length - 1));
   const current = ranked[clampedIndex];
 
   return (
@@ -91,7 +109,11 @@ export function Stage({ schedules, index, onIndex, state, block, program, onChan
         </p>
       )}
       <Pager index={clampedIndex} count={ranked.length} score={current.score} onIndex={onIndex} />
-      <WeekGrid schedule={current.schedule} />
+      {/* The candidate list used to be a third column that read as static, because every row
+          showed the same number. It scores across all criteria now, so the rows differ — and it
+          belongs beside the pager it drives rather than in a rail of its own. */}
+      <CandidateList ranked={ranked} index={clampedIndex} onPick={onIndex} />
+      <WeekGrid schedule={current.schedule} changed={changed} />
       {missing.length > 0 && <MissingList missing={missing} />}
       {/* The codes are what the student actually types into AISIS, so they get a frame of
           their own with the handoff attached, rather than trailing off the bottom of the page. */}

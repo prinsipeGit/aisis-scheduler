@@ -85,14 +85,48 @@ export function rank(
     return a.id.localeCompare(b.id); // deterministic final tiebreak
   });
 
-  // Display score: the top criterion normalised across the candidate set. Ordering is
-  // lexicographic, so this is shown, never sorted on.
-  const tops = rows.map((r) => r.metrics[0]);
-  const min = Math.min(...tops);
-  const max = Math.max(...tops);
-  const spread = max - min;
-  return rows.map((r) => ({
+  // Display score across ALL criteria, not just the first.
+  //
+  // Scoring only metrics[0] made the number useless in the common case: when the top criterion
+  // ties across the whole set — and `compactDays` ties constantly — every candidate scored 1,
+  // so 500 rows all read "100%" and the list looked static even though later criteria ranked
+  // them genuinely apart.
+  //
+  // Each criterion is normalised across the set, then combined with weights that decay by 3, so
+  // a lower-priority criterion can still separate candidates that tie on everything above it.
+  //
+  // Weight decay alone does NOT guarantee the composite agrees with the lexicographic order:
+  // (1.0, 0.0) outranks (0.9, 1.0) on the first criterion, yet scores lower once the second is
+  // added (1.0 vs 1.233). The decay only dominates when the gap at the deciding criterion is
+  // large, and gaps here can be arbitrarily small. So the composite is run through a cumulative
+  // minimum afterwards: the score may never rise as rank falls. Where the raw composite would
+  // have contradicted the order, the candidate is capped at the one above it and the two read as
+  // equal — which is the honest outcome, since the ordering, not the composite, is the truth.
+  const normalised = criteria.map((_, i) => {
+    const values = rows.map((r) => r.metrics[i]);
+    const min = Math.min(...values);
+    const spread = Math.max(...values) - min;
+    // A criterion nobody varies on contributes equally to everyone, so it cannot reorder.
+    return (v: number) => (spread === 0 ? 1 : (v - min) / spread);
+  });
+
+  const raw = rows.map((r) =>
+    r.metrics.reduce((sum, m, i) => sum + normalised[i](m) * Math.pow(3, -i), 0)
+  );
+  // rows is already in rank order, so a running minimum is all the clamp needs to be.
+  const composites: number[] = [];
+  for (let i = 0; i < raw.length; i++) {
+    composites.push(i === 0 ? raw[0] : Math.min(raw[i], composites[i - 1]));
+  }
+  const lo = composites[composites.length - 1] ?? 0;
+  const hi = composites[0] ?? 0;
+  const range = hi - lo;
+
+  return rows.map((r, i) => ({
     schedule: r.schedule,
-    score: spread === 0 ? 1 : (r.metrics[0] - min) / spread,
+    // Still a within-set relative position — the best of what is on screen scores 1, the worst
+    // scores 0 — but now it reflects every preference the student ordered, so two candidates
+    // that differ only on a lower-priority criterion no longer read as identical.
+    score: range === 0 ? 1 : (composites[i] - lo) / range,
   }));
 }

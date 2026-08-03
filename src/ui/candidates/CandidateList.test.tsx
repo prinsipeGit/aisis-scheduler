@@ -54,7 +54,7 @@ describe("CandidateList", () => {
     // normalization of the top ranking criterion across the CURRENT candidate set
     // (ranker.ts) — never a standalone match quality, never a bare percentage. It must always
     // be presented alongside its rank position, using the same relative framing the Pager
-    // uses ("... toward the best of this set, on your top preference"), so the two on-screen
+    // uses ("... toward the best of this set, across your preferences"), so the two on-screen
     // components never contradict each other. An exact-string assertion is what finally held
     // this requirement in Pager.tsx after it regressed twice untested — same treatment here.
     //
@@ -67,10 +67,10 @@ describe("CandidateList", () => {
     const first = screen.getByRole("button", { name: /#1/ });
     const second = screen.getByRole("button", { name: /#2/ });
     expect(first.querySelector(".sr-only")?.textContent).toBe(
-      "#1 — 100% toward the best of this set, on your top preference — 1 day on campus, 8:00 AM to 9:00 AM — showing now"
+      "#1 — 100% toward the best of this set, across your preferences — 1 day on campus, 8:00 AM to 9:00 AM — showing now"
     );
     expect(second.querySelector(".sr-only")?.textContent).toBe(
-      "#2 — 50% toward the best of this set, on your top preference — 2 days on campus, 8:00 AM to 9:00 AM"
+      "#2 — 50% toward the best of this set, across your preferences — 2 days on campus, 8:00 AM to 9:00 AM"
     );
     // And no bare percentage anywhere a sighted student can read one: the only place a digit
     // followed by "%" may appear is inside that qualified sentence.
