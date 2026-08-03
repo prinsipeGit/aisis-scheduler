@@ -84,14 +84,22 @@ export function slotFromCatalog(code: string, index: number): Slot {
 export function resolveSlots(
   slots: Slot[], catalog: Catalog, file: AliasFile, locked: string[]
 ): ResolvedSlot[] {
+  // A locked key belongs to exactly one slot, first match wins. Slots may accept the same
+  // codes — PFT3 and PFT4 alias to the identical 23-activity pool — and letting both claim
+  // one key pins both to one section, which then conflicts with itself and reports zero
+  // schedules as "PATHFit 3 and PATHFit 4 always conflict".
+  const claimed = new Set<string>();
   return slots.map((slot) => {
     // Computed once and returned on every branch: the pin picker must still list the
     // alternatives when `sections` has been narrowed to one or emptied.
     const allSections = sectionsFor(slot, catalog, file);
 
     // A pin is a locked section belonging to one of this slot's acceptable codes.
-    const pinnedSection = allSections.find((s) => locked.includes(sectionKey(s)));
+    const pinnedSection = allSections.find(
+      (s) => locked.includes(sectionKey(s)) && !claimed.has(sectionKey(s))
+    );
     if (pinnedSection) {
+      claimed.add(sectionKey(pinnedSection));
       return {
         slot, allSections, sections: [pinnedSection],
         status: "ok" as const, pinned: sectionKey(pinnedSection),

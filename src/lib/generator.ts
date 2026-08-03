@@ -1,7 +1,7 @@
 import type { Diagnostics, Schedule, SearchSummary, Section, UserState } from "./types";
 import { sectionKey } from "./types";
 import { overlaps } from "./time";
-import { subjectPrefix } from "./course-code";
+import { sameCourseCode, subjectPrefix } from "./course-code";
 import type { ResolvedSlot } from "./slots";
 
 export const MAX_SCHEDULES = 500; // browser-responsiveness guard; truncation is reported
@@ -88,6 +88,11 @@ export function generate(resolved: ResolvedSlot[], state: UserState): GenerateRe
     }
     const r = order[i];
     for (const s of candidates.get(r.slot.id)!) {
+      // One slot per course. Nothing else forbids two slots resolving to the same code —
+      // PFT3 and PFT4 share all 23 PATHFit activities — and the conflict rule would not
+      // catch it, since two TBA sections of one course never overlap. Placing it twice
+      // would enlist the student twice and double the units it contributes.
+      if (current.some((chosen) => sameCourseCode(chosen.courseCode, s.courseCode))) continue;
       if (current.some((chosen) => sectionsConflict(chosen, s))) continue;
       if (!pairingHolds(r, s)) continue;
       current.push(s);
@@ -97,7 +102,10 @@ export function generate(resolved: ResolvedSlot[], state: UserState): GenerateRe
       current.pop();
     }
   };
-  walk(0);
+  // The empty product is the empty tuple, so walking zero slots would push one empty
+  // schedule — ranked at a perfect score and offered for download as a blank week. An
+  // empty selection has no schedule, not a vacuous one.
+  if (active.length > 0) walk(0);
 
   const truncated = schedules.length > MAX_SCHEDULES;
   if (schedules.length > 0) {
@@ -116,11 +124,17 @@ export function generate(resolved: ResolvedSlot[], state: UserState): GenerateRe
       const as = candidates.get(a.slot.id)!;
       const bs = candidates.get(b.slot.id)!;
       if (as.length === 0 || bs.length === 0) continue;
-      const compatible = as.some((x) => bs.some((y) => !sectionsConflict(x, y) && pairOk(a, x, b, y)));
+      // Same distinct-course rule as `walk`: two slots that can only resolve to one shared
+      // course really cannot both be satisfied, and saying so beats an n-way verdict.
+      const compatible = as.some((x) => bs.some((y) =>
+        !sameCourseCode(x.courseCode, y.courseCode) && !sectionsConflict(x, y) && pairOk(a, x, b, y)));
       if (!compatible) conflictPairs.push({ a: a.slot.label, b: b.slot.label });
     }
   }
-  const nWayConflict = perSlot.every((p) => p.afterFilters > 0) && conflictPairs.length === 0;
+  // A non-empty set is required: with nothing selected, `every` is vacuously true and the
+  // diagnostics would claim an empty set of courses cannot all fit at once.
+  const nWayConflict =
+    perSlot.length > 0 && perSlot.every((p) => p.afterFilters > 0) && conflictPairs.length === 0;
   return {
     schedules,
     diagnostics: { perSlot, conflictPairs, nWayConflict },

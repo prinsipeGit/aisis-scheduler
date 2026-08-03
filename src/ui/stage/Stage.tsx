@@ -53,6 +53,22 @@ export function Stage({ schedules, index, onIndex, state, block, program, onChan
         </section>
       );
     }
+    // No slot is both included and resolved, so generation never had a candidate to place.
+    // That is a normal state — everything unchecked, or a thesis/intersession block whose
+    // courses are simply not in this term — not a search that failed. "No schedule fits"
+    // would send the student off loosening filters that were never the problem.
+    if (resolved.every((r) => !r.slot.included || r.status !== "ok")) {
+      return (
+        <section>
+          <h2>Nothing to schedule yet</h2>
+          <p>
+            Nothing you have checked has a section this term. Check a course under Your
+            courses, fill an elective, or add a course from the catalog.
+          </p>
+          {missing.length > 0 && <MissingList missing={missing} />}
+        </section>
+      );
+    }
     return (
       <section>
         <h2>No schedule fits</h2>

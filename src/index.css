@@ -85,6 +85,9 @@ body { margin: 0; min-width: 320px; }
 
 .course-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .course-list li { border: 1px solid var(--line); border-radius: var(--radius); padding: 8px 10px; }
+/* A slot excluded from generation. Recessed rather than struck through: it is still a real
+   requirement, just not counted this run. */
+.muted-row { background: var(--canvas); color: var(--muted); }
 
 .chips { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 .chip {

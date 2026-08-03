@@ -120,6 +120,38 @@ describe("Stage", () => {
     expect(screen.getByText(/Loading/)).toBeTruthy();
   });
 
+  it("says nothing is selected rather than blaming a schedule that never had candidates", () => {
+    // Every slot is unchecked, so there is no candidate set at all. "No schedule fits" would
+    // send the student off loosening filters that are not the problem, and an empty
+    // `missing` list leaves nothing else on screen to explain it.
+    const resolved = [
+      { slot: { id: "a", label: "MATH 10", included: false }, sections: [], allSections: [],
+        status: "ok", pinned: null },
+    ] as unknown as Schedules["resolved"];
+    render(
+      <Stage schedules={schedules({ ranked: [], resolved })} index={0} onIndex={() => {}}
+             state={{ ...defaultState("2026-1"), slots: [slot] }} block={block} program={program}
+             onChange={() => {}} />
+    );
+    expect(screen.queryByText(/No schedule fits/)).toBeFalsy();
+    expect(screen.getByText(/Nothing to schedule yet/)).toBeTruthy();
+    expect(screen.queryByRole("button", { name: /download schedule/i })).toBeNull();
+  });
+
+  it("still says what is missing when every included course is unschedulable", () => {
+    const resolved = [
+      { slot: { id: "a", label: "THESIS 200", included: true }, sections: [], allSections: [],
+        status: "no-offerings", pinned: null },
+    ] as unknown as Schedules["resolved"];
+    render(
+      <Stage schedules={schedules({ ranked: [], resolved })} index={0} onIndex={() => {}}
+             state={{ ...defaultState("2026-1"), slots: [slot] }} block={block} program={program}
+             onChange={() => {}} />
+    );
+    expect(screen.getByText(/Nothing to schedule yet/)).toBeTruthy();
+    expect(screen.getByText(/THESIS 200.*not offered/)).toBeTruthy();
+  });
+
   it("shows a genuine error state, not the loading text, when the catalog failed to load", () => {
     render(
       <Stage schedules={schedules({ ranked: [], resolved: [] })} index={0} onIndex={() => {}}

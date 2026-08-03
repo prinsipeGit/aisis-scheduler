@@ -14,8 +14,15 @@
     "NS1B": ["BIO 10.02", "CHEM 10.02", "ENVI 10.02", "PHYS 10.02"],
 
     "FLC1": ["FRE 11", "GER 11", "ITA 11", "JPN 11", "KRN 11", "RUSS 11", "SPA 11"],
-    "FLC 12": ["FRE 12", "GER 12", "JPN 12", "KRN 12", "SPA 12"]
+    "FLC 12": ["FRE 12", "GER 12", "JPN 12", "KRN 12", "SPA 12"],
+
+    "NP1": ["NSTP 11"],
+    "NP2": ["NSTP 12"],
+    "CPH1": ["PHILO 11"],
+
+    "INTAC 1": ["INTACT 11"],
+    "INTAC 2": ["INTACT 12"]
   },
   "pairs": [["NS1A", "NS1B"]],
-  "preAssigned": ["INTACT 11"]
+  "preAssigned": ["INTACT 11", "INTACT 12", "INTAC 1", "INTAC 2"]
 }

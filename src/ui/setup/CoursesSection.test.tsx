@@ -270,6 +270,70 @@ describe("CoursesSection", () => {
     expect(elective.chosen).toBeNull();
   });
 
+  it("refuses to fill an elective with a course another slot already claims", () => {
+    // Two slots on one course would enlist the student twice, double-count the units, and
+    // (since generation now rejects a duplicate) cost a course from every schedule.
+    const { onChange } = setup();
+    const row = screen.getByTestId("slot-ips:First Year|First Semester#2");
+    fireEvent.change(within(row).getByLabelText(/fill/i), { target: { value: "MATH 10" } });
+    expect(onChange).not.toHaveBeenCalled();
+    expect(within(row).getByText(/already on your list/i)).toBeTruthy();
+  });
+
+  it("refuses to narrow a slot onto a course another slot already claims", () => {
+    const slots = [...seedSlots(block, aliases), slotFromCatalog("PEPC 13.15", 0)];
+    const { onChange } = setup(slots);
+    const row = screen.getByTestId("slot-ips:First Year|First Semester#1");
+    fireEvent.change(within(row).getByLabelText(/narrow/i), { target: { value: "PEPC 13.15" } });
+    expect(onChange).not.toHaveBeenCalled();
+    expect(within(row).getByText(/already on your list/i)).toBeTruthy();
+  });
+
+  it("refuses to add a catalog course a filled elective already claims", () => {
+    // The old dedupe compared `requirement` only, and a filled elective's requirement is
+    // null, so the same course passed straight through.
+    const slots = seedSlots(block, aliases).map((s) =>
+      s.category === "FE1" ? { ...s, chosen: "MATH 71.1", included: true } : s);
+    const { onChange } = setup(slots);
+    fireEvent.change(screen.getByLabelText(/add from the catalog/i), { target: { value: "MATH 71.1" } });
+    fireEvent.click(screen.getByRole("button", { name: /add course/i }));
+    expect(onChange).not.toHaveBeenCalled();
+    expect(screen.getByText(/already on your list/i)).toBeTruthy();
+  });
+
+  it("lets a cross-block requirement be removed again", () => {
+    // Adding the wrong one is otherwise a one-way door: unchecking leaves it on the list
+    // forever, and re-picking the block wipes every other customization.
+    const slots = [...seedSlots(block, aliases), ...seedSlots(other, aliases)];
+    const { onChange } = setup(slots);
+    const row = screen.getByTestId("slot-ips:Second Year|First Semester#0");
+    fireEvent.click(within(row).getByRole("button", { name: /remove/i }));
+    const next = onChange.mock.calls[0][0] as UserState;
+    expect(next.slots.some((s) => s.requirement === "PHILO 11")).toBe(false);
+  });
+
+  it("offers no Remove for a slot seeded by the block on screen", () => {
+    setup();
+    const row = screen.getByTestId("slot-ips:First Year|First Semester#0");
+    expect(within(row).queryByRole("button", { name: /remove/i })).toBeNull();
+  });
+
+  it("prices a pinned slot by the section that is pinned, not by its first candidate", () => {
+    // "BIO 11" resolves to a 3-unit BIO 11.01 lecture and a 1-unit BIO 11.02 lab. Pinning
+    // the lab narrows `sections` to it, so the row must price at 1 unit, not 3.
+    const lab = catalog.sections.find((s) => s.courseCode === "BIO 11.02")!;
+    const key = `${lab.courseCode} ${lab.sectionCode}`;
+    const slots = [...seedSlots(twoEntryBlock, aliases), slotFromCatalog("BIO 11", 0)];
+    const state: UserState = {
+      ...defaultState("2026-1"), blockKey: twoEntryBlock.key, slots, lockedSections: [key],
+    };
+    render(
+      <CoursesSection program={program} block={twoEntryBlock} catalog={catalog} state={state}
+        resolved={resolveSlots(slots, catalog, aliases, [key])} aliases={aliases} onChange={vi.fn()} />
+    );
+    expect(screen.getByText(/^7 units selected$/i)).toBeTruthy();
+  });
+
   it("reports a slot with no offerings this term instead of hiding it", () => {
     const slots = seedSlots(block, aliases);
     const state: UserState = { ...defaultState("2026-1"), blockKey: block.key, slots };

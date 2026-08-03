@@ -25,10 +25,11 @@ export function AlreadyHaveSection({ resolved, state, onChange }: Props) {
 
   if (ordered.length === 0) return <p>Pick your courses first.</p>;
 
+  // Only this slot's own pin is replaced. Filtering by allSections membership instead would
+  // drop a neighbour's pin whenever the two slots accept the same codes (PFT3 and PFT4
+  // share all 23 PATHFit activities).
   const pin = (r: ResolvedSlot, key: string) => {
-    const others = state.lockedSections.filter(
-      (k) => !r.allSections.some((s) => sectionKey(s) === k)
-    );
+    const others = state.lockedSections.filter((k) => k !== r.pinned);
     onChange({ ...state, lockedSections: key ? [...others, key] : others });
   };
 

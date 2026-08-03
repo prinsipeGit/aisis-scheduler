@@ -26,6 +26,7 @@ export function CoursesSection({ program, block, catalog, state, resolved, alias
   const [fromCatalog, setFromCatalog] = useState("");
   const [addCourseError, setAddCourseError] = useState<string | null>(null);
   const [fillDrafts, setFillDrafts] = useState<Record<string, string>>({});
+  const [slotErrors, setSlotErrors] = useState<Record<string, string>>({});
 
   const titleOf = useMemo(() => {
     const map = new Map<string, string>();
@@ -58,7 +59,11 @@ export function CoursesSection({ program, block, catalog, state, resolved, alias
     const map = new Map<string, number>();
     for (const r of resolved) {
       const code = r.slot.chosen ?? r.slot.requirement;
-      if (code && r.allSections.length > 0) map.set(canonicalCourseCode(code), r.allSections[0].units);
+      // `sections` is narrowed to exactly the pinned section when a slot is pinned, so it
+      // is the one that will actually be enlisted; for an unpinned slot the two agree.
+      // Without it, locking a 1-unit BIO 11.02 lab still prices as the 3-unit lecture.
+      const priced = r.sections[0] ?? r.allSections[0];
+      if (code && priced) map.set(canonicalCourseCode(code), priced.units);
     }
     return map;
   }, [resolved]);
@@ -73,9 +78,54 @@ export function CoursesSection({ program, block, catalog, state, resolved, alias
 
   const update = (slots: UserState["slots"]) => onChange({ ...state, slots });
 
-  const setChosen = (id: string, chosen: string) =>
+  const catalogCodes = [...new Set(catalog.sections.map((s) => s.courseCode))].sort();
+  const catalogCodeSet = new Set(catalogCodes);
+
+  // Two slots must never claim one course: generation rejects a duplicate outright
+  // (generator.ts's distinct-course rule), so accepting one here would quietly cost the
+  // student a course rather than double-book them, and the unit total would double-count it.
+  const claimedElsewhere = (id: string, code: string) =>
+    state.slots.some((s) => {
+      if (s.id === id) return false;
+      const claimed = s.chosen ?? s.requirement;
+      return claimed !== null && sameCourseCode(claimed, code);
+    });
+
+  const dropKey = (map: Record<string, string>, id: string) => {
+    if (!(id in map)) return map;
+    const { [id]: _dropped, ...rest } = map;
+    return rest;
+  };
+
+  const setChosen = (id: string, chosen: string) => {
+    if (chosen && claimedElsewhere(id, chosen)) {
+      setSlotErrors((prev) => ({ ...prev, [id]: `${chosen} is already on your list.` }));
+      return;
+    }
+    setSlotErrors((prev) => dropKey(prev, id));
     update(state.slots.map((s) =>
       s.id === id ? { ...s, chosen: chosen || null, included: chosen ? true : s.included } : s));
+  };
+
+  // A narrowed slot resolves by exact match only (offerings.ts: `slot.chosen !== null`
+  // filters on canonical equality, no variant suffixes), so exact catalog membership is the
+  // right rule here — unlike Add-course, which checks resolvability. Empty string is let
+  // through alongside a valid code so clearing the input can reset `chosen` back to null;
+  // there is no other way to clear an elective once it has been filled.
+  const setFill = (id: string, value: string) => {
+    const acceptable = value === "" || (catalogCodeSet.has(value) && !claimedElsewhere(id, value));
+    if (!acceptable) {
+      setFillDrafts((prev) => ({ ...prev, [id]: value }));
+      if (catalogCodeSet.has(value)) {
+        setSlotErrors((prev) => ({ ...prev, [id]: `${value} is already on your list.` }));
+      }
+      return;
+    }
+    setChosen(id, value);
+    // Drop the draft once committed: keeping it would shadow any later external change to
+    // `chosen` (e.g. cleared elsewhere) behind this now-stale typed value forever.
+    setFillDrafts((prev) => dropKey(prev, id));
+  };
 
   const toggle = (id: string) =>
     update(state.slots.map((s) => (s.id === id ? { ...s, included: !s.included } : s)));
@@ -113,7 +163,12 @@ export function CoursesSection({ program, block, catalog, state, resolved, alias
       setAddCourseError("That is not a course in this term's catalog.");
       return;
     }
-    if (state.slots.some((s) => s.requirement && sameCourseCode(s.requirement, fromCatalog))) return;
+    // `chosen ?? requirement`, not `requirement` alone: a filled elective has a null
+    // requirement, so comparing only requirements let the same course through twice.
+    if (claimedElsewhere(candidate.id, fromCatalog)) {
+      setAddCourseError("That course is already on your list.");
+      return;
+    }
     update([...state.slots, candidate]);
     setFromCatalog("");
     setAddCourseError(null);
@@ -123,8 +178,6 @@ export function CoursesSection({ program, block, catalog, state, resolved, alias
     b.entries
       .filter((e) => !state.slots.some((s) => s.id === `ips:${e.slotId}`))
       .map((e) => ({ block: b, entry: e })));
-  const catalogCodes = [...new Set(catalog.sections.map((s) => s.courseCode))].sort();
-  const catalogCodeSet = new Set(catalogCodes);
 
   return (
     <div>
@@ -169,33 +222,17 @@ export function CoursesSection({ program, block, catalog, state, resolved, alias
                   <input list="catalog-codes" aria-label={`Fill ${r.slot.label}`}
                          placeholder="Search the catalog..."
                          value={fillDrafts[r.slot.id] ?? r.slot.chosen ?? ""}
-                         onChange={(e) => {
-                           const value = e.target.value;
-                           // A narrowed slot resolves by exact match only (offerings.ts:
-                           // slot.chosen !== null filters on canonical equality, no variant
-                           // suffixes), so exact catalog membership is the right rule here -
-                           // unlike Add-course, which checks resolvability. Empty string is
-                           // let through alongside a valid code so clearing the input can
-                           // reset `chosen` back to null; there is no other way to clear an
-                           // elective once it has been filled.
-                           if (value === "" || catalogCodeSet.has(value)) {
-                             setChosen(r.slot.id, value);
-                             // Drop the draft once committed: keeping it would shadow any
-                             // later external change to `chosen` (e.g. cleared elsewhere)
-                             // behind this now-stale typed value forever.
-                             setFillDrafts((prev) => {
-                               if (!(r.slot.id in prev)) return prev;
-                               const { [r.slot.id]: _dropped, ...rest } = prev;
-                               return rest;
-                             });
-                           } else {
-                             setFillDrafts((prev) => ({ ...prev, [r.slot.id]: value }));
-                           }
-                         }} />
+                         onChange={(e) => setFill(r.slot.id, e.target.value)} />
                 </label>
               )}
               {STATUS_TEXT[r.status] && <em> {STATUS_TEXT[r.status]}</em>}
-              {r.slot.origin === "added" && (
+              {slotErrors[r.slot.id] && <span className="hint">{slotErrors[r.slot.id]}</span>}
+              {/* Removable when it did not come from the block on screen: courses added from
+                  the catalog (sourceBlock null) and requirements pulled in from another
+                  block. Adding the wrong cross-block requirement is otherwise a one-way
+                  door. A slot the current block seeded stays — unchecking is the affordance
+                  there, and Remove would only invite losing a real requirement. */}
+              {r.slot.sourceBlock !== block.key && (
                 <button type="button" onClick={() => remove(r.slot.id)}>Remove</button>
               )}
             </li>

@@ -105,6 +105,29 @@ describe("resolveSlots", () => {
     expect(resolve(slots)[0].status).toBe("no-offerings");
   });
 
+  it("awaits a section for the INTAC 1 spelling too, rather than offering 103 free choices", () => {
+    const intac: CurriculumBlock = { ...block, entries: [entry("INTAC 1", "C", 0)] };
+    const [r] = resolve(seedSlots(intac, file));
+    expect(r.status).toBe("awaiting-section");
+    expect(r.sections).toEqual([]);
+    expect(r.allSections.length).toBeGreaterThan(100); // still pickable in the pin picker
+  });
+
+  it("gives a locked section to one slot only when two slots accept the same code", () => {
+    // PFT3 and PFT4 alias to the identical PATHFit pool, so the locked key is in both
+    // slots' allSections. Pinning both to it makes that one section conflict with itself
+    // and reports zero schedules as "PATHFit 3 and PATHFit 4 always conflict".
+    const pathfit: CurriculumBlock = {
+      ...block, entries: [entry("PATHFit 3", "PFT3", 0), entry("PATHFit 4", "PFT4", 1)],
+    };
+    const one = catalog.sections.find((s) => s.courseCode.startsWith("PEPC 13"))!;
+    const key = `${one.courseCode} ${one.sectionCode}`;
+    const [first, second] = resolve(seedSlots(pathfit, file), [key]);
+    expect(first.pinned).toBe(key);
+    expect(second.pinned).toBeNull();
+    expect(second.sections.length).toBeGreaterThan(1);
+  });
+
   it("keeps every candidate in allSections even when sections is empty", () => {
     // The pin picker needs the alternatives precisely when generation has none.
     const intact = resolve(seedSlots(block, file)).find((r) => r.slot.requirement === "INTACT 11")!;

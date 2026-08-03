@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { generate, MAX_SCHEDULES } from "./generator";
+import { rank } from "./ranker";
 import type { ResolvedSlot } from "./slots";
 import type { Section, Slot, UserState } from "./types";
 
@@ -124,6 +125,61 @@ describe("generate", () => {
     expect(schedules).toEqual([]);
     expect(diagnostics?.conflictPairs).toEqual([{ a: "A", b: "B" }]);
     expect(diagnostics?.nWayConflict).toBe(false);
+  });
+});
+
+describe("generate with nothing to schedule", () => {
+  it("returns no schedules when no slot is active, instead of one empty week", () => {
+    // The empty product is the empty tuple, so walking zero slots would push [] - a
+    // schedule containing nothing, which downstream presents as a valid, downloadable week.
+    const off = resolved(slot("A", { included: false }), [section("A", "1", [at(["M"], 480, 540)])]);
+    expect(generate([off], state()).schedules).toEqual([]);
+    expect(generate([], state()).schedules).toEqual([]);
+  });
+
+  it("does not claim an empty set of courses cannot fit together", () => {
+    const { diagnostics } = generate([], state());
+    expect(diagnostics?.nWayConflict).toBe(false);
+  });
+
+  it("ranks to nothing, so no blank week can reach the pager or the download", () => {
+    const { schedules } = generate([], state());
+    expect(rank(schedules, state().preferences, new Map())).toEqual([]);
+  });
+});
+
+describe("generate with two slots resolving to one course", () => {
+  it("never enlists the student in the same course twice", () => {
+    // Two TBA sections of one course never overlap, so the conflict rule alone lets both in.
+    const a = { ...section("MATH 10", "A", []), timeStatus: "tba" as const };
+    const b = { ...section("MATH 10", "B", []), timeStatus: "tba" as const };
+    const { schedules } = generate([resolved(slot("X"), [a, b]), resolved(slot("Y"), [a, b])], state());
+    expect(schedules).toEqual([]);
+  });
+
+  it("still lets two slots sharing a pool take different courses from it", () => {
+    // PFT3 and PFT4 alias to the identical PATHFit pool; taking two different activities
+    // is correct, taking the same activity twice is not.
+    const pool = [
+      section("PEPC 13.03", "A", [at(["M"], 480, 540)]),
+      section("PEPC 13.03", "B", [at(["T"], 480, 540)]),
+      section("PEPC 14.01", "C", [at(["W"], 480, 540)]),
+    ];
+    const { schedules } = generate([resolved(slot("PFT3"), pool), resolved(slot("PFT4"), pool)], state());
+    expect(schedules).toHaveLength(4); // A|C, B|C, C|A, C|B - never A|B or B|A
+    for (const s of schedules) expect(new Set(s.map((x) => x.courseCode)).size).toBe(2);
+  });
+
+  it("keeps a pinned section placeable when a free slot could take its course", () => {
+    const pin = section("MATH 10", "PIN", [at(["M"], 480, 540)]);
+    const same = section("MATH 10", "FREE", [at(["T"], 480, 540)]);
+    const other = section("PHYS 10", "OTHER", [at(["W"], 480, 540)]);
+    const { schedules } = generate(
+      [resolved(slot("free"), [same, other]), resolved(slot("pinned"), [pin])],
+      state({ lockedSections: ["MATH 10 PIN"] })
+    );
+    expect(schedules).toHaveLength(1);
+    expect(schedules[0].map((s) => s.sectionCode).sort()).toEqual(["OTHER", "PIN"]);
   });
 });
 
