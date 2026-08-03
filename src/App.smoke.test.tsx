@@ -42,6 +42,13 @@ const pagerStatus = (): HTMLElement => {
   return region;
 };
 
+// This is the only test that drives the whole cockpit at once, on the real 2026-1 catalog:
+// eight steps, each re-resolving and re-generating against ~4000 sections. It finishes in
+// well under two seconds on its own but shares a machine with 28 other files under
+// `vitest run`, and the 5000 ms default made it fail on a loaded one. A flaky gate is worse
+// than a slow one, so it gets room to be descheduled rather than assertions it can meet.
+const SMOKE_TIMEOUT = 30_000;
+
 describe("cockpit smoke", () => {
   it("runs program to schedule on the real 2026-1 data", async () => {
     render(<App />);
@@ -98,5 +105,5 @@ describe("cockpit smoke", () => {
     expect(stored.slots.length).toBeGreaterThan(0);
     expect(stored.lockedSections).toHaveLength(1);
     expect(stored.completedCourses).toEqual([]);
-  });
+  }, SMOKE_TIMEOUT);
 });

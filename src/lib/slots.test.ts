@@ -1,8 +1,9 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { seedSlots, slotsFromCurriculum, slotFromCatalog, resolveSlots } from "./slots";
+import { generate } from "./generator";
 import type { AliasFile } from "./offerings";
-import type { Catalog, CurriculumBlock } from "./types";
+import type { Catalog, CurriculumBlock, UserState } from "./types";
 
 const catalog = JSON.parse(readFileSync("data/catalogs/catalog-2026-1.json", "utf8")) as Catalog;
 const file = JSON.parse(readFileSync("data/course-aliases.json", "utf8")) as AliasFile;
@@ -133,5 +134,56 @@ describe("resolveSlots", () => {
     const intact = resolve(seedSlots(block, file)).find((r) => r.slot.requirement === "INTACT 11")!;
     expect(intact.sections).toEqual([]);
     expect(intact.allSections.length).toBeGreaterThan(100);
+  });
+
+  it("calls a pre-assigned course with no sections at all not offered, not awaiting one", () => {
+    // INTACT 12 and INTAC 2 are pre-assigned but absent from 2026-1, so there is nothing to
+    // pin. "Set your section under Classes you already have" sends the student to a row
+    // AlreadyHaveSection does not render - it lists only slots with sections.
+    for (const catNo of ["INTACT 12", "INTAC 2"]) {
+      const absent: CurriculumBlock = { ...block, entries: [entry(catNo, "C", 0)] };
+      const [r] = resolve(seedSlots(absent, file));
+      expect(r.allSections).toEqual([]);
+      expect(r.status).toBe("no-offerings");
+    }
+  });
+
+  it("still awaits a section for a pre-assigned course that has some", () => {
+    const intact = resolve(seedSlots(block, file)).find((r) => r.slot.requirement === "INTACT 11")!;
+    expect(intact.allSections.length).toBeGreaterThan(0);
+    expect(intact.status).toBe("awaiting-section");
+  });
+});
+
+describe("resolveSlots feeding generate", () => {
+  const state: UserState = {
+    version: 3, programId: "P", blockKey: block.key, calendarTerm: "2026-1", slots: [],
+    lockedSections: [], fullSections: [], completedCourses: [],
+    preferences: { criteria: ["compactDays"], protectedBlocks: [], excludedSections: [] },
+    personalRatings: [],
+  };
+
+  it("schedules two slots sharing one pool when a section of that pool is pinned", () => {
+    // PFT3 and PFT4 alias to the identical PATHFit pool. resolveSlots gives the locked key
+    // to PFT3 alone and leaves PFT4 the full 115 sections; generate must honour that rather
+    // than re-deriving the pin and collapsing PFT4 onto the same section.
+    const pathfit: CurriculumBlock = {
+      ...block, entries: [entry("PATHFit 3", "PFT3", 0), entry("PATHFit 4", "PFT4", 1)],
+    };
+    const one = catalog.sections.find((s) => s.courseCode.startsWith("PEPC 13"))!;
+    const key = `${one.courseCode} ${one.sectionCode}`;
+    const slots = seedSlots(pathfit, file);
+
+    const free = generate(resolveSlots(slots, catalog, file, []), state);
+    expect(free.schedules.length).toBeGreaterThan(0);
+
+    const pinned = generate(
+      resolveSlots(slots, catalog, file, [key]), { ...state, lockedSections: [key] });
+    expect(pinned.diagnostics).toBeNull();
+    expect(pinned.schedules.length).toBeGreaterThan(0);
+    for (const s of pinned.schedules) {
+      expect(s.map((x) => `${x.courseCode} ${x.sectionCode}`)).toContain(key);
+      expect(s).toHaveLength(2);
+    }
   });
 });

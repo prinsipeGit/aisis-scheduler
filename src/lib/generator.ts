@@ -48,11 +48,18 @@ export function generate(resolved: ResolvedSlot[], state: UserState): GenerateRe
   const perSlot: Diagnostics["perSlot"] = [];
   const candidates = new Map<string, Section[]>();
   for (const r of active) {
-    const locked = r.sections.filter(
-      (s) => s.timeStatus !== "parse-error" && state.lockedSections.includes(sectionKey(s))
-    );
-    // A locked section pins the slot and bypasses all filters.
-    const filtered = locked.length > 0 ? locked : r.sections.filter((s) => passesFilters(s, state));
+    // The pin is a property of the resolved slot: `resolveSlots` decides which slot owns a
+    // locked key and has already narrowed that slot's `sections` to it. Re-deriving the pin
+    // from state.lockedSections here would also collapse an *unclaimed* slot that merely
+    // accepts the same code - PFT3 and PFT4 share all 23 PATHFit activities - onto the one
+    // section its neighbour owns, which the distinct-course rule in `walk` then rejects.
+    //
+    // A pin bypasses the preference filters, since it is a deliberate choice the student has
+    // already made, but never the parse-error guard: a malformed time cannot be placed in a
+    // week whose conflict math has no way to check it.
+    const filtered = r.pinned !== null
+      ? r.sections.filter((s) => s.timeStatus !== "parse-error")
+      : r.sections.filter((s) => passesFilters(s, state));
     candidates.set(r.slot.id, filtered);
     perSlot.push({
       id: r.slot.id, label: r.slot.label,

@@ -3,6 +3,7 @@ import { generate, MAX_SCHEDULES } from "./generator";
 import { rank } from "./ranker";
 import type { ResolvedSlot } from "./slots";
 import type { Section, Slot, UserState } from "./types";
+import { sectionKey } from "./types";
 
 const at = (days: Section["meetings"][number]["days"], start: number, end: number) => ({ days, start, end });
 
@@ -18,6 +19,13 @@ const slot = (id: string, over: Partial<Slot> = {}): Slot => ({
 
 const resolved = (s: Slot, sections: Section[]): ResolvedSlot =>
   ({ slot: s, sections, allSections: sections, status: sections.length ? "ok" : "no-offerings", pinned: null });
+
+// What `resolveSlots` hands back for the slot that claimed a locked key: `sections` already
+// narrowed to that one section, `allSections` still the whole pool.
+const pinnedTo = (s: Slot, pool: Section[], key: string): ResolvedSlot => ({
+  slot: s, sections: pool.filter((x) => sectionKey(x) === key), allSections: pool,
+  status: "ok", pinned: key,
+});
 
 const state = (over: Partial<UserState> = {}): UserState => ({
   version: 3, programId: "P", blockKey: "B", calendarTerm: "2026-1", slots: [],
@@ -99,13 +107,23 @@ describe("generate", () => {
     expect(schedules.map((s) => s[0].sectionCode)).toEqual(["GOOD"]);
   });
 
-  it("a locked section pins its slot and bypasses filters", () => {
-    const sections = [section("A", "LOCKED", [at(["M"], 420, 480)]), section("A", "OTHER", [at(["M"], 900, 960)])];
-    const { schedules } = generate([resolved(slot("A"), sections)], state({
+  it("a pinned slot takes its section and bypasses the filters", () => {
+    const pool = [section("A", "LOCKED", [at(["M"], 420, 480)]), section("A", "OTHER", [at(["M"], 900, 960)])];
+    const { schedules } = generate([pinnedTo(slot("A"), pool, "A LOCKED")], state({
       lockedSections: ["A LOCKED"],
       preferences: { criteria: ["compactDays"], earliestStart: 600, protectedBlocks: [], excludedSections: [] },
     }));
     expect(schedules.map((s) => s[0].sectionCode)).toEqual(["LOCKED"]);
+  });
+
+  it("never places a pinned section whose time failed to parse", () => {
+    // A pin overrides the student's own preferences, not a malformed source row: placing it
+    // would draw a week that conflict math cannot check.
+    const bad = { ...section("A", "BAD", []), timeStatus: "parse-error" as const };
+    const { schedules, diagnostics } = generate(
+      [pinnedTo(slot("A"), [bad], "A BAD")], state({ lockedSections: ["A BAD"] }));
+    expect(schedules).toEqual([]);
+    expect(diagnostics?.perSlot[0].afterFilters).toBe(0);
   });
 
   it("reports truncation only when the limit is genuinely exceeded", () => {
@@ -170,16 +188,23 @@ describe("generate with two slots resolving to one course", () => {
     for (const s of schedules) expect(new Set(s.map((x) => x.courseCode)).size).toBe(2);
   });
 
-  it("keeps a pinned section placeable when a free slot could take its course", () => {
-    const pin = section("MATH 10", "PIN", [at(["M"], 480, 540)]);
-    const same = section("MATH 10", "FREE", [at(["T"], 480, 540)]);
-    const other = section("PHYS 10", "OTHER", [at(["W"], 480, 540)]);
-    const { schedules } = generate(
-      [resolved(slot("free"), [same, other]), resolved(slot("pinned"), [pin])],
-      state({ lockedSections: ["MATH 10 PIN"] })
+  it("keeps a pinned section placeable when a free slot shares its entire pool", () => {
+    // `resolveSlots` gave the locked key to one slot and left the other unclaimed with the
+    // full pool - which still contains the pinned section. Re-deriving the pin here from
+    // state.lockedSections collapses that unclaimed slot to the very section its neighbour
+    // owns, and the distinct-course rule then rejects it: zero schedules for a selection
+    // that has 500 without the pin.
+    const pin = section("PEPC 13.15", "PFT-A", [at(["M"], 480, 540)]);
+    const sameCourse = section("PEPC 13.15", "PFT-B", [at(["T"], 480, 540)]);
+    const otherCourse = section("PEPC 14.01", "PFT-C", [at(["W"], 480, 540)]);
+    const pool = [pin, sameCourse, otherCourse];
+    const { schedules, diagnostics } = generate(
+      [pinnedTo(slot("PFT3"), pool, "PEPC 13.15 PFT-A"), resolved(slot("PFT4"), pool)],
+      state({ lockedSections: ["PEPC 13.15 PFT-A"] })
     );
+    expect(diagnostics).toBeNull();
     expect(schedules).toHaveLength(1);
-    expect(schedules[0].map((s) => s.sectionCode).sort()).toEqual(["OTHER", "PIN"]);
+    expect(schedules[0].map((s) => s.sectionCode).sort()).toEqual(["PFT-A", "PFT-C"]);
   });
 });
 

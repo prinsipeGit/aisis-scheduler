@@ -112,7 +112,10 @@ export function resolveSlots(
 
     // Pre-assigned and not pinned: excluded from generation, but say why. Treating its 103
     // sections as free choices multiplies the search space and truncates every ranking (§5.6).
-    if (isPreAssigned(slot, file)) {
+    // Only where there is something to pin: INTACT 12 and INTAC 2 are pre-assigned and
+    // absent from this term, and "set your section under Classes you already have" points
+    // at a row that section never renders - it lists only slots with sections.
+    if (isPreAssigned(slot, file) && allSections.length > 0) {
       return { slot, allSections, sections: [], status: "awaiting-section" as const, pinned: null };
     }
 
