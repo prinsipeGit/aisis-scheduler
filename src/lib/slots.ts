@@ -84,7 +84,7 @@ export function slotFromCatalog(code: string, index: number): Slot {
 export function resolveSlots(
   slots: Slot[], catalog: Catalog, file: AliasFile, locked: string[]
 ): ResolvedSlot[] {
-  // A locked key belongs to exactly one slot, first match among included slots wins. Slots
+  // A locked key belongs to at most one slot, first match among included slots wins. Slots
   // may accept the same codes — PFT3 and PFT4 alias to the identical 23-activity pool — and
   // letting both claim one key pins both to one section, which then conflicts with itself and
   // reports zero schedules as "PATHFit 3 and PATHFit 4 always conflict".
@@ -117,12 +117,17 @@ export function resolveSlots(
       return { slot, allSections, sections: [], status: "unfilled" as const, pinned: null };
     }
 
-    // Pre-assigned and not pinned: excluded from generation, but say why. Treating its 103
-    // sections as free choices multiplies the search space and truncates every ranking (§5.6).
-    // Only where there is something to pin: INTACT 12 and INTAC 2 are pre-assigned and
+    // Pre-assigned, included, and not pinned: excluded from generation, but say why. Treating
+    // its 103 sections as free choices multiplies the search space and truncates every ranking
+    // (§5.6). Only where there is something to pin: INTACT 12 and INTAC 2 are pre-assigned and
     // absent from this term, and "set your section under Classes you already have" points
     // at a row that section never renders - it lists only slots with sections.
-    if (isPreAssigned(slot, file) && allSections.length > 0) {
+    //
+    // Gated on `slot.included` too: an excluded slot can never hold a pin (the claim above is
+    // itself gated on `included`), so this text would always point at a row AlreadyHaveSection
+    // never renders for it - that list is filtered on `included` as well - even when the
+    // student already set the section before unchecking the slot.
+    if (slot.included && isPreAssigned(slot, file) && allSections.length > 0) {
       return { slot, allSections, sections: [], status: "awaiting-section" as const, pinned: null };
     }
 

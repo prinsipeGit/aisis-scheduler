@@ -153,6 +153,27 @@ describe("resolveSlots", () => {
     expect(intact.allSections.length).toBeGreaterThan(0);
     expect(intact.status).toBe("awaiting-section");
   });
+
+  it("does not tell an excluded, pinned pre-assigned slot to set a section it already set", () => {
+    // Unchecking a pre-assigned slot after pinning it must not flip it to awaiting-section:
+    // AlreadyHaveSection filters its list on `included`, so that row would never render,
+    // leaving the student stuck on a pointer to a screen they cannot act on.
+    const one = catalog.sections.find((s) => s.courseCode === "INTACT 11")!;
+    const key = `${one.courseCode} ${one.sectionCode}`;
+    const slots = seedSlots(block, file).map((s) =>
+      s.requirement === "INTACT 11" ? { ...s, included: false } : s);
+    const intact = resolve(slots, [key]).find((r) => r.slot.requirement === "INTACT 11")!;
+    expect(intact.status).toBe("ok");
+    expect(intact.pinned).toBeNull();
+  });
+
+  it("does not await a section for an excluded, unpinned pre-assigned slot either", () => {
+    const slots = seedSlots(block, file).map((s) =>
+      s.requirement === "INTACT 11" ? { ...s, included: false } : s);
+    const intact = resolve(slots).find((r) => r.slot.requirement === "INTACT 11")!;
+    expect(intact.status).toBe("ok");
+    expect(intact.pinned).toBeNull();
+  });
 });
 
 describe("resolveSlots feeding generate", () => {
