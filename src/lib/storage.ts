@@ -1,23 +1,20 @@
-import type { Preferences, UserState } from "./types";
+import type { Preferences, Slot, UserState } from "./types";
 
-export const STORAGE_VERSION = 2;
+export const STORAGE_VERSION = 3;
 const KEY = "aisis-scheduler-state";
 
 const VALID_RANK_CRITERIA = new Set([
-  "compactDays",
-  "fewestDays",
-  "lateStart",
-  "earlyEnd",
-  "preferredProfs",
+  "compactDays", "fewestDays", "lateStart", "earlyEnd", "preferredProfs",
 ]);
 const VALID_DAYS = new Set(["M", "T", "W", "TH", "F", "SAT", "SUN"]);
 const isFiniteMinute = (x: unknown): x is number =>
   typeof x === "number" && Number.isFinite(x) && x >= 0 && x <= 24 * 60;
+const isStringArray = (x: unknown): x is string[] =>
+  Array.isArray(x) && x.every((e) => typeof e === "string");
+const isNullableString = (x: unknown): boolean => x === null || typeof x === "string";
 
 const defaultPreferences = (): Preferences => ({
-  criteria: ["compactDays"],
-  protectedBlocks: [],
-  excludedSections: [],
+  criteria: ["compactDays"], protectedBlocks: [], excludedSections: [],
 });
 
 export function defaultState(calendarTerm: string): UserState {
@@ -26,24 +23,34 @@ export function defaultState(calendarTerm: string): UserState {
     programId: "",
     blockKey: "",
     calendarTerm,
-    requiredCourses: [],
-    electiveFills: {},
+    slots: [],
     lockedSections: [],
     fullSections: [],
+    completedCourses: [],
     preferences: defaultPreferences(),
     personalRatings: [],
   };
 }
 
-const isStringArray = (x: unknown): x is string[] =>
-  Array.isArray(x) && x.every((e) => typeof e === "string");
+function isValidSlot(v: unknown): v is Slot {
+  if (typeof v !== "object" || v === null) return false;
+  const s = v as Record<string, unknown>;
+  return typeof s.id === "string" && s.id !== "" &&
+    (s.origin === "ips" || s.origin === "added") &&
+    typeof s.label === "string" &&
+    isNullableString(s.requirement) &&
+    isNullableString(s.category) &&
+    isNullableString(s.sourceBlock) &&
+    isNullableString(s.chosen) &&
+    isNullableString(s.pairedWith) &&
+    typeof s.included === "boolean";
+}
 
 function isValidPreferences(v: unknown): boolean {
   if (typeof v !== "object" || v === null) return false;
   const p = v as Record<string, unknown>;
-  if (!Array.isArray(p.criteria) || !p.criteria.every((c) => typeof c === "string" && VALID_RANK_CRITERIA.has(c))) {
-    return false;
-  }
+  if (!Array.isArray(p.criteria) ||
+      !p.criteria.every((c) => typeof c === "string" && VALID_RANK_CRITERIA.has(c))) return false;
   if (new Set(p.criteria).size !== p.criteria.length) return false;
   if (!Array.isArray(p.protectedBlocks)) return false;
   if (!p.protectedBlocks.every((b) => {
@@ -66,23 +73,20 @@ function isValidState(v: unknown): v is UserState {
   if (typeof s.programId !== "string") return false;
   if (typeof s.blockKey !== "string") return false;
   if (typeof s.calendarTerm !== "string") return false;
-  if (!isStringArray(s.requiredCourses)) return false;
-  if (new Set(s.requiredCourses).size !== s.requiredCourses.length) return false;
+  if (!Array.isArray(s.slots) || !s.slots.every(isValidSlot)) return false;
+  if (new Set((s.slots as Slot[]).map((x) => x.id)).size !== s.slots.length) return false;
   if (!isStringArray(s.lockedSections)) return false;
   if (!isStringArray(s.fullSections)) return false;
-  if (typeof s.electiveFills !== "object" || s.electiveFills === null || Array.isArray(s.electiveFills)) {
-    return false;
-  }
-  if (!Object.values(s.electiveFills as Record<string, unknown>).every((x) => typeof x === "string")) {
-    return false;
-  }
+  if (!isStringArray(s.completedCourses)) return false;
   if (!Array.isArray(s.personalRatings)) return false;
   if (!s.personalRatings.every((x) => {
     if (typeof x !== "object" || x === null) return false;
     const rt = x as Record<string, unknown>;
     return typeof rt.name === "string" && rt.name.trim() !== "" &&
       typeof rt.rating === "number" && Number.isFinite(rt.rating) && rt.rating >= 0 && rt.rating <= 5 &&
-      (rt.courseCode === undefined || typeof rt.courseCode === "string");
+      (rt.courseCode === undefined || typeof rt.courseCode === "string") &&
+      (rt.note === undefined || typeof rt.note === "string") &&
+      (rt.asOf === undefined || typeof rt.asOf === "string");
   })) return false;
   return isValidPreferences(s.preferences);
 }
@@ -92,8 +96,8 @@ export function loadState(calendarTerm: string): { state: UserState; wasReset: b
   if (raw === null) return { state: defaultState(calendarTerm), wasReset: false };
   try {
     const parsed: unknown = JSON.parse(raw);
-    // v1 state (version 1, `semester`/`chosenCourses`) has no migration path worth
-    // keeping — the whole selection model changed — so it resets with a notice.
+    // v2 held requiredCourses + electiveFills. The selection model changed shape, so there
+    // is no migration worth keeping — it resets with a notice (§9).
     if (!isValidState(parsed) || parsed.version !== STORAGE_VERSION) {
       return { state: defaultState(calendarTerm), wasReset: true };
     }

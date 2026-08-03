@@ -1,52 +1,43 @@
 import { describe, it, expect } from "vitest";
-import { getTerms, loadCatalog, loadCommunityRatings, CatalogUnavailableError, isStale } from "./catalog";
-import type { Db } from "./supabase";
+import { getTerms, loadCatalog, loadCommunityRatings, isStale, CatalogUnavailableError } from "./catalog";
+import { stubDb } from "./testing/stubDb";
 
-const stubDb = (tables: Record<string, unknown[]>): Db => ({
-  async selectAll<T>(table: string) { return (tables[table] ?? []) as T[]; },
-  async selectOne<T>(table: string, _c: string, keyColumn: string, key: string) {
-    return ((tables[table] ?? []).find((r) => (r as Record<string, unknown>)[keyColumn] === key) as T) ?? null;
-  },
-});
+const catalogRow = {
+  term: "2026-1", exported_at: "2026-07-28T00:00:00.000Z",
+  sections: [], warnings: [],
+};
 
 describe("catalog data layer", () => {
-  const db = stubDb({
-    catalogs: [{ term: "2026-1", exported_at: "2026-07-21T00:00:00.000Z", sections: [], warnings: [] }],
-    community_ratings: [{ name: "GARCIA, JUAN", rating: 4, course_code: null, note: null, as_of: null }],
-  });
-
-  it("lists known AISIS terms newest first, available only when in the DB", async () => {
-    const terms = await getTerms(db);
-    expect(terms.map((t) => t.term)).toEqual(["2026-2", "2026-1", "2026-0", "2025-2", "2025-1", "2025-0"]);
-    expect(terms.find((t) => t.term === "2026-1")?.available).toBe(true);
+  it("marks terms present in the database as available", async () => {
+    const terms = await getTerms(stubDb({ catalogs: [catalogRow] }));
+    expect(terms.find((t) => t.term === "2026-1")).toEqual({
+      term: "2026-1", label: "2026-2027 First Semester", available: true,
+    });
     expect(terms.find((t) => t.term === "2026-2")?.available).toBe(false);
-    expect(terms[0].label).toBe("2026-2027 Second Semester");
   });
 
-  it("includes a DB term missing from the known list, appended and available", async () => {
-    const extra = stubDb({ catalogs: [{ term: "2027-1", exported_at: "x", sections: [], warnings: [] }] });
-    const terms = await getTerms(extra);
-    expect(terms.at(-1)).toMatchObject({ term: "2027-1", available: true });
+  it("loads a catalog by term", async () => {
+    const catalog = await loadCatalog("2026-1", stubDb({ catalogs: [catalogRow] }));
+    expect(catalog.term).toBe("2026-1");
+    expect(catalog.exportedAt).toBe("2026-07-28T00:00:00.000Z");
   });
 
-  it("loads a catalog row as a Catalog", async () => {
-    const catalog = await loadCatalog("2026-1", db);
-    expect(catalog).toEqual({ term: "2026-1", exportedAt: "2026-07-21T00:00:00.000Z", sections: [], warnings: [] });
-  });
-
-  it("throws CatalogUnavailableError for an absent term, naming both commands", async () => {
-    const err = await loadCatalog("2026-2", db).catch((e: unknown) => e);
+  it("throws CatalogUnavailableError naming both commands", async () => {
+    const err = await loadCatalog("2025-0", stubDb({ catalogs: [catalogRow] })).catch((e) => e);
     expect(err).toBeInstanceOf(CatalogUnavailableError);
-    expect((err as Error).message).toContain("npm run scrape:schedule -- 2026-2 && npm run push:data");
+    expect((err as Error).message).toContain("npm run scrape:schedule -- 2025-0");
+    expect((err as Error).message).toContain("npm run push:data");
   });
 
-  it("loads community ratings as ProfRating[]", async () => {
-    expect(await loadCommunityRatings(db)).toEqual([{ name: "GARCIA, JUAN", rating: 4 }]);
+  it("maps rating rows, dropping nulls", async () => {
+    const db = stubDb({ community_ratings: [{ name: "A", rating: 4.5, course_code: null, note: null, as_of: null }] });
+    expect(await loadCommunityRatings(db)).toEqual([{ name: "A", rating: 4.5 }]);
   });
 
-  it("isStale is false within 30 days, true after", () => {
-    const catalog = { term: "2026-1", exportedAt: "2026-07-01T00:00:00.000Z", sections: [], warnings: [] };
-    expect(isStale(catalog, new Date("2026-07-20T00:00:00.000Z"))).toBe(false);
-    expect(isStale(catalog, new Date("2026-08-05T00:00:00.000Z"))).toBe(true);
+  it("treats a catalog older than 30 days, or undateable, as stale", () => {
+    const now = new Date("2026-09-01T00:00:00.000Z");
+    expect(isStale({ ...catalogRow, exportedAt: "2026-07-28T00:00:00.000Z" } as never, now)).toBe(true);
+    expect(isStale({ ...catalogRow, exportedAt: "2026-08-30T00:00:00.000Z" } as never, now)).toBe(false);
+    expect(isStale({ ...catalogRow, exportedAt: "nonsense" } as never, now)).toBe(true);
   });
 });

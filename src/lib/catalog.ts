@@ -1,37 +1,34 @@
 import type { Catalog, ProfRating } from "./types";
-import { defaultDb, type Db } from "./supabase";
-import { rowToCatalog, rowToRating, type CatalogRow, type RatingRow } from "./rows";
+import {
+  defaultDb, rowToCatalog, rowToRating,
+  CATALOG_COLUMNS, RATING_COLUMNS,
+  type CatalogRow, type Db, type RatingRow,
+} from "./db";
 
-// This module is the ONLY place catalog data is read; it reads from Supabase
-// via the injectable Db boundary (spec §3, §7).
+// The ONLY place catalog data is read (§8).
 
 const STALE_AFTER_DAYS = 30;
 
 export interface TermOption {
-  term: string;   // "2026-2"
-  label: string;  // "2026-2027 Second Semester"
-  available?: boolean;
+  term: string;
+  label: string;
+  available: boolean;
 }
 
 const TERM_SUFFIX: Record<string, string> = {
-  "1": "First Semester",
-  "2": "Second Semester",
-  "0": "Intersession",
+  "1": "First Semester", "2": "Second Semester", "0": "Intersession",
 };
 
 function termLabel(term: string): string {
   const [year, n] = term.split("-");
   const startYear = Number(year);
-  const suffix = TERM_SUFFIX[n] ?? n;
-  return `${startYear}-${startYear + 1} ${suffix}`;
+  return `${startYear}-${startYear + 1} ${TERM_SUFFIX[n] ?? n}`;
 }
 
 export class CatalogUnavailableError extends Error {
   term: string;
   constructor(term: string) {
-    super(
-      `No catalog data for term ${term}. Run: npm run scrape:schedule -- ${term} && npm run push:data`
-    );
+    super(`No catalog data for term ${term}. Run: npm run scrape:schedule -- ${term} && npm run push:data`);
     this.name = "CatalogUnavailableError";
     this.term = term;
   }
@@ -55,12 +52,12 @@ export async function getTerms(db: Db = defaultDb): Promise<TermOption[]> {
 }
 
 export async function loadCatalog(term: string, db: Db = defaultDb): Promise<Catalog> {
-  const row = await db.selectOne<CatalogRow>("catalogs", "term, exported_at, sections, warnings", "term", term);
+  const row = await db.selectOne<CatalogRow>("catalogs", CATALOG_COLUMNS, "term", term);
   if (row === null) throw new CatalogUnavailableError(term);
   return rowToCatalog(row);
 }
 
 export async function loadCommunityRatings(db: Db = defaultDb): Promise<ProfRating[]> {
-  const rows = await db.selectAll<RatingRow>("community_ratings", "name, rating, course_code, note, as_of");
+  const rows = await db.selectAll<RatingRow>("community_ratings", RATING_COLUMNS);
   return rows.map(rowToRating);
 }

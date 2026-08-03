@@ -1,0 +1,954 @@
+{
+  "id": "BS-CoE-2007",
+  "code": "BS CoE",
+  "name": "BACHELOR OF SCIENCE IN COMPUTER ENGINEERING",
+  "version": "2007",
+  "versionYear": 2007,
+  "versionLabel": "2007",
+  "blocks": [
+    {
+      "year": "First Year",
+      "term": "First Semester",
+      "key": "First Year|First Semester",
+      "totalUnits": 20,
+      "entries": [
+        {
+          "catNo": "ECE 12",
+          "title": "COMPUTER-AIDED DESIGN",
+          "units": 1,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|First Semester#0"
+        },
+        {
+          "catNo": "ECE 21",
+          "title": "ENGINEERING WORKSHOP AND PRACTICES",
+          "units": 2,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|First Semester#1"
+        },
+        {
+          "catNo": "EN 11",
+          "title": "COMMUNICATION IN ENGLISH I",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#2"
+        },
+        {
+          "catNo": "FIL 11",
+          "title": "SINING NG PAKIKIPAGTALASTASAN SA FILIPINO I",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#3"
+        },
+        {
+          "catNo": "INTAC 1",
+          "title": "INTRODUCTION TO ATENEO CULTURE",
+          "units": 0,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#4"
+        },
+        {
+          "catNo": "LIT 13",
+          "title": "INTRODUCTION TO FICTION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#5"
+        },
+        {
+          "catNo": "MA 18A",
+          "title": "PRINCIPLES OF MODERN MATHEMATICS I",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#6"
+        },
+        {
+          "catNo": "MA 18B",
+          "title": "PRINCIPLES OF MODERN MATHEMATICS II",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#7"
+        },
+        {
+          "catNo": "PE 1",
+          "title": "PHYSICAL EDUCATION",
+          "units": 2,
+          "prerequisites": [],
+          "category": "PE1",
+          "isElective": false,
+          "slotId": "First Year|First Semester#8"
+        }
+      ]
+    },
+    {
+      "year": "First Year",
+      "term": "Second Semester",
+      "key": "First Year|Second Semester",
+      "totalUnits": 22,
+      "entries": [
+        {
+          "catNo": "CE 21",
+          "title": "INTRODUCTION TO COMPUTING",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#0"
+        },
+        {
+          "catNo": "EN 12",
+          "title": "COMMUNICATION IN ENGLISH II",
+          "units": 3,
+          "prerequisites": [
+            "EN 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#1"
+        },
+        {
+          "catNo": "INTAC 2",
+          "title": "INTRODUCTION TO ATENEO CULTURE",
+          "units": 0,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#2"
+        },
+        {
+          "catNo": "LIT 14",
+          "title": "INTRODUCTION TO POETRY AND DRAMA",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#3"
+        },
+        {
+          "catNo": "MA 21",
+          "title": "MATHEMATICAL ANALYSIS I",
+          "units": 6,
+          "prerequisites": [
+            "MA 18B"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#4"
+        },
+        {
+          "catNo": "PE 2",
+          "title": "PHYSICAL EDUCATION",
+          "units": 2,
+          "prerequisites": [],
+          "category": "PE2",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#5"
+        },
+        {
+          "catNo": "PS 41.1",
+          "title": "ANALYTICAL PHYSICS I, LABORATORY",
+          "units": 2,
+          "prerequisites": [
+            "MA 18A",
+            "MA 18B"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#6"
+        },
+        {
+          "catNo": "PS 41",
+          "title": "ANALYTICAL PHYSICS I, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "MA 18A",
+            "MA 18B"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#7"
+        }
+      ]
+    },
+    {
+      "year": "Second Year",
+      "term": "Intersession",
+      "key": "Second Year|Intersession",
+      "totalUnits": 5,
+      "entries": [
+        {
+          "catNo": "CH 7",
+          "title": "GENERAL CHEMISTRY I, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "MA 18A"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Intersession#0"
+        },
+        {
+          "catNo": "CH 8",
+          "title": "GENERAL CHEMISTRY I, LABORATORY",
+          "units": 2,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Intersession#1"
+        }
+      ]
+    },
+    {
+      "year": "Second Year",
+      "term": "First Semester",
+      "key": "Second Year|First Semester",
+      "totalUnits": 25,
+      "entries": [
+        {
+          "catNo": "CE 22",
+          "title": "INTRODUCTION TO DATA STRUCTURES",
+          "units": 3,
+          "prerequisites": [
+            "CE 21"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#0"
+        },
+        {
+          "catNo": "FIL 12",
+          "title": "SINING NG PAKIKIPAGTALASTASAN SA FILIPINO II",
+          "units": 3,
+          "prerequisites": [
+            "FIL 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#1"
+        },
+        {
+          "catNo": "FLC",
+          "title": "JSP/ CHN/ SP/ FR/ BH/ ITAL/ GR (choose one)",
+          "units": 3,
+          "prerequisites": [],
+          "category": "FLC1",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#2"
+        },
+        {
+          "catNo": "MA 22",
+          "title": "MATHEMATICAL ANALYSIS II",
+          "units": 3,
+          "prerequisites": [
+            "MA 21"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#3"
+        },
+        {
+          "catNo": "NSTP 1",
+          "title": "NATIONAL SERVICE TRAINING PROGRAM",
+          "units": 3,
+          "prerequisites": [],
+          "category": "NP1",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#4"
+        },
+        {
+          "catNo": "PE 3",
+          "title": "PHYSICAL EDUCATION",
+          "units": 2,
+          "prerequisites": [],
+          "category": "PE3",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#5"
+        },
+        {
+          "catNo": "PS 42.1",
+          "title": "ANALYTICAL PHYSICS II, LABORATORY",
+          "units": 2,
+          "prerequisites": [
+            "PS 41.1"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#6"
+        },
+        {
+          "catNo": "PS 42",
+          "title": "ANALYTICAL PHYSICS II, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "PS 41"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#7"
+        },
+        {
+          "catNo": "TH 121",
+          "title": "AN INTRODUCTION TO DOING A CATHOLIC THEOLOGY",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#8"
+        }
+      ]
+    },
+    {
+      "year": "Second Year",
+      "term": "Second Semester",
+      "key": "Second Year|Second Semester",
+      "totalUnits": 23,
+      "entries": [
+        {
+          "catNo": "ELC 101.1",
+          "title": "INTRODUCTION TO ENGINEERING AND CIRCUITS I, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "MA 21"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#0"
+        },
+        {
+          "catNo": "ELC 101.2",
+          "title": "INTRODUCTION TO ENGINEERING AND CIRCUITS I, LABORATORY",
+          "units": 1,
+          "prerequisites": [
+            "MA 21"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#1"
+        },
+        {
+          "catNo": "ENGMA 101",
+          "title": "ENGINEERING MATHEMATICS I",
+          "units": 3,
+          "prerequisites": [
+            "MA 21"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#2"
+        },
+        {
+          "catNo": "FIL 14",
+          "title": "PANITIKAN NG PILIPINAS",
+          "units": 3,
+          "prerequisites": [
+            "FIL 11",
+            "FIL 12"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#3"
+        },
+        {
+          "catNo": "HI 16/HI 18",
+          "title": "ASIAN / WESTERN HISTORY",
+          "units": 3,
+          "prerequisites": [],
+          "category": "CHIS",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#4"
+        },
+        {
+          "catNo": "NSTP 2",
+          "title": "NATIONAL SERVICE TRAINING PROGRAM",
+          "units": 3,
+          "prerequisites": [
+            "NSTP 1"
+          ],
+          "category": "NP2",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#5"
+        },
+        {
+          "catNo": "PE 4",
+          "title": "PHYSICAL EDUCATION",
+          "units": 2,
+          "prerequisites": [],
+          "category": "PE4",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#6"
+        },
+        {
+          "catNo": "PS 43.1",
+          "title": "ANALYTICAL PHYSICS III, LABORATORY",
+          "units": 2,
+          "prerequisites": [
+            "PS 42.1"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#7"
+        },
+        {
+          "catNo": "PS 43",
+          "title": "ANALYTICAL PHYSICS III, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "PS 42"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#8"
+        }
+      ]
+    },
+    {
+      "year": "Third Year",
+      "term": "Fourth Year",
+      "key": "Third Year|Fourth Year",
+      "totalUnits": 6,
+      "entries": [
+        {
+          "catNo": "ENGMA 102",
+          "title": "ENGINEERING MATHEMATICS II",
+          "units": 3,
+          "prerequisites": [
+            "ENGMA 101",
+            "MA 22"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Fourth Year#0"
+        },
+        {
+          "catNo": "SA 21",
+          "title": "INTRODUCTION TO SOCIOLOGY AND ANTHROPOLOGY",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|Fourth Year#1"
+        }
+      ]
+    },
+    {
+      "year": "Third Year",
+      "term": "First Semester",
+      "key": "Third Year|First Semester",
+      "totalUnits": 17,
+      "entries": [
+        {
+          "catNo": "ELC 102.1",
+          "title": "ELECTRONICS I, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "ELC 101.1"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#0"
+        },
+        {
+          "catNo": "ELC 102.2",
+          "title": "ELECTRONICS I, LABORATORY",
+          "units": 1,
+          "prerequisites": [
+            "ELC 101.2"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#1"
+        },
+        {
+          "catNo": "ELC 106.1",
+          "title": "CIRCUITS II, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "ELC 101.1"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#2"
+        },
+        {
+          "catNo": "ELC 106.2",
+          "title": "CIRCUITS II, LABORATORY",
+          "units": 1,
+          "prerequisites": [
+            "ELC 101.2"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#3"
+        },
+        {
+          "catNo": "ENGMA 103",
+          "title": "ENGINEERING MATHEMATICS III",
+          "units": 3,
+          "prerequisites": [
+            "ENGMA 101",
+            "ENGMA 102",
+            "MA 22"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#4"
+        },
+        {
+          "catNo": "PH 101",
+          "title": "PHILOSOPHY OF THE HUMAN PERSON I",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#5"
+        },
+        {
+          "catNo": "TH 131",
+          "title": "MARRIAGE, FAMILY LIFE AND HUMAN SEXUALITY IN A CATHOLIC PERSPECTIVE",
+          "units": 3,
+          "prerequisites": [
+            "TH 121"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#6"
+        }
+      ]
+    },
+    {
+      "year": "Third Year",
+      "term": "Second Semester",
+      "key": "Third Year|Second Semester",
+      "totalUnits": 20,
+      "entries": [
+        {
+          "catNo": "CE 30",
+          "title": "ALGORITHMS AND PROBLEM SOLVING",
+          "units": 3,
+          "prerequisites": [
+            "CE 22",
+            "MA 21"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#0"
+        },
+        {
+          "catNo": "ELC 107.1",
+          "title": "ELECTRONICS II, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "ELC 106.1"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#1"
+        },
+        {
+          "catNo": "ELC 107.2",
+          "title": "ELECTRONICS II, LABORATORY",
+          "units": 1,
+          "prerequisites": [
+            "ELC 106.2"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#2"
+        },
+        {
+          "catNo": "ELC 111.1",
+          "title": "SWITCHING THEORY AND DIGITAL DESIGN, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "ELC 102.1"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#3"
+        },
+        {
+          "catNo": "ELC 111.2",
+          "title": "SWITCHING THEORY AND DIGITAL DESIGN, LABORATORY",
+          "units": 1,
+          "prerequisites": [
+            "ELC 102.2"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#4"
+        },
+        {
+          "catNo": "ENGPS 171",
+          "title": "ELECTROMAGNETIC THEORY AND APPLICATIONS I",
+          "units": 3,
+          "prerequisites": [
+            "ENGMA 102"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#5"
+        },
+        {
+          "catNo": "HI 165",
+          "title": "RIZAL AND THE EMERGENCE OF THE PHILIPPINE NATION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#6"
+        },
+        {
+          "catNo": "PH 102",
+          "title": "PHILOSOPHY OF THE HUMAN PERSON II",
+          "units": 3,
+          "prerequisites": [
+            "PH 101"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#7"
+        }
+      ]
+    },
+    {
+      "year": "Fourth Year",
+      "term": "Intersession",
+      "key": "Fourth Year|Intersession",
+      "totalUnits": 6,
+      "entries": [
+        {
+          "catNo": "HI 166",
+          "title": "PHILIPPINE HISTORY",
+          "units": 3,
+          "prerequisites": [
+            "HI 165"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Fourth Year|Intersession#0"
+        },
+        {
+          "catNo": "PSY 101",
+          "title": "GENERAL PSYCHOLOGY",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Fourth Year|Intersession#1"
+        }
+      ]
+    },
+    {
+      "year": "Fourth Year",
+      "term": "First Semester",
+      "key": "Fourth Year|First Semester",
+      "totalUnits": 17,
+      "entries": [
+        {
+          "catNo": "CIE 122",
+          "title": "DATABASE SYSTEM",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#0"
+        },
+        {
+          "catNo": "CIE 142",
+          "title": "COMPUTER ORGANIZATION WITH ASSEMBLY",
+          "units": 4,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#1"
+        },
+        {
+          "catNo": "ELC 141.1",
+          "title": "MICROPROCESSOR SYSTEMS, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "ELC 111.1"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#2"
+        },
+        {
+          "catNo": "ELC 141.2",
+          "title": "MICROPROCESSOR SYSTEMS, LABORATORY",
+          "units": 1,
+          "prerequisites": [
+            "ELC 111.2"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#3"
+        },
+        {
+          "catNo": "PH 103",
+          "title": "PHILOSOPHY OF RELIGION",
+          "units": 3,
+          "prerequisites": [
+            "PH 102"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#4"
+        },
+        {
+          "catNo": "TH 141/TH 151",
+          "title": "TH 141 / TH 151",
+          "units": 3,
+          "prerequisites": [
+            "TH 131"
+          ],
+          "category": "CTH1",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#5"
+        }
+      ]
+    },
+    {
+      "year": "Fourth Year",
+      "term": "Second Semester",
+      "key": "Fourth Year|Second Semester",
+      "totalUnits": 18,
+      "entries": [
+        {
+          "catNo": "CIE 123",
+          "title": "INTRODUCTION TO SOFTWARE ENGINEERING",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#0"
+        },
+        {
+          "catNo": "CIE 150",
+          "title": "COMPUTER INTERFACING",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#1"
+        },
+        {
+          "catNo": "COE ELECTIVE",
+          "title": "COE ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "ME1",
+          "isElective": true,
+          "slotId": "Fourth Year|Second Semester#2"
+        },
+        {
+          "catNo": "ECE 160",
+          "title": "ENGINEERING ECONOMY",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#3"
+        },
+        {
+          "catNo": "PH 104",
+          "title": "FOUNDATIONS OF MORAL VALUE",
+          "units": 3,
+          "prerequisites": [
+            "PH 102"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#4"
+        },
+        {
+          "catNo": "TH 141/TH 151",
+          "title": "TH 141 / TH 151",
+          "units": 3,
+          "prerequisites": [
+            "TH 131"
+          ],
+          "category": "CTH2",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#5"
+        }
+      ]
+    },
+    {
+      "year": "Fifth Year",
+      "term": "Fourth Year",
+      "key": "Fifth Year|Fourth Year",
+      "totalUnits": 4,
+      "entries": [
+        {
+          "catNo": "CIE 185",
+          "title": "ON-THE-JOB-TRAINING",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fifth Year|Fourth Year#0"
+        },
+        {
+          "catNo": "CIE 190",
+          "title": "RESEARCH SEMINAR",
+          "units": 1,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fifth Year|Fourth Year#1"
+        }
+      ]
+    },
+    {
+      "year": "Fifth Year",
+      "term": "First Semester",
+      "key": "Fifth Year|First Semester",
+      "totalUnits": 17,
+      "entries": [
+        {
+          "catNo": "CIE 130",
+          "title": "PRINCIPLES OF VLSI WITH HDL",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fifth Year|First Semester#0"
+        },
+        {
+          "catNo": "CIE 143",
+          "title": "DATA COMMUNICATIONS & NETWORKING",
+          "units": 1,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fifth Year|First Semester#1"
+        },
+        {
+          "catNo": "CIE 175",
+          "title": "MULTIMEDIA SYSTEM",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fifth Year|First Semester#2"
+        },
+        {
+          "catNo": "CIE 191",
+          "title": "THESIS I",
+          "units": 1,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fifth Year|First Semester#3"
+        },
+        {
+          "catNo": "F ELEC",
+          "title": "FREE ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "FE1",
+          "isElective": true,
+          "slotId": "Fifth Year|First Semester#4"
+        },
+        {
+          "catNo": "POS 100",
+          "title": "POLITICS AND GOVERNANCE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Fifth Year|First Semester#5"
+        },
+        {
+          "catNo": "TCOM 141",
+          "title": "DATA COMMUNICATIONS AND NETWORKING",
+          "units": 3,
+          "prerequisites": [
+            "TCOM 121"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fifth Year|First Semester#6"
+        }
+      ]
+    },
+    {
+      "year": "Fifth Year",
+      "term": "Second Semester",
+      "key": "Fifth Year|Second Semester",
+      "totalUnits": 18,
+      "entries": [
+        {
+          "catNo": "CE 101",
+          "title": "TECHNIQUES IN SIGNAL PROCESSING",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fifth Year|Second Semester#0"
+        },
+        {
+          "catNo": "CE 155",
+          "title": "OPERATING SYSTEMS",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fifth Year|Second Semester#1"
+        },
+        {
+          "catNo": "CIE 192",
+          "title": "THESIS II",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fifth Year|Second Semester#2"
+        },
+        {
+          "catNo": "CIE 199",
+          "title": "EMERGING TECHNOLOGIES",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fifth Year|Second Semester#3"
+        },
+        {
+          "catNo": "COE ELECTIVE",
+          "title": "COE ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "ME2",
+          "isElective": true,
+          "slotId": "Fifth Year|Second Semester#4"
+        },
+        {
+          "catNo": "F ELEC",
+          "title": "FREE ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "FE2",
+          "isElective": true,
+          "slotId": "Fifth Year|Second Semester#5"
+        }
+      ]
+    }
+  ]
+}

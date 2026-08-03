@@ -52,74 +52,132 @@ exactly (14 blocks, 79 entries, every field including `isElective`/`electiveDept
 ### Task 2: Program-dropdown parser
 
 **Files:**
-- Create: `tools/curriculum-parse.mjs`, `tools/curriculum-parse.test.ts`
+- Modify: `tools/curriculum-parse.mjs`, `tools/curriculum-parse.test.ts` (both already exist from the
+  first pass at this task; this task replaces the option-parsing half of them)
 
 **Interfaces:**
-- Consumes: `tools/fixtures/j-vofc-sample.html` (Task 1).
+- Consumes: `tools/fixtures/j-vofc-sample.html` (committed).
 - Produces (used by Tasks 3–5):
 
 ```js
-export function parseProgramOptions(html)  // → [{ value, code, name, versionYear }]
-export function latestPerCode(options)     // → same shape, one per code, highest versionYear, sorted by code
-export function programId(code, versionYear) // → "BS-AMDSc-M-DSc-2024"
+export function programId(code, version)        // → "BS-AMDSc-M-DSc-2024", "AB-LIT-ENG-24TB"
+export function parseVersion(version)           // → { versionYear, track } | null
+export function versionLabelOf(versionYear, track) // → "2024" | "2024 · BE"
+export function parseProgramOptions(html)       // → { options, skipped }
+export function latestPerTrack(options)         // → one option per (code, track)
 ```
 
-- [ ] **Step 1: Write the failing tests** in `tools/curriculum-parse.test.ts`:
+Each option is `{ value, code, version, name, versionYear, track, versionLabel }`.
+
+**Why this replaces the previous implementation (verified against the real fixture — do not re-derive):**
+
+The first pass parsed the option *label* with `\(([^)]+)\) (.+?)\(Ver Sem \d+, Ver Year (\d{4})\)`.
+Against the real page that silently dropped 20 of 472 options and could corrupt others:
+
+- **"Ver Year" is not always 4 digits.** Real values include `24BE`, `18IR`, `20TB`, `99TB` —
+  a 2-digit year plus a track code. `AB EU`, `AB LIT(ENG)` and `AB LIT(ENG)-LCS` have *only*
+  track-suffixed versions, so a `\d{4}` year requirement removes those three programs entirely.
+- **Codes contain parentheses** (`AB LIT(ENG)`), so `\(([^)]+)\)` captures `AB LIT(ENG` and
+  leaves `)` glued to the name — silently, with no parse failure.
+- **The `value` attribute is authoritative**: `{code}_{version}_{sem}`, e.g.
+  `AB LIT(ENG)_24TB_1`. Split it from the right and both problems disappear.
+
+Grouping is **latest per (code, track)**, not per code, so parallel tracks survive. On the real
+fixture this yields 472 parsed / 0 skipped → 233 programs from 227 distinct codes, with unique ids.
+
+- [ ] **Step 1: Replace the option-parsing tests.** In `tools/curriculum-parse.test.ts`, delete the
+  existing `describe("programId")`, `describe("parseProgramOptions")` and `describe("latestPerCode")`
+  blocks and put these in their place (keep the file's existing imports of `readFileSync`/`SAMPLE`):
 
 ```ts
-import { describe, it, expect } from "vitest";
-import { readFileSync } from "node:fs";
-import { parseProgramOptions, latestPerCode, programId } from "./curriculum-parse.mjs";
-
-const SAMPLE = readFileSync(new URL("./fixtures/j-vofc-sample.html", import.meta.url), "utf8");
+import {
+  programId, parseVersion, versionLabelOf, parseProgramOptions, latestPerTrack,
+} from "./curriculum-parse.mjs";
 
 describe("programId", () => {
-  it("slugifies the code and appends the version year", () => {
-    expect(programId("BS AMDSc-M DSc", 2024)).toBe("BS-AMDSc-M-DSc-2024");
+  it("slugifies the code and appends the raw version", () => {
+    expect(programId("BS AMDSc-M DSc", "2024")).toBe("BS-AMDSc-M-DSc-2024");
   });
-  it("collapses runs of non-alphanumerics into one dash", () => {
-    expect(programId("AB  (CD)/EF", 2020)).toBe("AB-CD-EF-2020");
+  it("handles codes containing parentheses and keeps tracks distinct", () => {
+    expect(programId("AB LIT(ENG)", "24TB")).toBe("AB-LIT-ENG-24TB");
+    expect(programId("AB EU", "20IR")).toBe("AB-EU-20IR");
+  });
+});
+
+describe("parseVersion", () => {
+  it("reads a plain 4-digit year", () => {
+    expect(parseVersion("2024")).toEqual({ versionYear: 2024, track: "" });
+  });
+  it("expands a 2-digit year and captures the track", () => {
+    expect(parseVersion("24BE")).toEqual({ versionYear: 2024, track: "BE" });
+    expect(parseVersion("99TB")).toEqual({ versionYear: 1999, track: "TB" });
+  });
+  it("returns null for an unrecognizable version", () => {
+    expect(parseVersion("")).toBeNull();
+    expect(parseVersion("NOPE")).toBeNull();
+  });
+});
+
+describe("versionLabelOf", () => {
+  it("shows the year alone, or the year and track", () => {
+    expect(versionLabelOf(2024, "")).toBe("2024");
+    expect(versionLabelOf(2024, "BE")).toBe("2024 · BE");
   });
 });
 
 describe("parseProgramOptions", () => {
-  it("parses (CODE) NAME(Ver Sem N, Ver Year YYYY) labels", () => {
-    const options = parseProgramOptions(
-      `<select name="curriculumCode">
+  it("parses code, version and name from the option value and label", () => {
+    const { options } = parseProgramOptions(
+      `<select name="degCode">
          <option value="">-- Select --</option>
-         <option value="X1">(BS AMDSc-M DSc) BACHELOR OF SCIENCE IN APPLIED MATHEMATICS(Ver Sem 1, Ver Year 2024)</option>
-         <option value="X2">(AB IS) INTERDISCIPLINARY STUDIES(Ver Sem 2, Ver Year 2020)</option>
+         <option value="BS AMDSc-M DSc_2024_1">(BS AMDSc-M DSc) BACHELOR OF SCIENCE IN APPLIED MATHEMATICS(Ver Sem 1, Ver Year 2024)</option>
        </select>`
     );
-    expect(options).toEqual([
-      { value: "X1", code: "BS AMDSc-M DSc", name: "BACHELOR OF SCIENCE IN APPLIED MATHEMATICS", versionYear: 2024 },
-      { value: "X2", code: "AB IS", name: "INTERDISCIPLINARY STUDIES", versionYear: 2020 },
-    ]);
+    expect(options).toEqual([{
+      value: "BS AMDSc-M DSc_2024_1", code: "BS AMDSc-M DSc", version: "2024",
+      name: "BACHELOR OF SCIENCE IN APPLIED MATHEMATICS",
+      versionYear: 2024, track: "", versionLabel: "2024",
+    }]);
   });
-  it("skips placeholder and unparseable options", () => {
-    expect(parseProgramOptions(`<select><option value="">-- Select --</option><option value="Z">JUNK</option></select>`)).toEqual([]);
+  it("parses a code containing parentheses without corrupting code or name", () => {
+    const { options } = parseProgramOptions(
+      `<option value="AB LIT(ENG)_24TB_1">(AB LIT(ENG)) BACHELOR OF ARTS IN LITERATURE (ENGLISH)(Ver Sem 1, Ver Year 24TB)</option>`
+    );
+    expect(options[0].code).toBe("AB LIT(ENG)");
+    expect(options[0].name).toBe("BACHELOR OF ARTS IN LITERATURE (ENGLISH)");
+    expect(options[0].track).toBe("TB");
   });
-  it("finds real options in the captured AISIS page", () => {
-    const options = parseProgramOptions(SAMPLE);
-    expect(options.length).toBeGreaterThan(0);
-    for (const o of options) {
-      expect(o.code).not.toBe("");
-      expect(Number.isInteger(o.versionYear)).toBe(true);
-    }
+  it("reports unparseable options instead of dropping them silently", () => {
+    const { options, skipped } = parseProgramOptions(`<option value="JUNK">whatever</option>`);
+    expect(options).toEqual([]);
+    expect(skipped).toEqual(["JUNK"]);
+  });
+  it("parses every option in the captured AISIS page with none skipped", () => {
+    const { options, skipped } = parseProgramOptions(SAMPLE);
+    const rawCount = [...SAMPLE.matchAll(/<option\b[^>]*value\s*=\s*"([^"]+)"/gi)].length;
+    expect(skipped).toEqual([]);
+    expect(options).toHaveLength(rawCount);
+    expect(options).toHaveLength(472);
   });
 });
 
-describe("latestPerCode", () => {
-  it("keeps only the highest version year per code, sorted by code", () => {
-    const options = [
-      { value: "b", code: "BS AMDSc-M DSc", name: "N", versionYear: 2020 },
-      { value: "a", code: "BS AMDSc-M DSc", name: "N", versionYear: 2024 },
-      { value: "c", code: "AB IS", name: "M", versionYear: 2018 },
-    ];
-    expect(latestPerCode(options)).toEqual([
-      { value: "c", code: "AB IS", name: "M", versionYear: 2018 },
-      { value: "a", code: "BS AMDSc-M DSc", name: "N", versionYear: 2024 },
-    ]);
+describe("latestPerTrack", () => {
+  it("keeps the newest version of each (code, track) pair", () => {
+    const mk = (code, version) => ({
+      code, version, value: `${code}_${version}_1`, name: "N", ...parseVersion(version),
+      versionLabel: "x",
+    });
+    const result = latestPerTrack([mk("AB EU", "18BE"), mk("AB EU", "24BE"), mk("AB EU", "20IR")]);
+    expect(result.map((o) => o.version)).toEqual(["24BE", "20IR"]);
+  });
+  it("keeps parallel tracks that would vanish if grouped by code alone", () => {
+    const latest = latestPerTrack(parseProgramOptions(SAMPLE).options);
+    const ids = latest.map((o) => programId(o.code, o.version));
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(ids).toContain("BS-AMDSc-M-DSc-2024");
+    expect(ids).toContain("AB-EU-24BE");
+    expect(ids).toContain("AB-EU-20IR");
+    expect(latest).toHaveLength(233);
   });
 });
 ```
@@ -127,71 +185,98 @@ describe("latestPerCode", () => {
 - [ ] **Step 2: Run to verify RED**
 
 Run: `npx vitest run tools/curriculum-parse.test.ts`
-Expected: FAIL — cannot resolve `./curriculum-parse.mjs`.
+Expected: FAIL — `parseVersion`/`versionLabelOf`/`latestPerTrack` are not exported, and `programId`
+now takes a version string rather than a number.
 
-- [ ] **Step 3: Implement** `tools/curriculum-parse.mjs`:
+- [ ] **Step 3: Implement.** In `tools/curriculum-parse.mjs`, keep `decodeEntities`/`textOf` as they
+  are, delete the old `LABEL` constant, `programId`, `parseProgramOptions` and `latestPerCode`, and
+  put this in their place. It was prototyped against the real fixture (472 parsed, 0 skipped, 233
+  programs, ids unique) — transcribe as written:
 
 ```js
-// Parsers for the AISIS Official Curriculum page (J_VOFC.do).
-// Dependency-free by design, like tools/extract-rows.mjs.
+// The option VALUE is authoritative: "{code}_{version}_{sem}", e.g. "AB LIT(ENG)_24TB_1".
+// Splitting it from the right survives codes that contain parentheses, spaces and dashes,
+// which the printed label "(CODE) NAME(Ver Sem N, Ver Year V)" does not.
+const VALUE = /^(.*)_([^_]+)_([^_]+)$/;
+// "Ver Year" is a 4-digit year, or a 2-digit year plus a track code ("24BE", "99TB").
+const VERSION = /^(\d{2}|\d{4})([A-Za-z]*)$/;
 
-const LABEL = /^\(([^)]+)\)\s*(.+?)\s*\(\s*Ver\s+Sem\s+\d+\s*,\s*Ver\s+Year\s+(\d{4})\s*\)\s*$/i;
-
-function decodeEntities(text) {
-  return text
-    .replace(/&nbsp;/gi, " ")
-    .replace(/&amp;/gi, "&")
-    .replace(/&lt;/gi, "<")
-    .replace(/&gt;/gi, ">")
-    .replace(/&quot;/gi, '"')
-    .replace(/&#39;/gi, "'");
+export function parseVersion(version) {
+  const m = VERSION.exec(version.trim());
+  if (!m) return null;
+  const digits = m[1];
+  const versionYear = digits.length === 4
+    ? Number(digits)
+    : Number(digits) <= 50 ? 2000 + Number(digits) : 1900 + Number(digits);
+  return { versionYear, track: m[2].toUpperCase() };
 }
 
-const textOf = (html) =>
-  decodeEntities(html.replace(/<[^>]+>/g, " ")).replace(/\s+/g, " ").trim();
+export const versionLabelOf = (versionYear, track) =>
+  track ? `${versionYear} · ${track}` : `${versionYear}`;
 
-export function programId(code, versionYear) {
+export function programId(code, version) {
   const slug = code.trim().replace(/[^A-Za-z0-9]+/g, "-").replace(/^-|-$/g, "");
-  return `${slug}-${versionYear}`;
+  return `${slug}-${version}`;
 }
 
 export function parseProgramOptions(html) {
   const options = [];
+  const skipped = [];
   for (const m of html.matchAll(/<option\b[^>]*value\s*=\s*"([^"]*)"[^>]*>([\s\S]*?)<\/option>/gi)) {
     const value = m[1].trim();
-    if (!value) continue;
-    const label = LABEL.exec(textOf(m[2]));
-    if (!label) continue;
+    if (!value) continue; // the "-- Select --" placeholder
+    const parts = VALUE.exec(value);
+    const parsed = parts ? parseVersion(parts[2]) : null;
+    if (!parts || !parsed) {
+      skipped.push(value);
+      continue;
+    }
+    const [, code, version] = parts;
+    // Name = printed label minus the leading "(CODE)" and the trailing "(Ver Sem …)".
+    let name = textOf(m[2]);
+    if (name.startsWith(`(${code})`)) name = name.slice(code.length + 2).trim();
+    name = name.replace(/\(\s*Ver\s+Sem[^)]*\)\s*$/i, "").trim();
     options.push({
-      value,
-      code: label[1].trim(),
-      name: label[2].trim(),
-      versionYear: Number(label[3]),
+      value, code, version, name,
+      versionYear: parsed.versionYear,
+      track: parsed.track,
+      versionLabel: versionLabelOf(parsed.versionYear, parsed.track),
     });
   }
-  return options;
+  return { options, skipped };
 }
 
-export function latestPerCode(options) {
+// Latest per (code, track): grouping by code alone would drop whole programs whose
+// only versions are track-suffixed (AB EU, AB LIT(ENG), AB LIT(ENG)-LCS).
+export function latestPerTrack(options) {
   const best = new Map();
   for (const option of options) {
-    const current = best.get(option.code);
-    if (!current || option.versionYear > current.versionYear) best.set(option.code, option);
+    const key = `${option.code}|${option.track}`;
+    const current = best.get(key);
+    if (!current || option.versionYear > current.versionYear) best.set(key, option);
   }
-  return [...best.values()].sort((a, b) => a.code.localeCompare(b.code));
+  return [...best.values()].sort(
+    (a, b) => a.code.localeCompare(b.code) || a.track.localeCompare(b.track)
+  );
 }
 ```
 
 - [ ] **Step 4: Run to verify GREEN**
 
 Run: `npx vitest run tools/curriculum-parse.test.ts`
-Expected: PASS (6 tests). If the real-page test fails, the fixture's option markup differs from the assumed shape — fix the regex to match the fixture, never the fixture to match the regex.
+Expected: PASS. The real-page assertions (472 parsed / 0 skipped / 233 programs) are the point of
+this task — if they fail, the parser is wrong; never weaken them or edit the fixture.
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 5: Run the whole suite**
+
+Run: `npx vitest run`
+Expected: all green.
+
+- [ ] **Step 6: Commit**
 
 ```bash
 git add tools/curriculum-parse.mjs tools/curriculum-parse.test.ts
-git commit -m "feat: parse the AISIS curriculum program dropdown"
+git commit -m "fix: parse program options by value, keep latest per (code, track)"
 ```
 
 ---
@@ -465,19 +550,23 @@ describe("looksLikeLoginPage", () => {
 
 describe("buildProgram / buildIndex", () => {
   const blocks = [{ year: "First Year", term: "First Semester", key: "First Year|First Semester", totalUnits: 3, entries: [] }];
-  it("assembles a Program with the slugified id", () => {
-    expect(buildProgram({ code: "BS AMDSc-M DSc", name: "APPLIED MATH", versionYear: 2024, blocks })).toEqual({
-      id: "BS-AMDSc-M-DSc-2024", code: "BS AMDSc-M DSc", name: "APPLIED MATH", versionYear: 2024, blocks,
+  it("assembles a Program with the slugified id and version fields", () => {
+    expect(buildProgram({
+      code: "BS AMDSc-M DSc", name: "APPLIED MATH", version: "2024",
+      versionYear: 2024, versionLabel: "2024", blocks,
+    })).toEqual({
+      id: "BS-AMDSc-M-DSc-2024", code: "BS AMDSc-M DSc", name: "APPLIED MATH",
+      version: "2024", versionYear: 2024, versionLabel: "2024", blocks,
     });
   });
   it("builds a summary index sorted by code", () => {
     const programs = [
-      { id: "Z-2024", code: "Z", name: "Zed", versionYear: 2024, blocks },
-      { id: "A-2020", code: "A", name: "Ay", versionYear: 2020, blocks },
+      { id: "Z-2024", code: "Z", name: "Zed", version: "2024", versionYear: 2024, versionLabel: "2024", blocks },
+      { id: "A-2020", code: "A", name: "Ay", version: "2020", versionYear: 2020, versionLabel: "2020", blocks },
     ];
     expect(buildIndex(programs)).toEqual([
-      { id: "A-2020", code: "A", name: "Ay", versionYear: 2020 },
-      { id: "Z-2024", code: "Z", name: "Zed", versionYear: 2024 },
+      { id: "A-2020", code: "A", name: "Ay", version: "2020", versionYear: 2020, versionLabel: "2020" },
+      { id: "Z-2024", code: "Z", name: "Zed", version: "2024", versionYear: 2024, versionLabel: "2024" },
     ]);
   });
 });
@@ -496,14 +585,15 @@ export function looksLikeLoginPage(html) {
   return /(session\s+has\s+expired|please\s+log\s*in)/i.test(textOf(html));
 }
 
-export function buildProgram({ code, name, versionYear, blocks }) {
-  return { id: programId(code, versionYear), code, name, versionYear, blocks };
+export function buildProgram({ code, name, version, versionYear, versionLabel, blocks }) {
+  return { id: programId(code, version), code, name, version, versionYear, versionLabel, blocks };
 }
 
 export function buildIndex(programs) {
   return programs
-    .map(({ id, code, name, versionYear }) => ({ id, code, name, versionYear }))
-    .sort((a, b) => a.code.localeCompare(b.code));
+    .map(({ id, code, name, version, versionYear, versionLabel }) =>
+      ({ id, code, name, version, versionYear, versionLabel }))
+    .sort((a, b) => a.code.localeCompare(b.code) || a.versionLabel.localeCompare(b.versionLabel));
 }
 ```
 
@@ -552,7 +642,7 @@ import { readdir, readFile, rename, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
-  parseProgramOptions, latestPerCode, parseCurriculumPage,
+  parseProgramOptions, latestPerTrack, parseCurriculumPage,
   looksLikeLoginPage, buildProgram, buildIndex,
 } from "./curriculum-parse.mjs";
 
@@ -591,12 +681,14 @@ const fetchPage = async (body) => {
 };
 
 const landing = await fetchPage(null);
-const discovered = latestPerCode(parseProgramOptions(landing));
+const { options, skipped } = parseProgramOptions(landing);
+for (const value of skipped) console.warn(`  ! unparseable option value, skipped: ${value}`);
+const discovered = latestPerTrack(options);
 if (discovered.length === 0) {
   console.error("No programs found in the page's dropdown — the page layout may have changed.");
   process.exit(1);
 }
-console.log(`Discovered ${discovered.length} programs (latest version-year each).`);
+console.log(`Discovered ${discovered.length} programs (latest version per code+track) from ${options.length} options; ${skipped.length} unparseable.`);
 
 // The form field names are read from the live page so a rename upstream is visible
 // immediately rather than silently producing empty results.
@@ -625,11 +717,11 @@ for (const option of discovered) {
     const { blocks, warnings: parseWarnings } = parseCurriculumPage(html);
     for (const w of parseWarnings) warnings.push(`${option.code}: ${w}`);
     if (blocks.length === 0) {
-      warnings.push(`${option.code} (${option.versionYear}): no blocks parsed — skipped`);
+      warnings.push(`${option.code} (${option.versionLabel}): no blocks parsed — skipped`);
       console.warn(`  ! ${option.code}: no blocks parsed`);
     } else {
       programs.push(buildProgram({ ...option, blocks }));
-      console.log(`  ${option.code} (${option.versionYear}): ${blocks.length} blocks`);
+      console.log(`  ${option.code} (${option.versionLabel}): ${blocks.length} blocks`);
     }
   } catch (err) {
     warnings.push(`${option.code}: ${err.message} — skipped`);
@@ -752,3 +844,113 @@ SUPABASE_SERVICE_ROLE_KEY=<key> npm run push:data
 ```
 
 - [ ] **Step 6 (orchestrator):** Verify via the Supabase connector (`select count(*) from programs;` — expect roughly the scraped count) and click through the running app to confirm the program picker lists them and a non-AMDSc program produces schedules.
+
+---
+
+### Task 8: `version_label` column and app wiring
+
+**Execute this BEFORE Task 7** — the live publish needs the column to exist. Numbered last only
+because it was added after the plan was first written.
+
+**Files:**
+- Create: `supabase/migrations/0002_program_version_label.sql`
+- Modify: `src/lib/types.ts`, `src/lib/rows.ts`, `src/lib/rows.test.ts`,
+  `tools/push-transforms.mjs`, `tools/push-transforms.test.ts`,
+  `src/components/ProgramPicker.tsx`, `src/components/ProgramPicker.test.tsx`,
+  `data/curricula/BS-AMDSc-M-DSc-2024.json`, `data/curricula/index.json`
+
+**Why:** programs have parallel curriculum tracks (`AB EU` 2018 exists as both `18BE` and `18IR`).
+`versionYear` alone cannot tell them apart in the picker, so each program carries a display
+`versionLabel` (`"2024"`, or `"2024 · BE"`) plus the raw `version` string.
+
+**Interfaces:**
+- Consumes: `versionLabel`/`version` produced by Tasks 2 and 4.
+- Produces: `ProgramSummary`/`Program` gain `version: string` and `versionLabel: string`;
+  `programs` table gains `version_label text`.
+
+- [ ] **Step 1: Write the failing tests.** In `src/lib/rows.test.ts`, update the programs-row case:
+
+```ts
+it("maps a programs row to Program and ProgramSummary", () => {
+  const row = { id: "X-24BE", code: "X", name: "N", version: "24BE", version_year: 2024,
+    version_label: "2024 · BE", blocks: [] };
+  expect(rowToProgram(row)).toEqual({ id: "X-24BE", code: "X", name: "N", version: "24BE",
+    versionYear: 2024, versionLabel: "2024 · BE", blocks: [] });
+  expect(rowToSummary(row)).toEqual({ id: "X-24BE", code: "X", name: "N", version: "24BE",
+    versionYear: 2024, versionLabel: "2024 · BE" });
+});
+```
+
+In `tools/push-transforms.test.ts`, update the program case:
+
+```ts
+it("maps a program file to a programs row", () => {
+  const program = { id: "X-24BE", code: "X", name: "X PROG", version: "24BE", versionYear: 2024,
+    versionLabel: "2024 · BE", blocks: [{ key: "a" }] };
+  expect(programToRow(program)).toEqual({ id: "X-24BE", code: "X", name: "X PROG",
+    version: "24BE", version_year: 2024, version_label: "2024 · BE", blocks: [{ key: "a" }] });
+});
+```
+
+In `src/components/ProgramPicker.test.tsx`, add:
+
+```tsx
+it("shows the version label so same-year tracks are distinguishable", () => {
+  const programs = [
+    { id: "AB-EU-18BE", code: "AB EU", name: "EUROPEAN STUDIES", version: "18BE", versionYear: 2018, versionLabel: "2018 · BE" },
+    { id: "AB-EU-18IR", code: "AB EU", name: "EUROPEAN STUDIES", version: "18IR", versionYear: 2018, versionLabel: "2018 · IR" },
+  ];
+  render(<ProgramPicker programs={programs} selectedId="" onSelect={() => {}} />);
+  expect(screen.getByRole("option", { name: /2018 · BE/ })).toBeTruthy();
+  expect(screen.getByRole("option", { name: /2018 · IR/ })).toBeTruthy();
+});
+```
+
+- [ ] **Step 2: Run to verify RED**
+
+Run: `npx vitest run src/lib/rows.test.ts tools/push-transforms.test.ts src/components/ProgramPicker.test.tsx`
+Expected: FAIL — `version`/`versionLabel` are not in the types or the mappers.
+
+- [ ] **Step 3: Implement.**
+
+`src/lib/types.ts` — add to `ProgramSummary`:
+
+```ts
+  version: string;       // raw AISIS version, e.g. "2024" or "24BE"
+  versionLabel: string;  // display form, e.g. "2024" or "2024 · BE"
+```
+
+`src/lib/rows.ts` — add `version: string` and `version_label: string` to `ProgramRow`, and carry
+both through `rowToProgram` and `rowToSummary` (`versionLabel: row.version_label`).
+
+`tools/push-transforms.mjs` — `programToRow` gains `version: p.version` and
+`version_label: p.versionLabel`.
+
+`src/components/ProgramPicker.tsx` — render `{p.versionLabel}` where it currently renders
+`{p.versionYear}` (both the `<option>` text and the summary list).
+
+- [ ] **Step 4: Backfill the committed data.** In `data/curricula/BS-AMDSc-M-DSc-2024.json` and the
+  matching entry of `data/curricula/index.json`, add `"version": "2024"` and
+  `"versionLabel": "2024"` alongside the existing `"versionYear": 2024`.
+
+- [ ] **Step 5: Write the migration** `supabase/migrations/0002_program_version_label.sql`:
+
+```sql
+alter table public.programs add column version text;
+alter table public.programs add column version_label text;
+```
+
+The orchestrator applies it with the Supabase connector's `apply_migration` (name
+`program_version_label`) — subagents do not have that tool.
+
+- [ ] **Step 6: Verify**
+
+Run: `npx vitest run && npm run build && npm run validate:data`
+Expected: all tests pass, build clean, validator exit 0.
+
+- [ ] **Step 7: Commit**
+
+```bash
+git add -A
+git commit -m "feat: carry curriculum version label through data, DB and picker"
+```

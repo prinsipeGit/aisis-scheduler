@@ -1,0 +1,696 @@
+{
+  "id": "AB-AM-2026",
+  "code": "AB AM",
+  "name": "BACHELOR OF ARTS IN ART MANAGEMENT",
+  "version": "2026",
+  "versionYear": 2026,
+  "versionLabel": "2026",
+  "blocks": [
+    {
+      "year": "First Year",
+      "term": "First Semester",
+      "key": "First Year|First Semester",
+      "totalUnits": 21,
+      "entries": [
+        {
+          "catNo": "ArtAp 10",
+          "title": "ART APPRECIATION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#0"
+        },
+        {
+          "catNo": "ENLIT 12",
+          "title": "LITERATURE: GLOBAL VOICES AND ENCOUNTERS",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#1"
+        },
+        {
+          "catNo": "FILI 11",
+          "title": "MALAYUNING KOMUNIKASYON",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#2"
+        },
+        {
+          "catNo": "FLC 11",
+          "title": "FOREIGN LANGUAGE AND CULTURE 11",
+          "units": 3,
+          "prerequisites": [],
+          "category": "FLC1",
+          "isElective": false,
+          "slotId": "First Year|First Semester#3"
+        },
+        {
+          "catNo": "HISTO 11",
+          "title": "RIZAL AND THE EMERGENCE OF THE PHILIPPINE NATION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#4"
+        },
+        {
+          "catNo": "INTACT 11",
+          "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+          "units": 0,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#5"
+        },
+        {
+          "catNo": "NatSc 10.01",
+          "title": "NATURAL SCIENCE, LECTURE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "NS1A",
+          "isElective": false,
+          "slotId": "First Year|First Semester#6"
+        },
+        {
+          "catNo": "NatSc 10.02",
+          "title": "NATURAL SCIENCE, LABORATORY",
+          "units": 1,
+          "prerequisites": [],
+          "category": "NS1B",
+          "isElective": false,
+          "slotId": "First Year|First Semester#7"
+        },
+        {
+          "catNo": "PATHFit 1",
+          "title": "PHYSICAL ACTIVITIES TOWARDS HEALTH AND FITNESS 1",
+          "units": 2,
+          "prerequisites": [],
+          "category": "PFT1",
+          "isElective": false,
+          "slotId": "First Year|First Semester#8"
+        }
+      ]
+    },
+    {
+      "year": "First Year",
+      "term": "Second Semester",
+      "key": "First Year|Second Semester",
+      "totalUnits": 20,
+      "entries": [
+        {
+          "catNo": "ARTS 110",
+          "title": "INTRODUCTION TO STUDIO ARTS",
+          "units": 3,
+          "prerequisites": [
+            "ArtAp 10"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#0"
+        },
+        {
+          "catNo": "ENGL 11",
+          "title": "PURPOSIVE COMMUNICATION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#1"
+        },
+        {
+          "catNo": "FILI 12",
+          "title": "PANITIKAN NG PILIPINAS",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#2"
+        },
+        {
+          "catNo": "INTACT 12",
+          "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 12",
+          "units": 0,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#3"
+        },
+        {
+          "catNo": "MATH 10",
+          "title": "MATHEMATICS IN THE MODERN WORLD",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#4"
+        },
+        {
+          "catNo": "PATHFit 2",
+          "title": "PHYSICAL ACTIVITIES TOWARDS HEALTH AND FITNESS 2",
+          "units": 2,
+          "prerequisites": [
+            "PATHFit 1"
+          ],
+          "category": "PFT2",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#5"
+        },
+        {
+          "catNo": "SocSc 11",
+          "title": "UNDERSTANDING THE SELF",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#6"
+        },
+        {
+          "catNo": "THEO 11",
+          "title": "FAITH, SPIRITUALITY, AND THE CHURCH",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#7"
+        }
+      ]
+    },
+    {
+      "year": "Second Year",
+      "term": "First Semester",
+      "key": "Second Year|First Semester",
+      "totalUnits": 23,
+      "entries": [
+        {
+          "catNo": "ARTM 101.03",
+          "title": "ART HISTORY: CLASSICAL ANTIQUITY TO 19TH CENTURY",
+          "units": 3,
+          "prerequisites": [
+            "ArtAp 10"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#0"
+        },
+        {
+          "catNo": "ARTM 102.03",
+          "title": "PHILIPPINE ART: SURVEY OF PHILIPPINE VISUAL ARTS 1",
+          "units": 3,
+          "prerequisites": [
+            "ArtAp 10"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#1"
+        },
+        {
+          "catNo": "ARTM 103.03",
+          "title": "ART MANAGEMENT: COLLECTIONS MANAGEMENT",
+          "units": 3,
+          "prerequisites": [
+            "ArtAp 10"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#2"
+        },
+        {
+          "catNo": "ARTS 120",
+          "title": "DIGITAL DESIGN STUDIO",
+          "units": 3,
+          "prerequisites": [
+            "ArtAp 10"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#3"
+        },
+        {
+          "catNo": "NSTP 11",
+          "title": "NATIONAL SERVICE TRAINING PROGRAM 11",
+          "units": 3,
+          "prerequisites": [],
+          "category": "NP1",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#4"
+        },
+        {
+          "catNo": "PATHFit 3",
+          "title": "PHYSICAL ACTIVITIES TOWARDS HEALTH AND FITNESS 3",
+          "units": 2,
+          "prerequisites": [
+            "PATHFit 1",
+            "PATHFit 2"
+          ],
+          "category": "PFT3",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#5"
+        },
+        {
+          "catNo": "SocSc 12",
+          "title": "THE CONTEMPORARY WORLD",
+          "units": 3,
+          "prerequisites": [
+            "SocSc 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#6"
+        },
+        {
+          "catNo": "THEO 12",
+          "title": "THEOLOGY OF THE CATHOLIC SOCIAL VISION",
+          "units": 3,
+          "prerequisites": [
+            "THEO 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#7"
+        }
+      ]
+    },
+    {
+      "year": "Second Year",
+      "term": "Second Semester",
+      "key": "Second Year|Second Semester",
+      "totalUnits": 20,
+      "entries": [
+        {
+          "catNo": "ARTM 101.04",
+          "title": "ART HISTORY: ASIAN ART",
+          "units": 3,
+          "prerequisites": [
+            "ArtAp 10"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#0"
+        },
+        {
+          "catNo": "ARTM 103.04",
+          "title": "ART MANAGEMENT: INTRODUCTION TO CURATORSHIP",
+          "units": 3,
+          "prerequisites": [
+            "ARTM 103.03"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#1"
+        },
+        {
+          "catNo": "ARTS 102",
+          "title": "RESEARCH AND THE ARTS",
+          "units": 3,
+          "prerequisites": [
+            "ArtAp 10"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#2"
+        },
+        {
+          "catNo": "HISTO 12",
+          "title": "READINGS IN PHILIPPINE HISTORY",
+          "units": 3,
+          "prerequisites": [
+            "HISTO 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#3"
+        },
+        {
+          "catNo": "PATHFit 4",
+          "title": "PHYSICAL ACTIVITIES TOWARDS HEALTH AND FITNESS 4",
+          "units": 2,
+          "prerequisites": [
+            "PATHFit 1",
+            "PATHFit 2"
+          ],
+          "category": "PFT4",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#4"
+        },
+        {
+          "catNo": "PHILO 11",
+          "title": "PHILOSOPHY: THE HUMAN CONDITION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "CPH1",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#5"
+        },
+        {
+          "catNo": "STS 10",
+          "title": "SCIENCE, TECHNOLOGY, AND SOCIETY",
+          "units": 3,
+          "prerequisites": [
+            "NatSc 10.01",
+            "NatSc 10.02"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#6"
+        }
+      ]
+    },
+    {
+      "year": "Third Year",
+      "term": "Fourth Year",
+      "key": "Third Year|Fourth Year",
+      "totalUnits": 3,
+      "entries": [
+        {
+          "catNo": "ARTM 103.10",
+          "title": "ART MANAGEMENT: EXHIBITIONS MANAGEMENT",
+          "units": 3,
+          "prerequisites": [
+            "ArtAp 10"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Fourth Year#0"
+        }
+      ]
+    },
+    {
+      "year": "Third Year",
+      "term": "First Semester",
+      "key": "Third Year|First Semester",
+      "totalUnits": 21,
+      "entries": [
+        {
+          "catNo": "ARTM 101.05",
+          "title": "ART HISTORY: 20TH CENTURY TO GLOBAL CONTEMPORARY ART",
+          "units": 3,
+          "prerequisites": [
+            "ArtAp 10"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#0"
+        },
+        {
+          "catNo": "ARTM 102.04",
+          "title": "PHILIPPINE ART: SURVEY OF PHILIPPINE VISUAL ARTS 2",
+          "units": 3,
+          "prerequisites": [
+            "ARTM 102.03"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#1"
+        },
+        {
+          "catNo": "ARTS 103",
+          "title": "ART AND THE COMMUNITY",
+          "units": 3,
+          "prerequisites": [
+            "ArtAp 10"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#2"
+        },
+        {
+          "catNo": "IE 2",
+          "title": "INTERDISCIPLINARY ELECTIVE 2",
+          "units": 3,
+          "prerequisites": [],
+          "category": "IE2",
+          "isElective": true,
+          "electiveDept": "**IE**",
+          "slotId": "Third Year|First Semester#3"
+        },
+        {
+          "catNo": "NSTP 12",
+          "title": "NATIONAL SERVICE TRAINING PROGRAM 12",
+          "units": 3,
+          "prerequisites": [],
+          "category": "NP2",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#4"
+        },
+        {
+          "catNo": "PHILO 13",
+          "title": "ETHICS",
+          "units": 3,
+          "prerequisites": [
+            "PHILO 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#5"
+        },
+        {
+          "catNo": "SocSc 13",
+          "title": "THE ECONOMY, SOCIETY, AND SUSTAINABLE DEVELOPMENT",
+          "units": 3,
+          "prerequisites": [
+            "SocSc 12"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#6"
+        }
+      ]
+    },
+    {
+      "year": "Third Year",
+      "term": "Second Semester",
+      "key": "Third Year|Second Semester",
+      "totalUnits": 21,
+      "entries": [
+        {
+          "catNo": "ARTM 103.06",
+          "title": "ART MANAGEMENT: THE ART WORLD: SITES, SPACES, AND INSTITUTIONS",
+          "units": 3,
+          "prerequisites": [
+            "ArtAp 10"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#0"
+        },
+        {
+          "catNo": "ARTM 103.07",
+          "title": "ART MANAGEMENT: GENRES OF ART WRITING",
+          "units": 3,
+          "prerequisites": [
+            "ArtAp 10"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#1"
+        },
+        {
+          "catNo": "ARTM 103.13",
+          "title": "ART MANAGEMENT: RESOURCE MANAGEMENT",
+          "units": 3,
+          "prerequisites": [
+            "ArtAp 10"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#2"
+        },
+        {
+          "catNo": "ARTS Elective 1",
+          "title": "ARTS ELECTIVE 1",
+          "units": 3,
+          "prerequisites": [],
+          "category": "RM1",
+          "isElective": true,
+          "slotId": "Third Year|Second Semester#3"
+        },
+        {
+          "catNo": "IE 1",
+          "title": "INTERDISCIPLINARY ELECTIVE 1 - ENGLISH",
+          "units": 3,
+          "prerequisites": [
+            "ENGL 11",
+            "ENLIT 12"
+          ],
+          "category": "IE1E",
+          "isElective": true,
+          "electiveDept": "**IE**",
+          "slotId": "Third Year|Second Semester#4"
+        },
+        {
+          "catNo": "PHILO 12",
+          "title": "PHILOSOPHY OF RELIGION",
+          "units": 3,
+          "prerequisites": [
+            "PHILO 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#5"
+        },
+        {
+          "catNo": "THEO 13",
+          "title": "A THEOLOGY OF MARRIAGE, FAMILY, AND VOCATION",
+          "units": 3,
+          "prerequisites": [
+            "THEO 12"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#6"
+        }
+      ]
+    },
+    {
+      "year": "Fourth Year",
+      "term": "Intersession",
+      "key": "Fourth Year|Intersession",
+      "totalUnits": 3,
+      "entries": [
+        {
+          "catNo": "ARTS 197",
+          "title": "INTERNSHIP AND PROFESSIONAL EXPOSURE",
+          "units": 3,
+          "prerequisites": [
+            "ArtAp 10"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|Intersession#0"
+        }
+      ]
+    },
+    {
+      "year": "Fourth Year",
+      "term": "First Semester",
+      "key": "Fourth Year|First Semester",
+      "totalUnits": 18,
+      "entries": [
+        {
+          "catNo": "ARTM 103.05",
+          "title": "ART MANAGEMENT: ISSUES IN CURATORIAL PRACTICE",
+          "units": 3,
+          "prerequisites": [
+            "ARTM 103.04"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#0"
+        },
+        {
+          "catNo": "ARTM 199.1",
+          "title": "ART MANAGEMENT THESIS: SENIOR PROJECT 1",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#1"
+        },
+        {
+          "catNo": "ARTM Elective",
+          "title": "ART MANAGEMENT ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "ME1",
+          "isElective": true,
+          "slotId": "Fourth Year|First Semester#2"
+        },
+        {
+          "catNo": "ARTS Elective 2",
+          "title": "ARTS ELECTIVE 2",
+          "units": 3,
+          "prerequisites": [],
+          "category": "RM2",
+          "isElective": true,
+          "slotId": "Fourth Year|First Semester#3"
+        },
+        {
+          "catNo": "DLQ 10",
+          "title": "DISCERNING LIFE QUESTIONS: TOWARDS LEADERSHIP AND COMMITMENT",
+          "units": 3,
+          "prerequisites": [
+            "PHILO 13",
+            "SocSc 13",
+            "THEO 13"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#4"
+        },
+        {
+          "catNo": "FREE ELECTIVE",
+          "title": "FREE ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "FE1",
+          "isElective": true,
+          "slotId": "Fourth Year|First Semester#5"
+        }
+      ]
+    },
+    {
+      "year": "Fourth Year",
+      "term": "Second Semester",
+      "key": "Fourth Year|Second Semester",
+      "totalUnits": 15,
+      "entries": [
+        {
+          "catNo": "ARTM 103.14",
+          "title": "ART MANAGEMENT: PROJECT DEVELOPMENT FOR CULTURE AND THE ARTS",
+          "units": 3,
+          "prerequisites": [
+            "ArtAp 10"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#0"
+        },
+        {
+          "catNo": "ARTM 199.2",
+          "title": "ART MANAGEMENT THESIS: SENIOR PROJECT 2",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#1"
+        },
+        {
+          "catNo": "ARTS 104",
+          "title": "THE CREATIVE PROFESSIONAL",
+          "units": 3,
+          "prerequisites": [
+            "ArtAp 10"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#2"
+        },
+        {
+          "catNo": "IE 3",
+          "title": "INTERDISCIPLINARY ELECTIVE 3",
+          "units": 3,
+          "prerequisites": [],
+          "category": "IE3",
+          "isElective": true,
+          "electiveDept": "**IE**",
+          "slotId": "Fourth Year|Second Semester#3"
+        },
+        {
+          "catNo": "SocSc 14",
+          "title": "POLITICS, GOVERNANCE, AND CITIZENSHIP",
+          "units": 3,
+          "prerequisites": [
+            "SocSc 13"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#4"
+        }
+      ]
+    }
+  ]
+}

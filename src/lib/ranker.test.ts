@@ -1,92 +1,76 @@
 import { describe, it, expect } from "vitest";
 import { rank } from "./ranker";
-import { mergeRatings } from "./profs";
-import type { Meeting, Preferences, Schedule, Section } from "./types";
-import { sectionKey } from "./types";
+import type { ProfRating, Schedule, Section } from "./types";
 
-function sec(courseCode: string, sectionCode: string, meetings: Meeting[], instructors: string[] = []): Section {
-  return { courseCode, sectionCode, meetings, instructors, modality: "FULLY ONSITE",
-    title: courseCode, units: 3, room: "X", remarks: "", raw: "" };
-}
-const m = (days: Meeting["days"], start: number, end: number): Meeting => ({ days, start, end });
-const prefs = (over: Partial<Preferences> = {}): Preferences => ({
-  criteria: ["compactDays"], protectedBlocks: [], excludedSections: [], ...over,
+const section = (code: string, days: Section["meetings"][number]["days"], start: number, end: number, instructors: string[] = []): Section => ({
+  courseCode: code, sectionCode: "1", title: code, units: 3, instructors, modality: "",
+  meetings: [{ days, start, end }], timeStatus: "scheduled", room: "", remarks: "", raw: "",
 });
-const noRatings = mergeRatings([], []);
-const first = (ranked: { schedule: Schedule }[]) =>
-  ranked[0].schedule.map(sectionKey).sort().join("|");
+
+const prefs = (criteria: Parameters<typeof rank>[1]["criteria"]) =>
+  ({ criteria, protectedBlocks: [], excludedSections: [] });
+
+const noRatings = new Map<string, ProfRating>();
 
 describe("rank", () => {
-  it("compactDays prefers the schedule with smaller gaps", () => {
-    const tight: Schedule = [sec("A", "1", [m(["M"], 480, 570)]), sec("B", "1", [m(["M"], 570, 660)])];
-    const gappy: Schedule = [sec("A", "1", [m(["M"], 480, 570)]), sec("B", "2", [m(["M"], 780, 870)])];
-    const ranked = rank([gappy, tight], prefs(), noRatings);
-    expect(first(ranked)).toBe("A 1|B 1");
+  it("orders by the first criterion", () => {
+    const compact: Schedule = [section("A", ["M"], 480, 540), section("B", ["M"], 540, 600)];
+    const gappy: Schedule = [section("A", ["M"], 480, 540), section("B", ["M"], 720, 780)];
+    const [best] = rank([gappy, compact], prefs(["compactDays"]), noRatings);
+    expect(best.schedule).toBe(compact);
   });
 
-  it("fewestDays prefers fewer campus days", () => {
-    const twoDays: Schedule = [sec("A", "1", [m(["M"], 480, 570)]), sec("B", "1", [m(["T"], 480, 570)])];
-    const oneDay: Schedule = [sec("A", "1", [m(["M"], 480, 570)]), sec("B", "2", [m(["M"], 600, 690)])];
-    const ranked = rank([twoDays, oneDay], prefs({ criteria: ["fewestDays"] }), noRatings);
-    expect(first(ranked)).toBe("A 1|B 2");
+  it("uses later criteria only to break ties in earlier ones (§7)", () => {
+    // Both have zero gaps, so compactDays ties and fewestDays decides.
+    const oneDay: Schedule = [section("A", ["M"], 480, 540), section("B", ["M"], 540, 600)];
+    const twoDays: Schedule = [section("A", ["M"], 480, 540), section("B", ["T"], 480, 540)];
+    const [best] = rank([twoDays, oneDay], prefs(["compactDays", "fewestDays"]), noRatings);
+    expect(best.schedule).toBe(oneDay);
   });
 
-  it("lateStart prefers later first classes; earlyEnd prefers earlier last classes", () => {
-    const early: Schedule = [sec("A", "1", [m(["M"], 480, 570)])];
-    const late: Schedule = [sec("A", "2", [m(["M"], 660, 750)])];
-    expect(first(rank([early, late], prefs({ criteria: ["lateStart"] }), noRatings))).toBe("A 2");
-    expect(first(rank([early, late], prefs({ criteria: ["earlyEnd"] }), noRatings))).toBe("A 1");
+  it("does NOT let lower-priority criteria outvote the top one", () => {
+    // This is the behaviour change from the old weighted blend. `gappy` is worse on
+    // compactDays but better on every later criterion; strict priority must still rank
+    // `compact` first.
+    const compact: Schedule = [section("A", ["M"], 480, 540), section("B", ["M"], 540, 600), section("C", ["T"], 480, 540)];
+    const gappy: Schedule = [section("A", ["M"], 480, 540), section("B", ["M"], 600, 660)];
+    const [best] = rank([gappy, compact], prefs(["compactDays", "fewestDays", "lateStart"]), noRatings);
+    expect(best.schedule).toBe(compact);
   });
 
-  it("preferredProfs prefers higher-rated instructors; unrated scores neutral 3", () => {
-    const good: Schedule = [sec("A", "1", [m(["M"], 480, 570)], ["GARCIA, JUAN"])];
-    const bad: Schedule = [sec("A", "2", [m(["M"], 480, 570)], ["CRUZ, JOSE"])];
-    const unknown: Schedule = [sec("A", "3", [m(["M"], 480, 570)], ["WHO, KNOWS"])];
-    const ratings = mergeRatings(
-      [{ name: "GARCIA, JUAN", rating: 5 }, { name: "CRUZ, JOSE", rating: 1 }], []);
-    const ranked = rank([bad, unknown, good], prefs({ criteria: ["preferredProfs"] }), ratings);
-    expect(ranked.map((r) => first([r]))).toEqual(["A 1", "A 3", "A 2"]);
+  it("treats sub-minute metric differences as ties", () => {
+    const a: Schedule = [section("A", ["M"], 480, 540)];
+    const b: Schedule = [section("B", ["M"], 480, 540)];
+    const ranked = rank([a, b], prefs(["compactDays"]), noRatings);
+    expect(ranked[0].score).toBe(ranked[1].score);
   });
 
-  it("averages ratings across a section's multiple instructors", () => {
-    const pair: Schedule = [sec("A", "1", [m(["M"], 480, 570)], ["GARCIA, JUAN", "CRUZ, JOSE"])];
-    const solo: Schedule = [sec("A", "2", [m(["M"], 480, 570)], ["GARCIA, JUAN"])];
-    const ratings = mergeRatings(
-      [{ name: "GARCIA, JUAN", rating: 5 }, { name: "CRUZ, JOSE", rating: 1 }], []);
-    const ranked = rank([pair, solo], prefs({ criteria: ["preferredProfs"] }), ratings);
-    expect(first([ranked[0]])).toBe("A 2"); // 5 beats the pair's average of 3
+  it("is deterministic for equal schedules, ordering by schedule id", () => {
+    const a: Schedule = [section("ZZZ", ["M"], 480, 540)];
+    const b: Schedule = [section("AAA", ["M"], 480, 540)];
+    expect(rank([a, b], prefs(["compactDays"]), noRatings)[0].schedule).toBe(b);
+    expect(rank([b, a], prefs(["compactDays"]), noRatings)[0].schedule).toBe(b);
   });
 
-  it("treats sections with no instructors (TBA) as neutral 3 in preferredProfs", () => {
-    const noProfs: Schedule = [sec("A", "1", [m(["M"], 480, 570)], [])];
-    const goodProf: Schedule = [sec("A", "2", [m(["M"], 480, 570)], ["GARCIA, JUAN"])];
-    const badProf: Schedule = [sec("A", "3", [m(["M"], 480, 570)], ["CRUZ, JOSE"])];
-    const ratings = mergeRatings(
-      [{ name: "GARCIA, JUAN", rating: 5 }, { name: "CRUZ, JOSE", rating: 1 }], []);
-    const ranked = rank([badProf, noProfs, goodProf], prefs({ criteria: ["preferredProfs"] }), ratings);
-    expect(ranked.map((r) => first([r]))).toEqual(["A 2", "A 1", "A 3"]); // good (5) > empty (3) > bad (1)
+  it("defaults to compactDays when no criteria are selected", () => {
+    const compact: Schedule = [section("A", ["M"], 480, 540), section("B", ["M"], 540, 600)];
+    const gappy: Schedule = [section("A", ["M"], 480, 540), section("B", ["M"], 720, 780)];
+    expect(rank([gappy, compact], prefs([]), noRatings)[0].schedule).toBe(compact);
   });
 
-  it("first criterion outweighs the second", () => {
-    // s1 wins compactDays, s2 wins fewestDays.
-    const s1: Schedule = [sec("A", "1", [m(["M"], 480, 570)]), sec("B", "1", [m(["M"], 570, 660), m(["T"], 480, 570)])];
-    const s2: Schedule = [sec("A", "1", [m(["M"], 480, 570)]), sec("B", "2", [m(["M"], 780, 870)])];
-    const ranked = rank([s2, s1], prefs({ criteria: ["compactDays", "fewestDays"] }), noRatings);
-    expect(first(ranked)).toBe("A 1|B 1");
+  it("ranks preferred professors higher, treating unrated as neutral", () => {
+    const ratings = new Map<string, ProfRating>([["ana cruz", { name: "CRUZ, Ana", rating: 5 }]]);
+    const liked: Schedule = [section("A", ["M"], 480, 540, ["CRUZ, Ana"])];
+    const unknown: Schedule = [section("B", ["M"], 480, 540, ["SANTOS, Bea"])];
+    expect(rank([unknown, liked], prefs(["preferredProfs"]), ratings)[0].schedule).toBe(liked);
   });
 
-  it("is deterministic on ties", () => {
-    const x: Schedule = [sec("A", "1", [m(["M"], 480, 570)])];
-    const y: Schedule = [sec("A", "2", [m(["T"], 480, 570)])];
-    const r1 = rank([x, y], prefs(), noRatings).map((r) => first([r]));
-    const r2 = rank([y, x], prefs(), noRatings).map((r) => first([r]));
-    expect(r1).toEqual(r2);
-  });
-
-  it("empty criteria defaults to compactDays", () => {
-    const tight: Schedule = [sec("A", "1", [m(["M"], 480, 570)]), sec("B", "1", [m(["M"], 570, 660)])];
-    const gappy: Schedule = [sec("A", "1", [m(["M"], 480, 570)]), sec("B", "2", [m(["M"], 780, 870)])];
-    const ranked = rank([gappy, tight], prefs({ criteria: [] }), noRatings);
-    expect(first(ranked)).toBe("A 1|B 1");
+  it("returns a display score in [0,1] for the top criterion", () => {
+    const a: Schedule = [section("A", ["M"], 480, 540), section("B", ["M"], 540, 600)];
+    const b: Schedule = [section("A", ["M"], 480, 540), section("B", ["M"], 720, 780)];
+    for (const r of rank([a, b], prefs(["compactDays"]), noRatings)) {
+      expect(r.score).toBeGreaterThanOrEqual(0);
+      expect(r.score).toBeLessThanOrEqual(1);
+    }
   });
 });

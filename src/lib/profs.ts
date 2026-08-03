@@ -1,11 +1,7 @@
 import type { ProfRating } from "./types";
 
 export function normalizeName(name: string): string {
-  const cleaned = name
-    .toLowerCase()
-    .replace(/[^a-z,\s]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
+  const cleaned = name.toLowerCase().replace(/[^a-z,\s]/g, " ").replace(/\s+/g, " ").trim();
   const comma = cleaned.indexOf(",");
   if (comma >= 0) {
     const last = cleaned.slice(0, comma).trim();
@@ -20,10 +16,7 @@ export function ratingKey(name: string, courseCode?: string): string {
   return courseCode ? `${base}@${courseCode}` : base;
 }
 
-export function mergeRatings(
-  community: ProfRating[],
-  personal: ProfRating[]
-): Map<string, ProfRating> {
+export function mergeRatings(community: ProfRating[], personal: ProfRating[]): Map<string, ProfRating> {
   const merged = new Map<string, ProfRating>();
   for (const rating of [...community, ...personal]) {
     merged.set(ratingKey(rating.name, rating.courseCode), rating);
@@ -32,9 +25,7 @@ export function mergeRatings(
 }
 
 export function ratingFor(
-  instructor: string,
-  merged: Map<string, ProfRating>,
-  courseCode?: string
+  instructor: string, merged: Map<string, ProfRating>, courseCode?: string
 ): ProfRating | undefined {
   const base = normalizeName(instructor);
   if (!base) return undefined;

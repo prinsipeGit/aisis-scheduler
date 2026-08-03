@@ -8,12 +8,38 @@ Semester") and the calendar term to enlist in. The app pre-fills the required
 courses from the official curriculum, you adjust them (fill electives, add a
 minor, overload or underload), and it generates a bounded set of conflict-free
 candidates ranked by your preferences. On enlistment day, exclude sections,
-mark full classes, and lock
-sections in and it re-ranks instantly. No accounts; everything personal stays
-in your browser.
+mark full classes, and lock sections in, and it re-ranks instantly. No
+accounts; everything personal stays in your browser.
 
-**Design spec:** `docs/superpowers/specs/2026-07-21-ips-driven-scheduler-design.md`
-**Supabase/multi-program spec:** `docs/superpowers/specs/2026-07-21-multi-program-curricula-design.md`
+**Design spec:** `docs/superpowers/specs/2026-07-28-scheduler-rewrite-design.md` (current —
+supersedes the UI half of `2026-07-21-cockpit-ui-redesign-design.md`)
+**Background:** `docs/superpowers/specs/2026-07-21-ips-driven-scheduler-design.md`
+(curriculum-driven scheduling), `docs/superpowers/specs/2026-07-21-multi-program-curricula-design.md`
+(multi-program curricula and Supabase)
+
+## How a semester is built
+
+1. **Program** - your curriculum, including the version and track.
+2. **Semester** - the curriculum block you are taking, and the AISIS term. The term
+   defaults to the one you would be enlisting for now, falling back to the newest term
+   that actually has a catalog.
+3. **Courses** - review the requirements, fill electives, narrow a requirement that has
+   several valid courses (PHILO tracks, PATHFit activities, your natural science), and pull
+   requirements from other blocks if you are off-sequence.
+4. **Classes you already have** - set the section for anything pre-assigned (INTACT is
+   assigned, not chosen) or already secured. The rest is planned around it.
+5. **Preferences** - ranking priorities, time limits, protected time.
+
+Ranking is strict priority: the first criterion decides, later ones only break ties.
+
+Curriculum codes are matched to what AISIS actually offers by exact match, a variant rule
+(`PHILO 11` covers `PHILO 11.03` to `.06`), and `data/course-aliases.json` for irregular
+renames such as PATHFit to PEPC. A required course that resolves to nothing is reported,
+never silently dropped. `npm run validate:data` prints the resolution rate across every
+program - that report is how the alias file is maintained.
+
+Note: PATHFit 3 and 4 draw from the same activity pool, and the app does not know which
+activities satisfy which level. Verify your choice in AISIS.
 
 ## Development
 
@@ -43,7 +69,7 @@ an in-app message telling you to run this command (and `push:data`).
 Note: a term only has data once AISIS publishes it. As of 2026-07-21, `2026-2`
 returns no results at all — that's AISIS, not a bug. The app defaults to
 `2026-1`, which is the currently seeded catalog (`data/catalogs/catalog-2026-1.json`,
-3,743 sections). Re-run the scraper for the enlistment term once it goes live.
+3,902 sections). Re-run the scraper for the enlistment term once it goes live.
 
 The scraper never sends, prompts for, or stores student credentials. It obtains
 a temporary anonymous session cookie from the public page. It refuses to replace
@@ -57,30 +83,72 @@ disabled until scraped and pushed.
 ## Scheduling limits and uncertain times
 
 To keep the browser responsive, generation stops after 500 conflict-free
-candidates. When that limit is reached, the app says so and asks the user to
-narrow the search with filters or locked sections. Ranking is exact within the
-generated candidate set, but the app does not claim that an unbounded search was
+candidates. When that limit is reached, the stage says so and points at what
+narrows the search: pin a section under *Classes you already have*, or add a
+time limit or exclude a section under *Preferences*. Ranking is exact within
+the generated candidate set, but the app never claims an unbounded search was
 exhausted.
 
-Legitimate `TBA` classes may appear without a fixed meeting time. Future scrape
-rows whose time cannot be parsed receive a separate `parse-error` status and are
-excluded from generated schedules instead of being treated as conflict-free.
+Legitimate `TBA` classes may appear without a fixed meeting time. A scraped row
+whose time could not be parsed instead carries a separate `parse-error` status
+and is excluded from generated schedules, rather than being treated as
+conflict-free. `npm run validate:data` fails if any catalog section is missing
+its `timeStatus` field, since a catalog scraped before that field existed would
+otherwise make this guard silently inert.
 
-## Adding a program's curriculum
+A course that is pre-assigned rather than chosen (INTACT is the current
+example) never contributes candidate sections on its own — see *Classes you
+already have* above — but a schedule that excludes it still says so, under
+"Not in this schedule," instead of going quiet about a requirement you still
+owe.
 
-Curricula come from AISIS → **Official Curriculum** (`J_VOFC.do`), which is
-behind the student login but identical for every student. `BS AMDSc` (2024) is
-seeded in `data/curricula/BS-AMDSc-M-DSc-2024.json`. To add another program,
-transcribe its blocks into the same shape, add it to `data/curricula/index.json`,
-and run `npm run push:data`. A bulk scraper covering every AISIS program is
-planned — see the multi-program spec.
+## Importing program curricula
+
+Curricula come from AISIS → **Official Curriculum** (`J_VOFC.do`). Unlike the
+class schedule, this page is behind the student login — but it is identical for
+every student in a program, so the import carries no personal data.
+
+```bash
+AISIS_COOKIE='JSESSIONID=...' npm run scrape:curricula
+npm run validate:data
+npm run push:data
+```
+
+To get the cookie: log into AISIS, open DevTools → **Application → Cookies**,
+and copy the session cookie. It is read from the environment only — never a
+command-line argument, never prompted for, never written to disk or logged, and
+held in memory just for the run. Never commit it.
+
+The run takes about 2 minutes: 69 programs at 1.5 s apart, plus a progress line
+each. It imports the **newest version of each program track** — a program with
+parallel tracks (e.g. `AB EU` has both `18BE` and `18IR`) keeps the latest of
+each, shown in the picker as `2018 · BE`. Older version-years are skipped.
+
+**Undergraduate only.** The dropdown lists 233 programs; 164 of them are
+graduate or non-degree and have no year/term block structure, so they parse to
+zero blocks. They are skipped before any request is made, which removes ~4
+minutes and a wall of `no blocks parsed` warnings that would bury real ones.
+The filter reads the program *name* — `BACHELOR …` and the Filipino
+`BATSILYER …` — because `AB PanFil` is named "BATSILYER NG SINING SA PANITIKANG
+FILIPINO" and a code-prefix rule would drop it. Pass `--all` to include
+graduate programs anyway.
+
+The scraper refuses to write when a run looks broken — zero programs parsed, or
+fewer than 20% of those discovered. Use `--force` only after confirming the
+result is legitimate. It never deletes files for programs missing from a run, so
+a partial rerun is safe; `push:data` then reconciles the database, including
+removing rows whose files are gone.
+
+A program can still be added by hand: write the JSON in the same shape into
+`data/curricula/`, add it to `data/curricula/index.json`, and run `npm run push:data`.
 
 ## Professor ratings
 
-Ratings are **first-party**: you rate professors 0–5 stars in the app, per class
-or overall, and they feed the "preferred professors" ranking criterion. They
-live in your browser. There is deliberately no scraping of Facebook or any other
-platform — see spec §6.1.
+Ratings are **first-party**: from the *Preferences* step, you rate professors
+0–5 stars, per class or overall, and they feed the "preferred professors"
+ranking criterion once you have picked courses. They live in your browser, on
+top of the shared community ratings read from Supabase. There is deliberately
+no scraping of Facebook or any other platform.
 
 ## Deploying
 
@@ -123,5 +191,5 @@ project instead.
 credentials. Some tools accept a temporary, user-supplied token via
 environment variable only — never a CLI argument, never written to disk or
 logged, held in memory for the duration of the run: `SUPABASE_SERVICE_ROLE_KEY`
-for `push:data` above, and (for the future curricula scraper) `AISIS_COOKIE`,
-a session cookie copied from DevTools after a normal student login.
+for `push:data` above, and `AISIS_COOKIE` for `scrape:curricula`, a session
+cookie copied from DevTools after a normal student login.

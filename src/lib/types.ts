@@ -11,26 +11,26 @@ export interface Section {
   sectionCode: string;   // "A3"
   title: string;
   units: number;
-  instructors: string[]; // as printed by AISIS, e.g. ["ABERIN, MARIA ALVA Q."]
+  instructors: string[]; // as printed by AISIS
   modality: string;      // "FULLY ONSITE" | "ONLINE" | "" when absent
   meetings: Meeting[];   // empty ⇒ TBA (excluded from conflict math)
   timeStatus?: "scheduled" | "tba" | "parse-error";
   room: string;
   remarks: string;
-  raw: string;           // original row cells joined by " | ", for debugging
+  raw: string;
 }
 
 export interface Catalog {
-  term: string;          // "2026-2"
-  exportedAt: string;    // ISO timestamp
+  term: string;
+  exportedAt: string;
   sections: Section[];
   warnings: string[];
 }
 
 export interface ProfRating {
-  name: string;          // instructor as printed by AISIS
-  rating: number;        // 0-5 stars; community entries may be fractional averages (e.g. 4.3)
-  courseCode?: string;   // scope to a class; omit = overall rating for the prof
+  name: string;
+  rating: number;        // 0-5
+  courseCode?: string;
   note?: string;
   asOf?: string;
 }
@@ -38,26 +38,28 @@ export interface ProfRating {
 // ---- Curriculum (official IPS) ----
 
 export interface ProgramSummary {
-  id: string;            // "BS-AMDSc-2024"
-  code: string;          // "BS AMDSc-M DSc"
-  name: string;          // "BACHELOR OF SCIENCE IN APPLIED MATHEMATICS"
-  versionYear: number;   // 2024
+  id: string;
+  code: string;
+  name: string;
+  version: string;
+  versionYear: number;
+  versionLabel: string;
 }
 
 export interface CurriculumEntry {
-  catNo: string;         // "MATH 31.1"; placeholder text for elective slots
+  catNo: string;
   title: string;
-  units: number;         // may be 0
+  units: number;
   prerequisites: string[];
-  category: string;      // "M", "C", "IE1E", "RM1", …
-  isElective: boolean;   // true for MATHEMATICS ELECTIVE / FREE ELECTIVE / IE 1 …
-  electiveDept?: string; // IE slots → "**IE**"
-  slotId: string;        // unique within the program, e.g. "First Year|First Semester#4"
+  category: string;      // "M", "C", "PFT2", "NS1A", …
+  isElective: boolean;
+  electiveDept?: string;
+  slotId: string;        // "First Year|First Semester#4"
 }
 
 export interface CurriculumBlock {
-  year: string;          // "First Year" … as printed
-  term: string;          // printed label; usually a semester, sometimes a quirk (see plan header)
+  year: string;
+  term: string;
   key: string;           // `${year}|${term}`
   totalUnits: number;
   entries: CurriculumEntry[];
@@ -67,32 +69,42 @@ export interface Program extends ProgramSummary {
   blocks: CurriculumBlock[];
 }
 
+// ---- Selection model (§4) ----
+
+export interface Slot {
+  id: string;                 // "ips:First Year|First Semester#4" | "added:3"
+  origin: "ips" | "added";    // ips = a curriculum requirement, from any block
+  label: string;              // "PHILO 11" | "MATHEMATICS ELECTIVE"
+  requirement: string | null; // curriculum catNo; null when added from catalog
+  category: string | null;    // AISIS requirement category; null when from catalog
+  sourceBlock: string | null; // block key it came from; null when from catalog
+  chosen: string | null;      // course code the student picked; null = unnarrowed
+  pairedWith: string | null;  // id of a slot this must share a subject prefix with
+  included: boolean;          // counts toward generation
+}
+
 // ---- Ranking / preferences ----
 
 export type RankCriterion =
-  | "compactDays"
-  | "fewestDays"
-  | "lateStart"
-  | "earlyEnd"
-  | "preferredProfs";
+  | "compactDays" | "fewestDays" | "lateStart" | "earlyEnd" | "preferredProfs";
 
 export interface Preferences {
-  criteria: RankCriterion[];      // ordered by priority; default ["compactDays"]
+  criteria: RankCriterion[];
   earliestStart?: number;
   latestEnd?: number;
   protectedBlocks: Meeting[];
-  excludedSections: string[];     // sectionKeys
+  excludedSections: string[];
 }
 
 export interface UserState {
-  version: number;                       // 2
-  programId: string;                     // "" until chosen
-  blockKey: string;                      // "" until chosen
-  calendarTerm: string;                  // "2026-2"
-  requiredCourses: string[];             // course codes; seeded from block, then edited
-  electiveFills: Record<string, string>; // slotId → concrete course code
+  version: number;                // 3
+  programId: string;
+  blockKey: string;               // the primary block (§11.5)
+  calendarTerm: string;
+  slots: Slot[];
   lockedSections: string[];
   fullSections: string[];
+  completedCourses: string[];     // reserved (§9); [] for now
   preferences: Preferences;
   personalRatings: ProfRating[];
 }
@@ -100,7 +112,7 @@ export interface UserState {
 export type Schedule = Section[];
 
 export interface Diagnostics {
-  perCourse: { courseCode: string; total: number; afterFilters: number }[];
+  perSlot: { id: string; label: string; total: number; afterFilters: number }[];
   conflictPairs: { a: string; b: string }[];
   nWayConflict: boolean;
 }

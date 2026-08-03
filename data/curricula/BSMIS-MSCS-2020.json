@@ -1,0 +1,898 @@
+{
+  "id": "BSMIS-MSCS-2020",
+  "code": "BSMIS-MSCS",
+  "name": "BACHELOR OF SCIENCE IN MANAGEMENT INFORMATION SYSTEMS",
+  "version": "2020",
+  "versionYear": 2020,
+  "versionLabel": "2020",
+  "blocks": [
+    {
+      "year": "First Year",
+      "term": "First Semester",
+      "key": "First Year|First Semester",
+      "totalUnits": 20,
+      "entries": [
+        {
+          "catNo": "ENGL 11",
+          "title": "PURPOSIVE COMMUNICATION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#0"
+        },
+        {
+          "catNo": "FILI 12",
+          "title": "PANITIKAN NG PILIPINAS",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#1"
+        },
+        {
+          "catNo": "INTACT 11",
+          "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+          "units": 0,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#2"
+        },
+        {
+          "catNo": "MATH 10",
+          "title": "MATHEMATICS IN THE MODERN WORLD",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#3"
+        },
+        {
+          "catNo": "MSYS 20",
+          "title": "INTRODUCTION TO MANAGEMENT INFORMATION SYSTEMS",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|First Semester#4"
+        },
+        {
+          "catNo": "PHYED 1",
+          "title": "PHYSICAL EDUCATION 1",
+          "units": 2,
+          "prerequisites": [],
+          "category": "PE1",
+          "isElective": false,
+          "slotId": "First Year|First Semester#5"
+        },
+        {
+          "catNo": "SocSc 11",
+          "title": "UNDERSTANDING THE SELF",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#6"
+        },
+        {
+          "catNo": "THEO 11",
+          "title": "FAITH, SPIRITUALITY, AND THE CHURCH",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#7"
+        }
+      ]
+    },
+    {
+      "year": "First Year",
+      "term": "Second Semester",
+      "key": "First Year|Second Semester",
+      "totalUnits": 21,
+      "entries": [
+        {
+          "catNo": "ArtAp 10",
+          "title": "ART APPRECIATION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#0"
+        },
+        {
+          "catNo": "ENLIT 12",
+          "title": "LITERATURE: GLOBAL VOICES AND ENCOUNTERS",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#1"
+        },
+        {
+          "catNo": "FILI 11",
+          "title": "MALAYUNING KOMUNIKASYON",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#2"
+        },
+        {
+          "catNo": "HISTO 11",
+          "title": "RIZAL AND THE EMERGENCE OF THE PHILIPPINE NATION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#3"
+        },
+        {
+          "catNo": "INTACT 12",
+          "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 12",
+          "units": 0,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#4"
+        },
+        {
+          "catNo": "MATH 30.23",
+          "title": "APPLIED CALCULUS FOR SCIENCE AND ENGINEERING I",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#5"
+        },
+        {
+          "catNo": "NatSc 10.01",
+          "title": "NATURAL SCIENCE, LECTURE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "NS1A",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#6"
+        },
+        {
+          "catNo": "NatSc 10.02",
+          "title": "NATURAL SCIENCE, LABORATORY",
+          "units": 1,
+          "prerequisites": [],
+          "category": "NS1B",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#7"
+        },
+        {
+          "catNo": "PHYED 2",
+          "title": "PHYSICAL EDUCATION 2",
+          "units": 2,
+          "prerequisites": [],
+          "category": "PE2",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#8"
+        }
+      ]
+    },
+    {
+      "year": "Second Year",
+      "term": "Intersession",
+      "key": "Second Year|Intersession",
+      "totalUnits": 6,
+      "entries": [
+        {
+          "catNo": "MATH 60.2",
+          "title": "INTRODUCTION TO STATISTICAL ANALYSIS",
+          "units": 3,
+          "prerequisites": [
+            "MATH 30.23"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Intersession#0"
+        },
+        {
+          "catNo": "SocSc 12",
+          "title": "THE CONTEMPORARY WORLD",
+          "units": 3,
+          "prerequisites": [
+            "SocSc 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|Intersession#1"
+        }
+      ]
+    },
+    {
+      "year": "Second Year",
+      "term": "First Semester",
+      "key": "Second Year|First Semester",
+      "totalUnits": 20,
+      "entries": [
+        {
+          "catNo": "HISTO 12",
+          "title": "READINGS IN PHILIPPINE HISTORY",
+          "units": 3,
+          "prerequisites": [
+            "HISTO 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#0"
+        },
+        {
+          "catNo": "IE 1",
+          "title": "INTERDISCIPLINARY ELECTIVE 1 - ENGLISH",
+          "units": 3,
+          "prerequisites": [
+            "ENGL 11",
+            "ENLIT 12"
+          ],
+          "category": "IE1E",
+          "isElective": true,
+          "electiveDept": "**IE**",
+          "slotId": "Second Year|First Semester#1"
+        },
+        {
+          "catNo": "LAS 21",
+          "title": "PRINCIPLES OF MANAGEMENT",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#2"
+        },
+        {
+          "catNo": "MGT ELECTIVE",
+          "title": "MANAGEMENT ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "RM9",
+          "isElective": true,
+          "slotId": "Second Year|First Semester#3"
+        },
+        {
+          "catNo": "MSYS 21",
+          "title": "INTRODUCTION TO PROGRAMMING I",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#4"
+        },
+        {
+          "catNo": "PHILO 11",
+          "title": "PHILOSOPHY: THE HUMAN CONDITION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "CPH1",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#5"
+        },
+        {
+          "catNo": "PHYED 3",
+          "title": "PHYSICAL EDUCATION 3",
+          "units": 2,
+          "prerequisites": [],
+          "category": "PE3",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#6"
+        }
+      ]
+    },
+    {
+      "year": "Second Year",
+      "term": "Second Semester",
+      "key": "Second Year|Second Semester",
+      "totalUnits": 23,
+      "entries": [
+        {
+          "catNo": "ACCT 113",
+          "title": "FUNDAMENTALS OF ACCOUNTING",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#0"
+        },
+        {
+          "catNo": "FLC 11",
+          "title": "FOREIGN LANGUAGE AND CULTURE 11",
+          "units": 3,
+          "prerequisites": [],
+          "category": "FLC1",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#1"
+        },
+        {
+          "catNo": "MSYS 22",
+          "title": "INTRODUCTION TO PROGRAMMING II",
+          "units": 3,
+          "prerequisites": [
+            "MSYS 21"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#2"
+        },
+        {
+          "catNo": "NSTP 11",
+          "title": "NATIONAL SERVICE TRAINING PROGRAM 11",
+          "units": 3,
+          "prerequisites": [],
+          "category": "NP1",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#3"
+        },
+        {
+          "catNo": "OPMAN 131.04",
+          "title": "BUSINESS PROCESS RE-ENGINEERING",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#4"
+        },
+        {
+          "catNo": "PHYED 4",
+          "title": "PHYSICAL EDUCATION 4",
+          "units": 2,
+          "prerequisites": [],
+          "category": "PE4",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#5"
+        },
+        {
+          "catNo": "STS 10",
+          "title": "SCIENCE, TECHNOLOGY, AND SOCIETY",
+          "units": 3,
+          "prerequisites": [
+            "NatSc 10.01",
+            "NatSc 10.02"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#6"
+        },
+        {
+          "catNo": "THEO 12",
+          "title": "THEOLOGY OF THE CATHOLIC SOCIAL VISION",
+          "units": 3,
+          "prerequisites": [
+            "THEO 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#7"
+        }
+      ]
+    },
+    {
+      "year": "Third Year",
+      "term": "Fourth Year",
+      "key": "Third Year|Fourth Year",
+      "totalUnits": 6,
+      "entries": [
+        {
+          "catNo": "MSYS 40",
+          "title": "BUSINESS APPLICATIONS DEVELOPMENT 1",
+          "units": 3,
+          "prerequisites": [
+            "MSYS 20",
+            "MSYS 22"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Fourth Year#0"
+        },
+        {
+          "catNo": "MSYS MAJOR ELECTIVE",
+          "title": "MSYS MAJOR ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "ME1",
+          "isElective": true,
+          "slotId": "Third Year|Fourth Year#1"
+        }
+      ]
+    },
+    {
+      "year": "Third Year",
+      "term": "First Semester",
+      "key": "Third Year|First Semester",
+      "totalUnits": 19,
+      "entries": [
+        {
+          "catNo": "IE 2",
+          "title": "INTERDISCIPLINARY ELECTIVE 2",
+          "units": 3,
+          "prerequisites": [],
+          "category": "IE2",
+          "isElective": true,
+          "electiveDept": "**IE**",
+          "slotId": "Third Year|First Semester#0"
+        },
+        {
+          "catNo": "ISCS 30.XX",
+          "title": "GUIDED STUDIES IN DISCS",
+          "units": 1,
+          "prerequisites": [
+            "MSYS 20"
+          ],
+          "category": "RM1",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#1"
+        },
+        {
+          "catNo": "MSYS 30",
+          "title": "DATA STRUCTURES AND ALGORITHMS",
+          "units": 3,
+          "prerequisites": [
+            "MSYS 22"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#2"
+        },
+        {
+          "catNo": "MSYS 41",
+          "title": "BUSINESS APPLICATIONS DEVELOPMENT 2",
+          "units": 3,
+          "prerequisites": [
+            "MSYS 40"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#3"
+        },
+        {
+          "catNo": "MSYS 50",
+          "title": "ENTERPRISE ARCHITECTURE",
+          "units": 3,
+          "prerequisites": [
+            "MSYS 20"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#4"
+        },
+        {
+          "catNo": "PHILO 12",
+          "title": "PHILOSOPHY OF RELIGION",
+          "units": 3,
+          "prerequisites": [
+            "PHILO 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#5"
+        },
+        {
+          "catNo": "THEO 13",
+          "title": "A THEOLOGY OF MARRIAGE, FAMILY, AND VOCATION",
+          "units": 3,
+          "prerequisites": [
+            "THEO 12"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#6"
+        }
+      ]
+    },
+    {
+      "year": "Third Year",
+      "term": "Second Semester",
+      "key": "Third Year|Second Semester",
+      "totalUnits": 23,
+      "entries": [
+        {
+          "catNo": "ISCS 30.XX",
+          "title": "GUIDED STUDIES IN DISCS",
+          "units": 1,
+          "prerequisites": [
+            "MSYS 20"
+          ],
+          "category": "RM2",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#0"
+        },
+        {
+          "catNo": "MGT ELECTIVE",
+          "title": "MANAGEMENT ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "RM8",
+          "isElective": true,
+          "slotId": "Third Year|Second Semester#1"
+        },
+        {
+          "catNo": "MSYS 198.1/199.1",
+          "title": "CAPSTONE PROJECT 1 OR THESIS 1",
+          "units": 1,
+          "prerequisites": [
+            "MSYS 20"
+          ],
+          "category": "RM7",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#2"
+        },
+        {
+          "catNo": "MSYS 42",
+          "title": "BUSINESS APPLICATIONS DEVELOPMENT 3",
+          "units": 3,
+          "prerequisites": [
+            "MSYS 41"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#3"
+        },
+        {
+          "catNo": "MSYS 51",
+          "title": "INFORMATION TECHNOLOGY INFRASTRUCTURE",
+          "units": 3,
+          "prerequisites": [
+            "MSYS 20"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#4"
+        },
+        {
+          "catNo": "MSYS MAJOR ELECTIVE",
+          "title": "MSYS MAJOR ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "ME2",
+          "isElective": true,
+          "slotId": "Third Year|Second Semester#5"
+        },
+        {
+          "catNo": "NSTP 12",
+          "title": "NATIONAL SERVICE TRAINING PROGRAM 12",
+          "units": 3,
+          "prerequisites": [],
+          "category": "NP2",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#6"
+        },
+        {
+          "catNo": "PHILO 13",
+          "title": "ETHICS",
+          "units": 3,
+          "prerequisites": [
+            "PHILO 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#7"
+        },
+        {
+          "catNo": "SocSc 13",
+          "title": "THE ECONOMY, SOCIETY, AND SUSTAINABLE DEVELOPMENT",
+          "units": 3,
+          "prerequisites": [
+            "SocSc 12"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#8"
+        }
+      ]
+    },
+    {
+      "year": "Fourth Year",
+      "term": "Intersession",
+      "key": "Fourth Year|Intersession",
+      "totalUnits": 3,
+      "entries": [
+        {
+          "catNo": "MSYS 197",
+          "title": "PRACTICUM",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|Intersession#0"
+        }
+      ]
+    },
+    {
+      "year": "Fourth Year",
+      "term": "First Semester",
+      "key": "Fourth Year|First Semester",
+      "totalUnits": 19,
+      "entries": [
+        {
+          "catNo": "CSCI 2XX",
+          "title": "MASTERS LEVEL SUBJECT",
+          "units": 3,
+          "prerequisites": [],
+          "category": "RM10",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#0"
+        },
+        {
+          "catNo": "IE 3",
+          "title": "INTERDISCIPLINARY ELECTIVE 3",
+          "units": 3,
+          "prerequisites": [],
+          "category": "IE3",
+          "isElective": true,
+          "electiveDept": "**IE**",
+          "slotId": "Fourth Year|First Semester#1"
+        },
+        {
+          "catNo": "ISCS 30.XX",
+          "title": "GUIDED STUDIES IN DISCS",
+          "units": 1,
+          "prerequisites": [
+            "MSYS 20"
+          ],
+          "category": "RM3",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#2"
+        },
+        {
+          "catNo": "MSYS 140",
+          "title": "DATA AND INFORMATION MANAGEMENT",
+          "units": 3,
+          "prerequisites": [
+            "MSYS 42"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#3"
+        },
+        {
+          "catNo": "MSYS 141",
+          "title": "INFORMATION TECHNOLOGY PROJECT MANAGEMENT",
+          "units": 3,
+          "prerequisites": [
+            "MSYS 42"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#4"
+        },
+        {
+          "catNo": "MSYS 198.2/199.2",
+          "title": "CAPSTONE PROJECT 2 OR THESIS 2",
+          "units": 3,
+          "prerequisites": [
+            "MSYS 198.1/199.1"
+          ],
+          "category": "RM5",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#5"
+        },
+        {
+          "catNo": "SocSc 14",
+          "title": "POLITICS, GOVERNANCE, AND CITIZENSHIP",
+          "units": 3,
+          "prerequisites": [
+            "SocSc 13"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#6"
+        }
+      ]
+    },
+    {
+      "year": "Fourth Year",
+      "term": "Second Semester",
+      "key": "Fourth Year|Second Semester",
+      "totalUnits": 19,
+      "entries": [
+        {
+          "catNo": "DLQ 10",
+          "title": "DISCERNING LIFE QUESTIONS: TOWARDS LEADERSHIP AND COMMITMENT",
+          "units": 3,
+          "prerequisites": [
+            "PHILO 13",
+            "SocSc 13",
+            "THEO 13"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#0"
+        },
+        {
+          "catNo": "FREE ELECTIVE",
+          "title": "FREE ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "FE1",
+          "isElective": true,
+          "slotId": "Fourth Year|Second Semester#1"
+        },
+        {
+          "catNo": "ISCS 30.XX",
+          "title": "GUIDED STUDIES IN DISCS",
+          "units": 1,
+          "prerequisites": [
+            "MSYS 20"
+          ],
+          "category": "RM4",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#2"
+        },
+        {
+          "catNo": "MSYS 142",
+          "title": "INFORMATION TECHNOLOGY GOVERNANCE",
+          "units": 3,
+          "prerequisites": [
+            "MSYS 140",
+            "MSYS 141"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#3"
+        },
+        {
+          "catNo": "MSYS 171",
+          "title": "IT SECURITY AND RISK MANAGEMENT",
+          "units": 3,
+          "prerequisites": [
+            "MSYS 140",
+            "MSYS 141"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#4"
+        },
+        {
+          "catNo": "MSYS 198.3/199.3",
+          "title": "CAPSTONE PROJECT 3 OR THESIS 3",
+          "units": 3,
+          "prerequisites": [
+            "MSYS 198.2/199.2"
+          ],
+          "category": "RM6",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#5"
+        },
+        {
+          "catNo": "MSYS MAJOR ELECTIVE",
+          "title": "MSYS MAJOR ELECTIVE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "ME3",
+          "isElective": true,
+          "slotId": "Fourth Year|Second Semester#6"
+        }
+      ]
+    },
+    {
+      "year": "Fifth Year",
+      "term": "Fourth Year",
+      "key": "Fifth Year|Fourth Year",
+      "totalUnits": 12,
+      "entries": [
+        {
+          "catNo": "CSCI 292",
+          "title": "GENERAL METHODS OF RESEARCH",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fifth Year|Fourth Year#0"
+        },
+        {
+          "catNo": "CSCI 299.2",
+          "title": "THESIS WRITING II",
+          "units": 3,
+          "prerequisites": [
+            "CSCI 299.1"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fifth Year|Fourth Year#1"
+        },
+        {
+          "catNo": "CSCI 2XX",
+          "title": "MASTERS LEVEL SUBJECT",
+          "units": 3,
+          "prerequisites": [],
+          "category": "RM12",
+          "isElective": false,
+          "slotId": "Fifth Year|Fourth Year#2"
+        },
+        {
+          "catNo": "CSCI 2XX",
+          "title": "MASTERS LEVEL SUBJECT",
+          "units": 3,
+          "prerequisites": [],
+          "category": "RM11",
+          "isElective": false,
+          "slotId": "Fifth Year|Fourth Year#3"
+        }
+      ]
+    },
+    {
+      "year": "Fifth Year",
+      "term": "First Semester",
+      "key": "Fifth Year|First Semester",
+      "totalUnits": 12,
+      "entries": [
+        {
+          "catNo": "CSCI 201",
+          "title": "ADVANCED DATA STRUCTURES AND ALGORITHMS",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fifth Year|First Semester#0"
+        },
+        {
+          "catNo": "CSCI 202",
+          "title": "PROGRAMMING LANGUAGES AND PARADIGMS",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fifth Year|First Semester#1"
+        },
+        {
+          "catNo": "CSCI 2XX",
+          "title": "MASTERS LEVEL SUBJECT",
+          "units": 3,
+          "prerequisites": [],
+          "category": "RM13",
+          "isElective": false,
+          "slotId": "Fifth Year|First Semester#2"
+        },
+        {
+          "catNo": "CSCI 2XX",
+          "title": "MASTERS LEVEL SUBJECT",
+          "units": 3,
+          "prerequisites": [],
+          "category": "RM14",
+          "isElective": false,
+          "slotId": "Fifth Year|First Semester#3"
+        }
+      ]
+    },
+    {
+      "year": "Fifth Year",
+      "term": "Second Semester",
+      "key": "Fifth Year|Second Semester",
+      "totalUnits": 9,
+      "entries": [
+        {
+          "catNo": "CSCI 203",
+          "title": "THEORY OF AUTOMATA AND FORMAL LANGUAGES",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fifth Year|Second Semester#0"
+        },
+        {
+          "catNo": "CSCI 204",
+          "title": "COMPUTER ARCHITECTURE AND OPERATING SYSTEMS",
+          "units": 3,
+          "prerequisites": [
+            "MSYS 50"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fifth Year|Second Semester#1"
+        },
+        {
+          "catNo": "CSCI 299.1",
+          "title": "THESIS WRITING I",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fifth Year|Second Semester#2"
+        }
+      ]
+    }
+  ]
+}

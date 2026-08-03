@@ -1,30 +1,35 @@
 import { describe, it, expect } from "vitest";
 import { getPrograms, loadProgram, getBlock, ProgramUnavailableError } from "./curriculum";
-import type { Db } from "./supabase";
+import { stubDb } from "./testing/stubDb";
 
-const row = { id: "X-2024", code: "X", name: "X PROGRAM", version_year: 2024, blocks: [] };
-const db: Db = {
-  async selectAll<T>() { return [row] as T[]; },
-  async selectOne<T>(_t: string, _c: string, _k: string, key: string) { return (key === "X-2024" ? row : null) as T | null; },
+const row = {
+  id: "X-24BE", code: "X", name: "X PROGRAM",
+  version: "24BE", version_year: 2024, version_label: "2024 · BE",
+  blocks: [{ year: "First Year", term: "First Semester", key: "First Year|First Semester", totalUnits: 3, entries: [] }],
 };
 
 describe("curriculum data layer", () => {
-  it("lists program summaries sorted by code", async () => {
-    expect(await getPrograms(db)).toEqual([{ id: "X-2024", code: "X", name: "X PROGRAM", versionYear: 2024 }]);
-  });
-  it("loads a full program", async () => {
-    expect(await loadProgram("X-2024", db)).toEqual({ id: "X-2024", code: "X", name: "X PROGRAM", versionYear: 2024, blocks: [] });
-  });
-  it("throws ProgramUnavailableError for an unknown id, naming both commands", async () => {
-    const err = await loadProgram("NOPE", db).catch((e: unknown) => e);
-    expect(err).toBeInstanceOf(ProgramUnavailableError);
-    expect((err as Error).message).toContain("npm run scrape:curricula && npm run push:data");
+  it("lists summaries WITH the version label, sorted by code", async () => {
+    const programs = await getPrograms(stubDb({ programs: [row] }));
+    expect(programs).toEqual([{
+      id: "X-24BE", code: "X", name: "X PROGRAM",
+      version: "24BE", versionYear: 2024, versionLabel: "2024 · BE",
+    }]);
   });
 
-  it("getBlock finds a block by key", () => {
-    const program = { id: "X", code: "X", name: "X", versionYear: 2024,
-      blocks: [{ year: "First Year", term: "First Semester", key: "First Year|First Semester", totalUnits: 3,
-        entries: [] }] };
+  it("loads a full program with its blocks", async () => {
+    const program = await loadProgram("X-24BE", stubDb({ programs: [row] }));
+    expect(program.versionLabel).toBe("2024 · BE");
+    expect(program.blocks).toHaveLength(1);
+  });
+
+  it("throws ProgramUnavailableError for an unknown id", async () => {
+    const err = await loadProgram("NOPE", stubDb({ programs: [row] })).catch((e) => e);
+    expect(err).toBeInstanceOf(ProgramUnavailableError);
+  });
+
+  it("getBlock finds a block by key", async () => {
+    const program = await loadProgram("X-24BE", stubDb({ programs: [row] }));
     expect(getBlock(program, "First Year|First Semester")?.totalUnits).toBe(3);
     expect(getBlock(program, "nope")).toBeUndefined();
   });

@@ -9,15 +9,16 @@ Supersedes that spec's §7 "defer Supabase" stance.
 
 Two coupled changes, implemented as one initiative:
 
-1. Cover every program in the AISIS **Official Curriculum** dropdown (~250 programs, latest
-   version-year each), imported via a repeatable, cookie-based bulk scraper the user runs locally.
+1. Cover every program in the AISIS **Official Curriculum** dropdown (~233 programs — the
+   latest version of each (code, track) pair, see §2.2), imported via a repeatable,
+   cookie-based bulk scraper the user runs locally.
 2. Serve all **shared** data (curricula, per-term catalogs, community prof ratings) from
    **Supabase** instead of bundling JSON into the site build. Personal data (selections,
    preferences, personal ratings) stays in localStorage — the "Saved on this device" promise is
    unchanged. No accounts.
 
 Non-goals:
-- Importing historical version-years (latest per program only, per user decision).
+- Importing historical version-years (latest per (code, track) only, per user decision).
 - Automating the AISIS login in any form.
 - Any user-authenticated or write path from the app; the app is read-only toward Supabase.
 
@@ -42,8 +43,25 @@ New script, run as `npm run scrape:curricula`.
 
 - GET `J_VOFC.do` with the cookie; parse the program `<select>` out of the live form HTML
   (field/option names are read from the page, not hardcoded).
-- Option labels follow `(CODE) NAME(Ver Sem N, Ver Year YYYY)`. Parse code, name, version year.
-- Group options by program code; keep only the **highest version year** per code.
+- **Parse each option from its `value`, not its label.** The value is `{code}_{version}_{sem}`
+  (e.g. `AB LIT(ENG)_24TB_1`), which is unambiguous; the label form
+  `(CODE) NAME(Ver Sem N, Ver Year V)` cannot be parsed reliably because real codes contain
+  parentheses (`AB LIT(ENG)`). The display name is the label with the leading `(CODE)` and the
+  trailing `(Ver Sem …)` removed.
+- **"Ver Year" is not always a year.** 20 of 472 real options carry track-suffixed versions —
+  `24BE`, `18IR`, `20TB`, `99TB` — a 2-digit year plus a track code. Parse as
+  `versionYear` (2-digit → 20xx when ≤ 50, else 19xx) plus an uppercase `track` string
+  (empty for plain years). An option whose version matches neither shape is skipped **and
+  reported**, never dropped silently.
+- **Keep the latest version per (code, track), not per code.** Three programs — `AB EU`,
+  `AB LIT(ENG)`, `AB LIT(ENG)-LCS` — have *only* track-suffixed versions, so grouping by code
+  alone would drop them entirely; `BS LfSci` and `MS BIO` would lose tracks. Grouping by
+  (code, track) yields ~233 programs from 227 distinct codes.
+- Program id = slugified code + `-` + the raw version string (`AB-EU-24BE`,
+  `BS-AMDSc-M-DSc-2024`), which stays unique across tracks and reproduces the
+  already-committed BS AMDSc id.
+- Each program carries a display `versionLabel`: `"2024"`, or `"2024 · BE"` when a track is
+  present, so the picker can distinguish same-year tracks.
 
 ### 2.3 Fetch loop
 
@@ -69,10 +87,11 @@ Structure per the v2 spec §2.2: **Year** heading → **Term** heading → 5-col
 
 ### 2.5 Output and safety rails
 
-- Program id: slugified `CODE-YEAR` — non-alphanumeric runs in the code become `-`
-  (e.g. `BS AMDSc-M DSc` + 2024 → `BS-AMDSc-M-DSc-2024`).
+- Program id: slugified code + `-` + the raw version string — non-alphanumeric runs in the
+  code become `-` (e.g. `BS AMDSc-M DSc` + `2024` → `BS-AMDSc-M-DSc-2024`;
+  `AB LIT(ENG)` + `24TB` → `AB-LIT-ENG-24TB`).
 - Writes one file per program: `data/curricula/<id>.json`, plus regenerates
-  `data/curricula/index.json` containing `ProgramSummary[]` (id, code, name, versionYear).
+  `data/curricula/index.json` containing `ProgramSummary[]` (id, code, name, versionYear, versionLabel).
 - Atomic writes (`.tmp` + rename), like the schedule scraper.
 - Refuses to write anything when the run is suspicious — zero programs parsed, or fewer than
   `max(10, 20%)` of discovered programs parsed successfully — unless `--force`.
@@ -108,7 +127,7 @@ The seeded `curriculum-BS-AMDSc-2024.json` is hand-migrated to
 
 | table | columns |
 |---|---|
-| `programs` | `id text PK`, `code text`, `name text`, `version_year int`, `blocks jsonb`, `updated_at timestamptz default now()` |
+| `programs` | `id text PK`, `code text`, `name text`, `version_year int`, `version_label text`, `blocks jsonb`, `updated_at timestamptz default now()` |
 | `catalogs` | `term text PK`, `exported_at timestamptz`, `sections jsonb`, `warnings jsonb`, `updated_at timestamptz default now()` |
 | `community_ratings` | `id bigint identity PK`, `name text`, `rating numeric`, `course_code text null`, `note text null`, `as_of date null`, unique `(name, course_code)` |
 

@@ -1,0 +1,1009 @@
+{
+  "id": "BS-CpE-2024",
+  "code": "BS CpE",
+  "name": "BACHELOR OF SCIENCE IN COMPUTER ENGINEERING",
+  "version": "2024",
+  "versionYear": 2024,
+  "versionLabel": "2024",
+  "blocks": [
+    {
+      "year": "First Year",
+      "term": "First Semester",
+      "key": "First Year|First Semester",
+      "totalUnits": 23,
+      "entries": [
+        {
+          "catNo": "CHEM 21.31",
+          "title": "GENERAL CHEMISTRY FOR ENGINEERS, LECTURE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|First Semester#0"
+        },
+        {
+          "catNo": "CHEM 21.32",
+          "title": "GENERAL CHEMISTRY FOR ENGINEERS, LABORATORY",
+          "units": 1,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|First Semester#1"
+        },
+        {
+          "catNo": "ENGG 30.02",
+          "title": "INTRODUCTION TO PROGRAMMING FOR ENGINEERS",
+          "units": 2,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|First Semester#2"
+        },
+        {
+          "catNo": "ENGL 11",
+          "title": "PURPOSIVE COMMUNICATION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#3"
+        },
+        {
+          "catNo": "FILI 12",
+          "title": "PANITIKAN NG PILIPINAS",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#4"
+        },
+        {
+          "catNo": "INTACT 11",
+          "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 11",
+          "units": 0,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#5"
+        },
+        {
+          "catNo": "MATH 10",
+          "title": "MATHEMATICS IN THE MODERN WORLD",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#6"
+        },
+        {
+          "catNo": "PATHFit 1",
+          "title": "PHYSICAL ACTIVITIES TOWARDS HEALTH AND FITNESS 1",
+          "units": 2,
+          "prerequisites": [],
+          "category": "PFT1",
+          "isElective": false,
+          "slotId": "First Year|First Semester#7"
+        },
+        {
+          "catNo": "SocSc 11",
+          "title": "UNDERSTANDING THE SELF",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#8"
+        },
+        {
+          "catNo": "THEO 11",
+          "title": "FAITH, SPIRITUALITY, AND THE CHURCH",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|First Semester#9"
+        }
+      ]
+    },
+    {
+      "year": "First Year",
+      "term": "Second Semester",
+      "key": "First Year|Second Semester",
+      "totalUnits": 22,
+      "entries": [
+        {
+          "catNo": "ENGG 11",
+          "title": "COMPUTER-AIDED DRAFTING",
+          "units": 1,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#0"
+        },
+        {
+          "catNo": "ENLIT 12",
+          "title": "LITERATURE: GLOBAL VOICES AND ENCOUNTERS",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#1"
+        },
+        {
+          "catNo": "FILI 11",
+          "title": "MALAYUNING KOMUNIKASYON",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#2"
+        },
+        {
+          "catNo": "FLC 11",
+          "title": "FOREIGN LANGUAGE AND CULTURE 11",
+          "units": 3,
+          "prerequisites": [],
+          "category": "FLC1",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#3"
+        },
+        {
+          "catNo": "HISTO 11",
+          "title": "RIZAL AND THE EMERGENCE OF THE PHILIPPINE NATION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#4"
+        },
+        {
+          "catNo": "INTACT 12",
+          "title": "INTRODUCTION TO ATENEO CULTURE AND TRADITIONS 12",
+          "units": 0,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#5"
+        },
+        {
+          "catNo": "MATH 30.23",
+          "title": "APPLIED CALCULUS FOR SCIENCE AND ENGINEERING I",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#6"
+        },
+        {
+          "catNo": "PATHFit 2",
+          "title": "PHYSICAL ACTIVITIES TOWARDS HEALTH AND FITNESS 2",
+          "units": 2,
+          "prerequisites": [
+            "PATHFit 1"
+          ],
+          "category": "PFT2",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#7"
+        },
+        {
+          "catNo": "PHYS 31.31",
+          "title": "ANALYTICAL PHYSICS FOR ENGINEERING 1, LECTURE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#8"
+        },
+        {
+          "catNo": "PHYS 31.32",
+          "title": "ANALYTICAL PHYSICS FOR ENGINEERING 1, LABORATORY",
+          "units": 1,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "First Year|Second Semester#9"
+        }
+      ]
+    },
+    {
+      "year": "Second Year",
+      "term": "Intersession",
+      "key": "Second Year|Intersession",
+      "totalUnits": 6,
+      "entries": [
+        {
+          "catNo": "ENGG 21",
+          "title": "ENGINEERING DATA ANALYSIS",
+          "units": 3,
+          "prerequisites": [
+            "MATH 30.23"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Intersession#0"
+        },
+        {
+          "catNo": "MATH 30.24",
+          "title": "APPLIED CALCULUS FOR SCIENCE AND ENGINEERING II",
+          "units": 3,
+          "prerequisites": [
+            "MATH 30.23"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Intersession#1"
+        }
+      ]
+    },
+    {
+      "year": "Second Year",
+      "term": "First Semester",
+      "key": "Second Year|First Semester",
+      "totalUnits": 23,
+      "entries": [
+        {
+          "catNo": "ENGG 101.01",
+          "title": "CIRCUITS I, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "MATH 30.23"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#0"
+        },
+        {
+          "catNo": "ENGG 101.02",
+          "title": "CIRCUITS I, LABORATORY",
+          "units": 1,
+          "prerequisites": [
+            "MATH 30.23"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#1"
+        },
+        {
+          "catNo": "ENGG 170",
+          "title": "BASIC OCCUPATIONAL HEALTH AND SAFETY",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#2"
+        },
+        {
+          "catNo": "ENGG 24",
+          "title": "DISCRETE MATHEMATICS",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#3"
+        },
+        {
+          "catNo": "ENGG 25",
+          "title": "DIFFERENTIAL EQUATIONS",
+          "units": 3,
+          "prerequisites": [
+            "MATH 30.24"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#4"
+        },
+        {
+          "catNo": "ENGG 31",
+          "title": "OBJECT ORIENTED PROGRAMMING",
+          "units": 2,
+          "prerequisites": [
+            "ENGG 30.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#5"
+        },
+        {
+          "catNo": "HISTO 12",
+          "title": "READINGS IN PHILIPPINE HISTORY",
+          "units": 3,
+          "prerequisites": [
+            "HISTO 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#6"
+        },
+        {
+          "catNo": "PATHFit 3",
+          "title": "PHYSICAL ACTIVITIES TOWARDS HEALTH AND FITNESS 3",
+          "units": 2,
+          "prerequisites": [
+            "PATHFit 1",
+            "PATHFit 2"
+          ],
+          "category": "PFT3",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#7"
+        },
+        {
+          "catNo": "PHILO 11",
+          "title": "PHILOSOPHY: THE HUMAN CONDITION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "CPH1",
+          "isElective": false,
+          "slotId": "Second Year|First Semester#8"
+        }
+      ]
+    },
+    {
+      "year": "Second Year",
+      "term": "Second Semester",
+      "key": "Second Year|Second Semester",
+      "totalUnits": 26,
+      "entries": [
+        {
+          "catNo": "ENGG 102.01",
+          "title": "CIRCUITS II, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "ENGG 101.01",
+            "ENGG 101.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#0"
+        },
+        {
+          "catNo": "ENGG 102.02",
+          "title": "CIRCUITS II, LABORATORY",
+          "units": 1,
+          "prerequisites": [
+            "ENGG 101.01",
+            "ENGG 101.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#1"
+        },
+        {
+          "catNo": "ENGG 111.01",
+          "title": "ELECTRONICS I, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "ENGG 101.01",
+            "ENGG 101.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#2"
+        },
+        {
+          "catNo": "ENGG 111.02",
+          "title": "ELECTRONICS I, LABORATORY",
+          "units": 1,
+          "prerequisites": [
+            "ENGG 101.01",
+            "ENGG 101.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#3"
+        },
+        {
+          "catNo": "ENGG 16.22",
+          "title": "COMPUTER ENGINEERING DRAFTING AND DESIGN",
+          "units": 1,
+          "prerequisites": [
+            "ENGG 101.01",
+            "ENGG 101.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#4"
+        },
+        {
+          "catNo": "ENGG 171.20",
+          "title": "COMPUTER ENGINEERING AS A DISCIPLINE",
+          "units": 1,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#5"
+        },
+        {
+          "catNo": "ENGG 32",
+          "title": "DATA STRUCTURES AND ALGORITHMS",
+          "units": 2,
+          "prerequisites": [
+            "ENGG 31"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#6"
+        },
+        {
+          "catNo": "NSTP 11",
+          "title": "NATIONAL SERVICE TRAINING PROGRAM 11",
+          "units": 3,
+          "prerequisites": [],
+          "category": "NP1",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#7"
+        },
+        {
+          "catNo": "PATHFit 4",
+          "title": "PHYSICAL ACTIVITIES TOWARDS HEALTH AND FITNESS 4",
+          "units": 2,
+          "prerequisites": [
+            "PATHFit 1",
+            "PATHFit 2"
+          ],
+          "category": "PFT4",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#8"
+        },
+        {
+          "catNo": "STS 10",
+          "title": "SCIENCE, TECHNOLOGY, AND SOCIETY",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#9"
+        },
+        {
+          "catNo": "SocSc 12",
+          "title": "THE CONTEMPORARY WORLD",
+          "units": 3,
+          "prerequisites": [
+            "SocSc 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#10"
+        },
+        {
+          "catNo": "THEO 12",
+          "title": "THEOLOGY OF THE CATHOLIC SOCIAL VISION",
+          "units": 3,
+          "prerequisites": [
+            "THEO 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Second Year|Second Semester#11"
+        }
+      ]
+    },
+    {
+      "year": "Third Year",
+      "term": "Fourth Year",
+      "key": "Third Year|Fourth Year",
+      "totalUnits": 6,
+      "entries": [
+        {
+          "catNo": "ArtAp 10",
+          "title": "ART APPRECIATION",
+          "units": 3,
+          "prerequisites": [],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|Fourth Year#0"
+        },
+        {
+          "catNo": "IE 1",
+          "title": "INTERDISCIPLINARY ELECTIVE 1 - ENGLISH",
+          "units": 3,
+          "prerequisites": [
+            "ENGL 11",
+            "ENLIT 12"
+          ],
+          "category": "IE1E",
+          "isElective": true,
+          "electiveDept": "**IE**",
+          "slotId": "Third Year|Fourth Year#1"
+        }
+      ]
+    },
+    {
+      "year": "Third Year",
+      "term": "First Semester",
+      "key": "Third Year|First Semester",
+      "totalUnits": 21,
+      "entries": [
+        {
+          "catNo": "ENGG 121.01",
+          "title": "LOGIC CIRCUITS AND SWITCHING THEORY, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "ENGG 111.01",
+            "ENGG 111.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#0"
+        },
+        {
+          "catNo": "ENGG 121.02",
+          "title": "LOGIC CIRCUITS AND SWITCHING THEORY, LABORATORY",
+          "units": 1,
+          "prerequisites": [
+            "ENGG 111.01",
+            "ENGG 111.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#1"
+        },
+        {
+          "catNo": "ENGG 161",
+          "title": "ENGINEERING MANAGEMENT",
+          "units": 2,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#2"
+        },
+        {
+          "catNo": "ENGG 27.01",
+          "title": "ADVANCE ENGINEERING MATH WITH NUMERICAL METHODS, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "ENGG 25"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#3"
+        },
+        {
+          "catNo": "IE 2",
+          "title": "INTERDISCIPLINARY ELECTIVE 2",
+          "units": 3,
+          "prerequisites": [],
+          "category": "IE2",
+          "isElective": true,
+          "electiveDept": "**IE**",
+          "slotId": "Third Year|First Semester#4"
+        },
+        {
+          "catNo": "NSTP 12",
+          "title": "NATIONAL SERVICE TRAINING PROGRAM 12",
+          "units": 3,
+          "prerequisites": [],
+          "category": "NP2",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#5"
+        },
+        {
+          "catNo": "PHILO 12",
+          "title": "PHILOSOPHY OF RELIGION",
+          "units": 3,
+          "prerequisites": [
+            "PHILO 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#6"
+        },
+        {
+          "catNo": "SocSc 13",
+          "title": "THE ECONOMY, SOCIETY, AND SUSTAINABLE DEVELOPMENT",
+          "units": 3,
+          "prerequisites": [
+            "SocSc 12"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|First Semester#7"
+        }
+      ]
+    },
+    {
+      "year": "Third Year",
+      "term": "Second Semester",
+      "key": "Third Year|Second Semester",
+      "totalUnits": 18,
+      "entries": [
+        {
+          "catNo": "ENGG 122.01",
+          "title": "MICROPROCESSORS AND MICROCONTROLLERS, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "ENGG 121.01",
+            "ENGG 121.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#0"
+        },
+        {
+          "catNo": "ENGG 122.02",
+          "title": "MICROPROCESSORS AND MICROCONTROLLERS, LABORATORY",
+          "units": 1,
+          "prerequisites": [
+            "ENGG 121.01",
+            "ENGG 121.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#1"
+        },
+        {
+          "catNo": "ENGG 125.03",
+          "title": "HARDWARE DESCRIPTION LANGUAGE",
+          "units": 1,
+          "prerequisites": [
+            "ENGG 121.01",
+            "ENGG 121.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#2"
+        },
+        {
+          "catNo": "ENGG 151.01",
+          "title": "SIGNALS, SPECTRA, AND SIGNAL PROCESSING, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "ENGG 27.01"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#3"
+        },
+        {
+          "catNo": "ENGG 151.02",
+          "title": "SIGNALS, SPECTRA, AND SIGNAL PROCESSING, LABORATORY",
+          "units": 1,
+          "prerequisites": [
+            "ENGG 27.01"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#4"
+        },
+        {
+          "catNo": "ENGG 192",
+          "title": "RESEARCH METHODS",
+          "units": 1,
+          "prerequisites": [
+            "ENGG 161"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#5"
+        },
+        {
+          "catNo": "ENGG 38",
+          "title": "SOFTWARE DEVELOPMENT",
+          "units": 2,
+          "prerequisites": [
+            "ENGG 161",
+            "ENGG 31"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#6"
+        },
+        {
+          "catNo": "PHILO 13",
+          "title": "ETHICS",
+          "units": 3,
+          "prerequisites": [
+            "PHILO 11"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#7"
+        },
+        {
+          "catNo": "THEO 13",
+          "title": "A THEOLOGY OF MARRIAGE, FAMILY, AND VOCATION",
+          "units": 3,
+          "prerequisites": [
+            "THEO 12"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Third Year|Second Semester#8"
+        }
+      ]
+    },
+    {
+      "year": "Fourth Year",
+      "term": "Intersession",
+      "key": "Fourth Year|Intersession",
+      "totalUnits": 3,
+      "entries": [
+        {
+          "catNo": "ENGG 197",
+          "title": "ON-THE-JOB TRAINING",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|Intersession#0"
+        }
+      ]
+    },
+    {
+      "year": "Fourth Year",
+      "term": "First Semester",
+      "key": "Fourth Year|First Semester",
+      "totalUnits": 22,
+      "entries": [
+        {
+          "catNo": "ENGG 123.01",
+          "title": "COMPUTER ARCHITECTURE AND ORGANIZATION, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "ENGG 122.01",
+            "ENGG 122.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#0"
+        },
+        {
+          "catNo": "ENGG 123.02",
+          "title": "COMPUTER ARCHITECTURE AND ORGANIZATION, LABORATORY",
+          "units": 1,
+          "prerequisites": [
+            "ENGG 122.01",
+            "ENGG 122.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#1"
+        },
+        {
+          "catNo": "ENGG 142.20",
+          "title": "DIGITAL COMMUNICATIONS FOR CPE",
+          "units": 3,
+          "prerequisites": [
+            "ENGG 121.01",
+            "ENGG 121.02",
+            "ENGG 151.01"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#2"
+        },
+        {
+          "catNo": "ENGG 143.01",
+          "title": "DATA COMMUNICATION AND NETWORKING, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "ENGG 121.01",
+            "ENGG 121.02",
+            "ENGG 151.01"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#3"
+        },
+        {
+          "catNo": "ENGG 143.02",
+          "title": "DATA COMMUNICATION AND NETWORKING, LABORATORY",
+          "units": 1,
+          "prerequisites": [
+            "ENGG 121.01",
+            "ENGG 121.02",
+            "ENGG 151.01"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#4"
+        },
+        {
+          "catNo": "ENGG 152.01",
+          "title": "FEEDBACK AND CONTROL SYSTEMS, LECTURE",
+          "units": 3,
+          "prerequisites": [
+            "ENGG 151.01",
+            "ENGG 151.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#5"
+        },
+        {
+          "catNo": "ENGG 18X.XX-1 (IE 4)",
+          "title": "IE 4: MAJOR ELECTIVE 1, LECTURE",
+          "units": 3,
+          "prerequisites": [],
+          "category": "RM1",
+          "isElective": true,
+          "slotId": "Fourth Year|First Semester#6"
+        },
+        {
+          "catNo": "ENGG 199.1",
+          "title": "THESIS I",
+          "units": 2,
+          "prerequisites": [
+            "ENGG 192"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#7"
+        },
+        {
+          "catNo": "SocSc 14",
+          "title": "POLITICS, GOVERNANCE, AND CITIZENSHIP",
+          "units": 3,
+          "prerequisites": [
+            "SocSc 13"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Fourth Year|First Semester#8"
+        }
+      ]
+    },
+    {
+      "year": "Fourth Year",
+      "term": "Second Semester",
+      "key": "Fourth Year|Second Semester",
+      "totalUnits": 19,
+      "entries": [
+        {
+          "catNo": "DLQ 10",
+          "title": "DISCERNING LIFE QUESTIONS: TOWARDS LEADERSHIP AND COMMITMENT",
+          "units": 3,
+          "prerequisites": [
+            "PHILO 13",
+            "SocSc 13",
+            "THEO 13"
+          ],
+          "category": "C",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#0"
+        },
+        {
+          "catNo": "ENGG 124.01",
+          "title": "EMBEDDED SYSTEMS, LECTURES",
+          "units": 3,
+          "prerequisites": [
+            "ENGG 122.01",
+            "ENGG 122.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#1"
+        },
+        {
+          "catNo": "ENGG 124.02",
+          "title": "EMBEDDED SYSTEMS, LABORATORY",
+          "units": 1,
+          "prerequisites": [
+            "ENGG 122.01",
+            "ENGG 122.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#2"
+        },
+        {
+          "catNo": "ENGG 126",
+          "title": "OPERATING SYSTEMS",
+          "units": 3,
+          "prerequisites": [
+            "ENGG 123.01"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#3"
+        },
+        {
+          "catNo": "ENGG 156",
+          "title": "FUNDAMENTALS OF MIXED SIGNALS AND SENSORS",
+          "units": 3,
+          "prerequisites": [
+            "ENGG 111.01",
+            "ENGG 111.02"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#4"
+        },
+        {
+          "catNo": "ENGG 190",
+          "title": "SEMINARS",
+          "units": 1,
+          "prerequisites": [
+            "ENGG 192"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#5"
+        },
+        {
+          "catNo": "ENGG 199.2",
+          "title": "THESIS II",
+          "units": 2,
+          "prerequisites": [
+            "ENGG 199.1"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fourth Year|Second Semester#6"
+        },
+        {
+          "catNo": "IE 3",
+          "title": "INTERDISCIPLINARY ELECTIVE 3",
+          "units": 3,
+          "prerequisites": [],
+          "category": "IE3",
+          "isElective": true,
+          "electiveDept": "**IE**",
+          "slotId": "Fourth Year|Second Semester#7"
+        }
+      ]
+    },
+    {
+      "year": "Fifth Year",
+      "term": "First Semester",
+      "key": "Fifth Year|First Semester",
+      "totalUnits": 17,
+      "entries": [
+        {
+          "catNo": "ENGG 160",
+          "title": "ENGINEERING ECONOMY",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fifth Year|First Semester#0"
+        },
+        {
+          "catNo": "ENGG 168",
+          "title": "TECHNOPRENEURSHIP 101",
+          "units": 3,
+          "prerequisites": [
+            "ENGG 161"
+          ],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fifth Year|First Semester#1"
+        },
+        {
+          "catNo": "ENGG 178.20",
+          "title": "CPE LAWS, CONTRACT, ETHICS, STANDARDS, AND SAFETY",
+          "units": 2,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fifth Year|First Semester#2"
+        },
+        {
+          "catNo": "ENGG 189",
+          "title": "EMERGING TECHNOLOGIES",
+          "units": 3,
+          "prerequisites": [],
+          "category": "M",
+          "isElective": false,
+          "slotId": "Fifth Year|First Semester#3"
+        },
+        {
+          "catNo": "ENGG 18X.XX-2",
+          "title": "MAJOR ELECTIVE 2",
+          "units": 3,
+          "prerequisites": [],
+          "category": "RM2",
+          "isElective": true,
+          "slotId": "Fifth Year|First Semester#4"
+        },
+        {
+          "catNo": "ENGG 18X.XX-3",
+          "title": "MAJOR ELECTIVE 3",
+          "units": 3,
+          "prerequisites": [],
+          "category": "RM3",
+          "isElective": true,
+          "slotId": "Fifth Year|First Semester#5"
+        }
+      ]
+    }
+  ]
+}
