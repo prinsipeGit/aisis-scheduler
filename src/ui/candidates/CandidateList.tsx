@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import type { RankedSchedule } from "../../lib/ranker";
 import type { Day } from "../../lib/types";
 import { sectionKey } from "../../lib/types";
@@ -71,7 +72,9 @@ export function CandidateList({ ranked, index, onPick }: Props) {
                 </span>
               </span>
               <span className="cand-bar" aria-hidden="true">
-                <span style={{ width: `${percent}%` }} />
+                {/* Scale factor, not a width: the fill is animated with transform so that
+                    re-scoring the set does not lay out every bar in the strip. */}
+                <span style={{ "--fill": percent / 100 } as CSSProperties} />
               </span>
             </button>
           </li>

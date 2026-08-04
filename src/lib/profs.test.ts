@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { normalizeName, mergeRatings, ratingFor } from "./profs";
+import { normalizeName, lastNames, mergeRatings, ratingFor } from "./profs";
 
 describe("normalizeName", () => {
   it("flips 'LAST, First' into 'first last' and strips punctuation", () => {
@@ -32,5 +32,39 @@ describe("ratingFor", () => {
   });
   it("returns undefined for an empty name", () => {
     expect(ratingFor("", merged)).toBeUndefined();
+  });
+});
+
+describe("lastNames", () => {
+  it("keeps only the surname, title-cased off the catalog's shouting", () => {
+    expect(lastNames(["BACABAC, Marion Michael"])).toEqual(["Bacabac"]);
+    expect(lastNames(["DE GUZMAN, Ivan Adrian"])).toEqual(["De Guzman"]);
+  });
+  it("lists every instructor of a team-taught section", () => {
+    expect(lastNames(["CRUZ, RONALD ALLAN L.", "ELICANO, ANTONIO RAFAEL N."]))
+      .toEqual(["Cruz", "Elicano"]);
+  });
+  // AISIS separates instructors with the same comma it uses between last and first name, so
+  // "GUIDOTE, JR., ARMANDO M." reaches us already split into a name and a loose fragment.
+  // Showing the fragment would invent a second professor on the block.
+  it("drops a first-name fragment left over from an ambiguous split", () => {
+    expect(lastNames(["GUIDOTE, JR.", "ARMANDO M."])).toEqual(["Guidote"]);
+    expect(lastNames(["ALVAREZ, SJ", "FR. FRANCIS"])).toEqual(["Alvarez"]);
+    expect(lastNames(["ENRIQUEZ, ERWIN P.", "GARCIA, Julius Adrie", "GUIDOTE, JR.", "ARMANDO M., LAPINIG", "DANIELLE B."]))
+      .toEqual(["Enriquez", "Garcia", "Guidote", "Armando M."]);
+  });
+  it("keeps a bare name when that is all the catalog gave", () => {
+    expect(lastNames(["Sorgon"])).toEqual(["Sorgon"]);
+  });
+  it("reads both spellings of an unassigned instructor as TBA", () => {
+    expect(lastNames(["TBA, -"])).toEqual(["TBA"]);
+    expect(lastNames(["TO BE ARRANGED"])).toEqual(["TBA"]);
+  });
+  it("returns nothing for an empty or blank roster", () => {
+    expect(lastNames([])).toEqual([]);
+    expect(lastNames(["   "])).toEqual([]);
+  });
+  it("does not repeat a surname listed twice", () => {
+    expect(lastNames(["CRUZ, Ana", "CRUZ, Ana"])).toEqual(["Cruz"]);
   });
 });

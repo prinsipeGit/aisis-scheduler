@@ -37,9 +37,13 @@ export function SectionChips({ schedule, state, onChange }: Props) {
                 .03 here and .05 in the next candidate (§11). It leads the row, in mono,
                 because it is the string the student retypes into AISIS. */}
             <span className="chip-code">{key}</span>{" "}
-            <span className="chip-who">{s.instructors.length > 0 ? s.instructors.join(", ") : "TBA"}</span>
+            {/* Truncated when a team-taught roster is longer than the row; the title keeps the
+                whole list reachable rather than losing it. */}
+            <span className="chip-who" title={s.instructors.join(", ")}>
+              {s.instructors.length > 0 ? s.instructors.join(", ") : "TBA"}
+            </span>
             {s.modality && <span className="chip-flag">{s.modality}</span>}
-            {s.meetings.length === 0 && <span className="chip-flag">time TBA</span>}{" "}
+            {s.meetings.length === 0 && <span className="chip-flag is-caution">time TBA</span>}{" "}
             <span className="chip-actions">
               <button type="button" onClick={() => toggle("lockedSections", key)}>
                 {state.lockedSections.includes(key) ? "Unlock" : "Lock"}

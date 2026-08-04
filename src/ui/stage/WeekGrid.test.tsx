@@ -36,6 +36,54 @@ describe("WeekGrid", () => {
     expect(screen.getByText(/no fixed meeting time/i).textContent).toContain("BIO 290");
   });
 
+  it("names the professor on the block by surname alone", () => {
+    const s: Schedule = [{ ...section("MATH 10", ["M"], 480, 600), instructors: ["DE GUZMAN, Ivan Adrian"] }];
+    const { container } = render(<WeekGrid schedule={s} />);
+    expect(container.querySelector(".block-prof")?.textContent).toBe("De Guzman");
+  });
+
+  it("counts the rest rather than listing a team-taught roster it has no room for", () => {
+    const s: Schedule = [{
+      ...section("MATH 10", ["M"], 480, 600),
+      instructors: ["CRUZ, RONALD ALLAN L.", "ELICANO, ANTONIO RAFAEL N."],
+    }];
+    const { container } = render(<WeekGrid schedule={s} />);
+    expect(container.querySelector(".block-prof")?.textContent).toBe("Cruz +1");
+  });
+
+  it("keeps the whole truth in the block's tooltip, since short blocks clip", () => {
+    const s: Schedule = [{ ...section("MATH 10", ["M"], 480, 510), instructors: ["CRUZ, Ana"] }];
+    const { container } = render(<WeekGrid schedule={s} />);
+    expect((container.querySelector(".block") as HTMLElement).title)
+      .toBe("MATH 10 1 · 8:00 AM-8:30 AM · Cruz · R1");
+  });
+
+  it("says nothing about the professor when the catalog listed none", () => {
+    const { container } = render(<WeekGrid schedule={[section("MATH 10", ["M"], 480, 600)]} />);
+    expect(container.querySelector(".block-prof")).toBeNull();
+  });
+
+  // The whole point of the tint is telling two blocks in the same week apart, which the old
+  // hash-into-six-buckets scheme did not guarantee: PHILO and CSCI both landed on the same green.
+  it("gives every subject in one schedule a different tint", () => {
+    const s: Schedule = [
+      section("PHILO 12", ["M"], 480, 540),
+      section("CSCI 111", ["T"], 480, 540),
+      section("MATH 10", ["W"], 480, 540),
+      section("ENGL 11", ["TH"], 480, 540),
+    ];
+    const { container } = render(<WeekGrid schedule={s} />);
+    const tints = [...container.querySelectorAll(".block")].map((el) => (el as HTMLElement).style.background);
+    expect(new Set(tints).size).toBe(4);
+  });
+
+  it("gives two courses from one department the same tint", () => {
+    const s: Schedule = [section("MATH 10", ["M"], 480, 540), section("MATH 21", ["T"], 480, 540)];
+    const { container } = render(<WeekGrid schedule={s} />);
+    const [a, b] = [...container.querySelectorAll(".block")].map((el) => (el as HTMLElement).style.background);
+    expect(a).toBe(b);
+  });
+
   it("gives a course the same colour in every schedule it appears in", () => {
     const a = render(<WeekGrid schedule={[section("MATH 10", ["M"], 480, 540)]} />);
     const first = (a.container.querySelector(".block") as HTMLElement).style.background;
