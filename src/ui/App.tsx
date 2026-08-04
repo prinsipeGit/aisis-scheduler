@@ -1,9 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
-// The width axis, not just weight: one Archivo carries both the engraved panel caps (expanded,
-// tracked out) and the reading text (normal), the way a real instrument silkscreens one face at
-// two widths rather than mixing two families. Martian Mono does every code, time, and count.
-import "@fontsource-variable/archivo/wdth.css";
-import "@fontsource-variable/martian-mono/wdth.css";
+// One superfamily at two widths, the way a map letters itself: Fira Sans Condensed does the map
+// lettering — headings, labels, day names — and regular Fira Sans does the reading text, because
+// condensed body copy is a cartographic habit that does not survive a UI. Fira Mono takes every
+// code, time and count: control descriptions are a table.
+import "@fontsource/fira-sans-condensed/400.css";
+import "@fontsource/fira-sans-condensed/500.css";
+import "@fontsource/fira-sans-condensed/600.css";
+import "@fontsource/fira-sans/400.css";
+import "@fontsource/fira-sans/500.css";
+import "@fontsource/fira-mono/400.css";
+import "@fontsource/fira-mono/500.css";
+import "@fontsource/fira-mono/700.css";
 import { getTerms, loadCatalog, loadCommunityRatings, isStale, CatalogUnavailableError, type TermOption } from "../lib/catalog";
 import { getPrograms, loadProgram, getBlock } from "../lib/curriculum";
 import { mergeRatings } from "../lib/profs";

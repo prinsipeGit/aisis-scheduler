@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import type { Day, Schedule } from "../../lib/types";
+import type { Day, Meeting, Schedule } from "../../lib/types";
 import { sectionKey } from "../../lib/types";
 import { subjectPrefix } from "../../lib/course-code";
 import { lastNames } from "../../lib/profs";
@@ -81,39 +81,59 @@ export function WeekGrid({ schedule, changed }: { schedule: Schedule; changed?: 
             <span key={m} style={{ top: HEADER + (m - start) * PX_PER_MIN }}>{formatTime(m)}</span>
           ))}
         </div>
-        {days.map((day) => (
+        {days.map((day) => {
+          // The day's classes in the order they are actually walked. Sorting is what makes the
+          // control numbers mean anything: they are the sequence of the day, not the order the
+          // schedule array happens to hold.
+          const stops = schedule
+            .flatMap((s) => s.meetings.filter((m) => m.days.includes(day)).map((m) => ({ s, m })))
+            .sort((a, b) => a.m.start - b.m.start);
+          const top = (m: Meeting) => HEADER + (m.start - start) * PX_PER_MIN;
+          const bottom = (m: Meeting) => HEADER + (m.end - start) * PX_PER_MIN;
+
+          return (
           <div key={day} className="day-col" style={{ height }}>
             <div className="day-label">{day}</div>
-            {schedule.flatMap((s) => {
+            {/* The legs, drawn before the terrain so a patch paints over them: a leg runs *to* a
+                control, not across it. Back-to-back classes have no gap and so no leg. */}
+            {stops.slice(0, -1).map((stop, i) => {
+              const legTop = bottom(stop.m);
+              const legHeight = top(stops[i + 1].m) - legTop;
+              return legHeight > 0 ? (
+                <div key={`leg-${day}-${i}`} className="leg" aria-hidden="true"
+                     style={{ top: legTop, height: legHeight }} />
+              ) : null;
+            })}
+            {stops.map(({ s, m }, i) => {
               // Surname only. The block is one column of a five-column week — there is room for one
               // word per line, and the surname is the part a student actually recognises and says.
               const profs = lastNames(s.instructors);
               const who = profs.length > 1 ? `${profs[0]} +${profs.length - 1}` : profs[0];
-              return s.meetings
-                .filter((m) => m.days.includes(day))
-                .map((m, i) => {
-                  const when = `${formatTime(m.start)}-${formatTime(m.end)}`;
-                  return (
-                  <div key={`${sectionKey(s)}-${day}-${i}`}
-                       className={changed?.has(sectionKey(s)) ? "block is-changed" : "block"}
-                       // Short meetings clip their lower lines by design (see .block in index.css),
-                       // so the block carries the whole truth in its tooltip.
-                       title={[sectionKey(s), when, profs.join(", "), s.room].filter(Boolean).join(" · ")}
-                       style={{
-                         top: HEADER + (m.start - start) * PX_PER_MIN,
-                         height: (m.end - m.start) * PX_PER_MIN,
-                         ...tints.get(subjectPrefix(s.courseCode)),
-                       } as CSSProperties}>
-                    <strong>{sectionKey(s)}</strong>
-                    <span className="block-when">{when}</span>
-                    {who && <span className="block-prof">{who}</span>}
-                    {s.room && <span className="block-room">{s.room}</span>}
-                  </div>
-                  );
-                });
+              const when = `${formatTime(m.start)}-${formatTime(m.end)}`;
+              return (
+                <div key={`${sectionKey(s)}-${day}-${i}`}
+                     className={changed?.has(sectionKey(s)) ? "block is-changed" : "block"}
+                     // Short meetings clip their lower lines by design (see .block in index.css),
+                     // so the block carries the whole truth in its tooltip.
+                     title={[`${i + 1}.`, sectionKey(s), when, profs.join(", "), s.room].filter(Boolean).join(" · ")}
+                     style={{
+                       top: top(m),
+                       height: (m.end - m.start) * PX_PER_MIN,
+                       ...tints.get(subjectPrefix(s.courseCode)),
+                     } as CSSProperties}>
+                  <strong>{sectionKey(s)}</strong>
+                  {/* The control number: which stop of the day this is. Read out in the tooltip
+                      above, so the ring itself is decoration to a screen reader. */}
+                  <span className="control" aria-hidden="true">{i + 1}</span>
+                  <span className="block-when">{when}</span>
+                  {who && <span className="block-prof">{who}</span>}
+                  {s.room && <span className="block-room">{s.room}</span>}
+                </div>
+              );
             })}
           </div>
-        ))}
+          );
+        })}
       </div>
       {tba.length > 0 && (
         <p className="tba-note">

@@ -76,9 +76,9 @@ export function renderScheduleImage(
 
   // Header - a saved image must identify itself.
   ctx.fillStyle = "#1b2233";
-  ctx.font = "600 26px 'Archivo Variable', sans-serif";
+  ctx.font = "600 26px 'Fira Sans Condensed', sans-serif";
   ctx.fillText("AISIS Scheduler", PAD, 44);
-  ctx.font = "16px 'Archivo Variable', sans-serif";
+  ctx.font = "16px 'Fira Sans Condensed', sans-serif";
   ctx.fillStyle = "#8c96aa";
   ctx.fillText(`${meta.program}  ${meta.block}  ${meta.term}`, PAD, 72);
 
@@ -88,7 +88,7 @@ export function renderScheduleImage(
   const perMin = GRID_H / Math.max(1, end - start);
   const colW = (W - PAD * 2 - 50) / DAYS.length;
 
-  ctx.font = "12px 'Martian Mono Variable', monospace";
+  ctx.font = "12px 'Fira Mono', monospace";
   DAYS.forEach((day, i) => {
     ctx.fillStyle = "#8c96aa";
     ctx.fillText(day, PAD + 50 + i * colW + colW / 2 - 8, GRID_TOP - 8);
@@ -116,9 +116,9 @@ export function renderScheduleImage(
         ctx.fillStyle = hueFor(s.courseCode);
         ctx.fillRect(x + 2, y, colW - 4, h);
         ctx.fillStyle = "#ffffff";
-        ctx.font = "600 11px 'Martian Mono Variable', monospace";
+        ctx.font = "600 11px 'Fira Mono', monospace";
         ctx.fillText(s.courseCode, x + 6, y + 14);
-        ctx.font = "10px 'Martian Mono Variable', monospace";
+        ctx.font = "10px 'Fira Mono', monospace";
         ctx.fillText(s.sectionCode, x + 6, y + 26);
       }
     }
@@ -127,18 +127,18 @@ export function renderScheduleImage(
   // Section list. The SECTION CODE carries the weight - it is what gets typed into AISIS.
   let y = GRID_TOP + GRID_H + 44;
   ctx.fillStyle = "#1b2233";
-  ctx.font = "600 14px 'Archivo Variable', sans-serif";
+  ctx.font = "600 14px 'Fira Sans Condensed', sans-serif";
   ctx.fillText("ENLIST THESE SECTIONS", PAD, y);
   y += 24;
   const LIST_COL_X = PAD + 360;
   const LIST_AVAIL_W = W - PAD - LIST_COL_X;
   for (const s of rows) {
-    ctx.font = "13px 'Martian Mono Variable', monospace";
+    ctx.font = "13px 'Fira Mono', monospace";
     ctx.fillStyle = "#1b2233";
     ctx.fillText(s.courseCode, PAD, y);
-    ctx.font = "600 15px 'Martian Mono Variable', monospace";
+    ctx.font = "600 15px 'Fira Mono', monospace";
     ctx.fillText(s.sectionCode, PAD + 190, y);
-    ctx.font = "11px 'Martian Mono Variable', monospace";
+    ctx.font = "11px 'Fira Mono', monospace";
     ctx.fillStyle = "#8c96aa";
     const when = s.meetings.length === 0
       ? "no fixed time"
@@ -147,7 +147,7 @@ export function renderScheduleImage(
     y += ROW_H;
   }
 
-  ctx.font = "12px 'Archivo Variable', sans-serif";
+  ctx.font = "12px 'Fira Sans Condensed', sans-serif";
   ctx.fillStyle = "#8c96aa";
   ctx.fillText("Unofficial planning tool - always verify your final schedule in AISIS.", PAD, height - 20);
 
