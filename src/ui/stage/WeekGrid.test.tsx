@@ -8,6 +8,15 @@ const section = (code: string, days: Section["meetings"][number]["days"], start:
   meetings: [{ days, start, end }], timeStatus: "scheduled", room: "R1", remarks: "", raw: "",
 });
 
+// The department fill rides on a custom property rather than on `background`, because the CSS
+// derives the module's edge and the glow on its code from the same value. Reading `.style.background`
+// here would return "" for every block and quietly pass whatever the implementation did.
+const gasOf = (el: Element) => {
+  const gas = (el as HTMLElement).style.getPropertyValue("--gas");
+  if (!gas) throw new Error("block has no --gas custom property");
+  return gas;
+};
+
 afterEach(cleanup);
 
 describe("WeekGrid", () => {
@@ -73,24 +82,24 @@ describe("WeekGrid", () => {
       section("ENGL 11", ["TH"], 480, 540),
     ];
     const { container } = render(<WeekGrid schedule={s} />);
-    const tints = [...container.querySelectorAll(".block")].map((el) => (el as HTMLElement).style.background);
+    const tints = [...container.querySelectorAll(".block")].map((el) => gasOf(el));
     expect(new Set(tints).size).toBe(4);
   });
 
   it("gives two courses from one department the same tint", () => {
     const s: Schedule = [section("MATH 10", ["M"], 480, 540), section("MATH 21", ["T"], 480, 540)];
     const { container } = render(<WeekGrid schedule={s} />);
-    const [a, b] = [...container.querySelectorAll(".block")].map((el) => (el as HTMLElement).style.background);
+    const [a, b] = [...container.querySelectorAll(".block")].map((el) => gasOf(el));
     expect(a).toBe(b);
   });
 
   it("gives a course the same colour in every schedule it appears in", () => {
     const a = render(<WeekGrid schedule={[section("MATH 10", ["M"], 480, 540)]} />);
-    const first = (a.container.querySelector(".block") as HTMLElement).style.background;
+    const first = gasOf(a.container.querySelector(".block")!);
     cleanup();
     const b = render(<WeekGrid schedule={[section("ZZZZ 1", ["M"], 600, 660), section("MATH 10", ["T"], 480, 540)]} />);
     const blocks = [...b.container.querySelectorAll(".block")] as HTMLElement[];
     const math = blocks.find((el) => el.textContent?.includes("MATH 10"))!;
-    expect(math.style.background).toBe(first);
+    expect(gasOf(math)).toBe(first);
   });
 });

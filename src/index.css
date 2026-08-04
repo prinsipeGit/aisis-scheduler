@@ -1,115 +1,144 @@
-/* AISIS Scheduler — "Studio after dark"
+/* AISIS Scheduler — "Bench Instrument"
+   ---------------------------------------------------------------------------------------------
    A student comes here to produce one thing: a short list of section codes they will retype,
-   fast, into a system that fills seats in seconds. So the code is the hero — set in mono,
-   high contrast, always legible — and everything else is scaffolding that helps them trust it.
+   fast, into a system that fills seats in seconds.
 
-   Dark is chosen from the use scene, not from taste: enlistment happens at 7am or late at night,
-   on a laptop, with AISIS itself glaring white in the next tab. This tab is the calm one, and a
-   dark field is also what makes six department tints separable — colour on near-black reads as
-   information, where the same six on white read as pastel decoration.
+   So the app is not a calendar with the codes written on it. It is the instrument that displays
+   them. A section code — "MATH 101.6 UV1" — is a fixed-position alphanumeric readout, exactly
+   what a tube bank is for: each character in its own cell, one form, read left to right, copied
+   out by hand. That is the fuse, and it is why this world was worth the swap.
 
-   The palette is retuned, not inverted. Surfaces are four steps of one blue-black; text is only
-   ever near-white, soft, or muted; every accent is lifted until it clears 4.5:1 on the panel it
-   sits on. Fills carry light ink, so the section code stays the brightest thing in its block.
+   MATERIAL
+   Blackened steel in four steps, from the chassis the page sits on up to the plates that catch
+   bench light. Modules are chamfered, never rounded: cut corners are the single move that stops
+   this reading as a product dashboard, and the 1px machined edge is drawn with a border-box
+   background layer so it follows the cut instead of squaring it off.
 
-   Type: Space Grotesk carries the personality (wordmark, headings, the rank numerals), Plus
-   Jakarta Sans does the reading, JetBrains Mono does the data. All three are shipped, not
-   system stacks, so the app looks the same on a Windows lab machine as on a Mac.
+   LIGHT
+   Nixie orange #FF6A00 means LIVE and means nothing else — the candidate you are on, the primary
+   action, keyboard focus, and what changed since the last schedule. It is never decoration, and
+   it is never a big filled button: in this world the primary control is a dark plate with a lit
+   border, the way the real one is.
 
-   Motion is spent in one place: what changed between candidates. */
+   The eight departments could not all be orange, so they are the rest of the tube family: gas
+   fills. Neon, krypton, xenon, sodium, argon, mercury, cold white, helium — each department is a
+   different gas glowing in its own envelope. Ordered so consecutive slots are the least alike,
+   because they are handed out in sequence to whatever subjects a schedule contains.
+
+   TYPE
+   Two superfamilies, many voices, no third family. Archivo runs its width axis from 100 for
+   reading text out to 118 for engraved nameplate caps — one face silkscreened at two widths, the
+   way a real panel is lettered. Martian Mono takes every code, time, count, and unit: it is wide
+   and squared, so each glyph sits in its own cell, which is the whole argument.
+
+   MOTION
+   Spent where the instrument would spend it: what changed between candidates, and the strike of
+   a lit state coming on. Nothing else animates.
+   --------------------------------------------------------------------------------------------- */
 
 :root {
   color-scheme: dark;
 
-  /* Four surface steps, all one hue, so panels read as stacked rather than outlined:
-     paper (page) → sunken (wells) → surface (panels) → raised (things that float). */
-  --paper: #070b12;
-  --sunken: #0c111c;
-  --surface: #111726;
-  --raised: #18202f;
-  --field: #090e18;
-  /* Row and control hover. A lift, never a darkening — darkening reads as "disabled" on dark. */
-  --hover: rgba(160, 190, 255, 0.06);
-  --btn: #1a2231;
-  --btn-hover: #232d40;
+  /* Chassis: four steps of blackened steel. The page is the deepest; plates rise toward light. */
+  --chassis: #0b0c0e;
+  --recess: #0e1013;
+  --panel: #131518;
+  --raise: #191c21;
+  --plate: #21252b;
+  --field: #08090b;
 
-  --ink: #e9eef7;
-  --ink-soft: #aeb9cc;
-  --muted: #808da5;
-  /* Disabled text. WCAG exempts it, but "Prev" is disabled on every first candidate and a student
-     still has to read it to know what the greyed control is — so it is lifted to ~4:1, recessed
-     against --ink-soft's 8.8:1 rather than against legibility. */
-  --ink-faint: #667191;
-  --rule: #262f42;
-  --rule-soft: #1a2233;
-  --rule-strong: #3b475f;
+  /* Machined edges. --edge is the hairline every plate is cut with; --edge-lit is that edge
+     turned toward the bench lamp on hover. */
+  --edge: #2b3038;
+  --edge-soft: #1e2228;
+  --edge-lit: #454c56;
+  --hover: rgb(255 255 255 / 0.045);
 
-  /* Ateneo blue, lifted off the near-black until it carries text weight. --accent-deep keeps its
-     job — the high-emphasis accent — which on a dark field means lighter, not darker. */
-  --accent: #4d84ff;
-  --accent-bright: #6f9dff;
-  --accent-deep: #9dbcff;
-  --accent-soft: #16233f;
-  --accent-line: #2b4278;
-  --accent-ring: rgba(77, 132, 255, 0.42);
-  --on-accent: #08101f;
+  --ink: #dfe5ea;
+  --ink-soft: #a6abb2;
+  --muted: #848c98;
+  /* Reserved for non-text engraving — rules and stamped marks. It sits at ~3:1 on every one of
+     the four steel steps, which is a legitimate value for a scribed line and not for a glyph, so
+     nothing readable is allowed to use it. Four things did on the first pass (the hour labels,
+     placeholders, the step numerals, the footer) and all four moved to --muted. */
+  --engrave: #5b6168;
+  --ink-faint: #6a727d;
 
-  --ok: #35d6a0;
-  --ok-soft: #0d2a22;
+  /* THE LIT STATE. Reserved. If something is orange it is live, focused, primary, or changed. */
+  --glow: #ff6a00;
+  --glow-bright: #ff8c33;
+  /* Always wrapped in a linear-gradient() at the use site. A bare <color> is legal only as the
+     final layer of the `background` shorthand; mid-list it invalidates the whole declaration,
+     which is exactly how every lit plate in this file shipped with no background at all on the
+     first pass — the orange text rendered, so it looked deliberate rather than broken. */
+  --glow-fill: rgb(255 106 0 / 0.13);
+  --glow-line: #5e2e08;
+  --glow-ring: rgb(255 106 0 / 0.42);
+
+  --ok: #46d39b;
+  --ok-fill: #0a2a20;
   --warn: #f2b45f;
-  --warn-soft: #2c2113;
-  --warn-line: #4b3819;
-  --stop: #ff7095;
-  --stop-soft: #33161f;
+  --warn-fill: #241a0b;
+  --warn-line: #4a3819;
+  --stop: #ff7e8e;
+  --stop-fill: #2b0d13;
 
-  --radius: 14px;
-  --radius-sm: 9px;
-  --radius-xs: 6px;
-  /* Dark surfaces swallow shadow, so elevation is carried mostly by the surface step and the
-     rule; shadow is kept for real offset and only where something genuinely floats. */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.45);
-  --shadow: 0 2px 4px rgba(0, 0, 0, 0.4), 0 14px 30px -12px rgba(0, 0, 0, 0.7);
-  --shadow-lg: 0 30px 80px -20px rgba(0, 0, 0, 0.85);
+  /* Gas fills. Each department is a different gas in a different envelope, ordered so that two
+     subjects handed consecutive slots never look alike. None of them is nixie orange — that
+     colour is spoken for. */
+  --dept-1: #2b0d13; --dept-1-ink: #ff7e8e; /* neon */
+  --dept-2: #07251a; --dept-2-ink: #7fe3a0; /* krypton */
+  --dept-3: #0a1730; --dept-3-ink: #7fb0ff; /* xenon */
+  --dept-4: #26200a; --dept-4-ink: #f5d64c; /* sodium */
+  --dept-5: #16102e; --dept-5-ink: #b79bff; /* argon */
+  --dept-6: #062227; --dept-6-ink: #6fd8e8; /* mercury */
+  --dept-7: #161b21; --dept-7-ink: #c8d4de; /* cold white */
+  --dept-8: #260c24; --dept-8-ink: #ee9be8; /* helium */
 
-  /* Department tints. One per subject in the week, so the colour tells you which department a
-     block belongs to. Deep fill, light ink — the eight hues stay separable at 78px wide, and the
-     section code on top of them stays the brightest mark on the grid. Every ink clears 8:1 on its
-     own fill, which leaves headroom for the dimmed room line to still clear 4.5:1.
+  /* The chamfer. Set --c per component and apply --cut; every plate in the app is cut, and
+     nothing in the app is rounded. */
+  --c: 7px;
+  --cut: polygon(
+    var(--c) 0, calc(100% - var(--c)) 0,
+    100% var(--c), 100% calc(100% - var(--c)),
+    calc(100% - var(--c)) 100%, var(--c) 100%,
+    0 calc(100% - var(--c)), 0 var(--c)
+  );
+  /* Bench light falls from above, so every plate carries a top bevel rather than a drop shadow.
+     Steel does not float. */
+  --bevel: linear-gradient(180deg, rgb(255 255 255 / 0.055), rgb(255 255 255 / 0) 42%);
 
-     The order is a rotation, not a spectrum: tints are handed out in sequence, so slot 2 must be
-     the hue least like slot 1. Sorted alphabetically, a schedule of CSCI/MATH/PHILO takes the
-     first three slots — blue, then violet, then green would have spent the two closest hues in
-     the palette on the first two courses of the week. */
-  --dept-1: #16294a; --dept-1-ink: #a9c9ff; /* blue */
-  --dept-2: #3b2810; --dept-2-ink: #f7c886; /* amber */
-  --dept-3: #0f3329; --dept-3-ink: #79e8ba; /* green */
-  --dept-4: #3d1729; --dept-4-ink: #ffabc5; /* rose */
-  --dept-5: #0d2f3d; --dept-5-ink: #86d9ee; /* cyan */
-  --dept-6: #271f52; --dept-6-ink: #c6b7ff; /* violet */
-  --dept-7: #22320f; --dept-7-ink: #bfe07f; /* lime */
-  --dept-8: #37183c; --dept-8-ink: #edaaf0; /* magenta */
+  --shadow-lg: 0 30px 90px -24px rgb(0 0 0 / 0.9);
 
-  --display: "Space Grotesk Variable", "Space Grotesk", system-ui, sans-serif;
-  --body: "Plus Jakarta Sans Variable", "Plus Jakarta Sans", system-ui, sans-serif;
-  --mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --display: "Archivo Variable", system-ui, sans-serif;
+  --body: "Archivo Variable", system-ui, sans-serif;
+  --mono: "Martian Mono Variable", ui-monospace, SFMono-Regular, monospace;
 
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
   --check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.2 8.4l3.2 3.2 6.4-7.2' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 
   font-family: var(--body);
+  font-variation-settings: "wdth" 100;
   color: var(--ink);
-  background: var(--paper);
+  background: var(--chassis);
   line-height: 1.55;
   font-synthesis: none;
   -webkit-font-smoothing: antialiased;
 }
 
+/* An engraved nameplate: expanded caps, tracked wide, stamped into the steel rather than printed
+   on it — hence the 1px dark relief under the glyphs. Every section label in the app is one. */
+.plate-label {
+  font-family: var(--display);
+  font-variation-settings: "wdth" 118;
+  font-weight: 600; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--muted); text-shadow: 0 1px 0 rgb(0 0 0 / 0.6);
+}
+
 * { box-sizing: border-box; }
-/* Set on the element that actually paints the canvas too, so an over-scroll past the top or
-   bottom of the page shows more page rather than a band of browser white. */
-html { background: var(--paper); }
-body { margin: 0; min-width: 320px; background: var(--paper); }
-::selection { background: var(--accent-line); color: var(--ink); }
+html { background: var(--chassis); }
+body { margin: 0; min-width: 320px; background: var(--chassis); }
+::selection { background: var(--glow-line); color: var(--ink); }
 
 /* Stays absolute so it costs no space in the flex rows it sits in — but an absolutely positioned
    element is only clipped by an overflow ancestor that is also in its containing-block chain, and
@@ -125,11 +154,32 @@ body { margin: 0; min-width: 320px; background: var(--paper); }
 }
 .tabular { font-variant-numeric: tabular-nums; }
 
-/* The candidate filmstrip and the week grid both scroll inside panels, and a default scrollbar
-   sits on top of them as the brightest object on the page. Thin, and drawn from the rule. */
+/* Steel, in three finishes. Each is a background *list*: the fill paints inside the padding box
+   and the edge colour paints in the border box, so the 1px machined line follows the chamfer
+   instead of squaring the corners off the way a plain border would. This is the reason nothing
+   here needs box-shadow to look like an object. */
+:root {
+  --steel:
+    var(--bevel) padding-box,
+    linear-gradient(var(--panel), var(--panel)) padding-box,
+    linear-gradient(var(--edge), var(--edge)) border-box;
+  --steel-raise:
+    var(--bevel) padding-box,
+    linear-gradient(var(--raise), var(--raise)) padding-box,
+    linear-gradient(var(--edge), var(--edge)) border-box;
+  --steel-recess:
+    linear-gradient(var(--recess), var(--recess)) padding-box,
+    linear-gradient(var(--edge-soft), var(--edge-soft)) border-box;
+  --steel-lit:
+    linear-gradient(var(--glow-fill), var(--glow-fill)) padding-box,
+    linear-gradient(var(--raise), var(--raise)) padding-box,
+    linear-gradient(var(--glow), var(--glow)) border-box;
+}
+
+/* The instrument's own scrollbars. A default one is the brightest object on a blackened panel. */
 .candidate-list, .schedule-grid-scroll, .dialog-body {
   scrollbar-width: thin;
-  scrollbar-color: var(--rule-strong) transparent;
+  scrollbar-color: var(--edge-lit) transparent;
 }
 .candidate-list::-webkit-scrollbar, .schedule-grid-scroll::-webkit-scrollbar,
 .dialog-body::-webkit-scrollbar { width: 9px; height: 9px; }
@@ -137,8 +187,7 @@ body { margin: 0; min-width: 320px; background: var(--paper); }
 .dialog-body::-webkit-scrollbar-track { background: transparent; }
 .candidate-list::-webkit-scrollbar-thumb, .schedule-grid-scroll::-webkit-scrollbar-thumb,
 .dialog-body::-webkit-scrollbar-thumb {
-  background: var(--rule-strong); border-radius: 999px;
-  border: 2px solid transparent; background-clip: content-box;
+  background: var(--edge-lit); border: 2px solid transparent; background-clip: content-box;
 }
 .candidate-list:hover::-webkit-scrollbar-thumb, .schedule-grid-scroll:hover::-webkit-scrollbar-thumb,
 .dialog-body:hover::-webkit-scrollbar-thumb { background: var(--muted); background-clip: content-box; }
@@ -148,34 +197,47 @@ body { margin: 0; min-width: 320px; background: var(--paper); }
 .cockpit { max-width: 1440px; margin: 0 auto; padding: 0 22px 32px; }
 
 .cockpit-header {
-  display: flex; align-items: center; gap: 12px;
-  padding: 20px 0 16px; margin-bottom: 20px;
-  border-bottom: 1px solid var(--rule);
+  display: flex; align-items: center; gap: 13px;
+  padding: 20px 0 15px; margin-bottom: 20px;
+  border-bottom: 1px solid var(--edge);
 }
+/* The wordmark is the plate screwed to the front of the chassis: expanded caps, tracked wide,
+   stamped rather than printed. */
 .wordmark {
-  font-family: var(--display); font-weight: 700; font-size: 1.15rem;
-  letter-spacing: -0.02em;
+  font-family: var(--display);
+  font-variation-settings: "wdth" 116;
+  font-weight: 700; font-size: 0.98rem; letter-spacing: 0.17em; text-transform: uppercase;
+  color: var(--ink); text-shadow: 0 1px 0 rgb(0 0 0 / 0.7);
 }
+/* The term is a live reading — the one thing in the header that is a value, so it is lit. */
 .term-badge {
-  font-family: var(--mono); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.02em;
-  color: var(--accent-deep); background: var(--accent-soft);
-  border-radius: 999px; padding: 3px 10px;
+  --c: 4px;
+  font-family: var(--mono);
+  font-variation-settings: "wdth" 87.5, "wght" 600;
+  font-size: 0.63rem; letter-spacing: 0.04em;
+  color: var(--glow); text-shadow: 0 0 10px rgb(255 106 0 / 0.45);
+  border: 1px solid transparent; background: var(--steel-lit);
+  clip-path: var(--cut); padding: 3px 9px;
 }
-.privacy-badge { margin-left: auto; font-size: 0.76rem; color: var(--muted); }
+.privacy-badge { margin-left: auto; font-size: 0.75rem; color: var(--muted); }
 
 .notice-stack { display: grid; gap: 9px; margin-bottom: 18px; }
 .banner {
-  background: var(--warn-soft); color: var(--warn);
-  border: 1px solid var(--warn-line);
-  border-radius: var(--radius-sm); padding: 11px 15px; margin: 0; font-size: 0.86rem;
+  --c: 6px;
+  color: var(--warn); font-size: 0.85rem; margin: 0; padding: 11px 15px;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--warn-fill), var(--warn-fill)) padding-box,
+    linear-gradient(var(--warn-line), var(--warn-line)) border-box;
+  clip-path: var(--cut);
   animation: rise 0.32s var(--ease) both;
 }
 
-/* Two zones now. Candidates moved into the stage, so setup gets the width it was starving for. */
+/* Two zones. Candidates moved into the stage, so setup gets the width it was starving for. */
 .zones { display: grid; grid-template-columns: 384px minmax(0, 1fr); gap: 20px; align-items: start; }
 .rail, .stage {
-  background: var(--surface); border: 1px solid var(--rule);
-  border-radius: var(--radius); box-shadow: var(--shadow-sm);
+  --c: 11px;
+  border: 1px solid transparent; background: var(--steel); clip-path: var(--cut);
 }
 .rail { padding: 6px 20px 16px; }
 .stage { padding: 18px 20px 20px; }
@@ -186,133 +248,249 @@ body { margin: 0; min-width: 320px; background: var(--paper); }
    carries information instead of decorating the list. */
 .rail-setup { counter-reset: step; }
 .accordion { counter-increment: step; }
-.accordion + .accordion { border-top: 1px solid var(--rule-soft); }
-.accordion h2 { margin: 0; font-size: 0.95rem; font-family: var(--display); letter-spacing: -0.01em; }
+.accordion + .accordion { border-top: 1px solid var(--edge-soft); }
+.accordion h2 {
+  margin: 0; font-size: 0.88rem; font-family: var(--display);
+  font-variation-settings: "wdth" 108;
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
 .accordion h2 button {
-  width: 100%; display: flex; align-items: center; gap: 11px;
+  width: 100%; display: flex; align-items: center; gap: 12px;
   background: none; border: 0; padding: 15px 0; font: inherit;
-  font-weight: 600; color: inherit; cursor: pointer; text-align: left;
+  font-weight: 600; color: var(--ink-soft); cursor: pointer; text-align: left;
+  clip-path: none;
   transition: color 0.18s var(--ease);
 }
 .accordion h2 button::before {
   content: counter(step, decimal-leading-zero);
-  font-family: var(--mono); font-size: 0.68rem; font-weight: 500;
-  color: var(--muted); transition: color 0.18s var(--ease);
+  font-family: var(--mono);
+  font-variation-settings: "wdth" 87.5, "wght" 500;
+  font-size: 0.66rem; color: var(--muted);
+  transition: color 0.18s var(--ease), text-shadow 0.18s var(--ease);
 }
-.accordion h2 button:hover { color: var(--accent); }
-.accordion h2 button[aria-expanded="true"],
-.accordion h2 button[aria-expanded="true"]::before { color: var(--accent); }
-.accordion-body { padding: 0 0 18px 27px; animation: unfold 0.26s var(--ease) both; }
+.accordion h2 button:hover { color: var(--ink); }
+.accordion h2 button:hover::before { color: var(--muted); }
+/* The open step is the live one, so its number lights. */
+.accordion h2 button[aria-expanded="true"] { color: var(--ink); }
+.accordion h2 button[aria-expanded="true"]::before {
+  color: var(--glow); text-shadow: 0 0 10px rgb(255 106 0 / 0.5);
+}
+.accordion-body { padding: 0 0 18px 28px; animation: unfold 0.26s var(--ease) both; }
 
-.rail-foot { border-top: 1px solid var(--rule-soft); padding-top: 14px; margin-top: 2px; }
+.rail-foot { border-top: 1px solid var(--edge-soft); padding-top: 14px; margin-top: 2px; }
+/* It is a <button>, so it arrives wearing the engraved-key treatment. Only its title is a
+   nameplate; the line under it is a sentence and has to be set like one. */
 .prefs-trigger {
-  width: 100%; display: grid; gap: 2px; text-align: left; cursor: pointer;
-  background: var(--sunken); border: 1px solid var(--rule); border-radius: var(--radius-sm);
-  padding: 12px 14px; font: inherit; color: inherit;
-  transition: background 0.18s var(--ease), border-color 0.18s var(--ease), transform 0.18s var(--ease);
+  --c: 7px;
+  width: 100%; display: grid; gap: 3px; text-align: left; cursor: pointer;
+  border: 1px solid transparent; background: var(--steel-recess); clip-path: var(--cut);
+  padding: 12px 14px; color: inherit;
+  font-family: var(--body); font-size: 0.8rem; font-weight: 400;
+  letter-spacing: normal; text-transform: none;
+  transition: background 0.18s var(--ease);
 }
-.prefs-trigger > span:first-child { font-family: var(--display); font-weight: 600; font-size: 0.92rem; }
+.prefs-trigger > span:first-child {
+  font-family: var(--display); font-variation-settings: "wdth" 112;
+  font-weight: 600; font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase;
+}
 .prefs-trigger .hint { margin: 0; }
-.prefs-trigger:hover { background: var(--accent-soft); border-color: var(--accent); transform: translateY(-1px); }
+.prefs-trigger:hover { background: var(--steel-lit); }
+.prefs-trigger:hover > span:first-child { color: var(--glow); }
 
 .form-grid { display: grid; gap: 13px; }
-.form-grid label { display: flex; flex-direction: column; gap: 5px; font-size: 0.8rem; color: var(--muted); }
+.form-grid label {
+  display: flex; flex-direction: column; gap: 6px;
+  font-family: var(--display); font-variation-settings: "wdth" 112;
+  font-size: 0.66rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--muted);
+}
 
-/* Fields are cut *into* the panel rather than raised off it — on a dark field a well reads as
-   "type here" where a lighter box would read as a button.
+/* Fields are milled into the plate, not raised off it.
 
    Matched on the element rather than on [type="text"]: an <input> with no type attribute is a
    text input, but an attribute selector cannot see a default that was never written down, so the
    program search box fell through to the browser's own field styling. On white that was invisible
    — the browser's default is white too. On black it was a grey slab. */
 input:not([type="checkbox"]):not([type="radio"]), select {
-  font: inherit; font-size: 0.88rem; color: var(--ink);
-  background: var(--field); border: 1px solid var(--rule);
-  border-radius: var(--radius-xs); padding: 8px 10px; width: 100%;
-  transition: border-color 0.16s var(--ease), box-shadow 0.16s var(--ease);
+  --c: 5px;
+  font: inherit; font-size: 0.85rem; color: var(--ink);
+  border: 1px solid transparent;
+  background:
+    linear-gradient(180deg, rgb(0 0 0 / 0.45), rgb(0 0 0 / 0) 60%) padding-box,
+    linear-gradient(var(--field), var(--field)) padding-box,
+    linear-gradient(var(--edge), var(--edge)) border-box;
+  clip-path: var(--cut);
+  padding: 8px 11px; width: 100%;
+  transition: background 0.16s var(--ease);
 }
 ::placeholder { color: var(--muted); opacity: 1; }
-/* Drawn rather than native. `accent-color` alone was the cheaper option and it backfired: Chrome
-   derives the *unchecked* box from the accent it is given, so a light blue accent produced a pale
-   tan box floating on the dark panel — the one control that has to look unset looked filled.
-   Drawing it makes both states ours, and the check is a real path rather than a glyph. */
-input[type="checkbox"] {
-  appearance: none; -webkit-appearance: none;
-  width: 16px; height: 16px; flex: 0 0 auto; align-self: center; margin: 0;
-  display: inline-grid; place-content: center; cursor: pointer;
-  background: var(--field); border: 1px solid var(--rule-strong); border-radius: 4px;
-  transition: background 0.14s var(--ease), border-color 0.14s var(--ease);
+select { cursor: pointer; }
+input:hover, select:hover {
+  background:
+    linear-gradient(180deg, rgb(0 0 0 / 0.45), rgb(0 0 0 / 0) 60%) padding-box,
+    linear-gradient(var(--field), var(--field)) padding-box,
+    linear-gradient(var(--edge-lit), var(--edge-lit)) border-box;
 }
-input[type="checkbox"]:hover:not(:disabled) { border-color: var(--accent); }
-input[type="checkbox"]:checked { background: var(--accent); border-color: var(--accent); }
-input[type="checkbox"]:disabled { cursor: default; opacity: 0.45; }
+/* Focus is a lit state, so it lights. clip-path would cut a box-shadow ring off at the chamfer,
+   so the ring is the border colour itself plus a glow that reads through the cut. */
+input:focus, select:focus {
+  outline: none;
+  background:
+    linear-gradient(180deg, rgb(0 0 0 / 0.45), rgb(0 0 0 / 0) 60%) padding-box,
+    linear-gradient(var(--field), var(--field)) padding-box,
+    linear-gradient(var(--glow), var(--glow)) border-box;
+  filter: drop-shadow(0 0 6px rgb(255 106 0 / 0.35));
+}
+
+/* Drawn rather than native. `accent-color` alone was the cheaper option and it backfired: Chrome
+   derives the *unchecked* box from the accent it is given, so the one control that has to look
+   unset looked filled. Drawing it makes both states ours, and the check is a real path. */
+input[type="checkbox"] {
+  --c: 3px;
+  appearance: none; -webkit-appearance: none;
+  width: 15px; height: 15px; flex: 0 0 auto; align-self: center; margin: 0;
+  display: inline-grid; place-content: center; cursor: pointer;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--field), var(--field)) padding-box,
+    linear-gradient(var(--edge-lit), var(--edge-lit)) border-box;
+  clip-path: var(--cut);
+  transition: background 0.14s var(--ease);
+}
+input[type="checkbox"]:hover:not(:disabled) {
+  background:
+    linear-gradient(var(--field), var(--field)) padding-box,
+    linear-gradient(var(--glow), var(--glow)) border-box;
+}
+/* Checked is a lamp coming on: the glyph glows rather than the box filling, which is what the
+   rest of this instrument does everywhere else. */
+input[type="checkbox"]:checked {
+  background:
+    linear-gradient(var(--glow-fill), var(--glow-fill)) padding-box,
+    linear-gradient(var(--field), var(--field)) padding-box,
+    linear-gradient(var(--glow), var(--glow)) border-box;
+}
+input[type="checkbox"]:disabled { cursor: default; opacity: 0.4; }
 input[type="checkbox"]:checked::after {
-  content: ""; width: 11px; height: 11px; background: var(--on-accent);
+  content: ""; width: 11px; height: 11px; background: var(--glow);
+  filter: drop-shadow(0 0 4px rgb(255 106 0 / 0.9));
   -webkit-mask: var(--check) center / contain no-repeat;
   mask: var(--check) center / contain no-repeat;
 }
-select { cursor: pointer; }
-input:hover, select:hover { border-color: var(--rule-strong); }
-input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-ring); outline: none; }
 
-.hint { font-size: 0.79rem; color: var(--muted); margin: 6px 0 0; line-height: 1.5; }
+.hint { font-size: 0.78rem; color: var(--muted); margin: 6px 0 0; line-height: 1.5; }
 
-.metric { font-size: 0.87rem; margin: 0 0 11px; color: var(--muted); }
-.metric strong { font-family: var(--mono); font-size: 0.98rem; color: var(--ink); font-weight: 600; }
+.metric { font-size: 0.82rem; margin: 0 0 11px; color: var(--muted); }
+/* A count is a readout. */
+.metric strong {
+  font-family: var(--mono); font-variation-settings: "wdth" 100, "wght" 600;
+  font-size: 0.9rem; color: var(--glow); text-shadow: 0 0 10px rgb(255 106 0 / 0.4);
+}
 
 .add-panel {
-  background: var(--sunken); border: 1px solid var(--rule-soft);
-  border-radius: var(--radius-sm); padding: 12px 13px; margin-top: 13px;
+  --c: 6px;
+  border: 1px solid transparent; background: var(--steel-recess); clip-path: var(--cut);
+  padding: 12px 13px; margin-top: 13px;
 }
 .add-panel > :first-child { margin-top: 0; }
 
-.course-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.course-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
 .course-list li {
-  border: 1px solid var(--rule); border-radius: var(--radius-sm);
-  padding: 10px 12px; font-size: 0.87rem;
-  transition: border-color 0.16s var(--ease), background 0.16s var(--ease);
+  --c: 5px;
+  border: 1px solid transparent; background: var(--steel-raise); clip-path: var(--cut);
+  padding: 10px 12px; font-size: 0.85rem;
+  transition: background 0.16s var(--ease);
 }
-.course-list li:hover { border-color: var(--rule-strong); background: var(--hover); }
-.course-list li > label { display: inline-flex; align-items: baseline; gap: 9px; font-weight: 500; }
-/* Excluded from generation. Recessed rather than struck through: still a real requirement,
+.course-list li:hover {
+  background:
+    var(--bevel) padding-box,
+    linear-gradient(var(--plate), var(--plate)) padding-box,
+    linear-gradient(var(--edge-lit), var(--edge-lit)) border-box;
+}
+.course-list li > label { display: inline-flex; align-items: baseline; gap: 10px; font-weight: 500; }
+/* A course code in the rail is still a code. */
+.course-list li > label { font-family: var(--mono); font-variation-settings: "wdth" 87.5, "wght" 500; font-size: 0.78rem; }
+/* Excluded from generation. Unpowered rather than struck through: still a real requirement,
    just not counted this run. */
-.muted-row { background: var(--sunken); color: var(--muted); border-style: dashed; }
+.muted-row {
+  color: var(--muted);
+  background:
+    linear-gradient(var(--recess), var(--recess)) padding-box,
+    linear-gradient(var(--edge-soft), var(--edge-soft)) border-box;
+}
 
 /* ---------- buttons ---------- */
 
+/* Panel keys: engraved caps on a chamfered steel key, never a filled pill. */
 button {
-  font: inherit; font-size: 0.83rem; cursor: pointer;
-  background: var(--btn); color: var(--ink);
-  border: 1px solid var(--rule); border-radius: var(--radius-xs); padding: 7px 12px;
-  transition: background 0.16s var(--ease), border-color 0.16s var(--ease),
-              transform 0.16s var(--ease), box-shadow 0.16s var(--ease);
+  --c: 5px;
+  font-family: var(--display); font-variation-settings: "wdth" 110;
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.11em; text-transform: uppercase;
+  cursor: pointer; color: var(--ink-soft);
+  border: 1px solid transparent; background: var(--steel-raise); clip-path: var(--cut);
+  padding: 8px 13px;
+  transition: background 0.16s var(--ease), color 0.16s var(--ease), transform 0.1s var(--ease);
 }
-button:hover:not(:disabled) { border-color: var(--rule-strong); background: var(--btn-hover); }
+button:hover:not(:disabled) {
+  color: var(--ink);
+  background:
+    var(--bevel) padding-box,
+    linear-gradient(var(--plate), var(--plate)) padding-box,
+    linear-gradient(var(--edge-lit), var(--edge-lit)) border-box;
+}
+/* Key travel, not a bounce. */
 button:active:not(:disabled) { transform: translateY(1px); }
-button:disabled { color: var(--ink-faint); background: var(--sunken); cursor: default; }
-/* Dark ink on the lifted blue. White on this blue lands at 3.9:1 — under the floor for a label
-   this small — and the near-black reads as the brighter, more deliberate button either way. */
+button:disabled { color: var(--ink-faint); background: var(--steel-recess); cursor: default; }
+
+/* The primary control is lit, not filled. A solid orange slab is the product-button reflex; the
+   instrument's own answer is a dark key whose border and legend are powered. */
 .btn-primary {
-  background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 600;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+  color: var(--glow); background: var(--steel-lit);
+  text-shadow: 0 0 9px rgb(255 106 0 / 0.45);
+  filter: drop-shadow(0 0 5px rgb(255 106 0 / 0.22));
 }
-.btn-primary:hover:not(:disabled) { background: var(--accent-bright); border-color: var(--accent-bright); }
-.btn-primary:disabled { background: var(--sunken); border-color: var(--rule); }
+.btn-primary:hover:not(:disabled) {
+  color: var(--glow-bright);
+  background:
+    linear-gradient(var(--glow-fill), var(--glow-fill)) padding-box,
+    linear-gradient(var(--plate), var(--plate)) padding-box,
+    linear-gradient(var(--glow-bright), var(--glow-bright)) border-box;
+  filter: drop-shadow(0 0 9px rgb(255 106 0 / 0.4));
+}
+.btn-primary:disabled { color: var(--ink-faint); background: var(--steel-recess); filter: none; text-shadow: none; }
+
 .icon-button {
-  border: 0; background: none; font-size: 1.4rem; line-height: 1;
-  padding: 2px 9px; color: var(--muted); border-radius: var(--radius-xs);
+  border: 0; background: none; clip-path: none; font-size: 1.3rem; line-height: 1;
+  padding: 2px 9px; color: var(--muted); letter-spacing: 0;
 }
-.icon-button:hover { background: var(--hover); color: var(--ink); }
+.icon-button:hover { background: none; color: var(--glow); }
 
 /* ---------- pager ---------- */
 
-.pager { display: flex; align-items: center; gap: 13px; margin-bottom: 13px; }
-.pager-count { display: flex; align-items: baseline; gap: 11px; min-width: 0; }
+.pager { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.pager-count { display: flex; align-items: center; gap: 13px; min-width: 0; }
+/* THE TUBE BANK. This is the one place in the app where a count is the whole point, so it is the
+   one place that gets real envelopes: a glass cell per character, a hairline between cells, the
+   top of the glass catching light, and the figures burning inside. The cells are laid on the
+   content box so they line up with the glyphs exactly — Martian Mono is monospaced, so 1ch is one
+   character, and the stripe period is 1ch on the nose. */
 .pager-rank {
-  font-family: var(--display); font-size: 1.5rem; font-weight: 700;
-  font-variant-numeric: tabular-nums; letter-spacing: -0.03em; white-space: nowrap;
+  --c: 5px;
+  font-family: var(--mono); font-variation-settings: "wdth" 100, "wght" 600;
+  font-size: 1.32rem; line-height: 1.25; white-space: nowrap;
+  color: var(--glow);
+  text-shadow: 0 0 3px rgb(255 106 0 / 0.9), 0 0 16px rgb(255 106 0 / 0.55);
+  border: 1px solid transparent; padding: 8px 11px;
+  background:
+    repeating-linear-gradient(90deg,
+      rgb(255 255 255 / 0.05) 0 calc(1ch - 1px),
+      rgb(0 0 0 / 0.55) calc(1ch - 1px) 1ch) content-box content-box,
+    linear-gradient(180deg, rgb(255 255 255 / 0.1), rgb(255 255 255 / 0) 45%) padding-box,
+    linear-gradient(var(--field), var(--field)) padding-box,
+    linear-gradient(var(--edge), var(--edge)) border-box;
+  clip-path: var(--cut);
 }
-.pager-score { font-size: 0.77rem; color: var(--muted); line-height: 1.4; }
+.pager-score { font-size: 0.75rem; color: var(--muted); line-height: 1.4; }
 .pager .spacer { margin-left: auto; }
 
 /* ---------- candidate filmstrip ---------- */
@@ -325,33 +503,40 @@ button:disabled { color: var(--ink-faint); background: var(--sunken); cursor: de
    .sr-only label, so the label is clipped by this scroller instead of by the document. */
 .candidate-list li { position: relative; flex: 0 0 auto; scroll-snap-align: start; }
 .candidate-list button {
-  display: grid; gap: 6px; text-align: left; min-width: 158px;
-  background: var(--sunken); border: 1px solid var(--rule);
-  border-radius: var(--radius-sm); padding: 9px 11px; color: inherit;
+  --c: 6px;
+  display: grid; gap: 7px; text-align: left; min-width: 158px;
+  background: var(--steel-recess); clip-path: var(--cut);
+  padding: 9px 11px; letter-spacing: 0; text-transform: none;
 }
-.candidate-list button:hover { background: var(--btn); border-color: var(--rule-strong); }
-.candidate-list button[aria-current="true"] {
-  border-color: var(--accent); background: var(--accent-soft);
-  box-shadow: 0 0 0 1px var(--accent);
-}
+.candidate-list button:hover { background: var(--steel-raise); }
+/* The candidate you are on is the live one. */
+.candidate-list button[aria-current="true"] { background: var(--steel-lit); }
 .cand-top { display: flex; align-items: baseline; gap: 9px; }
 .cand-rank {
-  font-family: var(--mono); font-size: 0.79rem; font-weight: 600;
-  color: var(--muted); font-variant-numeric: tabular-nums;
+  font-family: var(--mono); font-variation-settings: "wdth" 87.5, "wght" 600;
+  font-size: 0.74rem; color: var(--muted);
 }
-.candidate-list button[aria-current="true"] .cand-rank { color: var(--accent-deep); }
-.cand-facts { font-size: 0.73rem; color: var(--muted); margin-left: auto; white-space: nowrap; font-variant-numeric: tabular-nums; }
-.cand-bar { height: 3px; border-radius: 2px; background: var(--rule-soft); overflow: hidden; }
+.candidate-list button[aria-current="true"] .cand-rank {
+  color: var(--glow); text-shadow: 0 0 9px rgb(255 106 0 / 0.5);
+}
+.cand-facts {
+  font-family: var(--mono); font-variation-settings: "wdth" 75, "wght" 400;
+  font-size: 0.63rem; color: var(--muted); margin-left: auto; white-space: nowrap;
+}
+/* A meter, not a progress bar: engraved channel, lit needle-fill. */
+.cand-bar { height: 3px; background: rgb(0 0 0 / 0.55); overflow: hidden; }
 /* scaleX off the left edge rather than an animated width. Excluding a section re-scores the whole
    set, so this transition can fire on every bar in the filmstrip at once — up to 500 of them —
    and width would put all of them through layout on each frame. The bar is a flat fill, so there
    is nothing in it for the scale to distort. */
 .cand-bar > span {
-  display: block; height: 100%; width: 100%; background: var(--accent); opacity: 0.5;
+  display: block; height: 100%; width: 100%; background: var(--glow); opacity: 0.4;
   transform: scaleX(var(--fill)); transform-origin: left center;
   transition: transform 0.4s var(--ease);
 }
-.candidate-list button[aria-current="true"] .cand-bar > span { opacity: 1; }
+.candidate-list button[aria-current="true"] .cand-bar > span {
+  opacity: 1; box-shadow: 0 0 8px rgb(255 106 0 / 0.7);
+}
 
 /* ---------- week grid ---------- */
 
@@ -363,12 +548,13 @@ button:disabled { color: var(--ink-faint); background: var(--sunken); cursor: de
 .schedule-grid-scroll { overflow-x: auto; overscroll-behavior-x: contain; padding-bottom: 10px; }
 /* Column template is set inline: the number of day columns varies with the schedule. */
 .grid { display: grid; gap: 3px; }
+/* Each day is a milled channel in the chassis, and the hour rules are scribed across it. */
 .day-col {
-  position: relative; background: var(--sunken);
-  border-radius: var(--radius-xs); overflow: hidden;
-  /* Light-on-dark rather than the --rule token: an hour line has to read across eight different
-     department fills as well as the bare column, and a fixed dark rule vanishes on the empty
-     column exactly where it is most needed for reading a time off the grid. */
+  position: relative; overflow: hidden;
+  background-color: var(--recess);
+  /* Light-on-dark rather than a fixed dark rule: an hour line has to read across eight different
+     gas fills as well as the bare channel, and a dark rule vanishes on the empty column exactly
+     where it is most needed for reading a time off the grid. */
   background-image: repeating-linear-gradient(
     to bottom,
     transparent 0, transparent calc(var(--hour) - 1px),
@@ -379,46 +565,66 @@ button:disabled { color: var(--ink-faint); background: var(--sunken); cursor: de
 }
 .day-label {
   position: relative; z-index: 1; text-align: center; height: 28px; line-height: 28px;
-  font-family: var(--mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.07em;
-  color: var(--muted); background: var(--surface);
+  font-family: var(--display); font-variation-settings: "wdth" 116;
+  font-size: 0.62rem; font-weight: 600; letter-spacing: 0.16em;
+  color: var(--muted); background: var(--panel);
+  text-shadow: 0 1px 0 rgb(0 0 0 / 0.6);
 }
 .time-axis { position: relative; }
 /* nowrap: "12:00 PM" is wider than the axis column, and without this every label broke after the
    colon-minutes and sat two lines tall next to a one-line rule it was supposed to name. */
 .time-axis span {
-  position: absolute; right: 10px; transform: translateY(-50%); white-space: nowrap;
-  font-family: var(--mono); font-size: 0.64rem; color: var(--muted);
-  font-variant-numeric: tabular-nums;
+  position: absolute; right: 11px; transform: translateY(-50%); white-space: nowrap;
+  font-family: var(--mono); font-variation-settings: "wdth" 75, "wght" 400;
+  font-size: 0.61rem; color: var(--muted);
 }
-/* A block is a container, so the lines it can afford are decided by its own height rather than by
-   a guess. A 30-minute meeting is 24px tall and only ever gets to say its code; the professor and
-   the room appear as soon as there is a whole line of room for them. The alternative — one fixed
-   set of lines — either clips mid-word on short blocks or wastes the tall ones. */
+
+/* A class is a module bolted into the channel: chamfered, edged in its own gas, and lit from
+   inside. A block is also a container, so the lines it can afford are decided by its own height
+   rather than by a guess. A 30-minute meeting is 24px tall and only ever gets to say its code;
+   the professor and the room appear as soon as there is a whole line of room for them. */
 .block {
+  --c: 5px;
   container-type: size;
-  position: absolute; left: 3px; right: 3px; border-radius: var(--radius-xs);
-  padding: 4px 6px; overflow: hidden; font-size: 0.67rem; line-height: 1.32;
-  background: var(--dept-1); color: var(--dept-1-ink);
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.07);
+  position: absolute; left: 3px; right: 3px;
+  padding: 4px 7px; overflow: hidden; font-size: 0.66rem; line-height: 1.32;
+  color: var(--gas-ink);
+  border: 1px solid transparent;
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.05), rgb(255 255 255 / 0) 45%) padding-box,
+    linear-gradient(var(--gas), var(--gas)) padding-box,
+    linear-gradient(color-mix(in srgb, var(--gas-ink) 38%, transparent),
+                    color-mix(in srgb, var(--gas-ink) 38%, transparent)) border-box;
+  clip-path: var(--cut);
   animation: settle 0.3s var(--ease) both;
 }
+/* The section code, burning. This is the string that gets retyped into AISIS, so it is the
+   brightest thing in the module and the only text here that glows. */
 .block strong {
-  display: block; font-family: var(--mono); font-size: 0.7rem;
-  font-weight: 600; letter-spacing: -0.02em;
-  /* The one string that is retyped into AISIS. The column is sized to fit it, so the ellipsis is
-     a backstop rather than the plan — but a visible "…" is the difference between a code the
-     student knows is cut off and one that silently lost its section letter. */
+  display: block; font-family: var(--mono);
+  font-variation-settings: "wdth" 87.5, "wght" 700;
+  font-size: 0.68rem; letter-spacing: -0.01em;
+  text-shadow: 0 0 9px color-mix(in srgb, var(--gas-ink) 55%, transparent);
+  /* The column is sized to fit it, so the ellipsis is a backstop rather than the plan — but a
+     visible "…" is the difference between a code the student knows is cut off and one that
+     silently lost its section letter. */
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.block > span {
-  display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+.block > span { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.block-when {
+  font-family: var(--mono); font-variation-settings: "wdth" 75, "wght" 400;
+  font-size: 0.6rem; opacity: 0.86;
 }
-.block-when { font-variant-numeric: tabular-nums; opacity: 0.82; }
 .block-prof, .block-room { display: none; }
-/* Tinted from the block's own hue, never gray: gray secondary text on a coloured fill is the
-   fastest way to fall under contrast on four of the six departments. */
-.block-prof { opacity: 0.95; font-weight: 500; }
-.block-room { opacity: 0.7; font-family: var(--mono); font-size: 0.62rem; letter-spacing: -0.01em; }
+/* Tinted from the module's own gas, never gray: gray secondary text on a coloured fill is the
+   fastest way to fall under contrast on half the departments. */
+.block-prof { opacity: 0.96; font-weight: 500; }
+.block-room {
+  /* 0.78, not 0.7: the room line is the dimmest text in the app and it has to clear 4.5:1 on
+     all eight gases. At 0.7 neon landed at 4.2 and argon at 4.5 — the two darkest fills. */
+  opacity: 0.78; font-family: var(--mono);
+  font-variation-settings: "wdth" 75, "wght" 400; font-size: 0.58rem;
+}
 
 @container (min-height: 50px) { .block-prof { display: block; } }
 @container (min-height: 66px) { .block-room { display: block; } }
@@ -427,68 +633,93 @@ button:disabled { color: var(--ink-faint); background: var(--sunken); cursor: de
   .block-prof, .block-room { display: block; }
 }
 /* The one place motion earns its keep: paging through near-identical weeks, only the classes
-   that actually changed announce themselves. */
-.block.is-changed { animation: swapped 0.62s var(--ease) both; }
+   that actually changed announce themselves — and they announce themselves by striking, the way
+   a tube does when it is switched on. */
+.block.is-changed { animation: strike 0.62s var(--ease) both; }
 
-.tba-note { font-size: 0.79rem; color: var(--muted); margin: 11px 0 0; }
-.tba-note code { font-family: var(--mono); color: var(--ink); }
+.tba-note { font-size: 0.78rem; color: var(--muted); margin: 12px 0 0; }
+.tba-note code {
+  font-family: var(--mono); font-variation-settings: "wdth" 87.5, "wght" 500;
+  font-size: 0.78rem; color: var(--ink);
+}
 
 /* ---------- enlistment strip ---------- */
 
-/* Sunken, not raised: the stage panel is already --surface, so a --surface strip inside it would
-   have nothing but its border to stand on. */
+/* The output panel. Recessed into the stage, because this is the readout you copy from. */
 .enlist {
-  margin-top: 17px; border: 1px solid var(--rule);
-  border-radius: var(--radius-sm); overflow: hidden; background: var(--sunken);
+  --c: 8px;
+  margin-top: 18px; border: 1px solid transparent;
+  background: var(--steel-recess); clip-path: var(--cut);
 }
 .enlist-head {
   display: flex; align-items: center; gap: 11px;
-  padding: 10px 13px; border-bottom: 1px solid var(--rule);
+  padding: 11px 14px; border-bottom: 1px solid var(--edge);
 }
 .enlist-title {
-  font-family: var(--display); font-size: 0.72rem; font-weight: 700;
-  letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted);
+  font-family: var(--display); font-variation-settings: "wdth" 118;
+  font-size: 0.66rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--muted); text-shadow: 0 1px 0 rgb(0 0 0 / 0.6);
 }
 .enlist-actions { margin-left: auto; display: flex; gap: 8px; }
 
 .chips { list-style: none; margin: 0; padding: 0; }
 .chip {
-  display: flex; align-items: baseline; gap: 11px; flex-wrap: wrap;
-  padding: 10px 13px; font-size: 0.81rem;
+  display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+  padding: 10px 14px; font-size: 0.8rem;
   transition: background 0.16s var(--ease);
 }
-.chip + .chip { border-top: 1px solid var(--rule-soft); }
+.chip + .chip { border-top: 1px solid var(--edge-soft); }
 .chip:hover { background: var(--hover); }
+/* The output itself: the widest, brightest setting of Martian Mono in the app. */
 .chip-code {
-  font-family: var(--mono); font-size: 0.89rem; font-weight: 600;
-  letter-spacing: -0.02em; min-width: 8.5em;
+  font-family: var(--mono); font-variation-settings: "wdth" 100, "wght" 700;
+  font-size: 0.84rem; color: var(--ink); min-width: 9.5em;
 }
 /* min-width: 0 alone does not shrink a text run below its content — it needs somewhere for the
    overflow to go. Without this, a team-taught section like "MIRO, EDEN DELIGHT P., SILVESTRE,
    Luis Jr" pushed the flag and all three buttons onto their own lines and made one row of the
    strip twice the height of its neighbours. The full roster stays in the row's tooltip. */
 .chip-who {
-  color: var(--muted); flex: 1 1 auto; min-width: 0;
+  /* flex-basis 0, not auto. A wrapping flex container breaks lines using each item's *content*
+     size and only shrinks afterwards, within the line it already chose — so with basis:auto this
+     span was measured at its full 487px, the action keys were bumped to a second line, and then
+     nothing needed to shrink. Basis 0 makes it a zero-width item at line-breaking time; it grows
+     into whatever is left over, and the ellipsis does the rest. Narrow screens still wrap, because
+     there the keys genuinely do not fit. */
+  color: var(--muted); flex: 1 1 0; min-width: 0;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
-/* Modality is a fact about the section, not a caution — it gets the neutral tag. Amber is spent
+/* Modality is a fact about the section, not a caution — it gets the engraved tag. Amber is spent
    only on the flags that mean "check this": a class with no fixed meeting time. */
 .chip-flag {
-  font-family: var(--mono); font-size: 0.67rem; letter-spacing: 0.03em;
-  color: var(--ink-soft); background: var(--btn);
-  border: 1px solid var(--rule); border-radius: 3px; padding: 1px 6px;
+  --c: 3px;
+  font-family: var(--display); font-variation-settings: "wdth" 112;
+  font-size: 0.6rem; font-weight: 600; letter-spacing: 0.13em; text-transform: uppercase;
+  color: var(--muted); border: 1px solid transparent;
+  background:
+    linear-gradient(var(--raise), var(--raise)) padding-box,
+    linear-gradient(var(--edge), var(--edge)) border-box;
+  clip-path: var(--cut); padding: 2px 7px;
 }
-.chip-flag.is-caution { color: var(--warn); background: var(--warn-soft); border-color: var(--warn-line); }
+.chip-flag.is-caution {
+  color: var(--warn);
+  background:
+    linear-gradient(var(--warn-fill), var(--warn-fill)) padding-box,
+    linear-gradient(var(--warn-line), var(--warn-line)) border-box;
+}
 .chip-actions { display: flex; gap: 6px; margin-left: auto; }
-.chip-actions button { padding: 3px 9px; font-size: 0.75rem; }
-.chip[data-locked="true"] { background: var(--ok-soft); }
-.chip[data-locked="true"] .chip-code { color: var(--ok); }
+/* Row keys are smaller than panel keys, so they carry less tracking — 0.11em on a 0.62rem cap
+   costs more width than the label does. */
+.chip-actions button { padding: 4px 9px; font-size: 0.62rem; letter-spacing: 0.07em; }
+/* Locked is a latched state — green lamp, the one other colour the instrument admits. */
+.chip[data-locked="true"] { background: linear-gradient(90deg, var(--ok-fill), transparent 60%); }
+.chip[data-locked="true"] .chip-code { color: var(--ok); text-shadow: 0 0 9px rgb(70 211 155 / 0.4); }
 
 /* ---------- preferences dialog ---------- */
 
 .scrim {
   position: fixed; inset: 0; z-index: 40;
-  background: rgba(3, 6, 12, 0.68);
+  background: rgb(2 3 4 / 0.74);
   backdrop-filter: blur(3px);
   /* minmax(0, …) rather than the default content-sized track: with an auto track the dialog's
      own width is what sizes the column, so a percentage width resolves against itself and the
@@ -499,91 +730,107 @@ button:disabled { color: var(--ink-faint); background: var(--sunken); cursor: de
   animation: fade 0.2s var(--ease) both;
 }
 .dialog {
+  --c: 12px;
   width: 100%; max-width: 720px; max-height: min(84vh, 780px);
   display: flex; flex-direction: column;
-  background: var(--raised); border-radius: var(--radius);
-  box-shadow: var(--shadow-lg); outline: none;
+  border: 1px solid transparent; background: var(--steel-raise); clip-path: var(--cut);
+  outline: none;
   animation: lift 0.28s var(--ease) both;
 }
 .dialog-head {
   display: flex; align-items: center; gap: 12px;
-  padding: 16px 18px; border-bottom: 1px solid var(--rule);
+  padding: 16px 19px; border-bottom: 1px solid var(--edge);
 }
-.dialog-head h2 { margin: 0; font-family: var(--display); font-size: 1.05rem; letter-spacing: -0.02em; }
+.dialog-head h2 {
+  margin: 0; font-family: var(--display); font-variation-settings: "wdth" 116;
+  font-size: 0.86rem; font-weight: 700; letter-spacing: 0.17em; text-transform: uppercase;
+  color: var(--ink); text-shadow: 0 1px 0 rgb(0 0 0 / 0.7);
+}
 .dialog-head .icon-button { margin-left: auto; }
-.dialog-body { overflow-y: auto; padding: 4px 18px 18px; }
+.dialog-body { overflow-y: auto; padding: 4px 19px 19px; }
 .dialog-foot {
   display: flex; align-items: center; gap: 12px;
-  padding: 13px 18px; border-top: 1px solid var(--rule); background: var(--sunken);
-  border-radius: 0 0 var(--radius) var(--radius);
+  padding: 13px 19px; border-top: 1px solid var(--edge); background: var(--recess);
 }
 .dialog-foot .hint { margin: 0; }
 .dialog-foot .btn-primary { margin-left: auto; }
 
+/* Mode selector: a row of keys in a milled channel, only one of them powered. */
 .tablist {
-  display: flex; gap: 3px; padding: 4px;
-  background: var(--sunken); border-radius: var(--radius-sm);
+  display: flex; gap: 4px; padding: 4px;
+  background: rgb(0 0 0 / 0.4);
   position: sticky; top: 0; z-index: 1; margin: 14px 0 4px;
 }
 .tab {
-  flex: 1 1 0; border: 0; background: none; border-radius: var(--radius-xs);
-  padding: 8px 10px; font-size: 0.84rem; font-weight: 500; color: var(--muted);
+  --c: 4px;
+  flex: 1 1 0; padding: 8px 10px;
+  font-family: var(--display); font-variation-settings: "wdth" 110;
+  font-size: 0.66rem; font-weight: 600; letter-spacing: 0.13em; text-transform: uppercase;
+  color: var(--muted); background: none; border: 1px solid transparent; clip-path: var(--cut);
 }
-.tab:hover { background: var(--hover); color: var(--ink); }
-/* Lighter than its track, not darker. The selected tab has to read as raised, and on a dark
-   dialog the --surface step that did that job in light mode sits *below* the dialog's own tone. */
+.tab:hover { color: var(--ink); background: var(--hover); }
 .tab.is-active {
-  background: var(--btn-hover); color: var(--accent-deep); font-weight: 600;
-  box-shadow: var(--shadow-sm);
+  color: var(--glow); background: var(--steel-lit);
+  text-shadow: 0 0 9px rgb(255 106 0 / 0.45);
 }
 .tabpanel { outline: none; animation: unfold 0.24s var(--ease) both; }
 .tabpanel h3 {
-  font-family: var(--display); font-size: 0.95rem; letter-spacing: -0.01em;
-  margin: 20px 0 8px;
+  font-family: var(--display); font-variation-settings: "wdth" 114;
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--ink-soft); margin: 22px 0 9px;
 }
 .tabpanel h3:first-child { margin-top: 14px; }
 .tabpanel ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
-.tabpanel li { font-size: 0.86rem; }
+.tabpanel li { font-size: 0.84rem; }
 
 /* Ranking rows: label grows, the reorder buttons stay pinned right so the column of controls
    reads as one edge instead of stepping in and out with the length of each label. */
 .criterion {
-  display: flex; align-items: center; gap: 10px;
-  border: 1px solid var(--rule-soft); border-radius: var(--radius-xs);
-  padding: 8px 10px; transition: background 0.16s var(--ease), border-color 0.16s var(--ease);
+  --c: 5px;
+  display: flex; align-items: center; gap: 11px;
+  border: 1px solid transparent; background: var(--steel-recess); clip-path: var(--cut);
+  padding: 8px 11px; transition: background 0.16s var(--ease);
 }
-.criterion > label { display: flex; align-items: center; gap: 9px; flex: 1 1 auto; cursor: pointer; }
-.criterion.is-on { background: var(--accent-soft); border-color: var(--accent-line); }
+.criterion > label { display: flex; align-items: center; gap: 10px; flex: 1 1 auto; cursor: pointer; }
+/* An enabled criterion is powered. */
+.criterion.is-on { background: var(--steel-lit); }
 .criterion-move { display: flex; gap: 5px; flex: 0 0 auto; }
-.criterion-move button { padding: 3px 10px; font-size: 0.74rem; }
+.criterion-move button { padding: 4px 11px; font-size: 0.62rem; }
 
 .tabpanel .protected-row { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; margin-bottom: 8px; }
 .tabpanel .protected-row select { width: auto; min-width: 5.5em; }
 
 /* A time bound is a short value, not a paragraph — keep the control beside its label. */
 .tabpanel > label {
+  --c: 5px;
   display: flex; align-items: center; gap: 12px;
-  padding: 9px 10px; margin-bottom: 7px; font-size: 0.87rem;
-  border: 1px solid var(--rule-soft); border-radius: var(--radius-xs);
+  padding: 9px 11px; margin-bottom: 7px; font-size: 0.84rem;
+  border: 1px solid transparent; background: var(--steel-recess); clip-path: var(--cut);
 }
 .tabpanel > label select { width: auto; min-width: 8.5em; margin-left: auto; }
 
 /* ---------- diagnostics / empty ---------- */
 
-.empty-stage { text-align: center; padding: 60px 20px; color: var(--muted); }
-.empty-stage h2 { color: var(--ink); font-family: var(--display); font-size: 1.15rem; margin: 0 0 11px; letter-spacing: -0.02em; }
-.empty-stage p { margin: 0 auto; max-width: 46ch; font-size: 0.89rem; }
+/* An instrument with nothing connected still says so on its own panel. */
+.empty-stage { text-align: center; padding: 62px 20px; color: var(--muted); }
+.empty-stage h2 {
+  color: var(--ink-soft); font-family: var(--display); font-variation-settings: "wdth" 116;
+  font-size: 0.86rem; font-weight: 700; letter-spacing: 0.19em; text-transform: uppercase;
+  margin: 0 0 14px; text-shadow: 0 1px 0 rgb(0 0 0 / 0.7);
+}
+.empty-stage p { margin: 0 auto; max-width: 46ch; font-size: 0.86rem; }
 /* The list was written as an <ol> and styled as a <ul>, so until now it rendered with browser
    markers and no centring. Numbered here would be noise anyway: the setup rail already numbers
    these same three steps, and each row states its own state in words. */
 .empty-stage ol {
-  display: inline-grid; gap: 6px; text-align: left; font-size: 0.89rem;
-  list-style: none; margin: 16px 0 0; padding: 0;
+  display: inline-grid; gap: 7px; text-align: left; font-size: 0.8rem;
+  font-family: var(--mono); font-variation-settings: "wdth" 87.5, "wght" 400;
+  list-style: none; margin: 18px 0 0; padding: 0;
 }
 
 .cockpit-footer {
-  color: var(--muted); font-size: 0.77rem; text-align: center;
-  padding: 24px 0 0; margin-top: 24px; border-top: 1px solid var(--rule);
+  color: var(--muted); font-size: 0.72rem; text-align: center;
+  padding: 24px 0 0; margin-top: 24px; border-top: 1px solid var(--edge);
 }
 
 /* ---------- motion ---------- */
@@ -593,16 +840,17 @@ button:disabled { color: var(--ink-faint); background: var(--sunken); cursor: de
 @keyframes unfold { from { opacity: 0; transform: translateY(-4px); } }
 @keyframes lift { from { opacity: 0; transform: translateY(10px) scale(0.985); } }
 @keyframes settle { from { opacity: 0; } }
-@keyframes swapped {
-  0% { opacity: 0; transform: scale(0.94); }
-  55% { box-shadow: 0 0 0 3px var(--accent-ring); }
-  100% { opacity: 1; transform: scale(1); }
+/* A cathode striking: it overshoots bright, then settles to its running glow. */
+@keyframes strike {
+  0%   { opacity: 0; filter: brightness(1); }
+  35%  { opacity: 1; filter: brightness(2.1) saturate(1.3); }
+  100% { opacity: 1; filter: brightness(1); }
 }
 
 /* ---------- quality floor ---------- */
 
 button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focus-visible {
-  outline: 2px solid var(--accent); outline-offset: 2px;
+  outline: 2px solid var(--glow); outline-offset: 2px;
 }
 
 @media (max-width: 1080px) {
@@ -616,6 +864,11 @@ button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focu
   .accordion-body { padding-left: 0; }
   .pager { flex-wrap: wrap; }
   .pager-count { order: -1; flex: 1 0 100%; }
+  /* At this width the code and the three keys already fill the row, so squeezing the roster into
+     the leftover pixels rendered it as "C…" — a column narrow enough to be noise rather than
+     information. It takes its own line instead. */
+  .chip-who { flex: 1 1 100%; order: 1; }
+  .chip-actions { order: 2; margin-left: 0; }
   .dialog { max-height: 92vh; }
   .scrim { padding: 10px; }
 }

@@ -18,7 +18,7 @@ const STATUS_TEXT: Record<SlotStatus, string> = {
   ok: "",
   unfilled: "Pick a course for this elective.",
   "no-offerings": "Not offered this term.",
-  "awaiting-section": "Pre-assigned. Set your section under Classes you already have.",
+  "awaiting-section": "Pre-assigned. Set your section under Pre-enlisted Classes.",
 };
 
 export function CoursesSection({ program, block, catalog, state, resolved, aliases, onChange }: Props) {

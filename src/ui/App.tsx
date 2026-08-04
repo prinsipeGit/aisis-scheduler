@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
-import "@fontsource-variable/space-grotesk";
-import "@fontsource-variable/plus-jakarta-sans";
-import "@fontsource-variable/jetbrains-mono";
+// The width axis, not just weight: one Archivo carries both the engraved panel caps (expanded,
+// tracked out) and the reading text (normal), the way a real instrument silkscreens one face at
+// two widths rather than mixing two families. Martian Mono does every code, time, and count.
+import "@fontsource-variable/archivo/wdth.css";
+import "@fontsource-variable/martian-mono/wdth.css";
 import { getTerms, loadCatalog, loadCommunityRatings, isStale, CatalogUnavailableError, type TermOption } from "../lib/catalog";
 import { getPrograms, loadProgram, getBlock } from "../lib/curriculum";
 import { mergeRatings } from "../lib/profs";
@@ -28,7 +30,7 @@ const SETUP: { id: SetupId; label: string }[] = [
   { id: "program", label: "Program" },
   { id: "semester", label: "Semester" },
   { id: "courses", label: "Courses" },
-  { id: "have", label: "Classes you already have" },
+  { id: "have", label: "Pre-enlisted Classes" },
 ];
 
 export default function App() {

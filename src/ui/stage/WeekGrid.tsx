@@ -11,7 +11,7 @@ const PX_PER_MIN = 0.8;
 const HEADER = 28;
 const DEPTS = 8;
 
-// Keyed on the SUBJECT, not the whole code: every MATH section shares one tint, so the colour
+// Keyed on the SUBJECT, not the whole code: every MATH section shares one gas, so the colour
 // tells the student which department a block belongs to instead of decorating it.
 //
 // Assigned by alphabetical position among the subjects *this* schedule actually contains, rather
@@ -19,13 +19,19 @@ const DEPTS = 8;
 // wrong: with six buckets and a hash nobody chose, PHILO and CSCI both landed on the same green,
 // so the one comparison the colour exists to serve — telling two blocks in the same week apart —
 // was the comparison it failed. Position guarantees that a schedule of up to eight subjects gets
-// eight different tints, and sorting keeps it stable as the student pages through candidates,
+// eight different fills, and sorting keeps it stable as the student pages through candidates,
 // which all draw on the same course list.
-function deptPalette(subjects: string[]): Map<string, { background: string; color: string }> {
+//
+// Emitted as custom properties rather than as `background` and `color`: the block's fill, its
+// machined edge, and the glow on its section code are all derived from these two values in CSS,
+// and an inline `background` shorthand would flatten that whole stack back to one solid colour.
+type Gas = { "--gas": string; "--gas-ink": string };
+
+function deptPalette(subjects: string[]): Map<string, Gas> {
   const ordered = [...new Set(subjects)].sort();
   return new Map(ordered.map((subject, i) => {
     const n = (i % DEPTS) + 1;
-    return [subject, { background: `var(--dept-${n})`, color: `var(--dept-${n}-ink)` }];
+    return [subject, { "--gas": `var(--dept-${n})`, "--gas-ink": `var(--dept-${n}-ink)` }];
   }));
 }
 
@@ -56,10 +62,15 @@ export function WeekGrid({ schedule, changed }: { schedule: Schedule; changed?: 
     "--hour": `${60 * PX_PER_MIN}px`,
     "--head": `${HEADER}px`,
     // 66px: wide enough for "12:00 PM" set in mono on one line, plus the gutter to the column.
-    // 104px: wide enough for the longest section codes in the catalog ("MATH 101.6 UV1") without
-    // truncating. A clipped code is worse than a narrower grid — dropping the trailing letter off
-    // "MATH 62.1 A" leaves a string that still looks like a section code and is the wrong one.
-    gridTemplateColumns: `66px repeat(${days.length}, minmax(104px, 1fr))`,
+    //
+    // 122px: Martian Mono is a wide face, so this is sized from the data rather than from a
+    // guess. Section keys in the 2026-1 catalog run 13 characters at the median and 21 at the
+    // 95th percentile, with a 23-character tail ("CHEM 10.02 NSLAB-I-JKK1"). A column wide enough
+    // for that tail would be 180px, which shows under two days on a phone — so the column fits
+    // the common case and a rare long code ellipsizes, with the full string in the block's
+    // tooltip. The ellipsis is the point: it tells the student the code is cut, where a silent
+    // clip would hand them a shorter string that still looks like a valid section.
+    gridTemplateColumns: `66px repeat(${days.length}, minmax(122px, 1fr))`,
   } as CSSProperties;
 
   return (
@@ -92,7 +103,7 @@ export function WeekGrid({ schedule, changed }: { schedule: Schedule; changed?: 
                          top: HEADER + (m.start - start) * PX_PER_MIN,
                          height: (m.end - m.start) * PX_PER_MIN,
                          ...tints.get(subjectPrefix(s.courseCode)),
-                       }}>
+                       } as CSSProperties}>
                     <strong>{sectionKey(s)}</strong>
                     <span className="block-when">{when}</span>
                     {who && <span className="block-prof">{who}</span>}

@@ -87,7 +87,7 @@ describe("cockpit smoke", () => {
     const before = pagerStatus().textContent!;
 
     // 6. Pinning a MATH 71.1 section collapses the candidate set.
-    fireEvent.click(screen.getByRole("button", { name: "Classes you already have" }));
+    fireEvent.click(screen.getByRole("button", { name: "Pre-enlisted Classes" }));
     const picker = await screen.findByLabelText(/section for MATH 71.1/i);
     const option = within(picker).getAllByRole("option")[1] as HTMLOptionElement;
     fireEvent.change(picker, { target: { value: option.value } });

@@ -120,7 +120,7 @@ export function resolveSlots(
     // Pre-assigned, included, and not pinned: excluded from generation, but say why. Treating
     // its 103 sections as free choices multiplies the search space and truncates every ranking
     // (§5.6). Only where there is something to pin: INTACT 12 and INTAC 2 are pre-assigned and
-    // absent from this term, and "set your section under Classes you already have" points
+    // absent from this term, and "set your section under Pre-enlisted Classes" points
     // at a row that section never renders - it lists only slots with sections.
     //
     // Gated on `slot.included` too: an excluded slot can never hold a pin (the claim above is

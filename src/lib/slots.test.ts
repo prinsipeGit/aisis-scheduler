@@ -138,7 +138,7 @@ describe("resolveSlots", () => {
 
   it("calls a pre-assigned course with no sections at all not offered, not awaiting one", () => {
     // INTACT 12 and INTAC 2 are pre-assigned but absent from 2026-1, so there is nothing to
-    // pin. "Set your section under Classes you already have" sends the student to a row
+    // pin. "Set your section under Pre-enlisted Classes" sends the student to a row
     // AlreadyHaveSection does not render - it lists only slots with sections.
     for (const catNo of ["INTACT 12", "INTAC 2"]) {
       const absent: CurriculumBlock = { ...block, entries: [entry(catNo, "C", 0)] };
