@@ -61,9 +61,20 @@ const setup = (slots = seedSlots(block, aliases)) => {
   return { onChange };
 };
 
+const openAddSubjects = () => fireEvent.click(screen.getByRole("button", { name: /^add subjects$/i }));
+
 afterEach(cleanup);
 
 describe("CoursesSection", () => {
+  it("keeps add options in a modal until the student asks for them", () => {
+    setup();
+    expect(screen.queryByRole("dialog", { name: /add subjects/i })).toBeNull();
+    openAddSubjects();
+    expect(screen.getByRole("dialog", { name: /add subjects/i })).toBeTruthy();
+    expect(screen.getByLabelText(/add from my curriculum/i)).toBeTruthy();
+    expect(screen.getByLabelText(/add from the catalog/i)).toBeTruthy();
+  });
+
   it("compares selected units against the block's own printed total", () => {
     setup();
     expect(screen.getByText(/this block is 19/i)).toBeTruthy();
@@ -131,6 +142,7 @@ describe("CoursesSection", () => {
 
   it("adds a requirement from another block, carrying its category", () => {
     const { onChange } = setup();
+    openAddSubjects();
     fireEvent.change(screen.getByLabelText(/add from my curriculum/i), {
       target: { value: "Second Year|First Semester#0" },
     });
@@ -143,6 +155,7 @@ describe("CoursesSection", () => {
 
   it("adds a bare course from the catalog", () => {
     const { onChange } = setup();
+    openAddSubjects();
     fireEvent.change(screen.getByLabelText(/add from the catalog/i), { target: { value: "MATH 71.1" } });
     fireEvent.click(screen.getByRole("button", { name: /add course/i }));
     const next = onChange.mock.calls[0][0] as UserState;
@@ -153,6 +166,7 @@ describe("CoursesSection", () => {
 
   it("does not add a slot when the typed catalog code resolves to no sections at all", () => {
     const { onChange } = setup();
+    openAddSubjects();
     fireEvent.change(screen.getByLabelText(/add from the catalog/i), { target: { value: "ZZZZ 999" } });
     fireEvent.click(screen.getByRole("button", { name: /add course/i }));
     expect(onChange).not.toHaveBeenCalled();
@@ -163,6 +177,7 @@ describe("CoursesSection", () => {
     // "NSTP 11(ROTC)" do - but it genuinely resolves via acceptableCodes' variant-suffix
     // rule, so the guard must accept it rather than testing literal catalog membership.
     const { onChange } = setup();
+    openAddSubjects();
     fireEvent.change(screen.getByLabelText(/add from the catalog/i), { target: { value: "NSTP 11" } });
     fireEvent.click(screen.getByRole("button", { name: /add course/i }));
     const next = onChange.mock.calls[0][0] as UserState;
@@ -173,6 +188,7 @@ describe("CoursesSection", () => {
 
   it("wires the add-course control to a free-text input backed by the catalog datalist", () => {
     setup();
+    openAddSubjects();
     const input = screen.getByLabelText(/add from the catalog/i) as HTMLInputElement;
     expect(input.tagName).toBe("INPUT");
     expect(input.getAttribute("list")).toBe("catalog-codes");
@@ -189,9 +205,11 @@ describe("CoursesSection", () => {
     const catalogInput = () => screen.getByLabelText(/add from the catalog/i);
     const addButton = () => screen.getByRole("button", { name: /add course/i });
 
+    openAddSubjects();
     fireEvent.change(catalogInput(), { target: { value: "MATH 71.1" } });
     fireEvent.click(addButton());
 
+    openAddSubjects();
     fireEvent.change(catalogInput(), { target: { value: "NSTP 11" } });
     fireEvent.click(addButton());
 
@@ -201,6 +219,7 @@ describe("CoursesSection", () => {
     const mathRow = screen.getByText("MATH 71.1").closest("li")!;
     fireEvent.click(within(mathRow).getByRole("button", { name: /remove/i }));
 
+    openAddSubjects();
     fireEvent.change(catalogInput(), { target: { value: "PHILO 11" } });
     fireEvent.click(addButton());
 
@@ -217,6 +236,7 @@ describe("CoursesSection", () => {
     // 3 units, verified against data/catalogs/catalog-2026-1.json), so the total must
     // grow to 9, not stay at 6.
     render(<StatefulHarness initialSlots={seedSlots(twoEntryBlock, aliases)} />);
+    openAddSubjects();
     fireEvent.change(screen.getByLabelText(/add from the catalog/i), { target: { value: "math 71.1" } });
     fireEvent.click(screen.getByRole("button", { name: /add course/i }));
     expect(screen.getByText(/^9 units selected$/i)).toBeTruthy();
@@ -227,6 +247,7 @@ describe("CoursesSection", () => {
     // "MATH 71.3" do (both 3 units, verified against the catalog fixture) - yet it resolves
     // via acceptableCodes' variant-suffix rule. It must price at 3 units, not 0.
     render(<StatefulHarness initialSlots={seedSlots(twoEntryBlock, aliases)} />);
+    openAddSubjects();
     fireEvent.change(screen.getByLabelText(/add from the catalog/i), { target: { value: "MATH 71" } });
     fireEvent.click(screen.getByRole("button", { name: /add course/i }));
     expect(screen.getByText(/^9 units selected$/i)).toBeTruthy();
@@ -295,6 +316,7 @@ describe("CoursesSection", () => {
     const slots = seedSlots(block, aliases).map((s) =>
       s.category === "FE1" ? { ...s, chosen: "MATH 71.1", included: true } : s);
     const { onChange } = setup(slots);
+    openAddSubjects();
     fireEvent.change(screen.getByLabelText(/add from the catalog/i), { target: { value: "MATH 71.1" } });
     fireEvent.click(screen.getByRole("button", { name: /add course/i }));
     expect(onChange).not.toHaveBeenCalled();

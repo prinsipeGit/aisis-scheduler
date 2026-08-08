@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { Catalog, CurriculumBlock, Program, UserState } from "../../lib/types";
 import { acceptableCodes, type AliasFile } from "../../lib/offerings";
 import { slotFromCatalog, slotsFromCurriculum, totalUnits, type ResolvedSlot, type SlotStatus } from "../../lib/slots";
@@ -25,8 +25,27 @@ export function CoursesSection({ program, block, catalog, state, resolved, alias
   const [fromCurriculum, setFromCurriculum] = useState("");
   const [fromCatalog, setFromCatalog] = useState("");
   const [addCourseError, setAddCourseError] = useState<string | null>(null);
+  const [addOpen, setAddOpen] = useState(false);
   const [fillDrafts, setFillDrafts] = useState<Record<string, string>>({});
   const [slotErrors, setSlotErrors] = useState<Record<string, string>>({});
+  const addButton = useRef<HTMLButtonElement>(null);
+  const addDialog = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!addOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    addDialog.current?.focus();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setAddOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = previous;
+      addButton.current?.focus();
+    };
+  }, [addOpen]);
 
   const titleOf = useMemo(() => {
     const map = new Map<string, string>();
@@ -142,6 +161,7 @@ export function CoursesSection({ program, block, catalog, state, resolved, alias
       .filter((s) => !state.slots.some((existing) => existing.id === s.id));
     update([...state.slots, ...added]);
     setFromCurriculum("");
+    setAddOpen(false);
   };
 
   // Ids for added slots are derived from a free index, not the slot count: `remove`
@@ -172,6 +192,7 @@ export function CoursesSection({ program, block, catalog, state, resolved, alias
     update([...state.slots, candidate]);
     setFromCatalog("");
     setAddCourseError(null);
+    setAddOpen(false);
   };
 
   const available = program.blocks.flatMap((b) =>
@@ -240,31 +261,63 @@ export function CoursesSection({ program, block, catalog, state, resolved, alias
         })}
       </ul>
 
-      <div className="add-panel">
-        <label>
-          Add from my curriculum{" "}
-          <select value={fromCurriculum} onChange={(e) => setFromCurriculum(e.target.value)}>
-            <option value="">- pick a requirement -</option>
-            {available.map(({ block: b, entry }) => (
-              <option key={entry.slotId} value={entry.slotId}>
-                {entry.catNo} - {b.year} / {b.term}
-              </option>
-            ))}
-          </select>
-        </label>{" "}
-        <button type="button" onClick={addRequirement}>Add requirement</button>
-      </div>
+      <button ref={addButton} type="button" className="add-subjects-button"
+              onClick={() => setAddOpen(true)}>
+        Add subjects
+      </button>
 
-      <div className="add-panel">
-        <label>
-          Add from the catalog{" "}
-          <input list="catalog-codes" placeholder="Search the catalog..."
-                 value={fromCatalog}
-                 onChange={(e) => { setFromCatalog(e.target.value); setAddCourseError(null); }} />
-        </label>{" "}
-        <button type="button" onClick={addCourse}>Add course</button>
-        {addCourseError && <p className="hint">{addCourseError}</p>}
-      </div>
+      {addOpen && (
+        <div className="scrim" onMouseDown={(e) => { if (e.target === e.currentTarget) setAddOpen(false); }}>
+          <div className="dialog subject-dialog" role="dialog" aria-modal="true"
+               aria-labelledby="add-subjects-title" ref={addDialog} tabIndex={-1}>
+            <header className="dialog-head">
+              <div>
+                <h2 id="add-subjects-title">Add subjects</h2>
+                <p className="hint">Add another curriculum requirement or search this term's catalog.</p>
+              </div>
+              <button type="button" className="icon-button" aria-label="Close add subjects"
+                      onClick={() => setAddOpen(false)}>&times;</button>
+            </header>
+            <div className="dialog-body subject-picker-grid">
+              <section>
+                <h3>From your curriculum</h3>
+                <p className="hint">Requirements from your other year and semester blocks.</p>
+                <label>
+                  Requirement
+                  <select aria-label="Add from my curriculum" value={fromCurriculum}
+                          onChange={(e) => setFromCurriculum(e.target.value)}>
+                    <option value="">Pick a requirement</option>
+                    {available.map(({ block: b, entry }) => (
+                      <option key={entry.slotId} value={entry.slotId}>
+                        {entry.catNo} - {b.year} / {b.term}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <button type="button" className="btn-primary" disabled={!fromCurriculum}
+                        onClick={addRequirement}>Add requirement</button>
+              </section>
+
+              <section>
+                <h3>From this term's catalog</h3>
+                <p className="hint">Search any course with available sections this term.</p>
+                <label>
+                  Course code
+                  <input list="catalog-codes" aria-label="Add from the catalog"
+                         placeholder="Example: MATH 71.1" value={fromCatalog}
+                         onChange={(e) => { setFromCatalog(e.target.value); setAddCourseError(null); }} />
+                </label>
+                <button type="button" className="btn-primary" disabled={!fromCatalog}
+                        onClick={addCourse}>Add course</button>
+                {addCourseError && <p className="hint" role="alert">{addCourseError}</p>}
+              </section>
+            </div>
+            <footer className="dialog-foot">
+              <button type="button" onClick={() => setAddOpen(false)}>Cancel</button>
+            </footer>
+          </div>
+        </div>
+      )}
 
       <datalist id="catalog-codes">
         {catalogCodes.map((code) => (
