@@ -64,7 +64,7 @@ describe("WeekGrid", () => {
     const s: Schedule = [{ ...section("MATH 10", ["M"], 480, 510), instructors: ["CRUZ, Ana"] }];
     const { container } = render(<WeekGrid schedule={s} />);
     expect((container.querySelector(".block") as HTMLElement).title)
-      .toBe("1. · MATH 10 1 · 8:00 AM-8:30 AM · Cruz · R1");
+      .toBe("MATH 10 1 · 8:00 AM-8:30 AM · Cruz · R1");
   });
 
   it("says nothing about the professor when the catalog listed none", () => {
@@ -72,9 +72,7 @@ describe("WeekGrid", () => {
     expect(container.querySelector(".block-prof")).toBeNull();
   });
 
-  // The course layer: controls numbered in the order the day is actually walked, and a leg drawn
-  // in each gap between them. This is the world's signature notation, so it is pinned.
-  it("numbers the day's classes in the order they are walked, not array order", () => {
+  it("renders the day's classes chronologically, not in schedule-array order", () => {
     const s: Schedule = [
       section("CSCI 111", ["M"], 840, 900),   // 2:00 PM — later, but listed first
       section("MATH 10", ["M"], 480, 540),    // 8:00 AM
@@ -82,32 +80,18 @@ describe("WeekGrid", () => {
     ];
     const { container } = render(<WeekGrid schedule={s} />);
     const blocks = [...container.querySelectorAll(".block")];
-    const order = blocks.map((b) => [
-      b.querySelector(".control")?.textContent,
-      b.querySelector("strong")?.textContent,
-    ]);
-    expect(order).toEqual([["1", "MATH 10 1"], ["2", "PHILO 12 1"], ["3", "CSCI 111 1"]]);
+    const order = blocks.map((b) => b.querySelector("strong")?.textContent);
+    expect(order).toEqual(["MATH 10 1", "PHILO 12 1", "CSCI 111 1"]);
   });
 
-  it("draws a leg across each gap between consecutive controls", () => {
+  it("does not add decorative route markers between classes", () => {
     const s: Schedule = [
       section("MATH 10", ["M"], 480, 540),   // ends 9:00
       section("PHILO 12", ["M"], 660, 720),  // starts 11:00 — a two-hour gap
     ];
     const { container } = render(<WeekGrid schedule={s} />);
-    const legs = [...container.querySelectorAll(".leg")] as HTMLElement[];
-    expect(legs).toHaveLength(1);
-    // 120 minutes of gap at 0.8px/min.
-    expect(parseFloat(legs[0].style.height)).toBeCloseTo(96, 5);
-  });
-
-  it("draws no leg between back-to-back classes", () => {
-    const s: Schedule = [
-      section("MATH 10", ["M"], 480, 540),
-      section("PHILO 12", ["M"], 540, 600),
-    ];
-    const { container } = render(<WeekGrid schedule={s} />);
     expect(container.querySelectorAll(".leg")).toHaveLength(0);
+    expect(container.querySelectorAll(".control")).toHaveLength(0);
   });
 
   // The whole point of the tint is telling two blocks in the same week apart, which the old

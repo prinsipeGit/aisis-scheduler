@@ -3,36 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="dark" />
-    <meta name="theme-color" content="#0b0f0d" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#f5f7fb" />
     <title>AISIS Scheduler</title>
-    <!-- Painted before the stylesheet loads, so the first frame is the app's black and not the
-         browser's white. -->
-    <style>html, body { background: #0b0f0d; }</style>
+    <!-- Match the app background before the stylesheet loads to prevent a flash of white. -->
+    <style>html, body { background: #f5f7fb; }</style>
   </head>
   <body>
-    <!--
-      THESIS: An orienteering map prints terrain under a course, and the course layer never edits
-      the terrain. The catalog is terrain, your candidate is the overprint — so this refuses the
-      scheduling dashboard where selection and content are the same layer of tinted cards.
-
-      OWN-WORLD: Forest-floor ground under a tiled contour texture, sheets trimmed square and
-      ruled in contour brown, Fira Sans Condensed lettering the map over Fira Sans reading text,
-      Fira Mono for every code. Eight departments are dark-adapted ISOM terrain inks. Course
-      purple #d264f0 is reserved for the live layer and terrain may never use it.
-
-      STORY: The student reads a fixed colour language they learn once, sees this candidate drawn
-      over it as a numbered course, and copies the lit codes into AISIS.
-
-      FIRST VIEWPORT: Setup rail left, its five steps drawn as numbered control circles; stage
-      right. The week is terrain, and the current candidate is overprinted on it — each class
-      ringed with the number of its stop in the day, legs dashed across the gaps between them.
-
-      FORM: Orienteering Map (challenger, chosen over assigned index 6 "Tide Table"); seed 9a063065.
-
-      FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review,
-      the verdict, and DESIGN.md
-    -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

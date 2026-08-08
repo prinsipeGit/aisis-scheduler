@@ -1,92 +1,51 @@
-/* AISIS Scheduler — "Course Overprint"
-   ---------------------------------------------------------------------------------------------
-   A student comes here to produce one thing: a short list of section codes they will retype,
-   fast, into a system that fills seats in seconds.
-
-   The world is the orienteering map, and the reason is one rule from ISOM: the course layer never
-   edits the terrain. An O-map prints two things on one sheet. Underneath is the terrain — a fixed
-   colour language, the same on every map in the world, that you learn once and then read without
-   thinking. Over it, in a single reserved colour, is the course: numbered controls and the legs
-   between them, overprinted, changing from race to race while the ground stays exactly the same.
-
-   That is precisely the relationship this product needs. The catalog is terrain — what each
-   department offers is a fact, and its colour means the same thing in every schedule. Your
-   candidate is a course over it: numbered in the order you walk it, redrawn every time you page,
-   and never able to alter what is underneath. Eight departments were the hard part in every other
-   direction; here they are just the terrain legend.
-
-   MATERIAL
-   Contour hairlines, not borders. Every rule in this interface is drawn in contour brown, and the
-   page carries a faint contour texture. Sheets are cut square — a map is trimmed, not rounded,
-   and nothing here has a corner radius.
-
-   LIGHT
-   Course purple #d264f0 is the overprint and is reserved for the live layer: the candidate you
-   are on, control numbers, the primary action, focus, and what changed since the last schedule.
-   Terrain never uses it, and the course never uses a terrain ink.
-
-   TYPE
-   Fira Sans Condensed letters the map — headings, labels, day names — and regular Fira Sans does
-   the reading text, because condensed body copy is a cartographic habit that does not survive a
-   UI. Fira Mono takes every code, time and count: a control description is a table.
-
-   MOTION
-   Spent where a course is spent: what changed between candidates. Nothing else animates.
-   --------------------------------------------------------------------------------------------- */
+/* AISIS Scheduler
+   A calm, light workspace designed for quickly comparing schedules and copying section codes.
+   Fira Sans keeps labels compact and readable; Fira Mono distinguishes codes, times, and counts. */
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 
-  /* Ground. ISOM's base is white runnable forest; inverted for the use scene, it is the forest
-     floor at night, and the green cast is kept so the sheet never reads as neutral UI grey. */
-  --ground: #0b0f0d;
-  --sheet: #121714;
-  --raise: #182019;
-  --well: #090c0a;
-  --hover: rgb(190 255 210 / 0.045);
+  /* Neutral workspace surfaces. */
+  --ground: #f5f7fb;
+  --sheet: #ffffff;
+  --raise: #f8faff;
+  --well: #f2f5fa;
+  --hover: rgb(21 65 129 / 0.06);
 
-  /* Contour brown. Every rule in the app is a contour line — this is the single decision that
-     keeps the interface from reading as a panel of grey dividers. */
-  --contour: #4a3a26;
-  --contour-soft: #2b2318;
-  --contour-lit: #6d5636;
+  /* Borders and separators. */
+  --contour: #d9e0eb;
+  --contour-soft: #e9edf4;
+  --contour-lit: #b7c2d2;
 
-  --ink: #e6e9e3;
-  --ink-soft: #a9b0a6;
-  --muted: #7f887d;
-  --ink-faint: #626b61;
+  --ink: #172033;
+  --ink-soft: #3f4b61;
+  --muted: #68758b;
+  --ink-faint: #98a3b5;
 
-  /* THE OVERPRINT. Reserved for the course: the live candidate, control numbers, the primary
-     action, focus, and what changed. No terrain ink is ever allowed to be this colour. */
-  --course: #d264f0;
-  --course-bright: #e48cff;
-  --course-fill: rgb(210 100 240 / 0.13);
-  --course-line: #4d2359;
-  --course-ring: rgb(210 100 240 / 0.4);
+  /* Ateneo-blue actions, focus, and selected states. */
+  --course: #154181;
+  --course-bright: #1d5caf;
+  --course-fill: #eaf1fb;
+  --course-line: #b8cbea;
+  --course-ring: rgb(21 65 129 / 0.18);
 
-  --ok: #5fd39a;
-  --ok-fill: #0c2a1e;
-  --warn: #e2b45f;
-  --warn-fill: #241d0b;
-  --warn-line: #46381a;
+  --ok: #147a55;
+  --ok-fill: #e9f7f1;
+  --warn: #8a5a11;
+  --warn-fill: #fff8e8;
+  --warn-line: #ead7aa;
 
-  /* Terrain legend. Dark-adapted ISOM inks, ordered so two subjects handed consecutive slots are
-     never alike. The palette is genuinely narrow — ISOM is yellow, green, blue, brown, black —
-     so slots 3 and 7 are a shade step of one family, which is how ISOM itself distinguishes
-     rough open from thick vegetation. */
-  --dept-1: #302606; --dept-1-ink: #f5c542; /* open yellow */
-  --dept-2: #0b2233; --dept-2-ink: #66b8ea; /* marsh blue */
-  --dept-3: #0d2a18; --dept-3-ink: #6fd08a; /* rough green */
-  --dept-4: #2d1c0d; --dept-4-ink: #dda169; /* contour brown */
-  --dept-5: #0e2b30; --dept-5-ink: #7fd4d8; /* water */
-  --dept-6: #1b2027; --dept-6-ink: #b6c1cd; /* rock */
-  --dept-7: #0a1c11; --dept-7-ink: #52b374; /* thick vegetation */
-  --dept-8: #26270b; --dept-8-ink: #d0d26a; /* settlement olive */
+  /* Soft course colors with dark text for readable timetable blocks. */
+  --dept-1: #e8f0fc; --dept-1-ink: #174f96;
+  --dept-2: #e8f7f4; --dept-2-ink: #126a5a;
+  --dept-3: #f2edfc; --dept-3-ink: #6541a5;
+  --dept-4: #fff3e5; --dept-4-ink: #955715;
+  --dept-5: #e9f6fc; --dept-5-ink: #176889;
+  --dept-6: #f5edf4; --dept-6-ink: #855078;
+  --dept-7: #eef5e8; --dept-7-ink: #4e732b;
+  --dept-8: #f1f2f5; --dept-8-ink: #4c576b;
 
-  /* The sheet's contour texture. Three bezier form lines, tiled. Held at 0.32 opacity because at
-     full contour weight the form lines stopped being ground and became the loudest thing on the
-     page — they have to be readable as terrain and ignorable as texture at the same time. */
-  --contours: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='150'%3E%3Cg fill='none' stroke='%234a3a26' stroke-width='1' opacity='0.32'%3E%3Cpath d='M-20 26 C 40 6 90 52 150 30 S 250 6 280 28'/%3E%3Cpath d='M-20 74 C 40 54 90 100 150 78 S 250 54 280 76'/%3E%3Cpath d='M-20 122 C 40 102 90 148 150 126 S 250 102 280 124'/%3E%3C/g%3E%3C/svg%3E");
+  --contours: none;
 
   --display: "Fira Sans Condensed", system-ui, sans-serif;
   --body: "Fira Sans", system-ui, sans-serif;
@@ -115,8 +74,7 @@ html { background: var(--ground); }
 body {
   margin: 0; min-width: 320px;
   background-color: var(--ground);
-  background-image: var(--contours);
-  background-repeat: repeat;
+  background-image: none;
 }
 ::selection { background: var(--course-line); color: var(--ink); }
 
@@ -690,4 +648,54 @@ button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focu
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ---------- clean interface refresh ---------- */
+.cockpit { max-width: 1480px; padding: 0 28px 40px; }
+.cockpit-header { padding: 24px 2px 18px; margin-bottom: 24px; border-bottom-color: var(--contour-soft); }
+.wordmark { color: var(--course); font-size: 1.08rem; letter-spacing: 0.04em; text-transform: none; }
+.term-badge { border: 0; padding: 5px 9px; border-radius: 999px; background: var(--course-fill); color: var(--course); }
+.privacy-badge { color: var(--muted); }
+.zones { grid-template-columns: 350px minmax(0, 1fr); gap: 24px; }
+.rail, .stage { border-color: var(--contour-soft); border-radius: 16px; box-shadow: 0 8px 28px rgb(30 50 80 / 0.06); }
+.rail { padding: 8px 20px 18px; }
+.stage { padding: 22px 24px 24px; min-height: 560px; }
+.accordion h2 { letter-spacing: 0.02em; text-transform: none; }
+.accordion h2 button { padding: 16px 0; color: var(--ink-soft); }
+.accordion h2 button::before { border: 0; border-radius: 7px; background: var(--well); color: var(--muted); }
+.accordion h2 button[aria-expanded="true"] { color: var(--course); }
+.accordion h2 button[aria-expanded="true"]::before { color: white; background: var(--course); border-color: var(--course); }
+.accordion-body { padding-left: 33px; }
+.prefs-trigger { border-radius: 10px; background: var(--raise); }
+input:not([type="checkbox"]):not([type="radio"]), select { border-radius: 9px; background-color: white; border-color: var(--contour); }
+button { border-radius: 9px; }
+.btn-primary { background: var(--course); color: white; border-color: var(--course); box-shadow: 0 3px 10px rgb(21 65 129 / 0.18); }
+.btn-primary:hover:not(:disabled) { background: var(--course-bright); color: white; border-color: var(--course-bright); }
+.banner { border-radius: 10px; }
+.pager { padding-bottom: 2px; }
+.pager-rank { color: var(--ink); }
+.candidate-list { gap: 8px; padding: 2px 1px 12px; }
+.candidate-list button { border-radius: 10px; background: white; }
+.candidate-list button[aria-current="true"] { background: var(--course-fill); border-color: var(--course); box-shadow: 0 0 0 2px var(--course-ring); }
+.schedule-grid-scroll { border: 1px solid var(--contour-soft); border-radius: 12px; padding: 12px 12px 10px; background: #fbfcfe; }
+.grid { gap: 5px; }
+.day-col { border-color: var(--contour-soft); border-radius: 8px; background-color: white; }
+.day-label { color: var(--ink-soft); background: #f7f9fc; border-radius: 7px 7px 0 0; }
+.block { border-radius: 7px; border: 1px solid color-mix(in srgb, var(--gas-ink) 22%, transparent); box-shadow: none; padding: 6px 7px; background: var(--gas); color: var(--gas-ink); }
+.block strong { color: var(--gas-ink); text-shadow: none; }
+.block.is-changed { animation: settle 0.35s var(--ease) both; box-shadow: 0 0 0 2px var(--course-ring); }
+.control, .leg { display: none; }
+.enlist { border-radius: 12px; background: white; border-color: var(--contour-soft); overflow: hidden; }
+.enlist-title { letter-spacing: 0.02em; text-transform: none; }
+.section-chip { border-radius: 9px; }
+.scrim { background: rgb(23 32 51 / 0.42); backdrop-filter: blur(3px); }
+.dialog { border-radius: 16px; border-color: var(--contour-soft); box-shadow: 0 24px 80px rgb(23 32 51 / 0.22); }
+
+@media (max-width: 1080px) { .zones { grid-template-columns: 310px minmax(0, 1fr); } }
+@media (max-width: 860px) {
+  .cockpit { padding: 0 14px 28px; }
+  .zones { grid-template-columns: 1fr; gap: 14px; }
+  .stage { padding: 16px 14px 18px; }
+  .privacy-badge { display: none; }
+  .accordion-body { padding-left: 0; }
 }
