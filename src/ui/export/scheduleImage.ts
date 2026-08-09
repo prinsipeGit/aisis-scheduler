@@ -9,6 +9,7 @@ export interface ScheduleMeta {
 
 const DAYS: Day[] = ["M", "T", "W", "TH", "F", "SAT"];
 const W = 1000;
+const OUTPUT_SCALE = 2;
 const PAD = 32;
 const GRID_TOP = 58;
 const GRID_H = 700;
@@ -71,18 +72,30 @@ export function renderScheduleImage(
   schedule: Schedule, _meta: ScheduleMeta, canvas: HTMLCanvasElement
 ): string {
   const height = GRID_TOP + GRID_H + 58;
-  canvas.width = W;
-  canvas.height = height;
+  // Draw in logical pixels but store twice as many physical pixels. The resulting PNG remains
+  // the same shape while text and one-pixel rules stay sharp on Retina screens and in shares.
+  canvas.width = W * OUTPUT_SCALE;
+  canvas.height = height * OUTPUT_SCALE;
   const ctx = canvas.getContext("2d")!;
+  if (typeof ctx.scale === "function") ctx.scale(OUTPUT_SCALE, OUTPUT_SCALE);
 
   ctx.fillStyle = "#ffffff";
   ctx.fillRect(0, 0, W, height);
 
   const timed = schedule.flatMap((s) => s.meetings);
-  const start = timed.length ? Math.min(420, ...timed.map((m) => m.start)) : 420;
-  const end = timed.length ? Math.max(1260, ...timed.map((m) => m.end)) : 1260;
+  // Fit the vertical range to this schedule instead of forcing 7 AM-9 PM. Round outward to full
+  // hours so the first and last blocks have breathing room and the axis remains easy to scan.
+  const start = timed.length
+    ? Math.floor(Math.min(...timed.map((m) => m.start)) / 60) * 60
+    : 480;
+  const end = timed.length
+    ? Math.ceil(Math.max(...timed.map((m) => m.end)) / 60) * 60
+    : 1020;
   const perMin = GRID_H / Math.max(1, end - start);
-  const colW = (W - PAD * 2 - 58) / DAYS.length;
+  const visibleDays = schedule.some((s) => s.meetings.some((m) => m.days.includes("SAT")))
+    ? DAYS
+    : DAYS.slice(0, 5);
+  const colW = (W - PAD * 2 - 58) / visibleDays.length;
 
   // Timetable frame and weekday header.
   ctx.fillStyle = "#f5f5f5";
@@ -92,7 +105,7 @@ export function renderScheduleImage(
   ctx.strokeRect(PAD + 58, GRID_TOP - 34, W - PAD * 2 - 58, GRID_H + 34);
 
   ctx.font = "500 11px Inter, sans-serif";
-  DAYS.forEach((day, i) => {
+  visibleDays.forEach((day, i) => {
     const x = PAD + 58 + i * colW;
     ctx.fillStyle = "#39393b";
     ctx.textAlign = "center";
@@ -122,7 +135,7 @@ export function renderScheduleImage(
   for (const s of schedule) {
     for (const meeting of s.meetings) {
       for (const day of meeting.days) {
-        const i = DAYS.indexOf(day);
+        const i = visibleDays.indexOf(day);
         if (i < 0) continue;
         const x = PAD + 58 + i * colW;
         const y = GRID_TOP + (meeting.start - start) * perMin;

@@ -67,7 +67,31 @@ beforeEach(() => { drawn = []; });
 
 describe("renderScheduleImage", () => {
   it("returns a PNG data URL", () => {
-    expect(renderScheduleImage(schedule, meta, stubCanvas())).toMatch(/^data:image\/png;base64,/);
+    const canvas = stubCanvas();
+    expect(renderScheduleImage(schedule, meta, canvas)).toMatch(/^data:image\/png;base64,/);
+    expect(canvas.width).toBe(2000);
+  });
+
+  it("fits the time axis to the current schedule instead of extending to 9 PM", () => {
+    renderScheduleImage(schedule, meta, stubCanvas());
+    const text = drawn.join(" ");
+    expect(text).toContain("8:00 AM");
+    expect(text).toContain("9:00 AM");
+    expect(text).not.toContain("9:00 PM");
+  });
+
+  it("omits Saturday when the current schedule has no Saturday class", () => {
+    renderScheduleImage(schedule, meta, stubCanvas());
+    expect(drawn).not.toContain("SAT");
+  });
+
+  it("includes Saturday when the current schedule uses it", () => {
+    const saturday: Section = {
+      ...section("PE 2", "S1"),
+      meetings: [{ days: ["SAT"], start: 480, end: 540 }],
+    };
+    renderScheduleImage([saturday], meta, stubCanvas());
+    expect(drawn).toContain("SAT");
   });
 
   it("draws every section code, which is the field typed into AISIS", () => {
