@@ -56,7 +56,7 @@ describe("Stage", () => {
     render(<Stage schedules={schedules({ search: { limit: 500, truncated: true } })} index={0}
                   onIndex={() => {}} state={defaultState("2026-1")} block={block}
                   program={program} onChange={() => {}} />);
-    expect(screen.getByText(/hit its 500-schedule limit/)).toBeTruthy();
+    expect(screen.getByText(/showing the first 500 schedules/i)).toBeTruthy();
   });
 
   it("offers a download of the schedule on screen, for carrying into AISIS", () => {

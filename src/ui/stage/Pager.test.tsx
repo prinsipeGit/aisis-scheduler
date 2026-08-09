@@ -11,29 +11,19 @@ describe("Pager", () => {
     expect(live.textContent).toMatch(/2 of 41/);
   });
 
-  it("shows the score in the visible row, attached to the rank position", () => {
+  it("keeps the dense score explanation out of the visual toolbar", () => {
     const { container } = render(<Pager index={1} count={41} score={0.91} onIndex={() => {}} />);
     const visible = container.querySelector(".pager-count");
     expect(visible?.textContent).toMatch(/2/);
     expect(visible?.textContent).toMatch(/41/);
-    expect(visible?.textContent).toMatch(/91%/);
-    // Not only tucked into the .sr-only live region — a sighted student must see it too.
-    const nodes = screen.getAllByText(/91%/);
-    const outsideSrOnly = nodes.some((n) => !n.closest(".sr-only"));
-    expect(outsideSrOnly).toBe(true);
+    expect(visible?.textContent).not.toMatch(/91%/);
+    expect(screen.getByRole("status").textContent).toMatch(/91%/);
   });
 
-  it("frames the score relative to the rest of the set, never as a bare percentage", () => {
-    // score is a min-max normalization of the top criterion across the CURRENT candidate set
-    // (ranker.ts), not a ratio to anything absolute. "91%" alone reads as "91% match" — a false
-    // claim about how well this schedule satisfies the student's preference. The copy must say,
-    // in plain words, that the number is this candidate's standing among the other candidates
-    // shown, not a standalone quality score.
+  it("shows a concise visual position", () => {
     const { container } = render(<Pager index={1} count={41} score={0.91} onIndex={() => {}} />);
     const visible = container.querySelector(".pager-count");
-    expect(visible?.textContent).toBe(
-      "02 / 41 — 91% toward the best of this set, across your preferences"
-    );
+    expect(visible?.textContent).toBe("Schedule 02 of 41");
   });
 
   it("announces the same relative framing in the live region", () => {

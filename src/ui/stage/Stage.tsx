@@ -105,9 +105,8 @@ export function Stage({ schedules, index, onIndex, state, block, program, onChan
   return (
     <section>
       {search.truncated && (
-        <p className="banner" role="status">
-          Search hit its {search.limit}-schedule limit. Rankings apply to these candidates;
-          pin a section or add a filter to narrow it.
+        <p className="search-limit-note" role="status">
+          Showing the first {search.limit} schedules. Lock a section or add a filter to narrow the list.
         </p>
       )}
       <Pager index={clampedIndex} count={ranked.length} score={current.score} onIndex={onIndex} />

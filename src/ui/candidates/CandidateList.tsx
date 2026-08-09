@@ -33,9 +33,14 @@ export function CandidateList({ ranked, index, onPick }: Props) {
   // A stale index (e.g. after the candidate set shrinks) must not select outside the list —
   // the same clamp the Stage applies before indexing into `ranked` (see stage/Stage.tsx).
   const current = Math.max(0, Math.min(index, ranked.length - 1));
+  const factSignatures = ranked.map((candidate) => {
+    const span = daySpan(candidate);
+    return `${daysOnCampus(candidate)}:${span?.start ?? ""}:${span?.end ?? ""}`;
+  });
+  const factsDiffer = new Set(factSignatures).size > 1;
 
   return (
-    <ol className="candidate-list">
+    <ol className={factsDiffer ? "candidate-list" : "candidate-list is-ranks-only"}>
       {ranked.map((r, i) => {
         const days = daysOnCampus(r);
         const span = daySpan(r);
@@ -66,10 +71,12 @@ export function CandidateList({ ranked, index, onPick }: Props) {
               <span className="sr-only">{label}</span>
               <span className="cand-top" aria-hidden="true">
                 <span className="cand-rank">#{i + 1}</span>
-                <span className="cand-facts">
-                  {days}{days === 1 ? " day" : " days"}
-                  {span !== null && <> · {formatTime(span.start)}&ndash;{formatTime(span.end)}</>}
-                </span>
+                {factsDiffer && (
+                  <span className="cand-facts">
+                    {days}{days === 1 ? " day" : " days"}
+                    {span !== null && <> · {formatTime(span.start)}&ndash;{formatTime(span.end)}</>}
+                  </span>
+                )}
               </span>
               <span className="cand-bar" aria-hidden="true">
                 {/* Scale factor, not a width: the fill is animated with transform so that

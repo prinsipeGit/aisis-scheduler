@@ -1,16 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
-// One superfamily at two widths, the way a map letters itself: Fira Sans Condensed does the map
-// lettering — headings, labels, day names — and regular Fira Sans does the reading text, because
-// condensed body copy is a cartographic habit that does not survive a UI. Fira Mono takes every
-// code, time and count: control descriptions are a table.
-import "@fontsource/fira-sans-condensed/400.css";
-import "@fontsource/fira-sans-condensed/500.css";
-import "@fontsource/fira-sans-condensed/600.css";
-import "@fontsource/fira-sans/400.css";
-import "@fontsource/fira-sans/500.css";
-import "@fontsource/fira-mono/400.css";
-import "@fontsource/fira-mono/500.css";
-import "@fontsource/fira-mono/700.css";
+// Exact type families specified by the BW Minimalist Design System: Inter carries the
+// product interface, while Bebas Neue is reserved for large, condensed display moments.
+import "@fontsource/inter/400.css";
+import "@fontsource/inter/500.css";
+import "@fontsource/bebas-neue/400.css";
 import { getTerms, loadCatalog, loadCommunityRatings, isStale, CatalogUnavailableError, type TermOption } from "../lib/catalog";
 import { getPrograms, loadProgram, getBlock } from "../lib/curriculum";
 import { mergeRatings } from "../lib/profs";

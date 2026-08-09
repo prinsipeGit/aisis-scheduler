@@ -44,6 +44,16 @@ describe("CandidateList", () => {
     expect(screen.getByRole("button", { name: /#2.*2 days/ })).toBeTruthy();
   });
 
+  it("collapses repeated visible facts when every candidate has the same day and time span", () => {
+    const tiedFacts: RankedSchedule[] = [
+      { schedule: [section("A", ["M"])], score: 1 },
+      { schedule: [section("B", ["M"])], score: 0.9 },
+    ];
+    const { container } = render(<CandidateList ranked={tiedFacts} index={0} onPick={() => {}} />);
+    expect(container.querySelector(".candidate-list")?.classList.contains("is-ranks-only")).toBe(true);
+    expect(container.querySelectorAll(".cand-facts")).toHaveLength(0);
+  });
+
   it("says so when there is nothing yet", () => {
     render(<CandidateList ranked={[]} index={0} onPick={() => {}} />);
     expect(screen.getByText(/Schedules appear here/)).toBeTruthy();
