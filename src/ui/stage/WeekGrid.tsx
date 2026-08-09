@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import type { Day, Schedule } from "../../lib/types";
+import type { Day, Schedule, Section } from "../../lib/types";
 import { sectionKey } from "../../lib/types";
 import { subjectPrefix } from "../../lib/course-code";
 import { lastNames } from "../../lib/profs";
@@ -35,7 +35,11 @@ function deptPalette(subjects: string[]): Map<string, Gas> {
   }));
 }
 
-export function WeekGrid({ schedule, changed }: { schedule: Schedule; changed?: Set<string> }) {
+export function WeekGrid({ schedule, changed, onSectionClick }: {
+  schedule: Schedule;
+  changed?: Set<string>;
+  onSectionClick?: (section: Section) => void;
+}) {
   const timed = schedule.flatMap((s) => s.meetings);
   // Bounds still come from the data — ITMGT 20.51 QRF runs to 21:30 and used to overflow a grid
   // that hard-stopped at 21:00 (§11) — but the default frame is the teaching day, 7am to 6pm,
@@ -96,8 +100,10 @@ export function WeekGrid({ schedule, changed }: { schedule: Schedule; changed?: 
               const who = profs.length > 1 ? `${profs[0]} +${profs.length - 1}` : profs[0];
               const when = `${formatTime(m.start)}-${formatTime(m.end)}`;
               return (
-                <div key={`${sectionKey(s)}-${day}-${i}`}
+                <button type="button" key={`${sectionKey(s)}-${day}-${i}`}
                      className={changed?.has(sectionKey(s)) ? "block is-changed" : "block"}
+                     aria-label={`View other sections for ${sectionKey(s)}`}
+                     onClick={() => onSectionClick?.(s)}
                      // Short meetings clip their lower lines by design (see .block in index.css),
                      // so the block carries the whole truth in its tooltip.
                      title={[sectionKey(s), when, profs.join(", "), s.room].filter(Boolean).join(" · ")}
@@ -110,7 +116,7 @@ export function WeekGrid({ schedule, changed }: { schedule: Schedule; changed?: 
                   <span className="block-when">{when}</span>
                   {who && <span className="block-prof">{who}</span>}
                   {s.room && <span className="block-room">{s.room}</span>}
-                </div>
+                </button>
               );
             })}
           </div>

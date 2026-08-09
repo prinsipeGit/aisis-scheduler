@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
-import type { CurriculumBlock, Program, UserState } from "../../lib/types";
+import { useEffect, useRef, useState } from "react";
+import type { CurriculumBlock, Program, Section, UserState } from "../../lib/types";
 import { sectionKey } from "../../lib/types";
 import type { Schedules } from "../useSchedules";
 import { downloadScheduleImage } from "../export/scheduleImage";
@@ -9,6 +9,7 @@ import { SectionChips } from "./SectionChips";
 import { Diagnostics } from "./Diagnostics";
 import { EmptyStage } from "./EmptyStage";
 import { CandidateList } from "../candidates/CandidateList";
+import { SectionSwitcher } from "./SectionSwitcher";
 
 interface Props {
   schedules: Schedules;
@@ -28,6 +29,7 @@ export function Stage({ schedules, index, onIndex, state, block, program, onChan
   const { ranked, diagnostics, search, resolved } = schedules;
   // Survives across renders so a candidate change can be compared with the one before it.
   const seen = useRef<Set<string>>(new Set());
+  const [switching, setSwitching] = useState<Section | null>(null);
 
   // Excluded from generation but still required: the week on screen is not the whole story,
   // and saying so is the point (§5.3, §5.6).
@@ -113,7 +115,7 @@ export function Stage({ schedules, index, onIndex, state, block, program, onChan
           showed the same number. It scores across all criteria now, so the rows differ — and it
           belongs beside the pager it drives rather than in a rail of its own. */}
       <CandidateList ranked={ranked} index={clampedIndex} onPick={onIndex} />
-      <WeekGrid schedule={current.schedule} changed={changed} />
+      <WeekGrid schedule={current.schedule} changed={changed} onSectionClick={setSwitching} />
       {missing.length > 0 && <MissingList missing={missing} />}
       {/* The codes are what the student actually types into AISIS, so they get a frame of
           their own with the handoff attached, rather than trailing off the bottom of the page. */}
@@ -133,6 +135,10 @@ export function Stage({ schedules, index, onIndex, state, block, program, onChan
         </div>
         <SectionChips schedule={current.schedule} state={state} onChange={onChange} />
       </div>
+      {switching && (
+        <SectionSwitcher selected={switching} schedule={current.schedule} resolved={resolved}
+                         state={state} onChange={onChange} onClose={() => setSwitching(null)} />
+      )}
     </section>
   );
 }
