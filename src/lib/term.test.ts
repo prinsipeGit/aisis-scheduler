@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { defaultTerm } from "./term";
+import { defaultTerm, termHeading } from "./term";
 
 const ALL = ["2026-2", "2026-1", "2026-0", "2025-2", "2025-1", "2025-0"];
 const at = (y: number, m: number) => new Date(y, m - 1, 15);
@@ -27,5 +27,20 @@ describe("defaultTerm", () => {
 
   it("returns the empty string when nothing is available at all", () => {
     expect(defaultTerm(at(2026, 7), [])).toBe("");
+  });
+});
+
+describe("termHeading", () => {
+  it("turns an AISIS term code into a student-facing semester and academic year", () => {
+    expect(termHeading("2026-1")).toEqual({
+      semester: "First Semester",
+      academicYear: "A.Y. 2026\u20132027",
+    });
+    expect(termHeading("2026-2").semester).toBe("Second Semester");
+    expect(termHeading("2026-0").semester).toBe("Intersession");
+  });
+
+  it("keeps an unknown term visible instead of inventing an academic year", () => {
+    expect(termHeading("future")).toEqual({ semester: "Current Semester", academicYear: "future" });
   });
 });

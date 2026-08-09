@@ -52,21 +52,32 @@ describe("Stage", () => {
     expect(screen.getByText(/MATH 51.1.*not offered/)).toBeTruthy();
   });
 
-  it("announces truncation", () => {
+  it("keeps the internal search limit out of the focused one-schedule interface", () => {
     render(<Stage schedules={schedules({ search: { limit: 500, truncated: true } })} index={0}
                   onIndex={() => {}} state={defaultState("2026-1")} block={block}
                   program={program} onChange={() => {}} />);
-    expect(screen.getByText(/showing the first 500 schedules/i)).toBeTruthy();
+    expect(screen.queryByText(/showing the first 500 schedules/i)).toBeNull();
+    expect(screen.getByRole("button", { name: /no more schedules/i })).toBeTruthy();
   });
 
   it("offers a download of the schedule on screen, for carrying into AISIS", () => {
     render(<Stage schedules={schedules()} index={0} onIndex={() => {}}
                   state={defaultState("2026-1")} block={block} program={program} onChange={() => {}} />);
-    fireEvent.click(screen.getByRole("button", { name: /download schedule/i }));
+    fireEvent.click(screen.getByRole("button", { name: /download photo/i }));
     expect(downloadScheduleImage).toHaveBeenCalledWith(
       [section("MATH 10")],
       { program: "P", block: "First Year / First Semester", term: "2026-1" }
     );
+  });
+
+  it("opens calendar export from the semester header and asks for the real class dates", () => {
+    render(<Stage schedules={schedules()} index={0} onIndex={() => {}}
+                  state={defaultState("2026-1")} block={block} program={program} onChange={() => {}} />);
+    fireEvent.click(screen.getByRole("button", { name: /export calendar/i }));
+    expect(screen.getByRole("dialog", { name: /export calendar/i })).toBeTruthy();
+    expect(screen.getByLabelText(/first day of classes/i)).toBeTruthy();
+    expect(screen.getByLabelText(/last day of classes/i)).toBeTruthy();
+    expect((screen.getByRole("button", { name: /download .ics/i }) as HTMLButtonElement).disabled).toBe(true);
   });
 
   it("shows the setup checklist before anything is chosen", () => {
@@ -87,15 +98,13 @@ describe("Stage", () => {
       <Stage schedules={schedules({ ranked: threeRanked })} index={10} onIndex={onIndex}
              state={defaultState("2026-1")} block={block} program={program} onChange={() => {}} />
     );
-    // The list has only 3 candidates; index 10 is stale (e.g. after a filter edit). The pager
-    // must read the clamped position (3 of 3), matching the last candidate shown in the grid.
-    const count = document.querySelector(".pager-count");
-    expect(count?.textContent).toMatch(/3/);
-    expect(count?.textContent).not.toMatch(/11/);
+    // The list has only 3 candidates; index 10 is stale (e.g. after a filter edit). The controls
+    // must read the clamped position, matching the last candidate shown in the grid.
+    expect(screen.getByText("Schedule option 3")).toBeTruthy();
     expect(screen.getAllByText(/THIRD 03/).length).toBeGreaterThan(0);
 
-    // Prev must step back from the clamped position, not the stale raw index.
-    fireEvent.click(screen.getByRole("button", { name: /previous/i }));
+    // Back must step from the clamped position, not the stale raw index.
+    fireEvent.click(screen.getByRole("button", { name: /back/i }));
     expect(onIndex).toHaveBeenCalledWith(1);
   });
 
@@ -106,8 +115,7 @@ describe("Stage", () => {
       <Stage schedules={schedules()} index={-3} onIndex={() => {}} state={defaultState("2026-1")}
              block={block} program={program} onChange={() => {}} />
     );
-    const count = document.querySelector(".pager-count");
-    expect(count?.textContent).toMatch(/01/);
+    expect(screen.getByText("Best schedule")).toBeTruthy();
   });
 
   it("shows a loading state, distinct from 'no schedule fits', while the catalog has not resolved yet", () => {
@@ -135,7 +143,7 @@ describe("Stage", () => {
     );
     expect(screen.queryByText(/No schedule fits/)).toBeFalsy();
     expect(screen.getByText(/Nothing to schedule yet/)).toBeTruthy();
-    expect(screen.queryByRole("button", { name: /download schedule/i })).toBeNull();
+    expect(screen.queryByRole("button", { name: /download photo/i })).toBeNull();
   });
 
   it("still says what is missing when every included course is unschedulable", () => {

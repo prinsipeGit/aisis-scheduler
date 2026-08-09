@@ -123,32 +123,25 @@ button:disabled { background: var(--well); color: var(--stone, #9e9ea0); opacity
 .add-subjects-button:hover:not(:disabled) { background: var(--ink-soft); color: white; border-color: var(--ink-soft); }
 
 /* Schedule navigation */
-.search-limit-note { margin: 0 0 12px; color: var(--muted); font-size: .76rem; }
-.pager { min-height: 40px; margin-bottom: 10px; gap: 10px; }
-.pager button { min-width: 40px; width: 40px; height: 40px; padding: 0; font-size: 1rem; }
-.pager-count { margin-inline: auto; }
-.pager-rank { color: var(--ink); font: 500 .82rem/1 var(--body); }
-.pager-score, .pager .spacer { display: none; }
-.candidate-list {
-  gap: 8px; margin: 0 0 20px; padding: 0 0 8px; border: 0; border-radius: 0;
-  background: transparent; scrollbar-color: var(--contour) transparent;
+.schedule-heading {
+  margin: 0 0 18px; display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 24px;
 }
-.candidate-list li + li { border-left: 0; }
-.candidate-list button {
-  min-width: 116px; min-height: 44px; padding: 8px 14px;
-  border: 1px solid var(--contour-soft); border-radius: 18px; background: white;
+.schedule-heading h1 {
+  margin: 0; color: var(--ink); font: 400 2rem/1 var(--display);
+  letter-spacing: .01em; text-transform: uppercase;
 }
-.candidate-list li:first-child button, .candidate-list li:last-child button { border-radius: 18px; }
-.candidate-list button:hover { border-color: var(--contour); background: var(--well); }
-.candidate-list button[aria-current="true"] { border-color: var(--ink); background: var(--ink); color: white; box-shadow: none; }
-.candidate-list button[aria-current="true"] .cand-rank,
-.candidate-list button[aria-current="true"] .cand-facts { color: white; }
-.cand-bar { height: 2px; background: var(--contour-soft); }
-.candidate-list button[aria-current="true"] .cand-bar { background: rgb(255 255 255 / .3); }
-.candidate-list button[aria-current="true"] .cand-bar > span { background: white; }
-.candidate-list.is-ranks-only button { min-width: 56px; padding: 9px 14px; }
-.candidate-list.is-ranks-only .cand-top { justify-content: center; }
-.candidate-list.is-ranks-only .cand-rank { font-size: .78rem; }
+.schedule-heading p { margin: 6px 0 0; color: var(--muted); font: 500 .76rem/1.4 var(--body); }
+.schedule-exports { display: flex; align-items: center; gap: 8px; }
+.schedule-exports button { min-height: 42px; white-space: nowrap; }
+.pager {
+  min-height: 44px; margin-bottom: 18px; gap: 12px;
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+}
+.pager button { width: auto; min-width: 0; height: 44px; padding: 10px 18px; }
+.pager-back { justify-self: start; }
+.pager-option { color: var(--muted); font: 500 .78rem/1 var(--body); }
+.pager-generate { justify-self: end; }
 
 /* Timetable: neutral chrome, color only for course identity. */
 .schedule-grid-scroll { overflow-x: auto; padding: 0 0 8px; border: 0; border-radius: 0; background: white; }
@@ -211,6 +204,12 @@ button:disabled { background: var(--well); color: var(--stone, #9e9ea0); opacity
 .tab.is-active { border-bottom-color: transparent; background: var(--ink); color: white; }
 .criterion, .tabpanel > label { border-color: var(--contour-soft); border-radius: 12px; background: var(--well); }
 .criterion.is-on { border-color: var(--contour); background: white; }
+.calendar-dialog { max-width: 520px; }
+.calendar-range { display: grid; gap: 16px; padding: 20px; }
+.calendar-range > .hint { margin: 0; }
+.calendar-range label { display: grid; gap: 7px; font-size: .78rem; font-weight: 500; }
+.calendar-error { margin: 0; color: var(--warn); font-size: .78rem; }
+.calendar-dialog .dialog-foot { justify-content: flex-end; }
 
 .empty-stage { max-width: 520px; margin: 118px auto 0; padding: 32px; text-align: left; }
 .empty-stage h2 { color: var(--ink); font: 500 2rem/1.15 var(--display); letter-spacing: 0; text-transform: uppercase; }
@@ -242,4 +241,11 @@ button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focu
   .rail { padding-inline: 16px; }
   .empty-stage { margin-top: 48px; padding: 20px 8px; }
   .empty-stage h2 { font-size: 1.6rem; }
+  .schedule-heading { align-items: stretch; flex-direction: column; gap: 14px; }
+  .schedule-exports { width: 100%; }
+  .schedule-exports button { flex: 1 1 0; padding-inline: 12px; }
+  .pager { grid-template-columns: 1fr 1fr; }
+  .pager-option { grid-column: 1 / -1; grid-row: 1; justify-self: center; }
+  .pager-back { grid-column: 1; grid-row: 2; }
+  .pager-generate { grid-column: 2; grid-row: 2; }
 }

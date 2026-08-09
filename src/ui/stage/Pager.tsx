@@ -3,7 +3,6 @@ import { useEffect } from "react";
 interface Props {
   index: number;
   count: number;
-  score: number;
   onIndex: (i: number) => void;
 }
 
@@ -12,7 +11,7 @@ const isTyping = () => {
   return !!el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.tagName === "SELECT");
 };
 
-export function Pager({ index, count, score, onIndex }: Props) {
+export function Pager({ index, count, onIndex }: Props) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (isTyping()) return;
@@ -23,27 +22,23 @@ export function Pager({ index, count, score, onIndex }: Props) {
     return () => window.removeEventListener("keydown", onKey);
   }, [index, count, onIndex]);
 
-  // `score` is a within-set relative position, not an absolute match quality. Keep its full
-  // qualification in the live announcement while the visual toolbar carries only the position;
-  // repeating the long explanation beside 500 near-identical candidates overwhelms navigation.
-  const percent = Math.round(score * 100);
+  const isFirst = index === 0;
+  const isLast = index >= count - 1;
+  const optionLabel = isFirst ? "Best schedule" : `Schedule option ${index + 1}`;
 
   return (
     <div className="pager">
-      <button type="button" aria-label="Previous schedule"
-              disabled={index === 0} onClick={() => onIndex(index - 1)}>
-        <span aria-hidden="true">&larr;</span>
+      <button type="button" className="pager-back" disabled={isFirst}
+              onClick={() => onIndex(index - 1)}>
+        <span aria-hidden="true">&larr;</span> Back
       </button>
-      <span className="pager-count" aria-hidden="true">
-        <span className="pager-rank">Schedule {String(index + 1).padStart(2, "0")} of {count}</span>
-      </span>
-      <span className="spacer" />
+      <span className="pager-option" aria-hidden="true">{optionLabel}</span>
       <span className="sr-only" role="status" aria-live="polite">
-        Schedule {index + 1} of {count} &mdash; {percent}% toward the best of this set, across your preferences.
+        {optionLabel}. Schedule {index + 1} of {count}.
       </span>
-      <button type="button" aria-label="Next schedule"
-              disabled={index >= count - 1} onClick={() => onIndex(index + 1)}>
-        <span aria-hidden="true">&rarr;</span>
+      <button type="button" className="btn-primary pager-generate"
+              disabled={isLast} onClick={() => onIndex(index + 1)}>
+        {isLast ? "No more schedules" : "Generate another"}
       </button>
     </div>
   );

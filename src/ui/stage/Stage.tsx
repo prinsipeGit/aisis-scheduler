@@ -3,12 +3,13 @@ import type { CurriculumBlock, Program, Section, UserState } from "../../lib/typ
 import { sectionKey } from "../../lib/types";
 import type { Schedules } from "../useSchedules";
 import { downloadScheduleImage } from "../export/scheduleImage";
+import { CalendarExportDialog } from "../export/CalendarExportDialog";
+import { termHeading } from "../../lib/term";
 import { Pager } from "./Pager";
 import { WeekGrid } from "./WeekGrid";
 import { SectionChips } from "./SectionChips";
 import { Diagnostics } from "./Diagnostics";
 import { EmptyStage } from "./EmptyStage";
-import { CandidateList } from "../candidates/CandidateList";
 import { SectionSwitcher } from "./SectionSwitcher";
 
 interface Props {
@@ -26,10 +27,11 @@ interface Props {
 }
 
 export function Stage({ schedules, index, onIndex, state, block, program, onChange, catalogFailed = false }: Props) {
-  const { ranked, diagnostics, search, resolved } = schedules;
+  const { ranked, diagnostics, resolved } = schedules;
   // Survives across renders so a candidate change can be compared with the one before it.
   const seen = useRef<Set<string>>(new Set());
   const [switching, setSwitching] = useState<Section | null>(null);
+  const [calendarOpen, setCalendarOpen] = useState(false);
 
   // Excluded from generation but still required: the week on screen is not the whole story,
   // and saying so is the point (§5.3, §5.6).
@@ -101,19 +103,27 @@ export function Stage({ schedules, index, onIndex, state, block, program, onChan
   }
 
   const current = ranked[clampedIndex];
+  const heading = termHeading(state.calendarTerm);
 
   return (
     <section>
-      {search.truncated && (
-        <p className="search-limit-note" role="status">
-          Showing the first {search.limit} schedules. Lock a section or add a filter to narrow the list.
-        </p>
-      )}
-      <Pager index={clampedIndex} count={ranked.length} score={current.score} onIndex={onIndex} />
-      {/* The candidate list used to be a third column that read as static, because every row
-          showed the same number. It scores across all criteria now, so the rows differ — and it
-          belongs beside the pager it drives rather than in a rail of its own. */}
-      <CandidateList ranked={ranked} index={clampedIndex} onPick={onIndex} />
+      <header className="schedule-heading">
+        <div>
+          <h1>{heading.semester}</h1>
+          <p>{heading.academicYear}</p>
+        </div>
+        <div className="schedule-exports">
+          <button type="button" onClick={() => setCalendarOpen(true)}>Export calendar</button>
+          <button type="button" onClick={() => downloadScheduleImage(current.schedule, {
+                    program: program?.code ?? "",
+                    block: block?.key.replace("|", " / ") ?? "",
+                    term: state.calendarTerm,
+                  })}>
+            Download photo
+          </button>
+        </div>
+      </header>
+      <Pager index={clampedIndex} count={ranked.length} onIndex={onIndex} />
       <WeekGrid schedule={current.schedule} changed={changed} onSectionClick={setSwitching} />
       {missing.length > 0 && <MissingList missing={missing} />}
       {/* The codes are what the student actually types into AISIS, so they get a frame of
@@ -121,22 +131,16 @@ export function Stage({ schedules, index, onIndex, state, block, program, onChan
       <div className="enlist">
         <div className="enlist-head">
           <span className="enlist-title">Enlist these sections</span>
-          <span className="enlist-actions">
-            <button type="button" className="btn-primary"
-                    onClick={() => downloadScheduleImage(current.schedule, {
-                      program: program?.code ?? "",
-                      block: block?.key.replace("|", " / ") ?? "",
-                      term: state.calendarTerm,
-                    })}>
-              Download schedule
-            </button>
-          </span>
         </div>
         <SectionChips schedule={current.schedule} state={state} onChange={onChange} />
       </div>
       {switching && (
         <SectionSwitcher selected={switching} schedule={current.schedule} resolved={resolved}
                          state={state} onChange={onChange} onClose={() => setSwitching(null)} />
+      )}
+      {calendarOpen && (
+        <CalendarExportDialog schedule={current.schedule} term={state.calendarTerm}
+                              onClose={() => setCalendarOpen(false)} />
       )}
     </section>
   );

@@ -30,3 +30,19 @@ export function defaultTerm(now: Date, available: string[]): string {
   const computed = computeTerm(now);
   return available.includes(computed) ? computed : newest(available);
 }
+
+const TERM_NAME: Record<string, string> = {
+  "1": "First Semester",
+  "2": "Second Semester",
+  "0": "Intersession",
+};
+
+export function termHeading(term: string): { semester: string; academicYear: string } {
+  const match = /^(\d{4})-([012])$/.exec(term);
+  if (!match) return { semester: "Current Semester", academicYear: term };
+  const startYear = Number(match[1]);
+  return {
+    semester: TERM_NAME[match[2]],
+    academicYear: `A.Y. ${startYear}\u2013${startYear + 1}`,
+  };
+}
