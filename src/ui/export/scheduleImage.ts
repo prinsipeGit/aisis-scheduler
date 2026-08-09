@@ -1,5 +1,4 @@
 import type { Day, Schedule } from "../../lib/types";
-import { sectionKey } from "../../lib/types";
 import { formatTime } from "../../lib/time";
 
 export interface ScheduleMeta {
@@ -10,16 +9,22 @@ export interface ScheduleMeta {
 
 const DAYS: Day[] = ["M", "T", "W", "TH", "F", "SAT"];
 const W = 1000;
-const PAD = 24;
-const GRID_TOP = 120;
-const GRID_H = 460;
-const ROW_H = 26;
-const HUES = ["#2f6df6", "#f6a23b", "#2fbf8f", "#e15b8d", "#7a5af8", "#22b8cf"];
+const PAD = 32;
+const GRID_TOP = 58;
+const GRID_H = 700;
+const COURSE_PALETTE = [
+  { fill: "#e6f4f1", ink: "#0a6659" },
+  { fill: "#e8eef8", ink: "#174f96" },
+  { fill: "#f0ebfa", ink: "#6541a5" },
+  { fill: "#f7eee5", ink: "#855016" },
+  { fill: "#edf2e8", ink: "#4e6b31" },
+  { fill: "#f4eaf1", ink: "#7b456b" },
+] as const;
 
-function hueFor(courseCode: string): string {
+function paletteFor(courseCode: string): (typeof COURSE_PALETTE)[number] {
   let hash = 0;
   for (let i = 0; i < courseCode.length; i++) hash = (hash * 31 + courseCode.charCodeAt(i)) >>> 0;
-  return HUES[hash % HUES.length];
+  return COURSE_PALETTE[hash % COURSE_PALETTE.length];
 }
 
 // jsdom's canvas stub either has no measureText or ignores its argument, so width lookups must
@@ -63,10 +68,9 @@ export function fitDayTimeRoom(ctx: CanvasRenderingContext2D, when: string, room
 // Rendered with the Canvas 2D API rather than a DOM-to-image library: the grid geometry is
 // simple, and this adds no dependency (§11.3).
 export function renderScheduleImage(
-  schedule: Schedule, meta: ScheduleMeta, canvas: HTMLCanvasElement
+  schedule: Schedule, _meta: ScheduleMeta, canvas: HTMLCanvasElement
 ): string {
-  const rows = [...schedule].sort((a, b) => sectionKey(a).localeCompare(sectionKey(b)));
-  const height = GRID_TOP + GRID_H + 40 + rows.length * ROW_H + 60;
+  const height = GRID_TOP + GRID_H + 58;
   canvas.width = W;
   canvas.height = height;
   const ctx = canvas.getContext("2d")!;
@@ -74,34 +78,44 @@ export function renderScheduleImage(
   ctx.fillStyle = "#ffffff";
   ctx.fillRect(0, 0, W, height);
 
-  // Header - a saved image must identify itself.
-  ctx.fillStyle = "#1b2233";
-  ctx.font = "600 26px 'Fira Sans Condensed', sans-serif";
-  ctx.fillText("Isked", PAD, 44);
-  ctx.font = "16px 'Fira Sans Condensed', sans-serif";
-  ctx.fillStyle = "#8c96aa";
-  ctx.fillText(`${meta.program}  ${meta.block}  ${meta.term}`, PAD, 72);
-
   const timed = schedule.flatMap((s) => s.meetings);
   const start = timed.length ? Math.min(420, ...timed.map((m) => m.start)) : 420;
   const end = timed.length ? Math.max(1260, ...timed.map((m) => m.end)) : 1260;
   const perMin = GRID_H / Math.max(1, end - start);
-  const colW = (W - PAD * 2 - 50) / DAYS.length;
+  const colW = (W - PAD * 2 - 58) / DAYS.length;
 
-  ctx.font = "12px 'Fira Mono', monospace";
+  // Timetable frame and weekday header.
+  ctx.fillStyle = "#f5f5f5";
+  ctx.fillRect(PAD + 58, GRID_TOP - 34, W - PAD * 2 - 58, 34);
+  ctx.strokeStyle = "#cacacb";
+  ctx.lineWidth = 1;
+  ctx.strokeRect(PAD + 58, GRID_TOP - 34, W - PAD * 2 - 58, GRID_H + 34);
+
+  ctx.font = "500 11px Inter, sans-serif";
   DAYS.forEach((day, i) => {
-    ctx.fillStyle = "#8c96aa";
-    ctx.fillText(day, PAD + 50 + i * colW + colW / 2 - 8, GRID_TOP - 8);
+    const x = PAD + 58 + i * colW;
+    ctx.fillStyle = "#39393b";
+    ctx.textAlign = "center";
+    ctx.fillText(day, x + colW / 2, GRID_TOP - 13);
+    if (i > 0) {
+      ctx.strokeStyle = "#e5e5e5";
+      ctx.beginPath();
+      ctx.moveTo(x, GRID_TOP - 34);
+      ctx.lineTo(x, GRID_TOP + GRID_H);
+      ctx.stroke();
+    }
   });
+  ctx.textAlign = "left";
   for (let m = Math.ceil(start / 60) * 60; m <= end; m += 60) {
     const y = GRID_TOP + (m - start) * perMin;
-    ctx.strokeStyle = "#eef1f6";
+    ctx.strokeStyle = "#e5e5e5";
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.moveTo(PAD + 50, y);
+    ctx.moveTo(PAD + 58, y);
     ctx.lineTo(W - PAD, y);
     ctx.stroke();
-    ctx.fillStyle = "#8c96aa";
+    ctx.font = "400 10px Inter, sans-serif";
+    ctx.fillStyle = "#707072";
     ctx.fillText(formatTime(m), PAD, y + 4);
   }
 
@@ -110,59 +124,56 @@ export function renderScheduleImage(
       for (const day of meeting.days) {
         const i = DAYS.indexOf(day);
         if (i < 0) continue;
-        const x = PAD + 50 + i * colW;
+        const x = PAD + 58 + i * colW;
         const y = GRID_TOP + (meeting.start - start) * perMin;
         const h = (meeting.end - meeting.start) * perMin;
-        ctx.fillStyle = hueFor(s.courseCode);
-        ctx.fillRect(x + 2, y, colW - 4, h);
-        ctx.fillStyle = "#ffffff";
-        ctx.font = "600 11px 'Fira Mono', monospace";
-        ctx.fillText(s.courseCode, x + 6, y + 14);
-        ctx.font = "10px 'Fira Mono', monospace";
-        ctx.fillText(s.sectionCode, x + 6, y + 26);
+        const palette = paletteFor(s.courseCode);
+        ctx.fillStyle = palette.fill;
+        ctx.fillRect(x + 3, y + 2, colW - 6, Math.max(2, h - 4));
+        ctx.fillStyle = palette.ink;
+        ctx.fillRect(x + 3, y + 2, 4, Math.max(2, h - 4));
+        const textX = x + 12;
+        const maxTextW = colW - 20;
+        ctx.font = "500 10px Inter, sans-serif";
+        ctx.fillText(ellipsize(ctx, `${s.courseCode} ${s.sectionCode}`, maxTextW), textX, y + 17);
+        if (h >= 34) {
+          ctx.font = "400 9px Inter, sans-serif";
+          ctx.fillText(
+            ellipsize(ctx, `${formatTime(meeting.start)}-${formatTime(meeting.end)}`, maxTextW),
+            textX, y + 30
+          );
+        }
+        if (h >= 48 && s.instructors.length > 0) {
+          ctx.fillText(ellipsize(ctx, s.instructors.join(", "), maxTextW), textX, y + 43);
+        }
+        if (h >= 62 && s.room) {
+          ctx.fillText(ellipsize(ctx, s.room, maxTextW), textX, y + 56);
+        }
       }
     }
   }
 
-  // Section list. The SECTION CODE carries the weight - it is what gets typed into AISIS.
-  let y = GRID_TOP + GRID_H + 44;
-  ctx.fillStyle = "#1b2233";
-  ctx.font = "600 14px 'Fira Sans Condensed', sans-serif";
-  ctx.fillText("ENLIST THESE SECTIONS", PAD, y);
-  y += 24;
-  const LIST_COL_X = PAD + 360;
-  const LIST_AVAIL_W = W - PAD - LIST_COL_X;
-  for (const s of rows) {
-    ctx.font = "13px 'Fira Mono', monospace";
-    ctx.fillStyle = "#1b2233";
-    ctx.fillText(s.courseCode, PAD, y);
-    ctx.font = "600 15px 'Fira Mono', monospace";
-    ctx.fillText(s.sectionCode, PAD + 190, y);
-    ctx.font = "11px 'Fira Mono', monospace";
-    ctx.fillStyle = "#8c96aa";
-    const when = s.meetings.length === 0
-      ? "no fixed time"
-      : s.meetings.map((m) => `${m.days.join("")} ${formatTime(m.start)}-${formatTime(m.end)}`).join(", ");
-    ctx.fillText(fitDayTimeRoom(ctx, when, s.room, LIST_AVAIL_W), LIST_COL_X, y);
-    y += ROW_H;
-  }
-
-  ctx.font = "12px 'Fira Sans Condensed', sans-serif";
-  ctx.fillStyle = "#8c96aa";
-  ctx.fillText("Unofficial planning tool - always verify your final schedule in AISIS.", PAD, height - 20);
+  // Small signature only—the exported artifact is the timetable itself, not a second UI.
+  ctx.textAlign = "right";
+  ctx.font = "400 17px 'Bebas Neue', 'Arial Narrow', sans-serif";
+  ctx.fillStyle = "#707072";
+  ctx.fillText("SCHED.RIV", W - PAD, height - 20);
+  ctx.textAlign = "left";
 
   return canvas.toDataURL("image/png");
 }
 
-export async function downloadScheduleImage(schedule: Schedule, meta: ScheduleMeta): Promise<void> {
-  // Wait for the self-hosted faces, or the canvas silently falls back to a system font.
-  if (typeof document !== "undefined" && "fonts" in document) {
-    try { await document.fonts.ready; } catch { /* proceed with whatever is loaded */ }
-  }
+export function downloadScheduleImage(schedule: Schedule, meta: ScheduleMeta): void {
+  // Keep rendering and clicking inside the original button gesture. Awaiting font readiness or
+  // canvas.toBlob() here causes privacy-focused browsers to treat the later click as unsolicited
+  // and block it. By the time a generated schedule exists, the app's bundled fonts are loaded.
   const canvas = document.createElement("canvas");
   const url = renderScheduleImage(schedule, meta, canvas);
   const link = document.createElement("a");
   link.href = url;
-  link.download = `schedule-${meta.term}.png`;
+  link.download = `sched-riv-${meta.term || "schedule"}.png`;
+  link.style.display = "none";
+  document.body.appendChild(link);
   link.click();
+  link.remove();
 }

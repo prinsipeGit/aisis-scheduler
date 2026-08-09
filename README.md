@@ -1,4 +1,4 @@
-# Isked
+# sched.riv
 
 Generates and ranks conflict-free class-schedule candidates for Ateneo enlistment,
 driven by your program's official curriculum (IPS).

@@ -92,7 +92,7 @@ exhaustive search it did not perform. Unparseable times are quarantined as
 
 ## Brand Commitments
 
-- Name: **Isked**. Unofficial — the product says so, and every surface
+- Name: **sched.riv**. Unofficial — the product says so, and every surface
   that could be mistaken for a final answer carries the "always verify in AISIS"
   caveat.
 - Ateneo blue is the accent lineage.

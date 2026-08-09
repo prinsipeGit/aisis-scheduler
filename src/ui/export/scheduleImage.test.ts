@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { renderScheduleImage, fitDayTimeRoom } from "./scheduleImage";
+import { renderScheduleImage, downloadScheduleImage, fitDayTimeRoom } from "./scheduleImage";
 import type { Schedule, Section } from "../../lib/types";
 
 const section = (code: string, sectionCode: string): Section => ({
@@ -79,38 +79,38 @@ describe("renderScheduleImage", () => {
     expect(text).toContain("INTACT 11");
   });
 
-  it("draws the program, block and term so a saved image identifies itself", () => {
+  it("adds only a small sched.riv signature outside the timetable", () => {
     renderScheduleImage(schedule, meta, stubCanvas());
     const text = drawn.join(" ");
-    expect(text).toContain("Isked");
-    expect(text).toContain("BS CS");
-    expect(text).toContain("First Year / First Semester");
-    expect(text).toContain("2026-1");
+    expect(text).toContain("SCHED.RIV");
+    expect(text).not.toContain("ENLIST THESE SECTIONS");
+    expect(text).not.toContain("First Year / First Semester");
   });
 
-  it("carries the unofficial-tool line, which travels with a shared image", () => {
-    renderScheduleImage(schedule, meta, stubCanvas());
-    expect(drawn.join(" ")).toMatch(/verify.*AISIS/i);
-  });
-
-  it("draws each section's day/time and room, which is what a student needs besides the code", () => {
+  it("draws each section's meeting time inside the timetable block", () => {
     renderScheduleImage(schedule, meta, stubCanvas());
     const text = drawn.join(" ");
-    // section("MATH 10", "A3") meets M and W, 8:00 AM - 9:00 AM, in room SEC-A203.
-    expect(text).toContain("MW 8:00 AM-9:00 AM");
+    expect(text).toContain("8:00 AM-9:00 AM");
+  });
+
+  it("includes the professor and room when the timetable block is tall enough", () => {
+    const longClass: Section = {
+      ...section("MATH 10", "A3"),
+      meetings: [{ days: ["M"], start: 480, end: 570 }],
+    };
+    renderScheduleImage([longClass], meta, stubCanvas());
+    const text = drawn.join(" ");
+    expect(text).toContain("CRUZ, Ana");
     expect(text).toContain("SEC-A203");
   });
 
-  it("keeps a TBA section in the enlistment list with its no-fixed-time treatment", () => {
+  it("keeps the export to the visible timetable and omits a class with no fixed time", () => {
     const withTba: Schedule = [section("MATH 10", "A3"), tbaSection("PE 2", "UE-1")];
     renderScheduleImage(withTba, meta, stubCanvas());
     const text = drawn.join(" ");
-    // The section itself (course + section code) must still be listed...
-    expect(text).toContain("PE 2");
-    expect(text).toContain("UE-1");
-    // ...and flagged as having no fixed time, since a student who is TBA-enrolled and never
-    // told about it is exactly the failure this artifact must not have.
-    expect(text).toContain("no fixed time");
+    expect(text).not.toContain("PE 2");
+    expect(text).not.toContain("UE-1");
+    expect(text).not.toContain("no fixed time");
   });
 
   describe("fitDayTimeRoom (finding 1: the day/time + room column must not overflow)", () => {
@@ -153,17 +153,27 @@ describe("renderScheduleImage", () => {
     });
   });
 
-  it("bounds the day/time + room column end-to-end so a multi-meeting section never overflows the canvas", () => {
-    const mwfHeavy: Section = {
-      ...section("PHYSICS 71", "MWF-1"),
-      meetings: ["M", "T", "W", "TH", "F", "SAT"].map((d) => ({
-        days: [d as Section["meetings"][number]["days"][number]], start: 480, end: 540,
-      })),
-      room: "ROOM-" + "Y".repeat(60),
-    };
-    renderScheduleImage([mwfHeavy], meta, scaledStubCanvas());
-    const overflowing = drawn.find((t) => t.includes("…"));
-    expect(overflowing).toBeDefined();
-    expect(scaledWidth(overflowing!)).toBeLessThanOrEqual(LIST_AVAIL_W);
+});
+
+describe("downloadScheduleImage", () => {
+  it("creates and clicks a PNG download link synchronously, then removes it", () => {
+    const context = stubCanvas().getContext("2d")!;
+    const getContext = vi.spyOn(HTMLCanvasElement.prototype, "getContext")
+      .mockReturnValue(context);
+    const toDataURL = vi.spyOn(HTMLCanvasElement.prototype, "toDataURL")
+      .mockReturnValue("data:image/png;base64,AAAA");
+    const click = vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => {});
+
+    downloadScheduleImage(schedule, meta);
+
+    expect(click).toHaveBeenCalledOnce();
+    const link = click.mock.contexts[0] as HTMLAnchorElement;
+    expect(link.download).toBe("sched-riv-2026-1.png");
+    expect(link.href).toMatch(/^data:image\/png;base64,/);
+    expect(document.body.contains(link)).toBe(false);
+
+    getContext.mockRestore();
+    toDataURL.mockRestore();
+    click.mockRestore();
   });
 });

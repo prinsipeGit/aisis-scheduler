@@ -52,7 +52,7 @@ const SMOKE_TIMEOUT = 30_000;
 describe("cockpit smoke", () => {
   it("runs program to schedule on the real 2026-1 data", async () => {
     render(<App />);
-    expect(screen.getByText("Isked")).toBeTruthy();
+    expect(screen.getByText("sched.riv")).toBeTruthy();
 
     // 1. Program. The version label must render - this is the regression that shipped.
     await waitFor(() => expect(screen.getByLabelText(/program and curriculum year/i)).toBeTruthy());
