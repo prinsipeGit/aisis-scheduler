@@ -82,6 +82,7 @@ describe("renderScheduleImage", () => {
   it("draws the program, block and term so a saved image identifies itself", () => {
     renderScheduleImage(schedule, meta, stubCanvas());
     const text = drawn.join(" ");
+    expect(text).toContain("Isked");
     expect(text).toContain("BS CS");
     expect(text).toContain("First Year / First Semester");
     expect(text).toContain("2026-1");

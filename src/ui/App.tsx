@@ -133,7 +133,7 @@ export default function App() {
   return (
     <div className="cockpit">
       <header className="cockpit-header">
-        <span className="wordmark">AISIS Scheduler</span>
+        <span className="wordmark">Isked</span>
         <span className="term-badge">{state.calendarTerm || "no term"}</span>
         <span className="privacy-badge">Saved on this device</span>
       </header>

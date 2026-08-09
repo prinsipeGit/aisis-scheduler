@@ -77,7 +77,7 @@ export function renderScheduleImage(
   // Header - a saved image must identify itself.
   ctx.fillStyle = "#1b2233";
   ctx.font = "600 26px 'Fira Sans Condensed', sans-serif";
-  ctx.fillText("AISIS Scheduler", PAD, 44);
+  ctx.fillText("Isked", PAD, 44);
   ctx.font = "16px 'Fira Sans Condensed', sans-serif";
   ctx.fillStyle = "#8c96aa";
   ctx.fillText(`${meta.program}  ${meta.block}  ${meta.term}`, PAD, 72);
