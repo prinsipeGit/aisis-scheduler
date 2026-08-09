@@ -10,6 +10,10 @@ describe("parseDays", () => {
     expect(parseDays("TTH")).toEqual(["T", "TH"]);
     expect(parseDays("SAT")).toEqual(["SAT"]);
   });
+  it("expands AISIS intersession daily and Saturday notation", () => {
+    expect(parseDays("D")).toEqual(["M", "T", "W", "TH", "F"]);
+    expect(parseDays("T-TH-S")).toEqual(["T", "TH", "SAT"]);
+  });
   it("rejects unknown tokens", () => {
     expect(parseDays("XYZ")).toBeNull();
     expect(parseDays("")).toBeNull();

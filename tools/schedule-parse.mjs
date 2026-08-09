@@ -15,16 +15,21 @@ const DAY_TOKENS = ["SAT", "SUN", "TH", "M", "T", "W", "F"];
 export function parseDays(token) {
   const cleaned = token.toUpperCase().trim();
   if (!cleaned) return null;
+  // Intersession uses two compact aliases that regular-semester rows rarely expose:
+  // `D` means the class meets daily on weekdays, while `S` means Saturday (regular
+  // semester rows usually spell it `SAT`). Expand them before the normal token scan so
+  // generation can detect conflicts instead of quarantining hundreds of valid sections.
+  if (cleaned === "D") return ["M", "T", "W", "TH", "F"];
   const parts = cleaned.includes("-") ? cleaned.split("-") : [cleaned];
   const days = [];
   for (const part of parts) {
     let rest = part.trim();
     if (!rest) return null;
     while (rest.length > 0) {
-      const match = DAY_TOKENS.find((d) => rest.startsWith(d));
+      const match = rest === "S" ? "SAT" : DAY_TOKENS.find((d) => rest.startsWith(d));
       if (!match) return null;
       days.push(match);
-      rest = rest.slice(match.length);
+      rest = rest === "S" ? "" : rest.slice(match.length);
     }
   }
   return days.length > 0 ? days : null;
